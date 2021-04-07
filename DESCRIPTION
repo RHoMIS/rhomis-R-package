@@ -4,10 +4,7 @@ Title: Essential Processes for RHoMIS Data
 Version: 0.1.0
 Author: Leo Gorman
 Maintainer: Leo Gorman <lgorman@turing.ac.uk>
-Description: This package enables complete processing of RHoMIS data. This processing occurs in X main steps.
-Data is downloaded from the RHoMIS ODK central server. Data is cleaned, column names are simplified, new units are 
-extracted. Data is reformatted, data collected in an ODK loop structure is formatted for analysis. Reformatted data
-is processed to generate key indicators. A series of standard plots and outputs are generated.
+Description: This package enables complete processing of RHoMIS data. This processing occurs in X main steps. Data is downloaded from the RHoMIS ODK central server. Data is cleaned, column names are simplified, new units are extracted. Data is reformatted, data collected in an ODK loop structure is formatted for analysis. Reformatted data is processed to generate key indicators. A series of standard plots and outputs are generated.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
