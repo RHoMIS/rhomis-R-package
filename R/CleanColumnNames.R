@@ -85,10 +85,10 @@ modify_loop_name <- function(column_name, loop_type){
 #' @examples
 modify_loop_column_names <- function(column_names, loop_type) {
     # Finding all of the items with pattern "xxx/type[number]/column_name"
-   repeat_columns <- grep(paste0(loop_type,"\\[.\\]"),column_names)
+    repeat_columns <- grep(paste0(loop_type,"\\[.\\]"),column_names)
 
-   # Modifying the relevant columns
-   column_names[repeat_columns] <- unlist(lapply(column_names[repeat_columns], function(x) modify_loop_name(x, loop_type)))
+    # Modifying the relevant columns
+    column_names[repeat_columns] <- unlist(lapply(column_names[repeat_columns], function(x) modify_loop_name(x, loop_type)))
     return(column_names)
 
 }
@@ -117,16 +117,20 @@ modify_all_loop_column_names <- function(column_names, repeat_columns){
 #'
 #' A single functions to shorten and clean all RHoMIS column names.
 #'
-#' @param column_names
-#' @param seperator
-#' @param repeat_columns
+#' @param column_names A list of all of the column names
+#' @param seperator The seperator which seperates all of the parts of the column names
+#' @param repeat_columns A list of all of the repeat loops contained in the RHoMIS dataset
 #'
-#' @return
+#' @return A cleaned list of all of the column names
 #' @export
 #'
 #' @examples
+#'
 clean_column_names <- function(column_names, seperator, repeat_columns){
+    column_names <- modify_all_loop_column_names(column_names, repeat_columns)
+    column_names <- shorten_multiple_column_names(column_names,seperator)
 
+    return(column_names)
 }
 
 
