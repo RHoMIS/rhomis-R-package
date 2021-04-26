@@ -2,7 +2,9 @@
 % Please edit documentation in R/CleanColumnNames.R
 \name{shorten_individual_column_name}
 \alias{shorten_individual_column_name}
-\title{Shorten Individual Name}
+\title{This script includes a series of functions which can be used to help clean
+column names of data collected with RHoMIS.
+Shorten Individual Name}
 \usage{
 shorten_individual_column_name(column_name, seperator)
 }
