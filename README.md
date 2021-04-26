@@ -5,7 +5,7 @@ Data is downloaded from the RHoMIS ODK central server. Data is cleaned, column n
 extracted. Data is reformatted, data collected in an ODK loop structure is formatted for analysis. Reformatted data
 is processed to generate key indicators. A series of standard plots and outputs are generated.
 
-# Usefule Commands when building the package
+# Useful Commands when building the package
 Install Package: `Ctrl + Shift + B`
 Check Package:   `Ctrl + Shift + E`
 Test Package:    `Ctrl + Shift + T`
