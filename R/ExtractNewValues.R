@@ -80,8 +80,115 @@ extract_new_values <- function(data, loop_or_individual_column="loop",column_nam
         unique_values <- find_unique_values(relevant_data)
         return(unique_values)
     }
+}
+
+find_loop_number_and_extract_values <- function(data, column_pattern){
+
+    # Creating a pattern to search through the column names of the data
+    regex_pattern <- paste0("^",column_pattern,"_[[:digit:]]") # Finding columns which start with "column_pattern_Integer"
+
+    # Finding the relevant column names
+    relevant_columns <- grep(regex_pattern, colnames(data), value=T)
+    # The number of loops for this column
+    number_of_loops <- length(relevant_columns)
+
+    new_values <- extract_new_values(data, loop_or_individual_column="loop",column_pattern=column_pattern, number_of_loops=number_of_loops)
+
+    return(new_values)
 
 
 }
+
+
+
+
+
+#' Extract New Core Units
+#'
+#' A function to extract the new values from a core RHoMIS survey. Note that this function will not work on any dataset which has modified the core questions
+#'
+#' @param data
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_new_core_units <- function(data)
+{
+    loop_values_to_extract <- c("crop_name",
+                                "livestock_name",
+                                "crop_yield_units",
+                                "crop_yield_units_other",
+                                "crop_sold_price_quantityunits",
+                                "crop_price_quantityunits_other",
+                                "unitland",
+                                "areaunits_other",
+                                "unitland_owned",
+                                "unitland_rentin",
+                                "unitland_rentout",
+                                "milk_units",
+                                "milk_amount_units_other",
+                                "milk_sold_price_timeunits",
+                                "milk_amount_time_units_other",
+                                "bees_honey_production_units",
+                                "bees_honey_production_units_other",
+                                "eggs_units",
+                                "eggs_amount_units_other",
+                                "eggs_sold_price_timeunits",
+                                "eggs_sold_price_timeunits_other")
+
+
+    # Return a named list when applying the function
+    loop_results <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data,x), simplify = F)
+
+    individual_columns_to_extract <- c("fertiliser_units","fertiliser_units_other")
+    column_results <- sapply(individual_columns_to_extract, function(x) extract_new_values(data,loop_or_individual_column="column", column_name=x), simplify = F)
+
+
+
+    categories_to_merge <- list(crop_name=c("crop_name"),
+                                livestock_name=c("livestock_name"),
+                                crop_yield_units=c("crop_yield_units_other"),
+                                crop_sold_price_quantityunits=c("crop_price_quantityunits_other"),
+                                unitland= c("areaunits_other","unitland_owned","unitland_rentin","unitland_rentout"),
+                                milk_units=c("milk_amount_units_other"),
+                                milk_sold_price_timeunits=c("milk_amount_time_units_other"),
+                                bees_honey_production_units=c("bees_honey_production_units_other"),
+                                eggs_units=c("eggs_amount_units_other"),
+                                eggs_sold_price_timeunits=c("eggs_sold_price_timeunits_other"),
+                                fertiliser_units=c("fertiliser_units_other"))
+
+
+
+    final_result <- c(loop_results,column_results)
+
+    final_result<-sapply(names(categories_to_merge),function(x) merge_and_simplify_core_values(final_result,main_item=x,categories_to_merge), simplify = F)
+
+
+    return(final_result)
+
+
+}
+
+
+merge_and_simplify_core_values <- function(list_of_unique_core_values, main_item,categories_to_merge){
+
+
+    extras_categories_merge<-categories_to_merge[[main_item]]
+    extra_values_to_merge <- list_of_unique_core_values[extras_categories_merge]
+    extra_values_to_merge <- unlist(extra_values_to_merge)
+    extra_values_to_merge <- unique(extra_values_to_merge)
+
+    list_of_unique_core_values[[main_item]] <- c(list_of_unique_core_values[[main_item]],extra_values_to_merge)
+    list_of_unique_core_values[[main_item]] <- unique(list_of_unique_core_values[[main_item]])
+
+    return(list_of_unique_core_values[[main_item]])
+
+
+
+
+
+}
+
 
 
