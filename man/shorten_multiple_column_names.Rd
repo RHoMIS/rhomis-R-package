@@ -7,9 +7,9 @@
 shorten_multiple_column_names(long_names, seperator)
 }
 \arguments{
-\item{seperator}{The string seperating parts of each column name}
+\item{long_names}{The list of column names which need to be shortened}
 
-\item{column_names}{The list of column names which need to be shortened}
+\item{seperator}{The string seperating parts of each column name}
 }
 \value{
 A list of shortened column names
