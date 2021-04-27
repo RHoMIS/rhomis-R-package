@@ -31,7 +31,7 @@ shorten_individual_column_name <- function(column_name, seperator){
 #' in the for "xxxx/xxxxx/xxxxx/important_name". This function helps to extract only the final value
 #' "important name". It will do this for multiple column names
 #'
-#' @param column_names The list of column names which need to be shortened
+#' @param long_names The list of column names which need to be shortened
 #' @param seperator  The string seperating parts of each column name
 #'
 #' @return A list of shortened column names
@@ -56,13 +56,20 @@ shorten_multiple_column_names <- function(long_names, seperator){
 #'
 #' Many of the variables in RHoMIS are collected through a looping structure
 #'
-#' @param column_name
-#' @param loop_type
+#' @param column_name The individual column name to be changed
+#' @param loop_type What is the loop type e.g. "crop"
 #'
-#' @return
+#' @return Returns a single item for the new column name
 #' @export
 #'
 #' @examples
+#'
+#' column_name <- "SECTION_Crop_Productivity/crop_repeat[2]/crop_name"
+#' loop_type <- "crop_repeat"
+#' modified_name <- modify_loop_name(column_name, loop_type)
+#' # Will return: "SECTION_Crop_Productivity/crop_repeat[2]/crop_name_2"
+
+
 modify_loop_name <- function(column_name, loop_type){
 
     # Get rid of everything before the opening square bracket
@@ -128,6 +135,23 @@ modify_loop_column_names <- function(column_names, loop_type) {
 #' @export
 #'
 #' @examples
+#' repeat_columns<- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")
+#' column_names <- c("xxx/crop_repeat[1]/crop_name",
+#'                  "xxx/livestock_repeat[2]/livestock_name",
+#'                  "xxx/crop_repeat[3]/crop_name",
+#'                  "xx/crop_repeat/crop_name",
+#'                  "x/offfarm_repeat[4]/offfarm_name",
+#'                  "y/hh_rep[5]/person_name",
+#'                  "z/crop_repeat/crop_name")
+#' # Will return
+#' # c("xxx/crop_repeat[1]/crop_name_1",
+#' # "xxx/livestock_repeat[2]/livestock_name_2",
+#' # "xxx/crop_repeat[3]/crop_name_3",
+#' # "xx/crop_repeat/crop_name",
+#' # "x/offfarm_repeat[4]/offfarm_name_4",
+#' # "y/hh_rep[5]/person_name_5",
+#' # "z/crop_repeat/crop_name")
+#'
 modify_all_loop_column_names <- function(column_names, repeat_columns){
     for (repeat_column in repeat_columns){
         column_names<-modify_loop_column_names(column_names, repeat_column)
@@ -148,6 +172,25 @@ modify_all_loop_column_names <- function(column_names, repeat_columns){
 #' @export
 #'
 #' @examples
+#'
+#' repeat_columns<- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")
+#' seperator <- "/"
+#' column_names <- c("xxx/crop_repeat[1]/crop_name",
+#'                   "xxx/livestock_repeat[2]/livestock_name",
+#'                   "xxx/crop_repeat[3]/crop_name",
+#'                   "xx/crop_repeat/crop_name",
+#'                   "x/offfarm_repeat[4]/offfarm_name",
+#'                   "y/hh_rep[5]/person_name",
+#'                   "z/crop_repeat/crop_name")
+#'
+#' # Will return:
+#' # c("crop_name_1",
+#' # "livestock_name_2",
+#' # "crop_name_3",
+#' # "crop_name",
+#' # "offfarm_name_4",
+#' # "person_name_5",
+#' # "crop_name")
 #'
 clean_column_names <- function(column_names, seperator, repeat_columns){
     column_names <- modify_all_loop_column_names(column_names, repeat_columns)

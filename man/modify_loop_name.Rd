@@ -7,11 +7,20 @@
 modify_loop_name(column_name, loop_type)
 }
 \arguments{
-\item{loop_type}{}
+\item{column_name}{The individual column name to be changed}
+
+\item{loop_type}{What is the loop type e.g. "crop"}
 }
 \value{
-
+Returns a single item for the new column name
 }
 \description{
 Many of the variables in RHoMIS are collected through a looping structure
+}
+\examples{
+
+column_name <- "SECTION_Crop_Productivity/crop_repeat[2]/crop_name"
+loop_type <- "crop_repeat"
+modified_name <- modify_loop_name(column_name, loop_type)
+# Will return: "SECTION_Crop_Productivity/crop_repeat[2]/crop_name_2"
 }
