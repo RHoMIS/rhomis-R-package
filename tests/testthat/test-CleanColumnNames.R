@@ -46,7 +46,7 @@ test_that("Multiple repeat loops changed correctly", {
                                      "SECTION_Crop_Productivity/crop_repeat[5]/crop_name_5",
                                      "SECTION_Crop_Productivity/crop_repeat/crop_name"))
     actual_result <- modify_loop_column_names(original_names,loop_type)
-    expect_equal(expected_result,actual_result)
+    expect_equal(actual_result,expected_result)
 })
 
 # Testing that all types of repeat loop can be modified
@@ -68,7 +68,7 @@ test_that("All types of repeat loop can be specified and modified",{
                          "z/crop_repeat/crop_name")
     actual_result <- modify_all_loop_column_names(column_names,repeat_columns)
 
-    expect_equal(expected_result,actual_result)
+    expect_equal(actual_result,expected_result)
 })
 
 
