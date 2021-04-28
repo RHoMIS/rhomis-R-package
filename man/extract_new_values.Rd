@@ -13,15 +13,24 @@ extract_new_values(
 )
 }
 \arguments{
-\item{data}{The whole data-set from which the units are to be extracted from}
+\item{data}{The whole data-set from which the units are to
+be extracted from}
 
-\item{loop_or_individual_column}{Options are: "loop", "column". Specifying whether you want to extract new values from a loop or a column.}
+\item{loop_or_individual_column}{Options are: "loop", "column".
+Specifying whether you want to extract new
+values from a loop or a column.}
 
-\item{column_name}{If loop_or_individual_column=="column", then here we specify which column to search for}
+\item{column_name}{If loop_or_individual_column=="column",
+then here we specify which column to search for}
 
-\item{column_pattern}{The pattern which is used to identify the columns. For example if trying to extract new crop names, these come in the form "crop_name_1", "crop_name_2", "crop_name_3". The pattern here would be "crop_name"}
+\item{column_pattern}{The pattern which is used to
+identify the columns. For example if trying to
+extract new crop names, these come in the
+form "crop_name_1", "crop_name_2", "crop_name_3".
+The pattern here would be "crop_name"}
 
-\item{number_of_loops}{If loop_or_individual_column=="loop", then here we specify how many loops to search for.}
+\item{number_of_loops}{If loop_or_individual_column=="loop",
+then here we specify how many loops to search for.}
 }
 \value{
 A list of the individual values for that value (excluding NA values)

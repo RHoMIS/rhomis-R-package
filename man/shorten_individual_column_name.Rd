@@ -2,8 +2,8 @@
 % Please edit documentation in R/CleanColumnNames.R
 \name{shorten_individual_column_name}
 \alias{shorten_individual_column_name}
-\title{This script includes a series of functions which can be used to help clean
-column names of data collected with RHoMIS.
+\title{This script includes a series of functions which can be
+used to help clean column names of data collected with RHoMIS.
 Shorten Individual Name}
 \usage{
 shorten_individual_column_name(column_name, seperator)
@@ -17,8 +17,10 @@ shorten_individual_column_name(column_name, seperator)
 Shortened string of the essential column name
 }
 \description{
-Used to abbreviate a single column name based on its last value. Typical RHoMIS column names come
-in the for "xxxx/xxxxx/xxxxx/important_name". This function helps to extract only the final value
+Used to abbreviate a single column name
+based on its last value. Typical RHoMIS
+column names come in the form "xxxx/xxxxx/xxxxx/important_name".
+This function helps to extract only the final value
 "important name".
 }
 \examples{

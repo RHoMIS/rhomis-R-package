@@ -7,16 +7,21 @@
 write_core_values_to_convert_to_file(data, folder)
 }
 \arguments{
-\item{data}{The data for which you want to extract all of the new files.}
+\item{data}{The data for which you want to
+extract all of the new files.}
 
-\item{folder}{The folder where you want to store all of the values you need to convert. Make sure the folder is correct and does not end in "/"}
+\item{folder}{The folder where you want to
+store all of the values you need to convert.
+Make sure the folder is correct and does not end in "/"}
 }
 \value{
 
 }
 \description{
-This function extracts all of the new units and names in a RHoMIS survey and writes them to a folder
-You can select the folder that you would like to write all of the files to.
+This function extracts all of the new units and
+names in a RHoMIS survey and writes them to a folder
+You can select the folder that you would like
+to write all of the files to.
 }
 \examples{
 data <- tibble(crop_name_1=c("maize","cassava"),

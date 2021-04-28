@@ -15,8 +15,11 @@ shorten_multiple_column_names(long_names, seperator)
 A list of shortened column names
 }
 \description{
-Used to abbreviate multiple column names based on their last values. Typical RHoMIS column names come
-in the for "xxxx/xxxxx/xxxxx/important_name". This function helps to extract only the final value
+Used to abbreviate multiple column
+names based on their last values.
+Typical RHoMIS column names come
+in the for "xxxx/xxxxx/xxxxx/important_name".
+This function helps to extract only the final value
 "important name". It will do this for multiple column names
 }
 \examples{

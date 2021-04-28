@@ -7,17 +7,21 @@
 write_new_values_to_file(specific_value, list_of_tibbles, folder)
 }
 \arguments{
-\item{specific_value}{Which attribute are you hoping to write to csv (e.g. "crop_yield_units")}
+\item{specific_value}{Which attribute are you
+hoping to write to csv (e.g. "crop_yield_units")}
 
-\item{list_of_tibbles}{What are all of the units which you have extracted from the RHoMIS project. See function "extract_new_core_units"}
+\item{list_of_tibbles}{What are all of the units
+which you have extracted from the RHoMIS project.
+See function "extract_new_core_units"}
 
-\item{folder}{What is the folder you hope to write this to. Do not include "/" at the end of the file path}
+\item{folder}{What is the folder you hope to write this to.
+Do not include "/" at the end of the file path}
 }
 \value{
 No return
 }
 \description{
-Write units tibble to csv
+Write the specific tibble to a csv.
 }
 \examples{
 

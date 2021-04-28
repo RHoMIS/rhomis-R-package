@@ -13,9 +13,12 @@ convert_new_values_to_tibble(new_values)
 
 }
 \description{
-The output of the "extract_new_core_units" function is a list of lists. With the names of the lists
-are the variables to be converted and the lists contain all of the new values.
-This function converts all of these lists into tibbles. With a new column which has to be filled
+The output of the "extract_new_core_units" function
+is a list of lists. With the names of the lists
+are the variables to be converted and the lists
+contain all of the new values.
+This function converts all of these lists into tibbles.
+With a new column which has to be filled
 in by the user
 }
 \examples{

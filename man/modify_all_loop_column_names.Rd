@@ -9,14 +9,18 @@ modify_all_loop_column_names(column_names, repeat_columns)
 \arguments{
 \item{column_names}{A list of all of the column names which}
 
-\item{repeat_columns}{A list of all of the types of repeat column which need to be changed}
+\item{repeat_columns}{A list of all of the types
+of repeat column which need to be changed}
 }
 \value{
 
 }
 \description{
-The RHoMIS survey is structured using a series of important loops. These are often labelled "crop_repeat[x]".
-It is important to be modify all of these loops to have a simpler column name format for later analysis
+The RHoMIS survey is structured using
+a series of important loops. These are
+often labelled "crop_repeat[x]". It is
+important to be modify all of these loops
+to have a simpler column name format for later analysis
 }
 \examples{
 repeat_columns<- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")

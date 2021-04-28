@@ -11,22 +11,31 @@ merge_and_simplify_core_values(
 )
 }
 \arguments{
-\item{list_of_unique_core_values}{A nested list of new values from a RHoMIS survey}
+\item{list_of_unique_core_values}{A nested list of new values
+from a RHoMIS survey}
 
-\item{main_item}{The primary item that you want to merge. In "crop_yield_units" and "crop_yield_units_other", the main item would be "crop_yield_units"}
+\item{main_item}{The primary item that you want to merge.
+In "crop_yield_units" and "crop_yield_units_other",
+the main item would be "crop_yield_units"}
 
-\item{categories_to_merge}{A named list of the categories which go together, please see example}
+\item{categories_to_merge}{A named list of the categories
+which go together, please see example}
 }
 \value{
 
 }
 \description{
-When extracting new values from the RHoMIS dataset, some variables appear in multiple columns.
-For example with units, we can have "crop_yield_units" and "crop_yield_units_other". These are all crop_yield units
-and we would like to ensure they are aggregated appropriately.
+When extracting new values from the
+RHoMIS dataset, some variables appear
+in multiple columns. For example with
+units, we can have "crop_yield_units"
+and "crop_yield_units_other". These are
+all crop_yield units and we would like
+to ensure they are aggregated appropriately.
 }
 \details{
-This is heavily linked to the "extract_new_core_units" function.
+This is heavily linked to the "extract_new_core_units"
+function.
 }
 \examples{
 

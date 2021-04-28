@@ -1,11 +1,12 @@
-#' This script includes a series of functions which can be used to help clean
-#' column names of data collected with RHoMIS.
-
+#' This script includes a series of functions which can be
+#' used to help clean column names of data collected with RHoMIS.
 #---------------------------------------------------------------------------------------------------
 #' Shorten Individual Name
 #'
-#' Used to abbreviate a single column name based on its last value. Typical RHoMIS column names come
-#' in the for "xxxx/xxxxx/xxxxx/important_name". This function helps to extract only the final value
+#' Used to abbreviate a single column name
+#' based on its last value. Typical RHoMIS
+#' column names come in the form "xxxx/xxxxx/xxxxx/important_name".
+#' This function helps to extract only the final value
 #' "important name".
 #'
 #' @param column_name The specific item which needs shortening
@@ -27,8 +28,11 @@ shorten_individual_column_name <- function(column_name, seperator){
 #---------------------------------------------------------------------------------------------------
 #' Shorten Multiple Column Names
 #'
-#' Used to abbreviate multiple column names based on their last values. Typical RHoMIS column names come
-#' in the for "xxxx/xxxxx/xxxxx/important_name". This function helps to extract only the final value
+#' Used to abbreviate multiple column
+#' names based on their last values.
+#' Typical RHoMIS column names come
+#' in the for "xxxx/xxxxx/xxxxx/important_name".
+#' This function helps to extract only the final value
 #' "important name". It will do this for multiple column names
 #'
 #' @param long_names The list of column names which need to be shortened
@@ -54,7 +58,8 @@ shorten_multiple_column_names <- function(long_names, seperator){
 #---------------------------------------------------------------------------------------------------
 #' Modify Loop Name
 #'
-#' Many of the variables in RHoMIS are collected through a looping structure
+#' Many of the variables in RHoMIS are
+#' collected through a looping structure
 #'
 #' @param column_name The individual column name to be changed
 #' @param loop_type What is the loop type e.g. "crop"
@@ -92,13 +97,27 @@ modify_loop_name <- function(column_name, loop_type){
 #'
 #' A function to modify column names for RHoMIS loops
 #'
-#' The RHoMIS survey is structured using a series of important loops. These are often labelled "xxxx/crop_repeat[1]/crop_name", "xxxx/crop_repeat[2]/crop_name", "xxxx/crop_repeat[3]/crop_name"...
+#' The RHoMIS survey is structured using a
+#' series of important loops. These are often
+#' labelled:
+#' "xxxx/crop_repeat[1]/crop_name",
+#' "xxxx/crop_repeat[2]/crop_name",
+#' "xxxx/crop_repeat[3]/crop_name"...
 #'
-#' This function aims to modify those into a more user-friendly format "crop_name_1", "crop_name_2",
+#' This function aims to modify those into a more
+#' user-friendly format:
+#' "crop_name_1",
+#' "crop_name_2",
 #' "crop_name_3" ...
 #'
-#' @param column_names A list of the column names which need to be shortened. This would generally be all of the column names of the RHoMIS dataset.
-#' @param loop_type What loop_type of loop is concerned, this could include options such as "crop_repeat", "livestock_repeat", "offfarm_income_repeat". It is very important that this "type" matches the pattern in the original column names
+#' @param column_names A list of the column names which
+#' need to be shortened. This would generally be all of
+#' the column names of the RHoMIS dataset.
+#' @param loop_type What loop_type of loop is concerned,
+#' this could include options such as
+#' "crop_repeat", "livestock_repeat", "offfarm_income_repeat".
+#' It is very important that this "type" matches the pattern
+#' in the original column names
 #'
 #' @return A list of column names which need to be modified
 #' @export
@@ -124,12 +143,16 @@ modify_loop_column_names <- function(column_names, loop_type) {
 #---------------------------------------------------------------------------------------------------
 #' Modify all types of loop in RHoMIS
 #'
-#' The RHoMIS survey is structured using a series of important loops. These are often labelled "crop_repeat[x]".
-#' It is important to be modify all of these loops to have a simpler column name format for later analysis
+#' The RHoMIS survey is structured using
+#' a series of important loops. These are
+#' often labelled "crop_repeat[x]". It is
+#' important to be modify all of these loops
+#' to have a simpler column name format for later analysis
 #'
 #'
 #' @param column_names A list of all of the column names which
-#' @param repeat_columns A list of all of the types of repeat column which need to be changed
+#' @param repeat_columns A list of all of the types
+#' of repeat column which need to be changed
 #'
 #' @return
 #' @export
@@ -162,11 +185,14 @@ modify_all_loop_column_names <- function(column_names, repeat_columns){
 
 #' Clean Column Names
 #'
-#' A single functions to shorten and clean all RHoMIS column names.
+#' A single functions to shorten and
+#' clean all RHoMIS column names.
 #'
 #' @param column_names A list of all of the column names
-#' @param seperator The seperator which seperates all of the parts of the column names
-#' @param repeat_columns A list of all of the repeat loops contained in the RHoMIS dataset
+#' @param seperator The seperator which seperates all of
+#' the parts of the column names
+#' @param repeat_columns A list of all of the repeat
+#' loops contained in the RHoMIS dataset
 #'
 #' @return A cleaned list of all of the column names
 #' @export
