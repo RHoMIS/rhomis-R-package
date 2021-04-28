@@ -7,13 +7,18 @@
 extract_new_core_units(data)
 }
 \arguments{
-\item{data}{The RHoMIS core dataset for which we are hoping to extract the new values}
+\item{data}{The RHoMIS core dataset for
+which we are hoping to extract the new values}
 }
 \value{
-A nested list of all of the unique values for core RHoMIS values
+A nested list of all of the unique
+values for core RHoMIS values
 }
 \description{
-A function to extract the new values from a core RHoMIS survey. Note that this function will not work on any dataset which has modified the core questions
+A function to extract the new values from a core
+RHoMIS survey. Note that this function will not
+work on any dataset which has modified the core
+questions.
 }
 \examples{
 

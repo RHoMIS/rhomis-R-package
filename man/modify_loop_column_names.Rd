@@ -7,9 +7,15 @@
 modify_loop_column_names(column_names, loop_type)
 }
 \arguments{
-\item{column_names}{A list of the column names which need to be shortened. This would generally be all of the column names of the RHoMIS dataset.}
+\item{column_names}{A list of the column names which
+need to be shortened. This would generally be all of
+the column names of the RHoMIS dataset.}
 
-\item{loop_type}{What loop_type of loop is concerned, this could include options such as "crop_repeat", "livestock_repeat", "offfarm_income_repeat". It is very important that this "type" matches the pattern in the original column names}
+\item{loop_type}{What loop_type of loop is concerned,
+this could include options such as
+"crop_repeat", "livestock_repeat", "offfarm_income_repeat".
+It is very important that this "type" matches the pattern
+in the original column names}
 }
 \value{
 A list of column names which need to be modified
@@ -18,9 +24,17 @@ A list of column names which need to be modified
 A function to modify column names for RHoMIS loops
 }
 \details{
-The RHoMIS survey is structured using a series of important loops. These are often labelled "xxxx/crop_repeat[1]/crop_name", "xxxx/crop_repeat[2]/crop_name", "xxxx/crop_repeat[3]/crop_name"...
+The RHoMIS survey is structured using a
+series of important loops. These are often
+labelled:
+"xxxx/crop_repeat[1]/crop_name",
+"xxxx/crop_repeat[2]/crop_name",
+"xxxx/crop_repeat[3]/crop_name"...
 
-This function aims to modify those into a more user-friendly format "crop_name_1", "crop_name_2",
+This function aims to modify those into a more
+user-friendly format:
+"crop_name_1",
+"crop_name_2",
 "crop_name_3" ...
 }
 \examples{

@@ -32,11 +32,20 @@ find_unique_values <- function(data){
 #'
 #' A function for extracting any new values from a survey
 #'
-#' @param data The whole data-set from which the units are to be extracted from
-#' @param loop_or_individual_column Options are: "loop", "column". Specifying whether you want to extract new values from a loop or a column.
-#' @param column_pattern The pattern which is used to identify the columns. For example if trying to extract new crop names, these come in the form "crop_name_1", "crop_name_2", "crop_name_3". The pattern here would be "crop_name"
-#' @param number_of_loops If loop_or_individual_column=="loop", then here we specify how many loops to search for.
-#' @param column_name If loop_or_individual_column=="column", then here we specify which column to search for
+#' @param data The whole data-set from which the units are to
+#' be extracted from
+#' @param loop_or_individual_column Options are: "loop", "column".
+#' Specifying whether you want to extract new
+#' values from a loop or a column.
+#' @param column_pattern The pattern which is used to
+#' identify the columns. For example if trying to
+#' extract new crop names, these come in the
+#' form "crop_name_1", "crop_name_2", "crop_name_3".
+#' The pattern here would be "crop_name"
+#' @param number_of_loops If loop_or_individual_column=="loop",
+#' then here we specify how many loops to search for.
+#' @param column_name If loop_or_individual_column=="column",
+#' then here we specify which column to search for
 #'
 #' @return A list of the individual values for that value (excluding NA values)
 #' @export
@@ -105,11 +114,15 @@ find_loop_number_and_extract_values <- function(data, column_pattern){
 
 #' Extract New Core Units
 #'
-#' A function to extract the new values from a core RHoMIS survey. Note that this function will not work on any dataset which has modified the core questions
+#' A function to extract the new values from a core
+#' RHoMIS survey. Note that this function will not
+#' work on any dataset which has modified the core
+#' questions.
 #'
-#' @param data The RHoMIS core dataset for which we are hoping to extract the new values
-#'
-#' @return A nested list of all of the unique values for core RHoMIS values
+#' @param data The RHoMIS core dataset for
+#' which we are hoping to extract the new values
+#' @return A nested list of all of the unique
+#' values for core RHoMIS values
 #' @export
 #'
 #' @examples
@@ -238,16 +251,25 @@ extract_new_core_units <- function(data)
 
 #' Merge and Simplify Core Values
 #'
-#' When extracting new values from the RHoMIS dataset, some variables appear in multiple columns.
-#' For example with units, we can have "crop_yield_units" and "crop_yield_units_other". These are all crop_yield units
-#' and we would like to ensure they are aggregated appropriately.
+#' When extracting new values from the
+#' RHoMIS dataset, some variables appear
+#' in multiple columns. For example with
+#' units, we can have "crop_yield_units"
+#' and "crop_yield_units_other". These are
+#' all crop_yield units and we would like
+#' to ensure they are aggregated appropriately.
 #'
-#' This is heavily linked to the "extract_new_core_units" function.
+#' This is heavily linked to the "extract_new_core_units"
+#' function.
 #'
 #'
-#' @param list_of_unique_core_values A nested list of new values from a RHoMIS survey
-#' @param main_item The primary item that you want to merge. In "crop_yield_units" and "crop_yield_units_other", the main item would be "crop_yield_units"
-#' @param categories_to_merge A named list of the categories which go together, please see example
+#' @param list_of_unique_core_values A nested list of new values
+#' from a RHoMIS survey
+#' @param main_item The primary item that you want to merge.
+#' In "crop_yield_units" and "crop_yield_units_other",
+#' the main item would be "crop_yield_units"
+#' @param categories_to_merge A named list of the categories
+#' which go together, please see example
 #'
 #' @return
 #' @export
@@ -303,11 +325,16 @@ merge_and_simplify_core_values <- function(list_of_unique_core_values, main_item
 
 #' Write Core Values to File
 #'
-#' This function extracts all of the new units and names in a RHoMIS survey and writes them to a folder
-#' You can select the folder that you would like to write all of the files to.
+#' This function extracts all of the new units and
+#' names in a RHoMIS survey and writes them to a folder
+#' You can select the folder that you would like
+#' to write all of the files to.
 #'
-#' @param data The data for which you want to extract all of the new files.
-#' @param folder The folder where you want to store all of the values you need to convert. Make sure the folder is correct and does not end in "/"
+#' @param data The data for which you want to
+#' extract all of the new files.
+#' @param folder The folder where you want to
+#' store all of the values you need to convert.
+#' Make sure the folder is correct and does not end in "/"
 #'
 #' @return
 #' @export
@@ -371,9 +398,12 @@ write_core_values_to_convert_to_file <- function(data, folder){
 
 #' Convert New Values to Tibble
 #'
-#' The output of the "extract_new_core_units" function is a list of lists. With the names of the lists
-#' are the variables to be converted and the lists contain all of the new values.
-#' This function converts all of these lists into tibbles. With a new column which has to be filled
+#' The output of the "extract_new_core_units" function
+#' is a list of lists. With the names of the lists
+#' are the variables to be converted and the lists
+#' contain all of the new values.
+#' This function converts all of these lists into tibbles.
+#' With a new column which has to be filled
 #' in by the user
 #'
 #' @param new_values A list of lists containing the values to convert
@@ -402,9 +432,15 @@ convert_new_values_to_tibble <- function(new_values){
 
 #' Write units tibble to csv
 #'
-#' @param specific_value Which attribute are you hoping to write to csv (e.g. "crop_yield_units")
-#' @param list_of_tibbles What are all of the units which you have extracted from the RHoMIS project. See function "extract_new_core_units"
-#' @param folder What is the folder you hope to write this to. Do not include "/" at the end of the file path
+#' Write the specific tibble to a csv.
+#'
+#' @param specific_value Which attribute are you
+#' hoping to write to csv (e.g. "crop_yield_units")
+#' @param list_of_tibbles What are all of the units
+#' which you have extracted from the RHoMIS project.
+#' See function "extract_new_core_units"
+#' @param folder What is the folder you hope to write this to.
+#' Do not include "/" at the end of the file path
 #'
 #' @return No return
 #' @export

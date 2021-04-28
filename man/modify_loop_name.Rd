@@ -15,7 +15,8 @@ modify_loop_name(column_name, loop_type)
 Returns a single item for the new column name
 }
 \description{
-Many of the variables in RHoMIS are collected through a looping structure
+Many of the variables in RHoMIS are
+collected through a looping structure
 }
 \examples{
 
