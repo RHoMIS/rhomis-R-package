@@ -130,3 +130,13 @@ test_that("Can correctly merge categories for new unique values", {
     expect_equal(actual_result,expected_result)
 })
 
+test_that("Test that new values can be correctly converted to tibble",{
+    new_values <- c("egg1","egg2","egg3" )
+    expected_result <- as_tibble(list("survey_value"=c("egg1","egg2","egg3" ), "conversion"=c(NA,NA,NA)))
+
+    actual_result <- convert_new_values_to_tibble(new_values)
+    expect_equal(actual_result,expected_result)
+})
+
+
+

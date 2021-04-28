@@ -16,3 +16,5 @@ Initial package for RHoMIS 2.0. Main steps should be:
 * Test Package:    `Ctrl + Shift + T`
 
 Run the command `devtools::test()` in the console to run all tests. `devtools::document()` to rebuild documentation. `devtools::check()` will run a CRAN check on the package, this is the same check that is implemented on `git push` and for any pull requests.
+
+An anonymised sample RHoMIS dataset (in its raw form) has been included in the folder `inst/extdata`. A sample script demonstrating how the package can be used has been included in the folder `inst/scripts`.
