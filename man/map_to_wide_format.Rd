@@ -4,20 +4,39 @@
 \alias{map_to_wide_format}
 \title{Map To Wide Format}
 \usage{
-map_to_wide_format(data, name_column, number_of_loops, column_prefixes)
+map_to_wide_format(data, name_column, column_prefixes, types)
 }
 \arguments{
 \item{data}{The original dataframe containing the data to be reformatted}
 
 \item{name_column}{The name column (e.g. crop_name_1)}
 
-\item{number_of_loops}{The number of loops for this particular parameter}
+\item{column_prefixes}{The columns which need to be converted to the correct format}
 
-\item{other_column_prefixes}{The other columns which need to be exported to a wider named format}
+\item{types}{The data types for each of these columns "chr" for character,
+"num" for numeric, "int" for interger, and "fct" for factor.}
 }
 \value{
 a list of data frames for each of the variables
 }
 \description{
 A function to convert RHoMIS loops into a wider named format
+}
+\examples{
+
+name_column <- "crop_name"
+column_prefixes <- c("crop_variable", "crop_unit", "crop_price")
+types <- c("chr", "chr", "chr")
+
+data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+                       crop_name_2=c("cassava",NA, "melon", "maize"),
+                       random_crop_name_2=c("blue", "green",  "red",NA),
+                       crop_name=c("orange", "purple", NA, "black"),
+                       crop_variable_1=c("ex1","ex2",NA,NA),
+                       crop_variable_2=c("ex3",NA,"ex4","ex5"),
+                       crop_unit_1=c("unit1","unit2","unit3",NA),
+                       crop_unit_2=c(NA,NA,"unit4","unit5"),
+                       crop_price_1=c(NA,NA,NA,NA),
+                       crop_price_2=c(NA,NA,NA,NA)))
+map_to_wide_format(data, name_column, column_prefixes, types)
 }
