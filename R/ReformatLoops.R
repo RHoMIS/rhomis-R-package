@@ -38,7 +38,6 @@ find_number_of_loops <- function(data,name_column){
 #'
 #' @param data The data-frame containing the loops of concern
 #' @param name_column The original name of the loop (e.g. "crop_name")
-#' @param number_of_loops The number of loops for the variable of concern
 #'
 #' @return A list of all of the unique entries for the name column
 #' @export
@@ -55,8 +54,7 @@ find_number_of_loops <- function(data,name_column){
 
 find_unique_case <- function(data, name_column){
 
-    number_of_loops <- find_number_of_loops(data,name_column)
-
+    number_of_loops <- find_number_of_loops(data, name_column)
     name_columns <- data[,paste0(name_column,"_",1:number_of_loops)]
 
     # Finding all of the unique values
@@ -65,6 +63,10 @@ find_unique_case <- function(data, name_column){
     all_values <- all_values[!is.na(all_values)]
     # Finding unique values from all the columns
     unique_values <- unique(all_values)
+    if (length(unique_values)==0)
+    {
+        unique_values <- c("none")
+    }
     return(unique_values)
 }
 
@@ -95,17 +97,12 @@ find_unique_case <- function(data, name_column){
 #'                        crop_variable_1=c("ex1","ex2",NA,NA),
 #'                        crop_variable_2=c("ex3",NA,"ex4","ex5")))
 #' number_of_loops <- find_number_of_loops(data,name_column)
-#' loop_to_column_conversion(data, name_column, variable_to_convert)
+#' loop_to_column_conversion(data, name_column, variable_to_convert, type = "chr")
 #'
 loop_to_column_conversion <- function(data, name_column, variable_to_convert, type){
-    # name_column <- "offfarm_income_name"
-    # variable_to_convert <-"offfarm_month"
-    # number_of_loops<- 6
-    # unique_names <- find_unique_case(data=data, name_column=name_column, number_of_loops=number_of_loops)
-
 
     unique_names <- find_unique_case(data, name_column)
-
+    number_of_loops <- find_number_of_loops(data, name_column)
     # Obtaining a table of the loop values
     value_table <- data[,paste0(variable_to_convert,"_",1:number_of_loops)]
     value_table$indexValues <- row.names(value_table)
@@ -127,6 +124,9 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
     # Converting the long table to wide format
     merged_table$index <- merged_table$indexNames
     merged_table <- merged_table[,c("index", "name", "value")]
+    if(all(is.na(merged_table$name))){
+        merged_table$name <- "none"
+    }
     merged_table<- merged_table[!duplicated(merged_table[,c("index", "name")]),]
     merged_table <- merged_table %>%  group_by(index) %>% pivot_wider(id_cols = index,names_from = name, values_from = value)
     if(!all(merged_table$index==row.names(merged_table))){
@@ -160,50 +160,62 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
 #' A function to convert RHoMIS loops into a wider named format
 #'
 #' @param data The original dataframe containing the data to be reformatted
+#' @param column_prefixes The columns which need to be converted to the correct format
+#' @param types The data types for each of these columns "chr" for character,
+#' "num" for numeric, "int" for interger, and "fct" for factor.
 #' @param name_column The name column (e.g. crop_name_1)
-#' @param number_of_loops The number of loops for this particular parameter
-#' @param other_column_prefixes The other columns which need to be exported to a wider named format
 #'
 #' @return a list of data frames for each of the variables
 #' @export
 #'
 #' @examples
-map_to_wide_format <- function(data, name_column, number_of_loops, column_prefixes) {
+#'
+#' name_column <- "crop_name"
+#' column_prefixes <- c("crop_variable", "crop_unit", "crop_price")
+#' types <- c("chr", "chr", "chr")
+#'
+#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#'                        crop_name_2=c("cassava",NA, "melon", "maize"),
+#'                        random_crop_name_2=c("blue", "green",  "red",NA),
+#'                        crop_name=c("orange", "purple", NA, "black"),
+#'                        crop_variable_1=c("ex1","ex2",NA,NA),
+#'                        crop_variable_2=c("ex3",NA,"ex4","ex5"),
+#'                        crop_unit_1=c("unit1","unit2","unit3",NA),
+#'                        crop_unit_2=c(NA,NA,"unit4","unit5"),
+#'                        crop_price_1=c(NA,NA,NA,NA),
+#'                        crop_price_2=c(NA,NA,NA,NA)))
+#' map_to_wide_format(data, name_column, column_prefixes, types)
+map_to_wide_format <- function(data, name_column, column_prefixes, types) {
 
-    # data<-dat_all
-    # name_column <-"offfarm_income_name"
-    # number_of_loops <- number_of_loops
-    # column_prefixes <- column_prefixes
-
-    unique_names <- find_unique_case(data=data, name_column=name_column, number_of_loops=number_of_loops)
-    if (length(unique_names)==1)
-    {
-        unique_names[unique_names=="NA"]<-NA
-        if (is.na(unique_names))
-        {
-            data[1:nrow(data),paste0(name_column,"_",1:number_of_loops)]<-"none"
-        }
-    }
-
-
-    reformatted_variables <- lapply(column_prefixes, function(x)
+    reformatted_variables <- lapply(c(1:length(column_prefixes)), function(x)
         loop_to_column_conversion(data = data,
                                   name_column = name_column,
-                                  variable_to_convert=x,
-                                  number_of_loops = number_of_loops,
-                                  unique_names = unique_names ))
+                                  variable_to_convert=column_prefixes[x],
+                                  type=types[x]))
     names(reformatted_variables)<-column_prefixes
-
-
-
 
     return (reformatted_variables)
 }
 
+#-----------------------------------------
+### Gender Splits for the data
 
-### Gender Splits for the dats
-
+#' Proportion or NA
+#'
+#' For a particular gender control item, e.g. "female_adult male_adult" this function
+#' works out whether to return NA or a proportion. In this case the proportion controlled
+#' by each person would be 0.5
+#'
+#' @param item A list of the people controlling a particular resource
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' item <- c("male_adult", "female_adult")
+#' prop_or_na(item) #should return 0.5
 prop_or_na <- function(item){
+
     if(length(item)==1)
     {
         if(is.na(item)){
@@ -214,10 +226,26 @@ prop_or_na <- function(item){
 
 }
 
-number_controlling_resource <- function(item){
-
-    #item <-offFarmLoopReformatted$offfarm_who_control_revenue$otherfarms
-
+#' Number Controlling Resource
+#'
+#' For the RHoMIS gender columns, we ask who in the household collects each resource.
+#' This function is designed to be applied to each item (spicific row for specific column)
+#'
+#'
+#' @param item The specific string, for which we want to count the
+#' number controlling the resource
+#'
+#' @return A proportion (0-1) for the people controlling resource
+#' @export
+#'
+#' @examples
+#'
+#' column <- c("male_adult female_adult","male_adult",NA,"female_youth")
+#' proportion_control_per_person(column)
+#'
+# item <- c("male_adult female_adult")
+# proportion_control_per_person(item)
+proportion_control_per_person <- function(item){
 
     item <- strsplit(item, " ")
     # Avoiding Duplicates
@@ -227,71 +255,102 @@ number_controlling_resource <- function(item){
     return(item)
 }
 
+#' Check Value is in List
+#'
+#' In the case of the gender calculations, this function can check whether
+#' a particular gender category is found in a string.
+#'
+#' @param item A list of gender control strings (see example)
+#' @param category The category you are trying to identify
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#' item <- c("male_adult female_adult","male_adult",NA,"female_youth")
+#' category <- "female_youth"
+#' check_val_in_list(item, category)
+#'
+#' item <- c("male_adult female_adult","male_adult",NA,"female_youth")
+#' category <- "male_adult"
+#' check_val_in_list(item, category)
+
 check_val_in_list <- function(item, category){
-    # "female_youth",
-    # "female_adult",
-    # "male_youth",
-    # "male_adult"
-    #category <- "male_adult"
-    #item <- genderdf$otherfarms
     item <- strsplit(item, " ")
     item <-  unlist(lapply(item, function(x) category %in% x))
     as.numeric(item)
 
     return (as.numeric(item))
-
 }
 
+#' Gender Control Props
+#'
+#' Finds the gender control score for a single category (e.g. "male_adult").
+#' See example
+#'
+#' @param genderdf A data frame of gender control strings in the wide format
+#' @param numberControllingDF A dataframe indicating the proportion of a resource
+#' to be divided up between household members
+#' @param category Which category we want to use to calculate the gender control
+#' scores (e.g. "male_adult")
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#'
+#' # A dataset in the conventional RHoMIS format
+#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#'                            crop_name_2=c("cassava",NA, "melon", "maize"),
+#'                            random_crop_name_2=c("blue", "green",  "red",NA),
+#'                            crop_name=c("orange", "purple", NA, "black"),
+#'                            crop_control_1=c("male_adult female_adult","male_adult",NA,"female_youth"),
+#'                            crop_control_2=c("male_youth",NA,"female_youth","female_adult")))
+#' # Converting the dataset to the wide format (i.e crops as header, and genders controlling for each crop)
+#' wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
+#' genderdf <- wide_data$crop_control
+#'
+#' numberControllingDF <- genderdf %>% mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
+#' category <- "male_adult"
+#' gender_control_props(genderdf, numberControllingDF, category)
+#'
+#'
 gender_control_props <- function(genderdf,numberControllingDF, category){
-    #category <- "female_adult"
-    #numberControllingDF
-
-    # genderdf<-genderdf
-    # numberControllingDF<-numberPeopleControlling
-    # category<-"male_adult"
     value <- genderdf %>% mutate(across(.cols=everything(),~check_val_in_list(item=.x, category=category)))
     return (as_tibble(value*numberControllingDF))
 }
 
 
+#' Split Gender Data
+#'
+#' For much of the RHoMIS data
+#'
+#' @param genderdf A dataframe of gendered control produced by the "map_to_wide_format" (see example)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#'                        crop_name_2=c("cassava",NA, "melon", "maize"),
+#'                        random_crop_name_2=c("blue", "green",  "red",NA),
+#'                        crop_name=c("orange", "purple", NA, "black"),
+#'                        crop_control_1=c("male_adult female_adult","male_adult",NA,"female_youth"),
+#'                        crop_control_2=c("male_youth",NA,"female_youth","female_adult")))
+#' wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
+#' gender_data <- wide_data$crop_control
+#' split_gender_data(gender_data)
 split_gender_data <- function(genderdf){
-    #genderdf <- offFarmLoopReformatted$offfarm_who_control_revenue
     categories <- c("female_youth",
                     "female_adult",
                     "male_youth",
                     "male_adult")
-    #genderdf <- offFarmLoopReformatted$offfarm_who_control_revenue
-    numberPeopleControlling <- genderdf %>% mutate(across(.cols=everything(),~number_controlling_resource(.x)))
+
+    numberPeopleControlling <- genderdf %>% mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
 
     genderControlDFs <- lapply(categories, function(x) gender_control_props(genderdf=genderdf,numberControllingDF=numberPeopleControlling, category=x))
     names(genderControlDFs)<-categories
     return(genderControlDFs)
-
-
 }
 
-
-# number_of_loops<-length(grep("offfarm_income_name_", colnames(dat_all)))
-# column_prefixes <- c(
-#     "offfarm_income_name",
-#     # "offfarm_label",
-#     "offfarm_year_round",
-#     "offfarm_month",
-#     "offfarm_who_control_revenue"
-# )
-#
-#
-#
-#
-# offFarmLoopReformatted <- map_to_wide_format(data=dat_all,
-#                                           name_column ="offfarm_income_name",
-#                                           number_of_loops = number_of_loops,
-#                                           column_prefixes = column_prefixes)
-#
-# offFarmLoopReformatted$offfarm_who_control_revenue
-#
-#
-#
-# offFarmGenders <- split_gender_data(genderdf = offFarmLoopReformatted$offfarm_who_control_revenue)
-#
-#

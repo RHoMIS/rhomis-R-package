@@ -4,13 +4,7 @@
 \alias{loop_to_column_conversion}
 \title{Item Number to Column Row Conversion}
 \usage{
-loop_to_column_conversion(
-  data,
-  name_column,
-  variable_to_convert,
-  number_of_loops,
-  unique_names
-)
+loop_to_column_conversion(data, name_column, variable_to_convert, type)
 }
 \arguments{
 \item{data}{The data containing the loops you need to convert}
@@ -18,11 +12,28 @@ loop_to_column_conversion(
 \item{name_column}{The column containing the variable which will eventually
 column header (see example)}
 
-\item{unique_names}{}
+\item{variable_to_convert}{What is the variable you would like to link to the name column}
+
+\item{type}{What is the type of variable you are expecting? "chr" for character,
+"num" for numeric, "int" for interger, and "fct" for factor.}
 }
 \value{
 
 }
 \description{
 Converting from loop to a format that is easy to analyze.
+}
+\examples{
+
+name_column <- "crop_name"
+variable_to_convert <- "crop_variable"
+data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+                       crop_name_2=c("cassava",NA, "melon", "maize"),
+                       random_crop_name_2=c("blue", "green",  "red",NA),
+                       crop_name=c("orange", "purple", NA, "black"),
+                       crop_variable_1=c("ex1","ex2",NA,NA),
+                       crop_variable_2=c("ex3",NA,"ex4","ex5")))
+number_of_loops <- find_number_of_loops(data,name_column)
+loop_to_column_conversion(data, name_column, variable_to_convert, type = "chr")
+
 }

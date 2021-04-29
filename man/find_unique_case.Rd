@@ -10,8 +10,6 @@ find_unique_case(data, name_column)
 \item{data}{The data-frame containing the loops of concern}
 
 \item{name_column}{The original name of the loop (e.g. "crop_name")}
-
-\item{number_of_loops}{The number of loops for the variable of concern}
 }
 \value{
 A list of all of the unique entries for the name column
