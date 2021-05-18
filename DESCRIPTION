@@ -13,5 +13,7 @@ Suggests:
     testthat (>= 3.0.0)
 Depends:
     tidyverse,
-    httr
+    httr,
+    mongolite,
+    jsonlite,
 Config/testthat/edition: 3

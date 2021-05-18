@@ -5,13 +5,16 @@ project_path <-"projects/VN_TST_2020/"
 
 rhomis_data <- read_csv(paste0(root_path,project_path,"data/raw_data.csv"), na=c("","NA","n/a"))
 
-
-
+# Cleaning the column names into a more useable format
 colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), seperator="/", repeat_columns=c("crop_repeat", "livestock_repeat", "offfarm_income_repeat", "hh_rep"))
 
-
 # Manual intervention needed here to convert the values
+# Write all of the core values to a file here
 write_core_values_to_convert_to_file(rhomis_data, folder=paste0(root_path,project_path,"/cleaning"))
+
+# A list of all of the
+extract_units_data_frames(rhomis_data)
+
 
 crop_name_column <- "crop_name"
 crop_loop_columns <- c("crop_intercrop",
@@ -185,4 +188,14 @@ off_farm_details_wide <- map_to_wide_format(rhomis_data,
 
 #' Have also written functions to further reformat these based on gender,
 #' need to implement them in this example-script
+
+
+
+# Connecting to a MongoDB
+
+# Will only work if you creat a rhomis database called "units
+mongodb <- connect_to_db(database="rhomis", url="mongodb://localhost")
+
+
+
 

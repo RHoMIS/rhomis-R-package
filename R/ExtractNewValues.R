@@ -110,8 +110,6 @@ find_loop_number_and_extract_values <- function(data, column_pattern){
 
 
 
-
-
 #' Extract New Core Units
 #'
 #' A function to extract the new values from a core
@@ -388,12 +386,24 @@ merge_and_simplify_core_values <- function(list_of_unique_core_values, main_item
 #'
 write_core_values_to_convert_to_file <- function(data, folder){
 
-
-
-    new_units <- extract_new_core_units(data)
-
-    new_units<- sapply(new_units, function(x) convert_new_values_to_tibble(x),simplify = FALSE)
+    new_units <- extract_units_data_frames(data)
     sapply(names(new_units), function(x) write_new_values_to_file(specific_value=x,list_of_tibbles=new_units, folder=folder),simplify = FALSE)
+}
+
+#' Extract Units to DataFrame
+#'
+#' @param data The core RHoMIS dataset which we are extracting units from
+#'
+#' @return A list of data frames
+#' @export
+#'
+#' @examples
+extract_units_data_frames <- function(data){
+    new_units <- extract_new_core_units(data)
+    new_units<- sapply(new_units, function(x) convert_new_values_to_tibble(x),simplify = FALSE)
+
+    return(new_units)
+
 }
 
 #' Convert New Values to Tibble
@@ -458,6 +468,8 @@ convert_new_values_to_tibble <- function(new_values){
 #' #write_new_values_to_file(specific_value,list_of_tibbles,folder)
 #'
 write_new_values_to_file <- function(specific_value,list_of_tibbles, folder){
+
+
     data <- list_of_tibbles[[specific_value]]
     write_csv(data,paste0(folder,"/",specific_value,".csv"))
 
