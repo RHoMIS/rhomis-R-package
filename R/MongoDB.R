@@ -96,9 +96,6 @@ count_collection <- function(collection,database="rhomis", url="mongodb://localh
 #' @examples
 write_new_collection <- function(data_to_write, collection,database="rhomis", url="mongodb://localhost"){
 
-    collection <- "new_db"
-    database <- "rhomis"
-    url<-"mongodb://localhost"
 
     previous_data <- find_collection(collection,database,url)
     if (nrow(previous_data)>0)
@@ -110,11 +107,25 @@ write_new_collection <- function(data_to_write, collection,database="rhomis", ur
 
     # Insert the data frame
     connection$insert(data_to_write)
+    print("Success in creating new table")
 }
 
 
 update_collection <- function(data_to_write, collection,database="rhomis", url="mongodb://localhost")
 {
+
+
+    previous_data <- find_collection(collection,database,url)
+    if (nrow(previous_data)==0)
+    {
+        stop(paste0("Collection '",collection,"'does not exist yet"))
+    }
+
+    connection <- connect_to_db(collection,database,url)
+
+    # Insert the data frame
+    connection$insert(data_to_write)
+    print("Success in updating table")
 
 }
 
