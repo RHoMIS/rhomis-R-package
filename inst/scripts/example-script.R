@@ -3,6 +3,12 @@ library(rhomis)
 root_path <- "inst/extdata/"
 project_path <-"projects/VN_TST_2020/"
 
+COUNTRY <- VN
+PROJECT_CODE <- TST
+YEAR <- 2020
+ITERATION <- 1
+
+
 rhomis_data <- read_csv(paste0(root_path,project_path,"data/raw_data.csv"), na=c("","NA","n/a"))
 
 # Cleaning the column names into a more useable format
