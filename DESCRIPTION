@@ -16,4 +16,6 @@ Depends:
     httr,
     mongolite,
     jsonlite,
+    roxygen2,
+    R (>= 2.10)
 Config/testthat/edition: 3

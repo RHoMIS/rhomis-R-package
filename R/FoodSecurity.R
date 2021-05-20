@@ -1,7 +1,7 @@
 
 #' FIES score
 #'
-#' @param data The datase containing all of the RHoMIS data (or just the FIES information)
+#' @param data The data set containing all of the RHoMIS data (or just the FIES information)
 #'
 #' @return
 #' @export
@@ -102,4 +102,6 @@ food_security_calculations <- function(data){
         return(data_to_return)
     }
 }
+
+
 
