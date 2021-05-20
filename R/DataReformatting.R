@@ -1,6 +1,9 @@
 library(tidyverse)
 
-#' Split
+#' Split string to dummy columns
+#'
+#' Many RHoMIS columns come in the format c("cropA cropB cropC", "cropD cropA").
+#' This function helps split these into more interperatable dummy columns
 #'
 #' @param x A vector which needs to be split
 #' @param seperator The separating character
@@ -28,4 +31,14 @@ create_nested_lest <- function (longer_list, shorter_list)
     temp_list <- longer_list %in% shorter_list
     names(temp_list) <- longer_list
     return(temp_list)
+}
+
+add_info_after_loop_columns <- function(data, column)
+{
+
+}
+
+add_info_after_columns <- function(data, column)
+{
+
 }
