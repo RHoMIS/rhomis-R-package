@@ -1,4 +1,4 @@
-library(tidyverse)
+library(tibble)
 
 #' Split string to dummy columns
 #'
@@ -21,7 +21,7 @@ split_string_categories_to_dummy <- function(x, seperator)
                                                   fixed = T)))
     boolean_nested_list <- lapply(split, function(x) create_nested_lest(longer_list = all_potential_value,
                                                                         shorter_list = x))
-    df_to_return <- as_tibble(do.call(rbind, boolean_nested_list),
+    df_to_return <- tibble::as_tibble(do.call(rbind, boolean_nested_list),
                               check.names = F)
     return(df_to_return)
 }
@@ -33,12 +33,3 @@ create_nested_lest <- function (longer_list, shorter_list)
     return(temp_list)
 }
 
-add_info_after_loop_columns <- function(data, column)
-{
-
-}
-
-add_info_after_columns <- function(data, column)
-{
-
-}

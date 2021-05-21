@@ -24,7 +24,7 @@ in by the user
 \examples{
 
 new_values <- c("egg1","egg2","egg3" )
-expected_result <- as_tibble(list("survey_value"=c("egg1","egg2","egg3" ), "conversion"=c(NA,NA,NA)))
+expected_result <- tibble::as_tibble(list("survey_value"=c("egg1","egg2","egg3" ), "conversion"=c(NA,NA,NA)))
 
 actual_result <- convert_new_values_to_tibble(new_values)
 

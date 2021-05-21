@@ -1,4 +1,5 @@
-library(tidyverse)
+library(tibble)
+library(readr)
 
 
 
@@ -12,7 +13,7 @@ library(tidyverse)
 #' @export
 #'
 #' @examples
-#' data <- tibble(crop_name_1=c("maize","cassava","millet"),
+#' data <- tibble::tibble(crop_name_1=c("maize","cassava","millet"),
 #' crop_name_2=c("potato",NA,"cucumber"))
 #' # Expect the result c("maize", "cassava", "millet","potato", "cucumber")
 find_unique_values <- function(data){
@@ -55,7 +56,7 @@ find_unique_values <- function(data){
 #' # Example code for a crop loop
 #' column_pattern <- "crop_name"
 #' number_of_loops <- 2
-#' data <- tibble(crop_name_1=c("maize","cassava","millet"),
+#' data <- tibble::tibble(crop_name_1=c("maize","cassava","millet"),
 #'                random_columns=c("maize","cassava","millet"),
 #'                crop_name_2=c("potato",NA,"cucumber"))
 #' result <- extract_new_values(data, loop_or_individual_column="loop",column_pattern="crop_name", number_of_loops=2)
@@ -126,7 +127,7 @@ find_loop_number_and_extract_values <- function(data, column_pattern){
 #' @examples
 #'
 #'
-#' data <- tibble(crop_name_1=c("maize","cassava"),
+#' data <- tibble::tibble(crop_name_1=c("maize","cassava"),
 #'                crop_name_2=c(NA,"cucumber"),
 #'                random_crop_name_2=c("blue","green"),
 #'                livestock_name_1=c("cow","chicken"),
@@ -338,7 +339,7 @@ merge_and_simplify_core_values <- function(list_of_unique_core_values, main_item
 #' @export
 #'
 #' @examples
-#' data <- tibble(crop_name_1=c("maize","cassava"),
+#' data <- tibble::tibble(crop_name_1=c("maize","cassava"),
 #'                crop_name_2=c(NA,"cucumber"),
 #'                random_crop_name_2=c("blue","green"),
 #'                livestock_name_1=c("cow","chicken"),
@@ -424,7 +425,7 @@ extract_units_data_frames <- function(data){
 #' @examples
 #'
 #' new_values <- c("egg1","egg2","egg3" )
-#' expected_result <- as_tibble(list("survey_value"=c("egg1","egg2","egg3" ), "conversion"=c(NA,NA,NA)))
+#' expected_result <- tibble::as_tibble(list("survey_value"=c("egg1","egg2","egg3" ), "conversion"=c(NA,NA,NA)))
 #'
 #' actual_result <- convert_new_values_to_tibble(new_values)
 #'
@@ -432,7 +433,7 @@ convert_new_values_to_tibble <- function(new_values){
 
 
     #new_values <- c("x","y","z")
-    data_to_return <- as_tibble(list("survey_value"=new_values, "conversion"=rep(NA,length(new_values))))
+    data_to_return <- tibble::as_tibble(list("survey_value"=new_values, "conversion"=rep(NA,length(new_values))))
 
     return(data_to_return)
 
@@ -471,7 +472,7 @@ write_new_values_to_file <- function(specific_value,list_of_tibbles, folder){
 
 
     data <- list_of_tibbles[[specific_value]]
-    write_csv(data,paste0(folder,"/",specific_value,".csv"))
+    readr::write_csv(data,paste0(folder,"/",specific_value,".csv"))
 
 }
 

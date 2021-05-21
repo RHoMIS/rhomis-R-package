@@ -1,4 +1,4 @@
-library(tidyverse)
+library(tibble)
 
 #' PPI score
 #'
@@ -7,13 +7,13 @@ library(tidyverse)
 #' in the "data" folder of the package.
 #'
 #' @param data The data set containing the PPI columns
-#' @param country_code The country codes for the data-sets concerned
+#' @param country_code_column The country codes for the data-sets concerned
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' data <- as_tibble(list("PPI_1"=c(5,1,3,4),
+#' data <- tibble::as_tibble(list("PPI_1"=c(5,1,3,4),
 #'                        "PPI_2"=c(3,12,7,18),
 #'                        "PPI_3"=c(17,1,2,3),
 #'                        "PPI_4"=c(NA,2,1,6),
@@ -41,7 +41,7 @@ ppi_score <- function(data, country_code_column){
         ppi_limit_column <- unname(sapply(country_code_column, function(x) identify_ppi_limit(x)))
         ppi_likelihood <- unname(unlist(sapply(c(1:length(ppi_score)),function(x) identify_ppi_conversion(ppi_score[x],country_code_column[x]))))
 
-        ppi_info <- as_tibble(list(ppi_likelihood=ppi_likelihood,
+        ppi_info <- tibble::as_tibble(list(ppi_likelihood=ppi_likelihood,
                                    ppi_limit=ppi_limit_column))
     }
     return(ppi_info)

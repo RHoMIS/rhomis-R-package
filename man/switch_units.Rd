@@ -30,7 +30,7 @@ switch_units(list_to_convert, units, conversion_factors)
 # Converting a data frame or tibble
 units <- c("kg", "sacks_50kg", "wheel_barrows_100kg","litres")
 conversion_factors <- c(1,50,100,1)
-tibble_to_convert <- as_tibble(list("maize"=c("kg", "other_random_unit","wheel_barrows_100kg"),
+tibble_to_convert <- tibble::as_tibble(list("maize"=c("kg", "other_random_unit","wheel_barrows_100kg"),
                                     "cassava"=c("sacks_50kg",NA,"another_random_unit"),
                                     "banana"=c("bunches", "wheel_barrows_100kg",NA)))
 switch_units(tibble_to_convert, units, conversion_factors)

@@ -11,11 +11,17 @@ LazyData: true
 RoxygenNote: 7.1.1
 Suggests: 
     testthat (>= 3.0.0)
-Depends:
-    tidyverse,
+Imports:
     httr,
     mongolite,
     jsonlite,
     roxygen2,
-    R (>= 2.10)
+    tibble,
+    readr,
+    dplyr,
+    tidyr,
+    purrr,
+    magrittr,
+Depends: 
+    R (>= 3.3)
 Config/testthat/edition: 3

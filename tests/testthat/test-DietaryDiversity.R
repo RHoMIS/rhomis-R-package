@@ -1,6 +1,7 @@
 library(testthat)
+library(tibble)
 
-test_that("HDDS Calculations work", {
+testthat::test_that("HDDS Calculations work", {
 
 
     actual_result <-hdds_calc(hdds_10_test)

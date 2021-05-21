@@ -16,7 +16,7 @@ A list of the unique values, NAs excluded
 A function to find the unique values for all of a given tibble.
 }
 \examples{
-data <- tibble(crop_name_1=c("maize","cassava","millet"),
+data <- tibble::tibble(crop_name_1=c("maize","cassava","millet"),
 crop_name_2=c("potato",NA,"cucumber"))
 # Expect the result c("maize", "cassava", "millet","potato", "cucumber")
 }

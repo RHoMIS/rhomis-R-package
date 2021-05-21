@@ -27,7 +27,7 @@ Converting from loop to a format that is easy to analyze.
 
 name_column <- "crop_name"
 variable_to_convert <- "crop_variable"
-data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                        crop_name_2=c("cassava",NA, "melon", "maize"),
                        random_crop_name_2=c("blue", "green",  "red",NA),
                        crop_name=c("orange", "purple", NA, "black"),

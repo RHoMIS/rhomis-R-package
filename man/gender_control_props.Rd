@@ -25,7 +25,7 @@ See example
 \examples{
 
 # A dataset in the conventional RHoMIS format
-data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                            crop_name_2=c("cassava",NA, "melon", "maize"),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black"),
@@ -35,7 +35,7 @@ data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
 wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
 genderdf <- wide_data$crop_control
 
-numberControllingDF <- genderdf \%>\% mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
+numberControllingDF <- genderdf \%>\% dplyr::mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
 category <- "male_adult"
 gender_control_props(genderdf, numberControllingDF, category)
 

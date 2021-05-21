@@ -16,7 +16,7 @@ split_gender_data(genderdf)
 For much of the RHoMIS data
 }
 \examples{
-data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                        crop_name_2=c("cassava",NA, "melon", "maize"),
                        random_crop_name_2=c("blue", "green",  "red",NA),
                        crop_name=c("orange", "purple", NA, "black"),

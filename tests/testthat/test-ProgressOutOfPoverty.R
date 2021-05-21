@@ -1,5 +1,8 @@
-test_that("PPI calculation works", {
-    data <- as_tibble(list("PPI_1"=c(5,1,3,4),
+library(testthat)
+library(tibble)
+
+testthat::test_that("PPI calculation works", {
+    data <- tibble::as_tibble(list("PPI_1"=c(5,1,3,4),
                            "PPI_2"=c(3,12,7,18),
                            "PPI_3"=c(17,1,2,3),
                            "PPI_4"=c(NA,2,1,6),

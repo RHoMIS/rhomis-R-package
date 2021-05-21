@@ -19,7 +19,7 @@ Replacing all of the character units in an R list
 }
 \examples{
 list_to_convert <- c("kg", "sacks_50kg","other_unit",NA, NA, "wheel_barrows_100kg","litres")
-unit_conv_tibble <- as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"),
+unit_conv_tibble <- tibble::as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"),
                                    conversion_factors= c(1,50,100,1)))
 replace_unit_list(list_to_convert,unit_conv_tibble)
 }

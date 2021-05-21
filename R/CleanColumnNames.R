@@ -52,7 +52,6 @@ shorten_individual_column_name <- function(column_name, seperator){
 #' # shortened_names will equal c("important_name_1","important_name_2", "important_name_3")
 
 shorten_multiple_column_names <- function(long_names, seperator){
-
     split_list <- unlist(lapply(long_names,function(name) shorten_individual_column_name(name,seperator)))
 }
 #---------------------------------------------------------------------------------------------------

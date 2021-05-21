@@ -1,7 +1,7 @@
-library(tidyverse)
-
-
-
+library(tibble)
+library(dplyr)
+library(magrittr)
+library(tidyr)
 
 #' Find number of loops
 #'
@@ -17,7 +17,7 @@ library(tidyverse)
 #'
 #' @examples
 #' name_column <- "crop_name"
-#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#' data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
 #'                        crop_name_2=c("cassava",NA, "melon", "maize"),
 #'                        random_crop_name_2=c("blue", "green",  "red",NA),
 #'                        crop_name=c("orange", "purple", NA, "black")))
@@ -44,7 +44,7 @@ find_number_of_loops <- function(data,name_column){
 #'
 #' @examples
 #' name_column <- "crop_name"
-#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#' data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
 #'                        crop_name_2=c("cassava",NA, "melon", "maize"),
 #'                        random_crop_name_2=c("blue", "green",  "red",NA),
 #'                        crop_name=c("orange", "purple", NA, "black")))
@@ -90,7 +90,7 @@ find_unique_case <- function(data, name_column){
 #'
 #' name_column <- "crop_name"
 #' variable_to_convert <- "crop_variable"
-#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#' data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
 #'                        crop_name_2=c("cassava",NA, "melon", "maize"),
 #'                        random_crop_name_2=c("blue", "green",  "red",NA),
 #'                        crop_name=c("orange", "purple", NA, "black"),
@@ -106,12 +106,12 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
     # Obtaining a table of the loop values
     value_table <- data[,paste0(variable_to_convert,"_",1:number_of_loops)]
     value_table$indexValues <- row.names(value_table)
-    value_table <- value_table %>% group_by(indexValues) %>% gather(key = "column", value = "value", -indexValues)
+    value_table <- value_table %>% dplyr::group_by(indexValues) %>% tidyr::gather(key = "column", value = "value", -indexValues)
 
     # Obtaining a table of the loop names
     name_table <- data[,paste0(name_column,"_",1:number_of_loops)]
     name_table$indexNames <- row.names(name_table)
-    name_table <- name_table %>% group_by(indexNames) %>% gather(key = "column", value = "name", -indexNames)
+    name_table <- name_table %>% dplyr::group_by(indexNames) %>% tidyr::gather(key = "column", value = "name", -indexNames)
 
     # Merging table of loop values, names and indexes
     merged_table <- cbind(name_table[,c("name","indexNames")],value_table[,c("indexValues","value")])
@@ -128,28 +128,28 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
         merged_table$name <- "none"
     }
     merged_table<- merged_table[!duplicated(merged_table[,c("index", "name")]),]
-    merged_table <- merged_table %>%  group_by(index) %>% pivot_wider(id_cols = index,names_from = name, values_from = value)
+    merged_table <- merged_table %>%  dplyr::group_by(index) %>% tidyr::pivot_wider(id_cols = index,names_from = name, values_from = value)
     if(!all(merged_table$index==row.names(merged_table))){
         stop("Indexes don't match when merging loop information")
 
     }
 
-    merged_table <- as_tibble(merged_table[,!colnames(merged_table) %in% c("NA","index")])
+    merged_table <- tibble::as_tibble(merged_table[,!colnames(merged_table) %in% c("NA","index")])
     if (type=="chr")
     {
-        merged_table <- merged_table %>% mutate_all(as.character)
+        merged_table <- merged_table %>% dplyr::mutate_all(as.character)
     }
     if (type=="num")
     {
-        merged_table <- merged_table %>% mutate_all(as.numeric)
+        merged_table <- merged_table %>% dplyr::mutate_all(as.numeric)
     }
     if (type=="int")
     {
-        merged_table <- merged_table %>% mutate_all(as.integer)
+        merged_table <- merged_table %>% dplyr::mutate_all(as.integer)
     }
     if (type=="fct")
     {
-        merged_table <- merged_table %>% mutate_all(as.factor)
+        merged_table <- merged_table %>% dplyr::mutate_all(as.factor)
     }
     return(merged_table)
 }
@@ -174,7 +174,7 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
 #' column_prefixes <- c("crop_variable", "crop_unit", "crop_price")
 #' types <- c("chr", "chr", "chr")
 #'
-#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#' data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
 #'                        crop_name_2=c("cassava",NA, "melon", "maize"),
 #'                        random_crop_name_2=c("blue", "green",  "red",NA),
 #'                        crop_name=c("orange", "purple", NA, "black"),
@@ -301,7 +301,7 @@ check_val_in_list <- function(item, category){
 #' @examples
 #'
 #' # A dataset in the conventional RHoMIS format
-#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#' data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
 #'                            crop_name_2=c("cassava",NA, "melon", "maize"),
 #'                            random_crop_name_2=c("blue", "green",  "red",NA),
 #'                            crop_name=c("orange", "purple", NA, "black"),
@@ -311,14 +311,14 @@ check_val_in_list <- function(item, category){
 #' wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
 #' genderdf <- wide_data$crop_control
 #'
-#' numberControllingDF <- genderdf %>% mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
+#' numberControllingDF <- genderdf %>% dplyr::mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
 #' category <- "male_adult"
 #' gender_control_props(genderdf, numberControllingDF, category)
 #'
 #'
 gender_control_props <- function(genderdf,numberControllingDF, category){
-    value <- genderdf %>% mutate(across(.cols=everything(),~check_val_in_list(item=.x, category=category)))
-    return (as_tibble(value*numberControllingDF))
+    value <- genderdf %>% dplyr::mutate(across(.cols=everything(),~check_val_in_list(item=.x, category=category)))
+    return (tibble::as_tibble(value*numberControllingDF))
 }
 
 
@@ -332,7 +332,7 @@ gender_control_props <- function(genderdf,numberControllingDF, category){
 #' @export
 #'
 #' @examples
-#' data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+#' data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
 #'                        crop_name_2=c("cassava",NA, "melon", "maize"),
 #'                        random_crop_name_2=c("blue", "green",  "red",NA),
 #'                        crop_name=c("orange", "purple", NA, "black"),
@@ -347,7 +347,7 @@ split_gender_data <- function(genderdf){
                     "male_youth",
                     "male_adult")
 
-    numberPeopleControlling <- genderdf %>% mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
+    numberPeopleControlling <- genderdf %>% dplyr::mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
 
     genderControlDFs <- lapply(categories, function(x) gender_control_props(genderdf=genderdf,numberControllingDF=numberPeopleControlling, category=x))
     names(genderControlDFs)<-categories
