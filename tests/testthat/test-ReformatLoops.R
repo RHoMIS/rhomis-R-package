@@ -1,7 +1,9 @@
-test_that("Test that can identify number of loops", {
+library(testthat)
+library(dplyr)
+testthat::test_that("Test that can identify number of loops", {
 
     name_column <- "crop_name"
-    data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+    data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                            crop_name_2=c("cassava",NA, "melon", "maize"),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black")))
@@ -12,9 +14,9 @@ test_that("Test that can identify number of loops", {
 
 })
 
-test_that("Test can find unique values for the specific name column",{
+testthat::test_that("Test can find unique values for the specific name column",{
     name_column <- "crop_name"
-    data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+    data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                            crop_name_2=c("cassava",NA, "melon", "maize"),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black")))
@@ -23,7 +25,7 @@ test_that("Test can find unique values for the specific name column",{
     expect_equal(actual_result,expected_result)
 
     # Checking for case with no expected values
-    data <- as_tibble(list(crop_name_1=c(NA, NA, NA, NA),
+    data <- tibble::as_tibble(list(crop_name_1=c(NA, NA, NA, NA),
                            crop_name_2=c(NA,NA, NA, NA),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black")))
@@ -33,22 +35,22 @@ test_that("Test can find unique values for the specific name column",{
     expect_equal(actual_result,expected_result)
 })
 
-test_that("Individual loop variables can be properly formatted",{
+testthat::test_that("Individual loop variables can be properly formatted",{
     name_column <- "crop_name"
     variable_to_convert <- "crop_variable"
-    data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+    data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                            crop_name_2=c("cassava",NA, "melon", "maize"),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black"),
                            crop_variable_1=c("ex1","ex2",NA,NA),
                            crop_variable_2=c("ex3",NA,"ex4","ex5")))
 
-    expected_result <- as_tibble(list(banana=c("ex1", NA, NA, NA),
+    expected_result <- tibble::as_tibble(list(banana=c("ex1", NA, NA, NA),
                                       cassava=c("ex3", "ex2", NA, NA),
                                       millet=c(NA, NA, NA, NA),
                                       melon=c(NA, NA, "ex4", NA),
                                       maize=c(NA, NA, NA, "ex5")))
-    expected_result<- expected_result %>% mutate_all(as.character)
+    expected_result<- expected_result %>% dplyr::mutate_all(as.character)
 
 
     actual_result <- loop_to_column_conversion(data, name_column, variable_to_convert, type="chr")
@@ -59,14 +61,14 @@ test_that("Individual loop variables can be properly formatted",{
     # Checking case for no values
     name_column <- "crop_name"
     variable_to_convert <- "crop_variable"
-    data <- as_tibble(list(crop_name_1=c(NA, NA, NA, NA),
+    data <- tibble::as_tibble(list(crop_name_1=c(NA, NA, NA, NA),
                            crop_name_2=c(NA,NA, NA, NA),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black"),
                            crop_variable_1=c(NA,NA,NA,NA),
                            crop_variable_2=c(NA,NA,NA,NA)))
-    expected_result <- as_tibble(list(none=c(NA, NA, NA, NA)))
-    expected_result<- expected_result %>% mutate_all(as.character)
+    expected_result <- tibble::as_tibble(list(none=c(NA, NA, NA, NA)))
+    expected_result<- expected_result %>% dplyr::mutate_all(as.character)
     actual_result <- loop_to_column_conversion(data, name_column, variable_to_convert, type="chr")
 
     expect_equal(actual_result,expected_result)
@@ -74,13 +76,13 @@ test_that("Individual loop variables can be properly formatted",{
 })
 
 
-test_that("Test that we can convert multiple columns into the wide format",{
+testthat::test_that("Test that we can convert multiple columns into the wide format",{
 
     name_column <- "crop_name"
     column_prefixes <- c("crop_variable", "crop_unit", "crop_price")
     types <- c("chr", "chr", "chr")
 
-    data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+    data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                            crop_name_2=c("cassava",NA, "melon", "maize"),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black"),
@@ -92,24 +94,24 @@ test_that("Test that we can convert multiple columns into the wide format",{
                            crop_price_2=c(NA,NA,NA,NA)))
     actual_result <- map_to_wide_format(data, name_column, column_prefixes, types)
     # Expected result
-    crop_variable <- as_tibble(list(banana=c("ex1",NA,NA,NA),
+    crop_variable <- tibble::as_tibble(list(banana=c("ex1",NA,NA,NA),
                                     cassava=c("ex3","ex2",NA,NA),
                                     millet=c(NA,NA,NA,NA),
                                     melon=c(NA,NA,"ex4",NA),
                                     maize=c(NA,NA,NA,"ex5")))
-    crop_variable<- crop_variable %>% mutate_all(as.character)
-    crop_unit <- as_tibble(list(banana=c("unit1",NA,NA,NA),
+    crop_variable<- crop_variable %>% dplyr::mutate_all(as.character)
+    crop_unit <- tibble::as_tibble(list(banana=c("unit1",NA,NA,NA),
                                 cassava=c(NA,"unit2",NA,NA),
                                 millet=c(NA,NA,NA,NA),
                                 melon=c(NA,NA,"unit4",NA),
                                 maize=c(NA,NA,NA,"unit5")))
-    crop_unit<- crop_unit %>% mutate_all(as.character)
-    crop_price <- as_tibble(list(banana=c(NA,NA,NA,NA),
+    crop_unit<- crop_unit %>% dplyr::mutate_all(as.character)
+    crop_price <- tibble::as_tibble(list(banana=c(NA,NA,NA,NA),
                                  cassava=c(NA,NA,NA,NA),
                                  millet=c(NA,NA,NA,NA),
                                  melon=c(NA,NA,NA,NA),
                                  maize=c(NA,NA,NA,NA)))
-    crop_price<- crop_price %>% mutate_all(as.character)
+    crop_price<- crop_price %>% dplyr::mutate_all(as.character)
     expected_result <- list(crop_variable=crop_variable,
                             crop_unit=crop_unit,
                             crop_price=crop_price)
@@ -118,8 +120,8 @@ test_that("Test that we can convert multiple columns into the wide format",{
 })
 
 
-test_that("Gender splitting of information works",{
-    data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+testthat::test_that("Gender splitting of information works",{
+    data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                            crop_name_2=c("cassava",NA, "melon", "maize"),
                            random_crop_name_2=c("blue", "green",  "red",NA),
                            crop_name=c("orange", "purple", NA, "black"),
@@ -128,22 +130,22 @@ test_that("Gender splitting of information works",{
     wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
     gender_data <- wide_data$crop_control
 
-    female_youth <- as_tibble(list(banana=c(0,NA,NA,NA),
+    female_youth <- tibble::as_tibble(list(banana=c(0,NA,NA,NA),
                                    cassava=c(0,0,NA,NA),
                                    millet=c(NA,NA,NA,1),
                                    melon=c(NA,NA,1,NA),
                                    maize=c(NA,NA,NA,0)))
-    female_adult <- as_tibble(list(banana=c(0.5,NA,NA,NA),
+    female_adult <- tibble::as_tibble(list(banana=c(0.5,NA,NA,NA),
                                    cassava=c(0,0,NA,NA),
                                    millet=c(NA,NA,NA,0),
                                    melon=c(NA,NA,0,NA),
                                    maize=c(NA,NA,NA,1)))
-    male_youth <- as_tibble(list(banana=c(0,NA,NA,NA),
+    male_youth <- tibble::as_tibble(list(banana=c(0,NA,NA,NA),
                                  cassava=c(1,0,NA,NA),
                                  millet=c(NA,NA,NA,0),
                                  melon=c(NA,NA,0,NA),
                                  maize=c(NA,NA,NA,0)))
-    male_adult <- as_tibble(list(banana=c(0.5,NA,NA,NA),
+    male_adult <- tibble::as_tibble(list(banana=c(0.5,NA,NA,NA),
                                  cassava=c(0,1,NA,NA),
                                  millet=c(NA,NA,NA,0),
                                  melon=c(NA,NA,0,NA),
@@ -159,7 +161,7 @@ test_that("Gender splitting of information works",{
 })
 
 
-test_that("Test that can work out gender proportion scores for a single column",{
+testthat::test_that("Test that can work out gender proportion scores for a single column",{
     column <- c("male_adult female_adult","male_adult",NA,"female_youth")
     actual_result <- proportion_control_per_person(column)
 
@@ -168,7 +170,7 @@ test_that("Test that can work out gender proportion scores for a single column",
 
 })
 
-test_that("Test that can correctly identify the categories in a column", {
+testthat::test_that("Test that can correctly identify the categories in a column", {
     item <- c("male_adult female_adult","male_adult",NA,"female_youth")
     category <- "female_youth"
     actual_result <-check_val_in_list(item, category)
@@ -181,9 +183,9 @@ test_that("Test that can correctly identify the categories in a column", {
     expect_equal(actual_result,expected_result)
 })
 
-test_that("Test that can identify gender control proportions for individual categories",{
+testthat::test_that("Test that can identify gender control proportions for individual categories",{
 
-    data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+    data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                                crop_name_2=c("cassava",NA, "melon", "maize"),
                                random_crop_name_2=c("blue", "green",  "red",NA),
                                crop_name=c("orange", "purple", NA, "black"),
@@ -193,11 +195,11 @@ test_that("Test that can identify gender control proportions for individual cate
     wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
     genderdf <- wide_data$crop_control
 
-    numberControllingDF <- genderdf %>% mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
+    numberControllingDF <- genderdf %>% dplyr::mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
     category <- "male_adult"
     actual_result <- gender_control_props(genderdf, numberControllingDF, category)
 
-    expected_result <- as_tibble(list(banana=c(0.5,NA,NA,NA),
+    expected_result <- tibble::as_tibble(list(banana=c(0.5,NA,NA,NA),
                                       cassava=c(0,1,NA,NA),
                                       millet=c(NA,NA,NA,0),
                                       melon=c(NA,NA,0,NA),

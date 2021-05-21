@@ -1,5 +1,8 @@
 library(httr)
-library(tidyverse)
+library(tibble)
+library(tidyr)
+library(dplyr)
+library(magrittr)
 #' Get Email
 #'
 #' A function used to get the email token required to connext to ODK central
@@ -17,15 +20,15 @@ library(tidyverse)
 get_email_token <- function(central_url, central_email, central_password){
 
     data_for_request<-list(email = central_email, password = central_password)
-    h<-handle(central_url) # Passing a handle with the request allows for the use of cookies. Facilitating multiple requests.
-    central_response <- POST(url = paste0(central_url, "/v1/sessions"),
+    h<-httr::handle(central_url) # Passing a handle with the request allows for the use of cookies. Facilitating multiple requests.
+    central_response <- httr::POST(url = paste0(central_url, "/v1/sessions"),
                              body = data_for_request,
                              encode = "json",
                              add_headers("Content-Type" = "application/json"),
                              handle=h
     )
 
-    central_response_content<-content(central_response)
+    central_response_content<-httr::content(central_response)
     token<-central_response_content$token
 
     if (is.null(token)){
@@ -58,14 +61,11 @@ get_email_token <- function(central_url, central_email, central_password){
 get_users <- function(central_url, central_email, central_password){
 
     email_token <- get_email_token(central_url,central_email,central_password)
-    central_response <- GET(url = paste0(central_url, "/v1/users"),
+    central_response <- httr::GET(url = paste0(central_url, "/v1/users"),
          encode = "json",
          add_headers("Authorization" = paste0("Bearer ",email_token))
     )
-    central_users<-content(central_response)
-
-
-
+    central_users<-httr::content(central_response)
 
     central_users <- central_results_to_df(central_users)
     return(central_users)
@@ -91,11 +91,11 @@ get_projects <- function(central_url, central_email, central_password){
 
 
     email_token <- get_email_token(central_url,central_email,central_password)
-    central_response <- GET(url = paste0(central_url, "/v1/projects"),
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects"),
                             encode = "json",
                             add_headers("Authorization" = paste0("Bearer ",email_token))
     )
-    central_projects <- content(central_response)
+    central_projects <- httr::content(central_response)
     central_projects <- central_results_to_df(central_projects)
     return(central_projects)
 }
@@ -122,11 +122,11 @@ get_projects <- function(central_url, central_email, central_password){
 get_forms <- function(central_url, central_email, central_password, projectID){
 
     email_token <- get_email_token(central_url,central_email,central_password)
-    central_response <- GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms"),
+    central_response <- httr:GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms"),
                             encode = "json",
                             add_headers("Authorization" = paste0("Bearer ",email_token))
     )
-    central_forms <- content(central_response)
+    central_forms <- httr:content(central_response)
     central_forms <- central_results_to_df(central_forms)
     return(central_forms)
 }
@@ -155,7 +155,7 @@ get_forms <- function(central_url, central_email, central_password, projectID){
 central_results_to_df <- function(central_results){
     column_headers <- unique(names(unlist(central_results)))
     all_tibbles <- sapply(central_results, function(x) widen_individual_result(x), simplify = F)
-    final_df <- bind_rows(all_tibbles)
+    final_df <- dplyr::bind_rows(all_tibbles)
     return (final_df)
 }
 
@@ -178,9 +178,9 @@ central_results_to_df <- function(central_results){
 #'widen_individual_result(individual_central_result,column_headers)
 widen_individual_result <- function(individual_central_item, column_headers){
     item_to_tibble <- stack(unlist(individual_central_item)[column_headers]) %>%
-        as_tibble() %>%
-        pivot_wider(names_from = "ind", values_from="values") %>%
-        mutate_all(as.character)
+        tibble::as_tibble() %>%
+        tidyr::pivot_wider(names_from = "ind", values_from="values") %>%
+        dplyr::mutate_all(as.character)
 
     return(item_to_tibble)
 

@@ -1,10 +1,11 @@
 library(testthat)
+library(tibble)
 
 
-test_that("Extract unique values from loop column", {
+testthat::test_that("Extract unique values from loop column", {
     column_pattern <- "crop_name"
     number_of_loops <- 2
-    data <- tibble(crop_name_1=c("maize","cassava","millet"),
+    data <- tibble::tibble(crop_name_1=c("maize","cassava","millet"),
                    random_column=c("blue","red","green"),
                    crop_name_2=c("potato",NA,"cucumber"))
     expected_result <- c("maize","cassava","millet","potato","cucumber")
@@ -13,9 +14,9 @@ test_that("Extract unique values from loop column", {
     expect_equal(result, expected_result)
 })
 
-test_that("Extract unique values from individual column", {
+testthat::test_that("Extract unique values from individual column", {
     column_name <- "random_column"
-    data <- tibble(crop_name_1=c("maize",NA,"cassava",NA,"millet"),
+    data <- tibble::tibble(crop_name_1=c("maize",NA,"cassava",NA,"millet"),
                    random_column=c("blue","purple","red",NA,"green"),
                    crop_name_2=c(NA,"potato",NA,"cucumber",NA))
     expected_result <- c("blue","purple","red","green")
@@ -24,9 +25,9 @@ test_that("Extract unique values from individual column", {
     expect_equal(result,expected_result)
 })
 
-test_that("Can extract unique values when don't know the number of loops", {
+testthat::test_that("Can extract unique values when don't know the number of loops", {
     column_pattern <- "crop_name"
-    data <- tibble(crop_name_1=c("maize",NA,"cassava",NA,"millet"),
+    data <- tibble::tibble(crop_name_1=c("maize",NA,"cassava",NA,"millet"),
                    random_column=c("blue","purple","red",NA,"green"),
                    crop_name_2=c(NA,"apple",NA,"orange",NA),
                    crop_name=c(NA,"potato",NA,"cucumber",NA),
@@ -39,8 +40,8 @@ test_that("Can extract unique values when don't know the number of loops", {
 
 })
 
-test_that("Can extract units for core RHoMIS data",{
-    data <- tibble(crop_name_1=c("maize","cassava"),
+testthat::test_that("Can extract units for core RHoMIS data",{
+    data <- tibble::tibble(crop_name_1=c("maize","cassava"),
                    crop_name_2=c(NA,"cucumber"),
                    random_crop_name_2=c("blue","green"),
                    livestock_name_1=c("cow","chicken"),
@@ -101,7 +102,7 @@ test_that("Can extract units for core RHoMIS data",{
     expect_equal(actual_result,expected_result)
 })
 
-test_that("Can correctly merge categories for new unique values", {
+testthat::test_that("Can correctly merge categories for new unique values", {
     list_of_unique_core_values <- c(list(crop_sold_price_quantityunits=c("cropPriceA","cropPriceB", "cropPriceC"),
                                          crop_price_quantityunits_other=c("cropPriceD","cropPriceE", "cropPriceF"),
                                          random_unimportant_column=c("bla", "bla", "bla")))
@@ -123,9 +124,9 @@ test_that("Can correctly merge categories for new unique values", {
     expect_equal(actual_result,expected_result)
 })
 
-test_that("Test that new values can be correctly converted to tibble",{
+testthat::test_that("Test that new values can be correctly converted to tibble",{
     new_values <- c("egg1","egg2","egg3" )
-    expected_result <- as_tibble(list("survey_value"=c("egg1","egg2","egg3" ), "conversion"=c(NA,NA,NA)))
+    expected_result <- tibble::as_tibble(list("survey_value"=c("egg1","egg2","egg3" ), "conversion"=c(NA,NA,NA)))
 
     actual_result <- convert_new_values_to_tibble(new_values)
     expect_equal(actual_result,expected_result)

@@ -24,7 +24,7 @@ You can select the folder that you would like
 to write all of the files to.
 }
 \examples{
-data <- tibble(crop_name_1=c("maize","cassava"),
+data <- tibble::tibble(crop_name_1=c("maize","cassava"),
                crop_name_2=c(NA,"cucumber"),
                random_crop_name_2=c("blue","green"),
                livestock_name_1=c("cow","chicken"),

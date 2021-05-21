@@ -4,12 +4,12 @@
 \alias{ppi_score}
 \title{PPI score}
 \usage{
-ppi_score(data, country_code)
+ppi_score(data, country_code_column)
 }
 \arguments{
 \item{data}{The data set containing the PPI columns}
 
-\item{country_code}{The country codes for the data-sets concerned}
+\item{country_code_column}{The country codes for the data-sets concerned}
 }
 \value{
 
@@ -20,7 +20,7 @@ dataset. It relies on conversion sheets and information which can be found
 in the "data" folder of the package.
 }
 \examples{
-data <- as_tibble(list("PPI_1"=c(5,1,3,4),
+data <- tibble::as_tibble(list("PPI_1"=c(5,1,3,4),
                        "PPI_2"=c(3,12,7,18),
                        "PPI_3"=c(17,1,2,3),
                        "PPI_4"=c(NA,2,1,6),

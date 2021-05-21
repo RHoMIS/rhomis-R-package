@@ -1,8 +1,8 @@
-library(tidyverse)
+library(tibble)
 
 
 get_household_size_conversion <- function(){
-    MAE_coeff <- as_tibble(list(children_under_4=0.5,
+    MAE_coeff <- tibble::as_tibble(list(children_under_4=0.5,
                                 children_4to10=0.75,
                                 males11to24=0.85,
                                 females11to24=0.75,
@@ -52,7 +52,7 @@ household_roster_to_categories <- function(data){
     age_categories <- sapply(all_loops, function(x) identify_person_category(age=data[paste0("person_age_",x)], gender = data[paste0("person_gender_",x)]),simplify=F)
     names(age_categories)<-column_names
 
-    age_categories <-as_tibble(age_categories)
+    age_categories <-tibble::as_tibble(age_categories)
 
 
 
@@ -67,7 +67,7 @@ household_roster_to_wide <- function(data){
     categories <- colnames(get_household_size_conversion())
 
     categorical_format <- sapply(categories, function(x) rowSums(categorical_format==x,na.rm = T))
-    categorical_format <- as_tibble(categorical_format)
+    categorical_format <- tibble::as_tibble(categorical_format)
     return(categorical_format)
 
 }
@@ -93,7 +93,7 @@ calculate_MAE <- function(data){
     conversion_factors <- get_household_size_conversion()
 
     MAE_frame <- sapply(names(conversion_factors), function(x) as.numeric(conversion_factors[1,x])*data[x])
-    MAE_frame <- as_tibble(MAE_frame)
+    MAE_frame <- tibble::as_tibble(MAE_frame)
     MAE_frame <- rowSums(MAE_frame,na.rm=T)
 
     return(MAE_frame)

@@ -1,4 +1,7 @@
-test_that("Splitting strings into dummy variables works", {
+library(tibble)
+library(testthat)
+
+testthat::test_that("Splitting strings into dummy variables works", {
     test_data <- c("maize banana cassava","melon maize cassava", "banana")
     seperator <- " "
 

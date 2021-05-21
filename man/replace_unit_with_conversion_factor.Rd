@@ -20,6 +20,6 @@ A function to replace individual units with their appropriate conversion factors
 \examples{
 
 item_to_convert <- "wheel_barrows_100kg"
-unit_conv_tibble <- as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"), conversion_factors= c(1,50,100,1)))
+unit_conv_tibble <- tibble::as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"), conversion_factors= c(1,50,100,1)))
 replace_unit_with_conversion_factor(item_to_convert, unit_conv_tibble)
 }

@@ -1,6 +1,6 @@
 library(mongolite)
 library(jsonlite)
-library(tidyverse)
+library(tibble)
 #' Connect to db
 #'
 #' A simple function for connecting to a mongo database
@@ -15,7 +15,7 @@ library(tidyverse)
 #' @examples
 #'
 connect_to_db <- function(collection,database="rhomis", url="mongodb://localhost"){
-    mongodb <- mongo(collection = collection,
+    mongodb <- mongolite::mongo(collection = collection,
                      db=database,
                      url="mongodb://localhost")
     return(mongodb)
@@ -33,7 +33,7 @@ connect_to_db <- function(collection,database="rhomis", url="mongodb://localhost
 #' @export
 #'
 #' @examples
-#' sample_data_frame <- as_tibble(list("original_spelling"=c("benana","maz","wetermalon","cokonut"),
+#' sample_data_frame <- tibble::as_tibble(list("original_spelling"=c("benana","maz","wetermalon","cokonut"),
 #' "standardised_spelling"=c("benana",NA,"wetermalon","cokonut")))
 #' data_frame_to_json(sample_data_frame)
 #'

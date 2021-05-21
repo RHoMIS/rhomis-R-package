@@ -1,6 +1,10 @@
-test_that("Checking can convert household roster to categories", {
+library(testthat)
+library(tibble)
 
-    data <- as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
+
+testthat::test_that("Checking can convert household roster to categories", {
+
+    data <- tibble::as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
                            person_gender_1=c("M","F","M",NA),
                            head_person_1=c("Y","N","Y",NA),
                            person_age_1=c(25,46,33,45),
@@ -22,7 +26,7 @@ test_that("Checking can convert household roster to categories", {
     ))
 
 
-    expected_result <- as_tibble(list(household_person_category_1=c("males25to50","female_25_to_50","males25to50",NA),
+    expected_result <- tibble::as_tibble(list(household_person_category_1=c("males25to50","female_25_to_50","males25to50",NA),
                                       household_person_category_2=c("female_25_to_50","females11to24","children_under_4","male_50_plus"),
                                       household_person_category_3=c("males11to24","males11to24",NA,NA)))
 
@@ -31,8 +35,8 @@ test_that("Checking can convert household roster to categories", {
     expect_equal(actual_result, expected_result)
 })
 
-test_that("Can map household roster into traditional category format",{
-    data <- as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
+testthat::test_that("Can map household roster into traditional category format",{
+    data <- tibble::as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
                            person_gender_1=c("M","F","M",NA),
                            head_person_1=c("Y","N","Y",NA),
                            person_age_1=c(25,46,33,45),
@@ -69,10 +73,10 @@ test_that("Can map household roster into traditional category format",{
 })
 
 
-test_that("Can calculate MAE score",{
+testthat::test_that("Can calculate MAE score",{
 
     # Testing data in its original format
-    data <- as_tibble(list(children_under_4=c(1,0,0,0),
+    data <- tibble::as_tibble(list(children_under_4=c(1,0,0,0),
                            children_4to10=c(2,3,3,3),
                            males11to24=c(1,2,3,4),
                            females11to24=c(4,3,2,1),
@@ -87,7 +91,7 @@ test_that("Can calculate MAE score",{
     expect_equal(actual_result, expected_result)
 
     # Testing with data in the household roster format
-    data <- as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
+    data <- tibble::as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
                            person_gender_1=c("M","F","M",NA),
                            head_person_1=c("Y","N","Y",NA),
                            person_age_1=c(25,46,33,45),
@@ -115,8 +119,8 @@ test_that("Can calculate MAE score",{
 
 })
 
-test_that("Can calculate household size in terms of members",{
-    data <- as_tibble(list(children_under_4=c(1,0,0,0),
+testthat::test_that("Can calculate household size in terms of members",{
+    data <- tibble::as_tibble(list(children_under_4=c(1,0,0,0),
                            children_4to10=c(2,3,3,3),
                            males11to24=c(1,2,3,4),
                            females11to24=c(4,3,2,1),
@@ -131,7 +135,7 @@ test_that("Can calculate household size in terms of members",{
     expect_equal(actual_result, expected_result)
 
     # Testing with data in the household roster format
-    data <- as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
+    data <- tibble::as_tibble(list(hh_pop_rep_num_1=c(1,1,1,1),
                            person_gender_1=c("M","F","M",NA),
                            head_person_1=c("Y","N","Y",NA),
                            person_age_1=c(25,46,33,45),

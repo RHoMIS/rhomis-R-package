@@ -1,7 +1,6 @@
 library(testthat)
-
 # Test for shorten_individual_column_name
-test_that("Raw column names successfully shorten", {
+testthat::test_that("Raw column names successfully shorten", {
     long_name <- "xxxx/xxxxx/xxxxx/important_name"
     seperator <- "/"
     shortened_name <- shorten_individual_column_name(column_name=long_name, seperator)
@@ -9,7 +8,7 @@ test_that("Raw column names successfully shorten", {
 })
 
 # Test for shorten_multiple_column_names
-test_that("Multiple column names switched properly",{
+testthat::test_that("Multiple column names switched properly",{
     long_names <- c("xxxx/xxxxx/xxxxx/important_name_1",
                     "xxxx/xxxxx/xxxxx/important_name_2",
                     "xxxx/xxxxx/xxxxx/important_name_3")
@@ -20,7 +19,7 @@ test_that("Multiple column names switched properly",{
 })
 
 # Test for modify_loop_name
-test_that("Repeat loop single can be changed",{
+testthat::test_that("Repeat loop single can be changed",{
     column_name <- "SECTION_Crop_Productivity/crop_repeat[2]/crop_name"
     loop_type <- "crop_repeat"
     modified_name <- modify_loop_name(column_name, loop_type)
@@ -50,7 +49,7 @@ test_that("Multiple repeat loops changed correctly", {
 })
 
 # Testing that all types of repeat loop can be modified
-test_that("All types of repeat loop can be specified and modified",{
+testthat::test_that("All types of repeat loop can be specified and modified",{
     repeat_columns<- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")
     column_names <- c("xxx/crop_repeat[1]/crop_name",
                       "xxx/livestock_repeat[2]/livestock_name",
@@ -73,7 +72,7 @@ test_that("All types of repeat loop can be specified and modified",{
 
 
 # Final test to make sure that all column names are properly changed
-test_that("All column names properly cleaned",{
+testthat::test_that("All column names properly cleaned",{
     repeat_columns<- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")
     seperator <- "/"
     column_names <- c("xxx/crop_repeat[1]/crop_name",

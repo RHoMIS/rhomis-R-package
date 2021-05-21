@@ -28,7 +28,7 @@ name_column <- "crop_name"
 column_prefixes <- c("crop_variable", "crop_unit", "crop_price")
 types <- c("chr", "chr", "chr")
 
-data <- as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
+data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
                        crop_name_2=c("cassava",NA, "melon", "maize"),
                        random_crop_name_2=c("blue", "green",  "red",NA),
                        crop_name=c("orange", "purple", NA, "black"),

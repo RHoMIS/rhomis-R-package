@@ -17,7 +17,7 @@ To write objects to a mongoDB, they need to be in JSON format.
 This function converts data from a data frame to a JSON
 }
 \examples{
-sample_data_frame <- as_tibble(list("original_spelling"=c("benana","maz","wetermalon","cokonut"),
+sample_data_frame <- tibble::as_tibble(list("original_spelling"=c("benana","maz","wetermalon","cokonut"),
 "standardised_spelling"=c("benana",NA,"wetermalon","cokonut")))
 data_frame_to_json(sample_data_frame)
 

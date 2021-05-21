@@ -1,3 +1,5 @@
+library(tibble)
+
 
 #' FIES score
 #'
@@ -81,14 +83,14 @@ food_security_calculations <- function(data){
     if (all(HFIAS_columns%in%colnames(data)) & all(FIES_columns%in%colnames(data))==F){
         column_name <- "HFIAS_status"
         score <- hfias_score(data)
-        data_to_return <- as_tibble(score)
+        data_to_return <- tibble::as_tibble(score)
         colnames(data_to_return) <-column_name
         return(data_to_return)
     }
     if(all(FIES_columns%in%colnames(data)) & all(HFIAS_columns%in%colnames(data))==F){
         column_name <- "FIES_score"
         score <- fies_score(data)
-        data_to_return <- as_tibble(score)
+        data_to_return <- tibble::as_tibble(score)
         colnames(data_to_return) <-column_name
         return(data_to_return)
     }
@@ -96,7 +98,7 @@ food_security_calculations <- function(data){
     if(all(FIES_columns%in%colnames(data)) & all(HFIAS_columns%in%colnames(data))){
         fies_score_result <- fies_score(data)
         hfias_score_result <- hfias_score(data)
-        data_to_return <- as_tibble(list("HFIAS_status"=hfias_score_result,
+        data_to_return <- tibble::as_tibble(list("HFIAS_status"=hfias_score_result,
                                          "FIES_score"=fies_score_result))
         colnames(data_to_return) <-column_names
         return(data_to_return)

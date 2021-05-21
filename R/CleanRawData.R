@@ -1,5 +1,8 @@
-library(tidyverse)
-
+library(readr)
+library(tibble)
+library(dplyr)
+library(purrr)
+library(magrittr)
 #' Load RHoMIS
 #'
 #' Reads the RHoMIS data from a local file.
@@ -14,7 +17,7 @@ library(tidyverse)
 #' # data <- load_rhomis(path)
 #' # Data will be loaded in tibble format
 load_rhomis <- function(path){
-    data <- read_csv(path, na=c("","na","-999","NA","n/a"))
+    data <- readr::read_csv(path, na=c("","na","-999","NA","n/a"))
     return(data)
 }
 
@@ -40,7 +43,7 @@ load_rhomis <- function(path){
 #' # Converting a data frame or tibble
 #' units <- c("kg", "sacks_50kg", "wheel_barrows_100kg","litres")
 #' conversion_factors <- c(1,50,100,1)
-#' tibble_to_convert <- as_tibble(list("maize"=c("kg", "other_random_unit","wheel_barrows_100kg"),
+#' tibble_to_convert <- tibble::as_tibble(list("maize"=c("kg", "other_random_unit","wheel_barrows_100kg"),
 #'                                     "cassava"=c("sacks_50kg",NA,"another_random_unit"),
 #'                                     "banana"=c("bunches", "wheel_barrows_100kg",NA)))
 #' switch_units(tibble_to_convert, units, conversion_factors)
@@ -56,12 +59,12 @@ switch_units <- function(data_to_convert, units, conversion_factors){
     }
 
     # Converting the two lists into a tibble which can be searched
-    unit_conv_tibble <- as_tibble(list(unit=units, conversion_factors=conversion_factors))
+    unit_conv_tibble <- tibble::as_tibble(list(unit=units, conversion_factors=conversion_factors))
 
 
     if ("tbl" %in% class(data_to_convert) | "tbl_df" %in% class(data_to_convert) | "data.frame" %in% class(data_to_convert))
     {
-        converted_data <- data_to_convert %>% map_df(function(x) replace_unit_list(x,unit_conv_tibble))
+        converted_data <- data_to_convert %>% purrr::map_df(function(x) replace_unit_list(x,unit_conv_tibble))
     }
     if((is.list(data_to_convert) | is.vector(data_to_convert)) & ("tbl" %in% class(data_to_convert)==F & "tbl_df" %in% class(data_to_convert)==F & "data.frame" %in% class(data_to_convert)==F))
     {
@@ -84,11 +87,11 @@ switch_units <- function(data_to_convert, units, conversion_factors){
 #'
 #' @examples
 #' list_to_convert <- c("kg", "sacks_50kg","other_unit",NA, NA, "wheel_barrows_100kg","litres")
-#' unit_conv_tibble <- as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"),
+#' unit_conv_tibble <- tibble::as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"),
 #'                                    conversion_factors= c(1,50,100,1)))
 #' replace_unit_list(list_to_convert,unit_conv_tibble)
 replace_unit_list <- function(list_to_convert, unit_conv_tibble){
-    converted_list <- list_to_convert %>% map(function(x) replace_unit_with_conversion_factor(x, unit_conv_tibble)) %>%
+    converted_list <- list_to_convert %>% purrr::map(function(x) replace_unit_with_conversion_factor(x, unit_conv_tibble)) %>%
         unlist()
     return(converted_list)
 }
@@ -106,7 +109,7 @@ replace_unit_list <- function(list_to_convert, unit_conv_tibble){
 #' @examples
 #'
 #' item_to_convert <- "wheel_barrows_100kg"
-#' unit_conv_tibble <- as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"), conversion_factors= c(1,50,100,1)))
+#' unit_conv_tibble <- tibble::as_tibble(list(unit=c("kg", "sacks_50kg", "wheel_barrows_100kg","litres"), conversion_factors= c(1,50,100,1)))
 #' replace_unit_with_conversion_factor(item_to_convert, unit_conv_tibble)
 
 replace_unit_with_conversion_factor <- function(item_to_convert, unit_conv_tibble){
