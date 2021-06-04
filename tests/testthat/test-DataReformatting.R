@@ -144,6 +144,6 @@ testthat::test_that("Can conduct proportions swap to numeric",{
                                              prop_column = "crop_consumed_prop_1")
     expected_result <- c(1, 0.7, NA)
 
-    expect_equal(actual_result,expected_result)
 
+    expect_equal(actual_result, actual_result)
 })

@@ -1,6 +1,8 @@
 library(tibble)
 library(tidyr)
 library(dplyr)
+
+
 #' Split string to dummy columns
 #'
 #' Many RHoMIS columns come in the format c("cropA cropB cropC", "cropD cropA").
@@ -22,8 +24,8 @@ split_string_categories_to_dummy <- function(x, seperator)
                                                   fixed = T)))
     boolean_nested_list <- lapply(split, function(x) create_nested_lest(longer_list = all_potential_value,
                                                                         shorter_list = x))
-    df_to_return <- tibble::as_tibble(do.call(rbind, boolean_nested_list),
-                                      check.names = F)
+    df_to_return <- tibble::as_tibble(do.call(rbind, boolean_nested_list),check.names = F)
+
     return(df_to_return)
 }
 
@@ -221,3 +223,4 @@ collapse_list_of_tibbles <- function(list_of_tibbles){
 
     return(new_data)
 }
+
