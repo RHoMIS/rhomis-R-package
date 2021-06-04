@@ -354,3 +354,19 @@ split_gender_data <- function(genderdf){
     return(genderControlDFs)
 }
 
+split_gender_columns <- function(column){
+    categories <- c("female_youth",
+                    "female_adult",
+                    "male_youth",
+                    "male_adult")
+    numberPeopleControlling <- proportion_control_per_person(column)
+
+    controlling_df <- sapply(categories, function(x) check_val_in_list(column,category=x))
+
+    prop_controlled <- tibble::as_tibble(controlling_df*numberPeopleControlling)
+
+    return(prop_controlled)
+
+}
+
+

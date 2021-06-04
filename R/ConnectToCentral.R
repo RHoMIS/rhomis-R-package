@@ -183,5 +183,4 @@ widen_individual_result <- function(individual_central_item, column_headers){
         dplyr::mutate_all(as.character)
 
     return(item_to_tibble)
-
 }
