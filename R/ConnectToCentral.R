@@ -2,6 +2,7 @@ library(httr)
 library(tibble)
 library(tidyr)
 library(dplyr)
+library(readr)
 library(magrittr)
 #' Get Email
 #'
@@ -22,10 +23,10 @@ get_email_token <- function(central_url, central_email, central_password){
     data_for_request<-list(email = central_email, password = central_password)
     h<-httr::handle(central_url) # Passing a handle with the request allows for the use of cookies. Facilitating multiple requests.
     central_response <- httr::POST(url = paste0(central_url, "/v1/sessions"),
-                             body = data_for_request,
-                             encode = "json",
-                             add_headers("Content-Type" = "application/json"),
-                             handle=h
+                                   body = data_for_request,
+                                   encode = "json",
+                                   add_headers("Content-Type" = "application/json"),
+                                   handle=h
     )
 
     central_response_content<-httr::content(central_response)
@@ -62,8 +63,8 @@ get_users <- function(central_url, central_email, central_password){
 
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/users"),
-         encode = "json",
-         add_headers("Authorization" = paste0("Bearer ",email_token))
+                                  encode = "json",
+                                  add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_users<-httr::content(central_response)
 
@@ -92,8 +93,8 @@ get_projects <- function(central_url, central_email, central_password){
 
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/projects"),
-                            encode = "json",
-                            add_headers("Authorization" = paste0("Bearer ",email_token))
+                                  encode = "json",
+                                  add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_projects <- httr::content(central_response)
     central_projects <- central_results_to_df(central_projects)
@@ -122,16 +123,105 @@ get_projects <- function(central_url, central_email, central_password){
 get_forms <- function(central_url, central_email, central_password, projectID){
 
     email_token <- get_email_token(central_url,central_email,central_password)
-    central_response <- httr:GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms"),
-                            encode = "json",
-                            add_headers("Authorization" = paste0("Bearer ",email_token))
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms"),
+                                  encode = "json",
+                                  add_headers("Authorization" = paste0("Bearer ",email_token))
     )
-    central_forms <- httr:content(central_response)
+    central_forms <- httr::content(central_response)
     central_forms <- central_results_to_df(central_forms)
     return(central_forms)
 }
 
 
+#' Get Submissions List
+#'
+#' A function for seeing which submissions have been made for
+#' a specific form, from a specific project
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The ID of the form containing the submissions you are looking at.
+#' To get the list of forms see the "get_forms" function.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_submissions_list <- function(central_url, central_email, central_password, projectID, formID){
+    email_token <- get_email_token(central_url,central_email,central_password)
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions"),
+                                  encode = "json",
+                                  add_headers("Authorization" = paste0("Bearer ",email_token))
+    )
+    central_submissions <- httr::content(central_response)
+    central_submissions <- central_results_to_df(central_submissions)
+    return(central_submissions)
+}
+
+#' Get Submission Data
+#'
+#' A function for retrieving all of the ODK data as a zip file
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The ID of the form containing the submissions you are looking at.
+#' To get the list of forms see the "get_forms" function.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_submission_data <- function(central_url, central_email, central_password, projectID, formID){
+    email_token <- get_email_token(central_url,central_email,central_password)
+    file_destination <- tempfile(fileext=".zip")
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions.csv.zip?attachments=false"),
+                                  encode = "json",
+                                  add_headers("Authorization" = paste0("Bearer ",email_token)),
+                                  write_disk(file_destination, overwrite = TRUE))
+
+    files <- unzip(file_destination)
+
+    core_data_file_name <- files[grepl("repeat",files)==F]
+    crop_repeat_file_name <- files[grepl("crop_repeat",files)==T]
+    livestock_repeat_file_name <- files[grepl("livestock_repeat",files)==T]
+    household_roster_repeat_file_name <- files[grepl("hh_pop_repeat",files)==T]
+    offfarm_income_repeat_file_name <- files[grepl("offfarm_income_repeat",files)==T]
+
+
+    #core_data <- suppressWarnings(readr::read_csv(files[1], col_types = cols()))
+    core <- suppressWarnings(readr::read_csv(core_data_file_name, col_types = cols()))
+    crop_repeat <- suppressWarnings(readr::read_csv(crop_repeat_file_name, col_types = cols()))
+    livestock_repeat <- suppressWarnings(readr::read_csv(livestock_repeat_file_name, col_types = cols()))
+    household_roster_repeat <- suppressWarnings(readr::read_csv(household_roster_repeat_file_name, col_types = cols()))
+    offfarm_income_repeat <- suppressWarnings(readr::read_csv(offfarm_income_repeat_file_name, col_types = cols()))
+
+    combined_data <- list("core"=core,
+                          "crop_repeat"=crop_repeat,
+                          "livestock_repeat"=livestock_repeat,
+                          "household_roster_repeat"=household_roster_repeat,
+                          "offfarm_income_repeat"=offfarm_income_repeat)
+
+    main_data_set <- combined_data$core
+    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$household_roster_repeat)
+    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$crop_repeat)
+    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$livestock_repeat)
+    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$offfarm_income_repeat)
+
+
+    colnames(main_data_set) <- tolower(clean_column_names(colnames(main_data_set), seperator = "-", repeat_columns = c("")))
+
+
+    file.remove(file_destination)
+
+    return(main_data_set)
+
+}
 
 
 #----------------------------------------------------------

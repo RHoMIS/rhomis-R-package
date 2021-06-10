@@ -2,7 +2,8 @@ library(tibble)
 library(dplyr)
 library(magrittr)
 library(tidyr)
-
+library(stringr)
+library(purrr)
 #' Find number of loops
 #'
 #' The RHoMIS data is arranged in a looping structure.
@@ -368,6 +369,47 @@ split_gender_columns <- function(column){
     return(prop_controlled)
 
 }
+
+#' Central Loops to RHoMIS Core
+#'
+#' ODK central data comes in a different format to the conventional RHoMIS
+#' datasets. This function allows us to convert the ODK central
+#' loops into the format needed for the indicator calculations to properly
+#' function
+#'
+#' @param central_core Core data downloaded from ODK central
+#' @param loop_data The sheet of loops which needs to be appended to the dataset
+#'
+#' @return
+#' @export
+#'
+#' @examples
+central_loops_to_rhomis_loops <- function(central_core, loop_data){
+    # The key for the loop data is "PARENT_KEY"
+    # The key for the core data is "KEY"
+    regex_pattern <- paste0("\\[+\\d+\\]") # Finding columns which start with "column_pattern_Integer"
+    repeat_numbers <- stringr::str_extract( loop_data$KEY, regex_pattern)
+    repeat_numbers <- as.numeric(gsub("[[:punct:]]","", repeat_numbers))
+    loop_data$rep_number <- repeat_numbers
+    number_of_loops_max <- max(repeat_numbers)
+
+    list_of_loops <- lapply(c(1:number_of_loops_max), function(x){tibble::as_tibble(loop_data[loop_data$rep_number==x,])})
+
+    for (index in 1:length(list_of_loops))
+    {
+        colnames(list_of_loops[[index]])[colnames(list_of_loops[[index]])!="PARENT_KEY"]<- paste0(colnames(list_of_loops[[index]])[colnames(list_of_loops[[index]])!="KEY"],"_",index)
+    }
+
+
+    rearranged_loop <- list_of_loops %>% purrr::reduce(dplyr::full_join, by="PARENT_KEY")
+
+    final_data <- dplyr::full_join(central_core,rearranged_loop, by=c("KEY"="PARENT_KEY"))
+    final_data <- final_data[grepl("PARENT_KEY_[[:digit:]]", colnames(final_data))==F]
+    final_data <- final_data[grepl("rep_number_[[:digit:]]", colnames(final_data))==F]
+
+    return(final_data)
+}
+
 
 
 

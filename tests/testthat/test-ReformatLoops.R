@@ -279,3 +279,79 @@ testthat::test_that("Gender split for individual column works",{
 
     })
 
+
+testthat::test_that("Can reformat ODK central loops into RHoMIS format",{
+
+    central_core <- tibble::as_tibble(list("random_col_1"=c("x","y"),
+                                           "random_col_2"=c("a","b"),
+                                           "KEY"=c("uuid:3dbc6436-45a5-438e-9213-e13fefa40eac",
+                                                   "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb")))
+
+    loop_data <- tibble::as_tibble(list("hh_pop_rep"=c(1,2,3,4,5,1,2),
+                                        "hh_pop_repeat_grp-hh_intro"=c("","","","","","",""),
+                                        "hh_pop_repeat_grp-person_number"=c("","","","","","",""),
+                                        "hh_pop_repeat_grp-person_gender"=c("M","F","F","F","M","M","F"),
+                                        "hh_pop_repeat_grp-person_age"=c(58,25,12,45,12,56,22),
+                                        "hh_pop_repeat_grp-head_person"=c("Y","N","N","N","N","Y","N"),
+                                        "PARENT_KEY"=c("uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb",
+                                                       "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb",
+                                                       "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb",
+                                                       "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb",
+                                                       "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb",
+                                                       "uuid:3dbc6436-45a5-438e-9213-e13fefa40eac",
+                                                       "uuid:3dbc6436-45a5-438e-9213-e13fefa40eac"),
+                                        "KEY"=c("uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hhpoprep[1]",
+                                                "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hhpoprep[2]",
+                                                "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hhpoprep[3]",
+                                                "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hhpoprep[4]",
+                                                "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hhpoprep[5]",
+                                                "uuid:3dbc6436-45a5-438e-9213-e13fefa40eac/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hhpoprep[1]",
+                                                "uuid:3dbc6436-45a5-438e-9213-e13fefa40eac/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hhpoprep[2]")))
+    expected_result <- tibble::as_tibble(list("random_col_1"=c("x","y"),
+                                              "random_col_2"=c("a","b"),
+                                              "KEY"=c("uuid:3dbc6436-45a5-438e-9213-e13fefa40eac",
+                                                      "uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb"),
+                                              "hh_pop_rep_1"=c(1,1),
+                                              "hh_pop_repeat_grp-hh_intro_1"=c("",""),
+                                              "hh_pop_repeat_grp-person_number_1"=c("",""),
+                                              "hh_pop_repeat_grp-person_gender_1"=c("M","M"),
+                                              "hh_pop_repeat_grp-person_age_1"=c(56,58),
+                                              "hh_pop_repeat_grp-head_person_1"=c("Y","Y"),
+
+                                              "hh_pop_rep_2"=c(2,2),
+                                              "hh_pop_repeat_grp-hh_intro_2"=c("",""),
+                                              "hh_pop_repeat_grp-person_number_2"=c("",""),
+                                              "hh_pop_repeat_grp-person_gender_2"=c("F","F"),
+                                              "hh_pop_repeat_grp-person_age_2"=c(22,25),
+                                              "hh_pop_repeat_grp-head_person_2"=c("N","N"),
+
+                                              "hh_pop_rep_3"=c(NA,3),
+                                              "hh_pop_repeat_grp-hh_intro_3"=c(NA,""),
+                                              "hh_pop_repeat_grp-person_number_3"=c(NA,""),
+                                              "hh_pop_repeat_grp-person_gender_3"=c(NA,"F"),
+                                              "hh_pop_repeat_grp-person_age_3"=c(NA,12),
+                                              "hh_pop_repeat_grp-head_person_3"=c(NA,"N"),
+
+                                              "hh_pop_rep_4"=c(NA,4),
+                                              "hh_pop_repeat_grp-hh_intro_4"=c(NA,""),
+                                              "hh_pop_repeat_grp-person_number_4"=c(NA,""),
+                                              "hh_pop_repeat_grp-person_gender_4"=c(NA,"F"),
+                                              "hh_pop_repeat_grp-person_age_4"=c(NA,45),
+                                              "hh_pop_repeat_grp-head_person_4"=c(NA,"N"),
+
+                                              "hh_pop_rep_5"=c(NA,5),
+                                              "hh_pop_repeat_grp-hh_intro_5"=c(NA,""),
+                                              "hh_pop_repeat_grp-person_number_5"=c(NA,""),
+                                              "hh_pop_repeat_grp-person_gender_5"=c(NA,"M"),
+                                              "hh_pop_repeat_grp-person_age_5"=c(NA,12),
+                                              "hh_pop_repeat_grp-head_person_5"=c(NA,"N")
+    ))
+
+
+    actual_result <- central_loops_to_rhomis_loops(central_core, loop_data)
+
+    expect_equal(actual_result,expected_result)
+
+
+})
+
