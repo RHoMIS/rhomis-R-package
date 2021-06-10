@@ -25,7 +25,7 @@ get_email_token <- function(central_url, central_email, central_password){
     central_response <- httr::POST(url = paste0(central_url, "/v1/sessions"),
                                    body = data_for_request,
                                    encode = "json",
-                                   add_headers("Content-Type" = "application/json"),
+                                   httr::add_headers("Content-Type" = "application/json"),
                                    handle=h
     )
 
@@ -64,7 +64,7 @@ get_users <- function(central_url, central_email, central_password){
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/users"),
                                   encode = "json",
-                                  add_headers("Authorization" = paste0("Bearer ",email_token))
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_users<-httr::content(central_response)
 
@@ -94,7 +94,7 @@ get_projects <- function(central_url, central_email, central_password){
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/projects"),
                                   encode = "json",
-                                  add_headers("Authorization" = paste0("Bearer ",email_token))
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_projects <- httr::content(central_response)
     central_projects <- central_results_to_df(central_projects)
@@ -125,7 +125,7 @@ get_forms <- function(central_url, central_email, central_password, projectID){
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms"),
                                   encode = "json",
-                                  add_headers("Authorization" = paste0("Bearer ",email_token))
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_forms <- httr::content(central_response)
     central_forms <- central_results_to_df(central_forms)
@@ -154,7 +154,7 @@ get_submissions_list <- function(central_url, central_email, central_password, p
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions"),
                                   encode = "json",
-                                  add_headers("Authorization" = paste0("Bearer ",email_token))
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_submissions <- httr::content(central_response)
     central_submissions <- central_results_to_df(central_submissions)
@@ -182,8 +182,8 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     file_destination <- tempfile(fileext=".zip")
     central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions.csv.zip?attachments=false"),
                                   encode = "json",
-                                  add_headers("Authorization" = paste0("Bearer ",email_token)),
-                                  write_disk(file_destination, overwrite = TRUE))
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
+                                  httr::write_disk(file_destination, overwrite = TRUE))
 
     files <- unzip(file_destination)
 
