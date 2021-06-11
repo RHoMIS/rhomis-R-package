@@ -270,49 +270,30 @@ crop_income_calculations <- function(data){
 
 }
 
+#' Crop Gender Calculations
+#'
+#' Adding the gendered information for crop consumed
+#' crop sold, and crop income. These have to already have been
+#' calculated in the dataset being used
+#'
+#' @param data RHoMIS data set conatining processed values for
+#' crop consumed, crop sold, and crop income
+#'
+#' @return
+#' @export
+#'
+#' @examples
 crop_gender_calculations <- function(data){
+# crop consumed calculations
+    data<-insert_gender_columns_in_core_data(data, original_column="crop_consumed_kg_per_year", control_column="crop_consume_control", loop_structure=T)
 
+# crop sold calculations
+    data<-insert_gender_columns_in_core_data(actual_result, original_column="crop_sold_kg_per_year", control_column="crop_who_control_revenue", loop_structure=T)
 
-
-    # Need to include merging for products sold
-    crop_sold_kg_per_year
-
+# crop income calculations
+    data<-insert_gender_columns_in_core_data(actual_result, original_column="crop_income_per_year", control_column="crop_who_control_revenue", loop_structure=T)
 
 return(data)
 
 }
 
-data <- tibble::as_tibble(list(
-    "crop_name_1"=c("maize","cassava","wheat"),
-    "crop_yield_1"=c(50,20,10),
-    "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
-    "crop_use_1"=c("eat","eat sell","eat sell feed_lvstk"),
-    "crop_consumed_1"=c(NA,"most","half"),
-    "crop_sold_1"=c(NA,"little","half"),
-    "crop_sold_income_1"=c(200,500,800),
-    "crop_sold_price_quantityunits_1"=c("price_per_kg","price_per_bag_50kg","price_per_quintal"),
-    "crop_who_control_revenue_1"=c("male_adult","male_adult female_adult",NA),
-    "crop_consume_control_1"=c(NA,"male_adult female_adult female_youth","male_youth"),
-
-    "crop_name_2"=c("wheat","maize","millet"),
-    "crop_yield_2"=c(12,8,NA),
-    "crop_yield_units_2"=c("kg","other_randome_unit","unit_not_registered"),
-    "crop_use_2"=c("eat sell","eat sell","eat sell"),
-    "crop_consumed_2"=c("most","half","underhalf"),
-    "crop_sold_2"=c("little","half","most"),
-    "crop_sold_income_2"=c(800,1000,800),
-    "crop_sold_price_quantityunits_2"=c("total_income_per_year","price_per_kg","price_per_bag_100kg"),
-    "crop_who_control_revenue_2"=c("male_adult","female_adult","male_adult"),
-    "crop_consume_control_2"=c("male_youth male_adult","female_youth female_adult","male_adult"),
-
-    "crop_name_3"=c("rice","other_vegetables",NA),
-    "crop_yield_3"=c(25,100,NA),
-    "crop_yield_units_3"=c("kg","cart_225kg",NA),
-    "crop_use_3"=c("sell","eat",NA),
-    "crop_consumed_3"=c(NA,NA,NA),
-    "crop_sold_3"=c(NA,NA,NA),
-    "crop_sold_income_3"=c(800,600,NA),
-    "crop_sold_price_quantityunits_3"=c("total_income_per_year","price_per_bag_45kg",NA),
-    "crop_who_control_revenue_3"=c("male_adult","female_adult",NA),
-    "crop_consume_control_3"=c("male_adult male_adult","female_adult female_adult",NA)
-))
