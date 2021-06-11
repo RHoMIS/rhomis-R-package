@@ -1,8 +1,0 @@
-hh_pop_rep_num,hh_pop_repeat_grp-hh_intro,hh_pop_repeat_grp-person_number,hh_pop_repeat_grp-person_gender,hh_pop_repeat_grp-person_age,hh_pop_repeat_grp-head_person,PARENT_KEY,KEY
-1,,,M,58,Y,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hh_pop_repeat[1]
-2,,,F,25,N,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hh_pop_repeat[2]
-3,,,F,12,N,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hh_pop_repeat[3]
-4,,,F,45,N,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hh_pop_repeat[4]
-5,,,M,12,N,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb,uuid:076bb740-3542-49ab-a6b2-e5efb70d76eb/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hh_pop_repeat[5]
-1,,,M,56,Y,uuid:3dbc6436-45a5-438e-9213-e13fefa40eac,uuid:3dbc6436-45a5-438e-9213-e13fefa40eac/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hh_pop_repeat[1]
-2,,,F,22,N,uuid:3dbc6436-45a5-438e-9213-e13fefa40eac,uuid:3dbc6436-45a5-438e-9213-e13fefa40eac/survey_grp/SECTION_HOUSEHOLD_INFO/householdpopulation/hh_pop_repeat[2]
