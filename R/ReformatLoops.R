@@ -355,6 +355,18 @@ split_gender_data <- function(genderdf){
     return(genderControlDFs)
 }
 
+#' Split Gender columns
+#'
+#' A function to split gender columns into multiple
+#' columns based on the different groups
+#'
+#'
+#' @param column The column that needs to be split
+#'
+#' @return
+#' @export
+#'
+#' @examples
 split_gender_columns <- function(column){
     categories <- c("female_youth",
                     "female_adult",
@@ -369,6 +381,73 @@ split_gender_columns <- function(column){
     return(prop_controlled)
 
 }
+
+
+#' Insert Gender Columns in Core Data
+#'
+#' Splitting a particular column in the RHoMIS
+#' data by the genders groups which control that resource
+#'
+#' @param data The original data set containing the numeric data
+#' and the gender control column used to split it
+#' @param original_column The original numeric column which
+#' needs to be split by gender
+#' @param control_column The column indicating the groups which are
+#' controlling a resource. Must include the values "male_adult","female_adult" etc...
+#' @param loop_structure Indicating whether or not the controlled
+#' resource is located within a loop structure. So far all gender control
+#' columns are located within this looping structure
+#'
+#' @return
+#' @export
+#'
+#' @examples
+insert_gender_columns_in_core_data <- function(data, original_column, control_column, loop_structure=F){
+
+    if (loop_structure==T){
+
+    number_of_loops <- find_number_of_loops(data,original_column)
+
+    original_columns_all <- paste0(original_column,"_",c(1:number_of_loops))
+    control_columns_all <- paste0(control_column,"_",c(1:number_of_loops))
+
+
+    control_split <- lapply(c(1:number_of_loops), function(x) tibble::as_tibble(data[[original_columns_all[x]]]*split_gender_columns(data[[control_columns_all[x]]])))
+    names(control_split)<- original_columns_all
+
+
+
+
+
+
+    control_split <- collapse_list_of_tibbles(control_split)
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=control_split,
+                                             new_column_name=paste0("female_youth_",original_column),
+                                             old_column_name=control_column,
+                                             loop_structure=T)
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=control_split,
+                                             new_column_name=paste0("male_youth_",original_column),
+                                             old_column_name=paste0("female_youth_",original_column),
+                                             loop_structure=T)
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=control_split,
+                                             new_column_name=paste0("female_adult_",original_column),
+                                             old_column_name=paste0("male_youth_",original_column),
+                                             loop_structure=T)
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=control_split,
+                                             new_column_name=paste0("male_adult_",original_column),
+                                             old_column_name=paste0("female_adult_",original_column),
+                                             loop_structure=T)
+    return(data)
+    }
+
+}
+
+
 
 #' Central Loops to RHoMIS Core
 #'

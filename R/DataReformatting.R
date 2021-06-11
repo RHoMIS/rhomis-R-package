@@ -169,8 +169,6 @@ add_column_after_specific_column <- function(data,new_data, new_column_name=NULL
 #' @examples
 proportions_calculation <- function(data, use,use_column, prop_column, loop_number=NULL){
 
-
-
     if(use!="sell"&use!="eat"&use!="feed_livestock"){
         stop("Invalid 'use' defined for crop proportions")
     }

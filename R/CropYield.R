@@ -272,37 +272,11 @@ crop_income_calculations <- function(data){
 
 crop_gender_calculations <- function(data){
 
-    number_of_loops <- find_number_of_loops(data,"crop_name")
-    crop_consumed_columns <- paste0("crop_consumed_kg_per_year","_",c(1:number_of_loops))
-    crop_control_consumed_columns <- paste0("crop_consume_control","_",c(1:number_of_loops))
 
-    crop_consume_control_split <- lapply(c(crop_control_consumed_columns), function(x) split_gender_columns(data[[x]]))
-    names(crop_consume_control_split)<- crop_control_consumed_columns
-
-    crop_consume_control_split <- collapse_list_of_tibbles(crop_consume_control_split)
-
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=crop_consume_control_split,
-                                             new_column_name="female_youth_crop_consume_control",
-                                             old_column_name="crop_consume_control",
-                                             loop_structure=T)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=crop_consume_control_split,
-                                             new_column_name="male_youth_crop_consume_control",
-                                             old_column_name="female_youth_crop_consume_control",
-                                             loop_structure=T)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=crop_consume_control_split,
-                                             new_column_name="female_adult_crop_consume_control",
-                                             old_column_name="male_youth_crop_consume_control",
-                                             loop_structure=T)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=crop_consume_control_split,
-                                             new_column_name="male_adult_crop_consume_control",
-                                             old_column_name="female_adult_crop_consume_control",
-                                             loop_structure=T)
 
     # Need to include merging for products sold
+    crop_sold_kg_per_year
+
 
 return(data)
 
