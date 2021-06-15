@@ -2,7 +2,7 @@
 % Please edit documentation in R/DataReformatting.R
 \name{proportions_calculation}
 \alias{proportions_calculation}
-\title{Crop Proportions for individual proportion types}
+\title{Proportions for individual proportion types}
 \usage{
 proportions_calculation(data, use, use_column, prop_column, loop_number = NULL)
 }

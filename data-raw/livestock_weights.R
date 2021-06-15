@@ -40,4 +40,5 @@ livestock_weights <- structure(list(animal = c("fish",
           row.names = c(NA, -18L),
           class = c("tbl_df", "tbl", "data.frame"))
 
+usethis::use_data(livestock_weights, overwrite = TRUE)
 

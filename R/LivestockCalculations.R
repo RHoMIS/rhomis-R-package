@@ -1,5 +1,6 @@
-
-
+library(tibble)
+library(magrittr)
+library(dplyr)
 
 #' Calculate Livestock Price
 #'
@@ -102,20 +103,18 @@ meat_amount_calculation <- function(data,
 #' @examples
 meat_uses <- function(data){
 
-
-
     number_of_loops <- find_number_of_loops(data, "meat_kg_per_year")
 
     meat_sold_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "meat_use", prop_column = "meat_sell_amount", loop_number = x))
     colnames(meat_sold_props_numeric) <- paste0("meat_sold_props_numeric","_",c(1:number_of_loops))
-        meat_sold_props_numeric<- tibble::as_tibble(meat_sold_props_numeric)
+    meat_sold_props_numeric<- tibble::as_tibble(meat_sold_props_numeric)
 
     data <- add_column_after_specific_column(data = data,
                                              new_data = meat_sold_props_numeric,
                                              new_column_name = "meat_sold_props_numeric",
                                              old_column_name = "meat_sell_amount",
                                              loop_structure =T
-                                             )
+    )
 
 
     meat_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "meat_use", prop_column = "meat_consumed_amount", loop_number = x))
@@ -130,6 +129,422 @@ meat_uses <- function(data){
 
     return(data)
 }
+
+#' Meat Sold and Consumed Calculation
+#'
+#' Calculate the amount of meat sold and consumed in kg.
+#' Note this only works if you have calculated the meat collected
+#' in kg.
+#'
+#' @param data Data containing "livestock_name", "meat_kg_per_year",
+#' "meat_sold_props_numeric","meat_consumed_props_numeric".
+#'
+#' @return
+#' @export
+#'
+#' @examples
+meat_sold_and_consumed_calculation <-function(data){
+
+    number_of_loops <- find_number_of_loops(data, name_column="livestock_name")
+    amount_columns <- paste0("meat_kg_per_year","_",c(1:number_of_loops))
+    sold_columns <- paste0("meat_sold_props_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amount of meat collected in kg. Calculate amounts collected before calculating amounts sold")
+    }
+    if (all(sold_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of meat sold. Calculate proportions sold before calculating amounts sold")
+    }
+
+    meat_amount_data <- data[amount_columns]
+    sold_prop_data <- data[sold_columns]
+
+    amount_sold_kg <- tibble::as_tibble(meat_amount_data*sold_prop_data)
+    colnames(amount_sold_kg) <- paste0("meat_sold_kg_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_sold_kg,
+                                             new_column_name="meat_sold_kg_per_year",
+                                             old_column_name="meat_sold_props_numeric",
+                                             loop_structure=T)
+
+
+    number_of_loops <- find_number_of_loops(data, name_column="livestock_name")
+    amount_columns <- paste0("meat_kg_per_year","_",c(1:number_of_loops))
+    consumed_columns <- paste0("meat_consumed_props_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amount of meat collected in kg. Calculate amounts collected before calculating amounts consumed")
+    }
+    if (all(consumed_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of meat consumed Calculate proportions consumed before calculating amounts consumed")
+    }
+
+    meat_amount_data <- data[amount_columns]
+    consumed_prop_data <- data[consumed_columns]
+
+    amount_consumed_kg <- tibble::as_tibble(meat_amount_data*consumed_prop_data)
+    colnames(amount_consumed_kg) <- paste0("meat_consumed_kg_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_consumed_kg,
+                                             new_column_name="meat_consumed_kg_per_year",
+                                             old_column_name="meat_consumed_props_numeric",
+                                             loop_structure=T)
+
+    return(data)
+
+}
+
+#' Meat price per kg
+#'
+#' Calculating the price of meat which was sold.
+#'
+#' @param data RHoMIS data including columns "meat_sold_kg_per_year" and "meat_sold_income".
+#'
+#' @return
+#' @export
+#'
+#' @examples
+meat_prices <- function(data){
+
+    number_of_loops <- find_number_of_loops(data, "meat_sold_income")
+    sold_income_columns <- paste0("meat_sold_income","_",c(1:number_of_loops))
+    sold_amount_columns <- paste0("meat_sold_kg_per_year","_",c(1:number_of_loops))
+    price_columns <-paste0("meat_price_per_kg","_",c(1:number_of_loops))
+
+    sold_income_data <- data[sold_income_columns]
+    sold_amount_data <- data[sold_amount_columns]
+
+    price_data <- sold_income_data/sold_amount_data
+    colnames(price_data) <- price_columns
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = price_data,
+                                             new_column_name = "meat_price_per_kg",
+                                             old_column_name = "meat_sold_income",
+                                             loop_structure = T)
+
+    return(data)
+}
+
+
+#' Milk amount calculations
+#'
+#' Calculating the amount of milk collected each year
+#'
+#' @param data The dataset containing livestock loops for RHoMIS
+#' @param milk_units The units for milk amounts
+#' @param milk_unit_conversions The conversions for each of these units to litres per year
+#'
+#' @return
+#' @export
+#'
+#' @examples
+milk_amount_calculations <- function(data,
+                                     milk_units = milk_amount_units$unit,
+                                     milk_unit_conversions = milk_amount_units$conversion_factor){
+
+
+
+    number_of_loops <- find_number_of_loops(data, "milk_amount_good_season")
+
+    milk_amount_good_season_columns <-paste0("milk_amount_good_season","_",c(1:number_of_loops))
+    milk_amount_bad_season_columns <-paste0("milk_amount_bad_season","_",c(1:number_of_loops))
+    milk_units_columns <-paste0("milk_units","_",c(1:number_of_loops))
+    milk_number_of_animals_milked_columns <-paste0("milk_number_animals_milked","_",c(1:number_of_loops))
+
+    milk_amount_good_season_data <- data[milk_amount_good_season_columns]
+    milk_amount_bad_season_data <- data[milk_amount_bad_season_columns]
+    milk_units_data <- data[milk_units_columns]
+    milk_number_of_animals_milked_data <- data[milk_number_of_animals_milked_columns]
+
+    # Changing units to numeric conversions
+    milk_units_data <- switch_units(milk_units_data, units = milk_units,conversion_factors = milk_unit_conversions)
+    milk_amount_conversions <- sapply(c(1:length(milk_units_data)), function(x) {
+        milk_swap_per_animal_units(units_column = milk_units_data[[x]],
+                                   number_of_animals_milked_column = milk_number_of_animals_milked_data[[x]])
+    })
+    colnames(milk_amount_conversions) <- paste0("milk_amount_units_numeric","_", c(1:number_of_loops))
+    milk_amount_conversions <- tibble::as_tibble(milk_amount_conversions) %>% dplyr::mutate_all(as.numeric)
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = milk_amount_conversions,
+                                             new_column_name = "milk_amount_units_numeric",
+                                             old_column_name = "milk_units",
+                                             loop_structure = T)
+
+
+    # Milk amounts good and bad season
+    milk_amount_good_season_litres_per_year <- tibble::as_tibble(milk_amount_good_season_data*milk_amount_conversions)
+    colnames(milk_amount_good_season_litres_per_year) <- paste0("milk_amount_good_season_litres_per_year","_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = milk_amount_good_season_litres_per_year,
+                                             new_column_name = "milk_amount_good_season_litres_per_year",
+                                             old_column_name = "milk_amount_good_season",
+                                             loop_structure = T)
+
+    milk_amount_bad_season_litres_per_year <- tibble::as_tibble(milk_amount_bad_season_data*milk_amount_conversions)
+    colnames(milk_amount_bad_season_litres_per_year) <- paste0("milk_amount_bad_season_litres_per_year","_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = milk_amount_bad_season_litres_per_year,
+                                             new_column_name = "milk_amount_bad_season_litres_per_year",
+                                             old_column_name = "milk_amount_bad_season",
+                                             loop_structure = T)
+    # Averaging for milk collected per year
+    milk_collected_litres_per_year <- sapply(c(1:length(milk_amount_good_season_litres_per_year)), function(x) {
+        average_good_and_bad_season(good_season_amount =milk_amount_good_season_litres_per_year[[x]] ,bad_season_amount = milk_amount_bad_season_litres_per_year[[x]])
+    })
+    colnames(milk_collected_litres_per_year) <- paste0("milk_collected_litres_per_year","_",c(1:number_of_loops))
+    milk_collected_litres_per_year <- tibble::as_tibble(milk_collected_litres_per_year)
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = milk_collected_litres_per_year,
+                                             new_column_name = "milk_collected_litres_per_year",
+                                             old_column_name = "milk_number_animals_milked",
+                                             loop_structure = T)
+
+    return(data)
+
+
+}
+
+
+#' Milk Proportions All
+#'
+#' A function to calculate the numeric proportions of milk
+#' sold and milk consumed
+#'
+#' @param data Data containing livestock loops necessary to calculate milk sold and consumed proportions
+#'
+#' @return
+#' @export
+#'
+#' @examples
+milk_proportions_all <- function(data){
+
+    number_of_loops <- find_number_of_loops(data, name_column = "milk_use")
+
+    milk_consumed_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "milk_use", prop_column = "milk_consumed_amount", loop_number = x))
+    colnames(milk_consumed_proportions_numeric)<-paste0("milk_consumed_prop_numeric","_",c(1:number_of_loops))
+    milk_consumed_proportions_numeric<-tibble::as_tibble(milk_consumed_proportions_numeric)
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=milk_consumed_proportions_numeric,
+                                             new_column_name="milk_consumed_prop_numeric",
+                                             old_column_name="milk_consumed_amount",
+                                             loop_structure=T)
+
+
+    milk_sold_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "milk_use", prop_column = "milk_sell_amount", loop_number = x))
+    colnames(milk_sold_proportions_numeric) <- paste0("milk_sold_prop_numeric","_",c(1:number_of_loops))
+    milk_sold_proportions_numeric<- tibble::as_tibble(milk_sold_proportions_numeric)
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=milk_sold_proportions_numeric,
+                                             new_column_name="milk_sold_prop_numeric",
+                                             old_column_name="milk_sell_amount",
+                                             loop_structure=T)
+
+    return(data)
+}
+
+milk_sold_and_consumed_calculations <- function(data){
+
+    number_of_loops <- find_number_of_loops(data, name_column="milk_sell_amount")
+    amount_columns <- paste0("milk_collected_litres_per_year","_",c(1:number_of_loops))
+    sold_columns <- paste0("milk_sold_prop_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amount of milk collected in litres Calculate amounts collected before calculating amounts sold")
+    }
+    if (all(sold_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of milk sold. Calculate proportions sold before calculating amounts sold")
+    }
+
+    milk_amount_data <- data[amount_columns]
+    sold_prop_data <- data[sold_columns]
+
+    amount_sold__litres <- tibble::as_tibble(milk_amount_data*sold_prop_data)
+    colnames(amount_sold__litres) <- paste0("milk_sold_litres_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_sold__litres,
+                                             new_column_name="milk_sold_litres_per_year",
+                                             old_column_name="milk_sold_prop_numeric",
+                                             loop_structure=T)
+
+
+    number_of_loops <- find_number_of_loops(data, name_column="milk_consumed_amount")
+    amount_columns <- paste0("milk_collected_litres_per_year","_",c(1:number_of_loops))
+    consumed_columns <- paste0("milk_consumed_prop_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amount of milk collected in kg. Calculate amounts collected before calculating amounts consumed")
+    }
+    if (all(consumed_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of milk consumed Calculate proportions consumed before calculating amounts consumed")
+    }
+
+    milk_amount_data <- data[amount_columns]
+    consumed_prop_data <- data[consumed_columns]
+
+    amount_consumed_litres <- tibble::as_tibble(milk_amount_data*consumed_prop_data)
+    colnames(amount_consumed_litres) <- paste0("milk_consumed_litres_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_consumed_litres,
+                                             new_column_name="milk_consumed_litres_per_year",
+                                             old_column_name="milk_consumed_prop_numeric",
+                                             loop_structure=T)
+
+    return(data)
+
+}
+
+#' Milk Income Calculations
+#'
+#' @param data Dataset containing all milk income information
+#' @param units The names of the units you hope to convert
+#' @param conversion_factors The conversion factors for these units
+#'
+#' @return
+#' @export
+#'
+#' @examples
+milk_income_calculations <- function(data, units=milk_price_time_units$unit, conversion_factors=milk_price_time_units$conversion_factor){
+
+
+    number_of_loops <- find_number_of_loops(data, "milk_sold_price_timeunits")
+
+    milk_price_units_columns <- paste0("milk_sold_price_timeunits","_",c(1:number_of_loops))
+    milk_sold_income_columns <- paste0("milk_sold_income","_",c(1:number_of_loops))
+    milk_sold_amount_columns <- paste0("milk_sold_litres_per_year","_",c(1:number_of_loops))
+
+    milk_price_unit_data <-data[milk_price_units_columns]
+    milk_sold_income_data <-data[milk_sold_income_columns]
+    milk_sold_amount_data <-data[milk_sold_amount_columns]
+
+    milk_income_conversions <- sapply(c(1:number_of_loops), function(x) {
+        milk_price_time_units_conversion(units_column = milk_price_unit_data[[x]],
+                                     sold_amount_column = milk_sold_amount_data[[x]],
+                                     units = units,
+                                     unit_conversions = conversion_factors)
+    })
+    colnames(milk_income_conversions) <- paste0("milk_income_conversions","_", c(1:number_of_loops))
+    milk_income_conversions <- tibble::as_tibble(milk_income_conversions)
+
+    milk_income_per_year <- tibble::as_tibble(milk_sold_income_data*milk_income_conversions)
+    colnames(milk_income_per_year) <- paste0("milk_sold_income_per_year","_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data = data,
+                                     new_data = milk_income_per_year,
+                                     new_column_name = "milk_sold_income_per_year",
+                                     old_column_name = "milk_sold_income",
+                                     loop_structure = T)
+
+    milk_price_columns <- paste0("milk_price_per_litre","_",c(1:number_of_loops))
+    milk_price_per_litre <-tibble::as_tibble(milk_income_per_year/milk_sold_amount_data)
+    colnames(milk_price_per_litre) <- milk_price_columns
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = milk_price_per_litre,
+                                             new_column_name = "milk_price_per_litre",
+                                             old_column_name = "milk_sold_income_per_year",
+                                             loop_structure = T)
+
+    return(data)
+
+}
+
+
+#' Milk Swap Per Animal Units
+#'
+#' Some of RHoMIS milk yields are based on yield per animal.
+#' This function converts yield per animal into a total milk yield.
+#'
+#'
+#' @param units_column The original column containing milk yield units
+#' @param number_of_animals_milked_column A column containing the number of animals
+#' milked.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+milk_swap_per_animal_units <-function(units_column, number_of_animals_milked_column){
+
+    units_column[which(units_column=="l/animal/day")] <- round(365*number_of_animals_milked_column[which(units_column=="l/animal/day")],2)
+    units_column[which(units_column=="per animal per week")] <- round((365/7)*number_of_animals_milked_column[which(units_column=="per animal per week")],2)
+    units_column[which(units_column=="0.3l/animal/day")] <- round((0.3*365)*number_of_animals_milked_column[which(units_column=="0.3l/animal/day")],2)
+
+    return(units_column)
+}
+
+#' Milk Price Time Units Conversion
+#'
+#' RHoMIS milk price units can come in both times and per
+#' litre units. This function goes
+#'
+#' @param units_column The columns containing the original units
+#' @param sold_amount_column The amounts of milk which was sold
+#' @param units A vector of units for which you have conversions
+#' @param unit_conversions Conversion factors for the units listed above
+#'
+#' @return
+#' @export
+#'
+#' @examples
+milk_price_time_units_conversion <- function(units_column, sold_amount_column, units,unit_conversions){
+
+    units_column <- switch_units(units_column,units = units, conversion_factors = unit_conversions)
+
+
+    numeric_values <- suppressWarnings(!is.na(as.numeric(units_column)))
+
+    converion_values <- units_column
+    converion_values[numeric_values]<- (1/as.numeric(units_column[numeric_values]))*sold_amount_column[numeric_values]
+
+    converion_values[which(converion_values=="day")] <- 365
+    converion_values[which(converion_values=="week")] <- 365/7
+    converion_values[which(converion_values=="month")] <- 365/28
+    converion_values[which(converion_values=="year")] <- 1
+
+    converion_values <- suppressWarnings(as.numeric(converion_values))
+
+    return(converion_values)
+}
+
+
+#' Calculate Average Milk Harvested Values
+#'
+#' Averaging yield for the good season and bad season
+#' Where one season is NA, we only use information for the season available.
+#' Where both seasons are NA, the final is calculated as NA
+#'
+#' @param good_season_amount Vector of good season yields
+#' @param bad_season_amount Vector of bad season yields
+#'
+#' @return
+#' @export
+#'
+#' @examples
+average_good_and_bad_season <- function(good_season_amount, bad_season_amount){
+    sum_data <- tibble::as_tibble(list(good_season_amount=good_season_amount,
+                                       bad_season_amount=bad_season_amount))
+    average_values <- rowMeans(sum_data,na.rm=T)
+    average_values[is.na(average_values)] <- NA
+
+    return(average_values)
+}
+
 
 
 

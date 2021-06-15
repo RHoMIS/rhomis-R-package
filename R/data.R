@@ -86,4 +86,26 @@
 "livestock_weights"
 
 
+#' Milk Amount Units
+#'
+#' Conversion factors for the amounts
+#' of milk collected
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"milk_amount_units"
+
+#' Milk Price Time Units
+#'
+#' Conversion factors for the price of
+#' milk, can both be a time or a per
+#' unit volume
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"milk_price_time_units"
 

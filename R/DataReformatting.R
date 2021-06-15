@@ -151,7 +151,7 @@ add_column_after_specific_column <- function(data,new_data, new_column_name=NULL
 }
 
 
-#' Crop Proportions for individual proportion types
+#' Proportions for individual proportion types
 #'
 #' A function for calculating the numeric proportions of crops which are sold,
 #' consumed, or fed to livestock
@@ -169,7 +169,7 @@ add_column_after_specific_column <- function(data,new_data, new_column_name=NULL
 #' @examples
 proportions_calculation <- function(data, use,use_column, prop_column, loop_number=NULL){
 
-    if(use!="sell"&use!="eat"&use!="feed_livestock"){
+    if(use!="sell"&use!="eat"&use!="feed_livestock" &use!="use"){
         stop("Invalid 'use' defined for crop proportions")
     }
 
