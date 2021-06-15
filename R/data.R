@@ -74,5 +74,16 @@
 #' @source NA
 "proportion_conversions"
 
+#' Livestock Weights
+#'
+#' Conversion factors for the weights
+#' of livestock when they are killed for meat
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"livestock_weights"
+
 
 
