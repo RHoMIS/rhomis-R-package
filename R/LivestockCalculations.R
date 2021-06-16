@@ -465,6 +465,27 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
 }
 
 
+#' EggsAmount Calculations
+#'
+#' Calculate the amount of eggs harvested
+#'
+#' @param data
+#' @param units
+#' @param unit_conversions
+#'
+#' @return
+#' @export
+#'
+#' @examples
+eggs_amount_calculations <- function(data, units, unit_conversions){
+
+
+
+
+
+}
+
+
 #' Milk Swap Per Animal Units
 #'
 #' Some of RHoMIS milk yields are based on yield per animal.

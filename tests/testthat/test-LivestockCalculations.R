@@ -489,3 +489,35 @@ testthat::test_that("Can correctly calculate milk incomes and prices",{
 
 
 
+testthat::test_that("Can correctl calculate the number of eggs collected",{
+
+  data <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                 "livestock_heads_chicken"=c(4,NA,5),
+                                 "livestock_heads_duck"=c(2,3,1),
+
+
+                                 "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                 "eggs_amount_good_1"=c(3,4,2),
+                                 "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                 "eggs_amount_bad_1"=c(2,NA,1),
+                                 "eggs_use_1"=c("use sell","use","sell"),
+                                 "eggs_consumed_amount_1"=c("little",NA,NA),
+                                 "eggs_sell_amount_1"=c("most",NA,NA),
+                                 "eggs_sold_income_1"=c(25,NA,20),
+                                 "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+
+                                 "livestock_name_2"=c("cattle","chicken","duck"),
+                                 "eggs_amount_good_2"=c(NA,5,2),
+                                 "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                 "eggs_amount_bad_2"=c(NA,3,1),
+                                 "eggs_use_2"=c(NA,"sell use","use sell"),
+                                 "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                 "eggs_sell_amount_2"=c(NA,"most","most"),
+                                 "eggs_sold_income_2"=c(NA,40,50),
+                                 "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+
+})
+
+
+

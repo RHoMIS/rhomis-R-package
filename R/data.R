@@ -109,3 +109,26 @@
 #' @source NA
 "milk_price_time_units"
 
+#' Eggs Amount Units
+#'
+#' Conversion factors for the amount
+#' of eggs collected over a particular unit of time
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"eggs_amount_units"
+
+#' Eggs Price Time Units
+#'
+#' Conversion factors for income from egg production
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"eggs_price_time_units"
+
+
+
