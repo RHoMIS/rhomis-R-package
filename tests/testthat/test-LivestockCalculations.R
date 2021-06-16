@@ -524,6 +524,13 @@ testthat::test_that("Can convert from pieces/animal/day egg unit to numeric conv
                                                "livestock_heads_chicken"=c(4,NA,NA,NA),
                                                "livestock_heads_duck"=c(3,6,NA,NA),
                                                "livestock_heads_otherpoultry"=c(7,NA,2,NA)))
+  expected_result <- c("365","2190","730",NA)
+  actual_result <- eggs_swap_per_animal_units(units_column = units_column,
+                             livestock_name_column = livestock_name_column,
+                             livestock_heads_df = livestock_heads_df)
+
+  testthat::expect_equal(actual_result, expected_result)
+
 
 })
 
@@ -590,5 +597,160 @@ testthat::test_that("Can correctly calculate the amount of eggs collected",{
 
 })
 
+
+testthat::test_that("Can calculate proportions for eggs sold and consumed",{
+  egg_weight_kg <- 0.0496
+
+  data <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                 "livestock_heads_chicken"=c(4,NA,5),
+                                 "livestock_heads_duck"=c(2,3,1),
+
+                                 "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                 "eggs_amount_good_1"=c(3,4,2),
+                                 "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
+                                 "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                 "eggs_amount_bad_1"=c(2,NA,1),
+                                 "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
+                                 "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                 "eggs_use_1"=c("use sell","use","sell"),
+                                 "eggs_consumed_amount_1"=c("little",NA,NA),
+                                 "eggs_sell_amount_1"=c("most",NA,NA),
+                                 "eggs_sold_income_1"=c(25,NA,20),
+                                 "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+
+                                 "livestock_name_2"=c("cattle","chicken","duck"),
+                                 "eggs_amount_good_2"=c(NA,5,2),
+                                 "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
+                                 "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                 "eggs_amount_bad_2"=c(NA,3,1),
+                                 "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
+                                 "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
+                                 "eggs_use_2"=c(NA,"sell use","use sell"),
+                                 "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                 "eggs_sell_amount_2"=c(NA,"most","most"),
+                                 "eggs_sold_income_2"=c(NA,40,50),
+                                 "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+  expected_result <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                            "livestock_heads_chicken"=c(4,NA,5),
+                                            "livestock_heads_duck"=c(2,3,1),
+
+                                            "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                            "eggs_amount_good_1"=c(3,4,2),
+                                            "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
+                                            "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                            "eggs_amount_bad_1"=c(2,NA,1),
+                                            "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
+                                            "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                            "eggs_use_1"=c("use sell","use","sell"),
+                                            "eggs_consumed_amount_1"=c("little",NA,NA),
+                                            "eggs_consumed_prop_numeric_1"=c(0.1,1,NA),
+                                            "eggs_sell_amount_1"=c("most",NA,NA),
+                                            "eggs_sold_prop_numeric_1"=c(0.7,NA,1),
+                                            "eggs_sold_income_1"=c(25,NA,20),
+                                            "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+
+                                            "livestock_name_2"=c("cattle","chicken","duck"),
+                                            "eggs_amount_good_2"=c(NA,5,2),
+                                            "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
+                                            "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                            "eggs_amount_bad_2"=c(NA,3,1),
+                                            "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
+                                            "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
+                                            "eggs_use_2"=c(NA,"sell use","use sell"),
+                                            "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                            "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
+                                            "eggs_sell_amount_2"=c(NA,"most","most"),
+                                            "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
+                                            "eggs_sold_income_2"=c(NA,40,50),
+                                            "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+
+actual_result <- eggs_proportions_all(data)
+
+testthat::expect_equal(actual_result, expected_result)
+})
+
+
+testthat::test_that("Can calculate the amounts of eggs sold and consumed in kg",{
+  egg_weight_kg <- 0.0496
+
+  data <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                            "livestock_heads_chicken"=c(4,NA,5),
+                                            "livestock_heads_duck"=c(2,3,1),
+
+                                            "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                            "eggs_amount_good_1"=c(3,4,2),
+                                            "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
+                                            "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                            "eggs_amount_bad_1"=c(2,NA,1),
+                                            "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
+                                            "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                            "eggs_use_1"=c("use sell","use","sell"),
+                                            "eggs_consumed_amount_1"=c("little",NA,NA),
+                                            "eggs_consumed_prop_numeric_1"=c(0.1,1,NA),
+                                            "eggs_sell_amount_1"=c("most",NA,NA),
+                                            "eggs_sold_prop_numeric_1"=c(0.7,NA,1),
+                                            "eggs_sold_income_1"=c(25,NA,20),
+                                            "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+
+                                            "livestock_name_2"=c("cattle","chicken","duck"),
+                                            "eggs_amount_good_2"=c(NA,5,2),
+                                            "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
+                                            "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                            "eggs_amount_bad_2"=c(NA,3,1),
+                                            "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
+                                            "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
+                                            "eggs_use_2"=c(NA,"sell use","use sell"),
+                                            "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                            "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
+                                            "eggs_sell_amount_2"=c(NA,"most","most"),
+                                            "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
+                                            "eggs_sold_income_2"=c(NA,40,50),
+                                            "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+  expected_result <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                 "livestock_heads_chicken"=c(4,NA,5),
+                                 "livestock_heads_duck"=c(2,3,1),
+
+                                 "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                 "eggs_amount_good_1"=c(3,4,2),
+                                 "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
+                                 "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                 "eggs_amount_bad_1"=c(2,NA,1),
+                                 "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
+                                 "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                 "eggs_use_1"=c("use sell","use","sell"),
+                                 "eggs_consumed_amount_1"=c("little",NA,NA),
+                                 "eggs_consumed_prop_numeric_1"=c(0.1,1,NA),
+                                 "eggs_consumed_kg_per_year_1"=c((0.1*egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                 "eggs_sell_amount_1"=c("most",NA,NA),
+                                 "eggs_sold_prop_numeric_1"=c(0.7,NA,1),
+                                 "eggs_sold_kg_per_year_1"=c((0.7*egg_weight_kg*3*365*egg_weight_kg*2*365)/2,NA,NA),
+                                 "eggs_sold_income_1"=c(25,NA,20),
+                                 "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+
+                                 "livestock_name_2"=c("cattle","chicken","duck"),
+                                 "eggs_amount_good_2"=c(NA,5,2),
+                                 "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
+                                 "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                 "eggs_amount_bad_2"=c(NA,3,1),
+                                 "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
+                                 "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*365)/2),
+                                 "eggs_use_2"=c(NA,"sell use","use sell"),
+                                 "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                 "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
+                                 "eggs_consumed_kg_per_year_2"=c(NA,NA,0.2*(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
+                                 "eggs_sell_amount_2"=c(NA,"most","most"),
+                                 "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
+                                 "eggs_sold_kg_per_year_2"=c(NA,NA,(0.7*egg_weight_kg*1*2*365*egg_weight_kg*365)/2),
+                                 "eggs_sold_income_2"=c(NA,40,50),
+                                 "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+  actual_result <- eggs_sold_and_consumed_calculations(data)
+
+  testthat::expect_equal(actual_result, expected_result)
+
+})
 
 

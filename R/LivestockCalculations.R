@@ -353,6 +353,17 @@ milk_proportions_all <- function(data){
     return(data)
 }
 
+#' Milk Sold and Consumed
+#'
+#' Function to calculate the amounts of milk sold
+#' and consumed in litres.
+#'
+#' @param data RHoMIS data including livestock loop information
+#'
+#' @return
+#' @export
+#'
+#' @examples
 milk_sold_and_consumed_calculations <- function(data){
 
     number_of_loops <- find_number_of_loops(data, name_column="milk_sell_amount")
@@ -539,11 +550,113 @@ eggs_amount_calculations <- function(data, units=eggs_amount_units$unit, unit_co
                                              loop_structure = T)
 
     return(data)
+}
+
+#' Eggs Proportions All
+#'
+#' A function for calculating the proportions of
+#' eggs and consumed
+#'
+#' @param data The RHoMIS data including livestock loops and
+#' livestock heads data
+#'
+#' @return
+#' @export
+#'
+#' @examples
+eggs_proportions_all <- function(data){
+
+    number_of_loops <- find_number_of_loops(data, name_column = "eggs_use")
+
+    egg_consumed_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "eggs_use", prop_column = "eggs_consumed_amount", loop_number = x))
+    colnames(egg_consumed_proportions_numeric)<-paste0("eggs_consumed_prop_numeric","_",c(1:number_of_loops))
+    egg_consumed_proportions_numeric<-tibble::as_tibble(egg_consumed_proportions_numeric)
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=egg_consumed_proportions_numeric,
+                                             new_column_name="eggs_consumed_prop_numeric",
+                                             old_column_name="eggs_consumed_amount",
+                                             loop_structure=T)
+
+
+    egg_sold_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "eggs_use", prop_column = "eggs_sell_amount", loop_number = x))
+    colnames(egg_sold_proportions_numeric) <- paste0("eggs_sold_prop_numeric","_",c(1:number_of_loops))
+    egg_sold_proportions_numeric<- tibble::as_tibble(egg_sold_proportions_numeric)
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=egg_sold_proportions_numeric,
+                                             new_column_name="eggs_sold_prop_numeric",
+                                             old_column_name="eggs_sell_amount",
+                                             loop_structure=T)
+
+    return(data)
+}
 
 
 
+#' Eggs Sold and Consumed Calculations
+#'
+#' Function for calculating the amounts of eggs sold and consumed
+#'
+#' @param data Data containing livestock loops to calculate the amounts of
+#' egg sold and consumed
+#'
+#' @return
+#' @export
+#'
+#' @examples
+eggs_sold_and_consumed_calculations <- function(data){
+
+    number_of_loops <- find_number_of_loops(data, name_column="eggs_sell_amount")
+    amount_columns <- paste0("eggs_collected_kg_per_year","_",c(1:number_of_loops))
+    sold_columns <- paste0("eggs_sold_prop_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amount of eggs collected in kg Calculate amounts collected before calculating amounts sold")
+    }
+    if (all(sold_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of eggs sold. Calculate proportions sold before calculating amounts sold")
+    }
+
+    eggs_amount_data <- data[amount_columns]
+    sold_prop_data <- data[sold_columns]
+
+    amount_sold_kg <- tibble::as_tibble(eggs_amount_data*sold_prop_data)
+    colnames(amount_sold_kg) <- paste0("eggs_sold_kg_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_sold_kg,
+                                             new_column_name="eggs_sold_kg_per_year",
+                                             old_column_name="eggs_sold_prop_numeric",
+                                             loop_structure=T)
 
 
+    number_of_loops <- find_number_of_loops(data, name_column="eggs_consumed_amount")
+    amount_columns <- paste0("eggs_collected_kg_per_year","_",c(1:number_of_loops))
+    consumed_columns <- paste0("eggs_consumed_prop_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amount of milk collected in kg. Calculate amounts collected before calculating amounts consumed")
+    }
+    if (all(consumed_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of milk consumed Calculate proportions consumed before calculating amounts consumed")
+    }
+
+    eggs_amount_data <- data[amount_columns]
+    consumed_prop_data <- data[consumed_columns]
+
+    amount_consumed_kg <- tibble::as_tibble(eggs_amount_data*consumed_prop_data)
+    colnames(amount_consumed_kg) <- paste0("eggs_consumed_kg_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_consumed_kg,
+                                             new_column_name="eggs_consumed_kg_per_year",
+                                             old_column_name="eggs_consumed_prop_numeric",
+                                             loop_structure=T)
+
+    return(data)
 }
 
 
