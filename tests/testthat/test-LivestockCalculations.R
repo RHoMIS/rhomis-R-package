@@ -443,58 +443,95 @@ testthat::test_that("Can correctly calculate milk incomes and prices",{
                                  "milk_sold_price_timeunits_2"=c(NA,NA,"month")))
 
   expected_result <- tibble::as_tibble(list("milk_amount_good_season_1"=c(0.5,2,1),
-                         "milk_amount_good_season_litres_per_year_1"=c(182.5,208.5714,438),
-                         "milk_units_1"=c("l/day","per animal per week","0.3l/animal/day"),
-                         "milk_amount_bad_season_1"=c(0.25,NA,0.75),
-                         "milk_amount_bad_season_litres_per_year_1"=c(91.25,NA,328.5),
-                         "milk_number_animals_milked_1"=c(3,2,4),
-                         "milk_collected_litres_per_year_1"=c(136.875,208.5714,383.25),
-                         "milk_use_1"=c("use","use sell","sell"),
-                         "milk_consumed_amount_1"=c(NA,"little",NA),
-                         "milk_consumed_prop_numeric_1"=c(1,0.1,NA),
-                         "milk_consumed_litres_per_year_1"=c(136.875,20.85714,NA),
-                         "milk_sell_amount_1"=c(NA,"most",NA),
-                         "milk_sold_prop_numeric_1"=c(NA,0.7,1),
-                         "milk_sold_litres_per_year_1"=c(NA,146,383.25),
-                         "milk_sold_income_1"=c(NA,10,30),
-                         "milk_sold_income_per_year_1"=c(NA,10*365/7,30*383.25),
-                         "milk_price_per_litre_1"=c(NA,10*365/(7*146),30*383.25/383.25),
-                         "milk_sold_price_timeunits_1"=c(NA,"week","litre"),
+                                            "milk_amount_good_season_litres_per_year_1"=c(182.5,208.5714,438),
+                                            "milk_units_1"=c("l/day","per animal per week","0.3l/animal/day"),
+                                            "milk_amount_bad_season_1"=c(0.25,NA,0.75),
+                                            "milk_amount_bad_season_litres_per_year_1"=c(91.25,NA,328.5),
+                                            "milk_number_animals_milked_1"=c(3,2,4),
+                                            "milk_collected_litres_per_year_1"=c(136.875,208.5714,383.25),
+                                            "milk_use_1"=c("use","use sell","sell"),
+                                            "milk_consumed_amount_1"=c(NA,"little",NA),
+                                            "milk_consumed_prop_numeric_1"=c(1,0.1,NA),
+                                            "milk_consumed_litres_per_year_1"=c(136.875,20.85714,NA),
+                                            "milk_sell_amount_1"=c(NA,"most",NA),
+                                            "milk_sold_prop_numeric_1"=c(NA,0.7,1),
+                                            "milk_sold_litres_per_year_1"=c(NA,146,383.25),
+                                            "milk_sold_income_1"=c(NA,10,30),
+                                            "milk_sold_income_per_year_1"=c(NA,10*365/7,30*383.25),
+                                            "milk_price_per_litre_1"=c(NA,10*365/(7*146),30*383.25/383.25),
+                                            "milk_sold_price_timeunits_1"=c(NA,"week","litre"),
 
-                         "milk_amount_good_season_2"=c(NA,NA,1.2),
-                         "milk_amount_good_season_litres_per_year_2"=c(NA,NA,131.4),
-                         "milk_units_2"=c(NA,NA,"0.3l/day"),
-                         "milk_amount_bad_season_2"=c(NA,NA,1.5),
-                         "milk_amount_bad_season_litres_per_year_2"=c(NA,NA,164.25),
-                         "milk_number_animals_milked_2"=c(NA,NA,1.25),
-                         "milk_collected_litres_per_year_2"=c(NA,NA,147.825),
-                         "milk_use_2"=c(NA,NA,"sell use"),
-                         "milk_consumed_amount_2"=c(NA,NA,"half"),
-                         "milk_consumed_prop_numeric_2"=c(NA,NA,0.5),
-                         "milk_consumed_litres_per_year_2"=c(NA,NA,73.9125),
-                         "milk_sell_amount_2"=c(NA,NA,"half"),
-                         "milk_sold_prop_numeric_2"=c(NA,NA,0.5),
-                         "milk_sold_litres_per_year_2"=c(NA,NA,73.9125),
-                         "milk_sold_income_2"=c(NA,NA,20),
-                         "milk_sold_income_per_year_2"=c(NA,NA,20*365/28),
-                         "milk_price_per_litre_2"=c(NA,NA,20*365/(28*73.9125)),
-                         "milk_sold_price_timeunits_2"=c(NA,NA,"month")
+                                            "milk_amount_good_season_2"=c(NA,NA,1.2),
+                                            "milk_amount_good_season_litres_per_year_2"=c(NA,NA,131.4),
+                                            "milk_units_2"=c(NA,NA,"0.3l/day"),
+                                            "milk_amount_bad_season_2"=c(NA,NA,1.5),
+                                            "milk_amount_bad_season_litres_per_year_2"=c(NA,NA,164.25),
+                                            "milk_number_animals_milked_2"=c(NA,NA,1.25),
+                                            "milk_collected_litres_per_year_2"=c(NA,NA,147.825),
+                                            "milk_use_2"=c(NA,NA,"sell use"),
+                                            "milk_consumed_amount_2"=c(NA,NA,"half"),
+                                            "milk_consumed_prop_numeric_2"=c(NA,NA,0.5),
+                                            "milk_consumed_litres_per_year_2"=c(NA,NA,73.9125),
+                                            "milk_sell_amount_2"=c(NA,NA,"half"),
+                                            "milk_sold_prop_numeric_2"=c(NA,NA,0.5),
+                                            "milk_sold_litres_per_year_2"=c(NA,NA,73.9125),
+                                            "milk_sold_income_2"=c(NA,NA,20),
+                                            "milk_sold_income_per_year_2"=c(NA,NA,20*365/28),
+                                            "milk_price_per_litre_2"=c(NA,NA,20*365/(28*73.9125)),
+                                            "milk_sold_price_timeunits_2"=c(NA,NA,"month")
   ))
 
   actual_result <-milk_income_calculations(data)
 
   expect_equal(actual_result, expected_result, tolerance = 0.001)
 
-  })
+})
 
 
 
-testthat::test_that("Can correctl calculate the number of eggs collected",{
+testthat::test_that("Can match livestock heads to livestock names in loops",{
+  livestock_name_column <- c("chicken",
+                             "duck",
+                             "otherpoultry",
+                             "duck",
+                             "random_animal")
 
+  livestock_heads_df <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,NA,NA,4,NA),
+                                               "livestock_heads_chicken"=c(4,NA,NA,NA,2),
+                                               "livestock_heads_duck"=c(3,6,NA,NA,5),
+                                               "livestock_heads_otherpoultry"=c(7,NA,2,NA,1)))
+
+
+  expected_result <- c(4,6,2,NA,NA)
+
+  actual_result <-identify_number_of_heads_for_livestock_loops(livestock_name_column,livestock_heads_df)
+
+  testthat::expect_equal(actual_result, expected_result)
+})
+
+
+testthat::test_that("Can convert from pieces/animal/day egg unit to numeric conversion",{
+  units_column <- c("365",
+                    "pieces/animal/day",
+                    "pieces/animal/day",
+                    NA )
+  livestock_name_column <- c("chicken",
+                             "duck",
+                             "otherpoultry",
+                             "duck")
+
+  livestock_heads_df <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,NA,NA,4),
+                                               "livestock_heads_chicken"=c(4,NA,NA,NA),
+                                               "livestock_heads_duck"=c(3,6,NA,NA),
+                                               "livestock_heads_otherpoultry"=c(7,NA,2,NA)))
+
+})
+
+testthat::test_that("Can correctly calculate the amount of eggs collected",{
+  egg_weight_kg <- 0.0496
   data <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
                                  "livestock_heads_chicken"=c(4,NA,5),
                                  "livestock_heads_duck"=c(2,3,1),
-
 
                                  "livestock_name_1"=c("chicken","duck","otherpoultry"),
                                  "eggs_amount_good_1"=c(3,4,2),
@@ -516,6 +553,40 @@ testthat::test_that("Can correctl calculate the number of eggs collected",{
                                  "eggs_sold_income_2"=c(NA,40,50),
                                  "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
 
+  expected_result <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                            "livestock_heads_chicken"=c(4,NA,5),
+                                            "livestock_heads_duck"=c(2,3,1),
+
+                                            "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                            "eggs_amount_good_1"=c(3,4,2),
+                                            "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
+                                            "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                            "eggs_amount_bad_1"=c(2,NA,1),
+                                            "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
+                                            "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365+egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                            "eggs_use_1"=c("use sell","use","sell"),
+                                            "eggs_consumed_amount_1"=c("little",NA,NA),
+                                            "eggs_sell_amount_1"=c("most",NA,NA),
+                                            "eggs_sold_income_1"=c(25,NA,20),
+                                            "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+
+                                            "livestock_name_2"=c("cattle","chicken","duck"),
+                                            "eggs_amount_good_2"=c(NA,5,2),
+                                            "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
+                                            "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                            "eggs_amount_bad_2"=c(NA,3,1),
+                                            "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
+                                            "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365+egg_weight_kg*1*1*365)/2),
+                                            "eggs_use_2"=c(NA,"sell use","use sell"),
+                                            "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                            "eggs_sell_amount_2"=c(NA,"most","most"),
+                                            "eggs_sold_income_2"=c(NA,40,50),
+                                            "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+
+  actual_result <- eggs_amount_calculations(data = data)
+
+  testthat::expect_equal(actual_result,expected_result)
 
 })
 

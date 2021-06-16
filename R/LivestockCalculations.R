@@ -435,9 +435,9 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
 
     milk_income_conversions <- sapply(c(1:number_of_loops), function(x) {
         milk_price_time_units_conversion(units_column = milk_price_unit_data[[x]],
-                                     sold_amount_column = milk_sold_amount_data[[x]],
-                                     units = units,
-                                     unit_conversions = conversion_factors)
+                                         sold_amount_column = milk_sold_amount_data[[x]],
+                                         units = units,
+                                         unit_conversions = conversion_factors)
     })
     colnames(milk_income_conversions) <- paste0("milk_income_conversions","_", c(1:number_of_loops))
     milk_income_conversions <- tibble::as_tibble(milk_income_conversions)
@@ -446,10 +446,10 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
     colnames(milk_income_per_year) <- paste0("milk_sold_income_per_year","_",c(1:number_of_loops))
 
     data <- add_column_after_specific_column(data = data,
-                                     new_data = milk_income_per_year,
-                                     new_column_name = "milk_sold_income_per_year",
-                                     old_column_name = "milk_sold_income",
-                                     loop_structure = T)
+                                             new_data = milk_income_per_year,
+                                             new_column_name = "milk_sold_income_per_year",
+                                             old_column_name = "milk_sold_income",
+                                             loop_structure = T)
 
     milk_price_columns <- paste0("milk_price_per_litre","_",c(1:number_of_loops))
     milk_price_per_litre <-tibble::as_tibble(milk_income_per_year/milk_sold_amount_data)
@@ -477,11 +477,129 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
 #' @export
 #'
 #' @examples
-eggs_amount_calculations <- function(data, units, unit_conversions){
+eggs_amount_calculations <- function(data, units=eggs_amount_units$unit, unit_conversions=eggs_amount_units$conversion_factor){
+
+    egg_weight_kg <- 0.0496
+    number_of_loops <- find_number_of_loops(data, "eggs_amount_good")
+
+    eggs_amount_good_season_columns <-paste0("eggs_amount_good","_",c(1:number_of_loops))
+    eggs_amount_bad_season_columns <-paste0("eggs_amount_bad","_",c(1:number_of_loops))
+    eggs_units_columns <-paste0("eggs_units","_",c(1:number_of_loops))
+    livestock_heads_columns <- grep("livestock_heads", colnames(data), value=T)
+    livestock_names_columns <- paste0("livestock_name","_",c(1:number_of_loops))
+
+
+    eggs_amount_good_season_data <- data[eggs_amount_good_season_columns]
+    eggs_amount_bad_season_data <- data[eggs_amount_bad_season_columns]
+    eggs_units_data <- data[eggs_units_columns]
+    livestock_heads_data <- data[livestock_heads_columns]
+    livestock_names_data <- data[livestock_names_columns]
+
+    # Changing units to numeric conversions
+    eggs_units_data <- switch_units(eggs_units_data, units = units,conversion_factors = unit_conversions)
+    eggs_amount_conversions <- sapply(c(1:length(eggs_units_data)), function(x) {
+        eggs_swap_per_animal_units(units_column = eggs_units_data[[x]],
+                                   livestock_name_column = livestock_names_data[[x]],
+                                   livestock_heads_df = livestock_heads_data)
+    })%>% magrittr::set_colnames(paste0("eggs_amount_units_numeric","_",c(1:number_of_loops))) %>%
+        tibble::as_tibble() %>%
+        dplyr::mutate_all(as.numeric)
+
+    eggs_amount_conversions_kg <- eggs_amount_conversions*egg_weight_kg
+
+    # eggs amounts good and bad season
+    eggs_amount_good_season_kg_per_year <- tibble::as_tibble(eggs_amount_good_season_data*eggs_amount_conversions_kg)
+    colnames(eggs_amount_good_season_kg_per_year) <- paste0("eggs_amount_good_season_kg_per_year","_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = eggs_amount_good_season_kg_per_year,
+                                             new_column_name = "eggs_amount_good_season_kg_per_year",
+                                             old_column_name = "eggs_amount_good",
+                                             loop_structure = T)
+
+    eggs_amount_bad_season_kg_per_year <- tibble::as_tibble(eggs_amount_bad_season_data*eggs_amount_conversions_kg)
+    colnames(eggs_amount_bad_season_kg_per_year) <- paste0("eggs_amount_bad_season_kg_per_year","_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = eggs_amount_bad_season_kg_per_year,
+                                             new_column_name = "eggs_amount_bad_season_kg_per_year",
+                                             old_column_name = "eggs_amount_bad",
+                                             loop_structure = T)
+    # Averaging for eggs collected per year
+    eggs_collected_kg_per_year <- sapply(c(1:length(eggs_amount_good_season_kg_per_year)), function(x) {
+        average_good_and_bad_season(good_season_amount =eggs_amount_good_season_kg_per_year[[x]] ,bad_season_amount = eggs_amount_bad_season_kg_per_year[[x]])
+    })
+    colnames(eggs_collected_kg_per_year) <- paste0("eggs_collected_kg_per_year","_",c(1:number_of_loops))
+    eggs_collected_kg_per_year <- tibble::as_tibble(eggs_collected_kg_per_year)
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = eggs_collected_kg_per_year,
+                                             new_column_name = "eggs_collected_kg_per_year",
+                                             old_column_name = "eggs_amount_bad_season_kg_per_year",
+                                             loop_structure = T)
+
+    return(data)
 
 
 
 
+
+}
+
+
+#' Eggs Swap per Animal Units
+#'
+#' @param units_column A vector containing the units to be converted
+#' @param livestock_name_column A vector of livestock names
+#' @param livestock_heads_df A tibble of number of livestock heads
+#' with column names "livestock_heads_cattle","livestock_heads_chicken" etc...
+#'
+#' @return
+#' @export
+#'
+#' @examples
+eggs_swap_per_animal_units <-function(units_column, livestock_name_column,livestock_heads_df){
+
+    number_of_heads <- identify_number_of_heads_for_livestock_loops(livestock_name_column,livestock_heads_df)
+
+    subset_using_per_animal_per_day <- units_column=="pieces/animal/day"
+    subset_using_per_animal_per_day[is.na(subset_using_per_animal_per_day)] <- FALSE
+    units_column[subset_using_per_animal_per_day] <- 365*number_of_heads[subset_using_per_animal_per_day]
+
+    return(units_column)
+}
+
+
+#' Identify Number of Livestock Heads in Loops
+#'
+#' Livestock heads information is collected seperately
+#' the livestock loops. Howver in some cases, for example in
+#' the eggs_amount calculations, it is useful to know the livestock heads
+#' during the loops. This function allows us to do so
+#'
+#' @param livestock_name_column A vector of livestock names
+#' @param livestock_heads_df A tibble of livestock head nunbers
+#'
+#' @return
+#' @export
+#'
+#' @examples
+identify_number_of_heads_for_livestock_loops <- function(livestock_name_column, livestock_heads_df){
+
+    colnames(livestock_heads_df) <- gsub("livestock_heads_","",colnames(livestock_heads_df))
+
+    number_of_animals <- sapply(c(1:length(livestock_name_column)), function(x) {
+        if (livestock_name_column[x]%in%colnames(livestock_heads_df))
+        {
+            return(livestock_heads_df[x,livestock_name_column[x]])
+        }else{
+            return(NA)
+        }
+    }) %>%
+        unlist() %>%
+        unname()
+
+    return(number_of_animals)
 
 }
 

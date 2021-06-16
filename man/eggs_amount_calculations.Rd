@@ -4,7 +4,11 @@
 \alias{eggs_amount_calculations}
 \title{EggsAmount Calculations}
 \usage{
-eggs_amount_calculations(data, units, unit_conversions)
+eggs_amount_calculations(
+  data,
+  units = eggs_amount_units$unit,
+  unit_conversions = eggs_amount_units$conversion_factor
+)
 }
 \arguments{
 \item{unit_conversions}{}
