@@ -11,7 +11,11 @@ eggs_amount_calculations(
 )
 }
 \arguments{
-\item{unit_conversions}{}
+\item{data}{Data containing crop loop information}
+
+\item{units}{A vector of units, for which you have corresponding unit conversion}
+
+\item{unit_conversions}{A vector of conversion factors for these units}
 }
 \value{
 

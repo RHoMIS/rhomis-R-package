@@ -480,9 +480,9 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
 #'
 #' Calculate the amount of eggs harvested
 #'
-#' @param data
-#' @param units
-#' @param unit_conversions
+#' @param data Data containing crop loop information
+#' @param units A vector of units, for which you have corresponding unit conversion
+#' @param unit_conversions A vector of conversion factors for these units
 #'
 #' @return
 #' @export
