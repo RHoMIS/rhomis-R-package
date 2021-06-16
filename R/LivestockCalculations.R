@@ -660,6 +660,79 @@ eggs_sold_and_consumed_calculations <- function(data){
 }
 
 
+egg_income_calculations <- function(data,
+                                    units=eggs_price_time_units$unit,
+                                    unit_conversions=eggs_price_time_units$conversion_factor){
+
+
+    number_of_loops <- find_number_of_loops(data, "eggs_sold_income")
+
+    income_columns <- paste0("eggs_sold_income", "_", paste0(1:number_of_loops))
+    amount_sold_columns <- paste0("eggs_sold_kg_per_year", "_", paste0(1:number_of_loops))
+    income_units_columns <- paste0("eggs_sold_price_timeunits", "_", paste0(1:number_of_loops))
+
+    income_data <- data[income_columns]
+    amount_sold_data <- data[amount_sold_columns]
+    income_units_data <- data[income_units_columns]
+
+    units_converted <- switch_units(income_units_data, units = units, conversion_factors = unit_conversions)
+    units_converted <- sapply(c(1:number_of_loops), function(x){
+        eggs_price_per_egg_to_numeric(units_column = units_converted[[x]],amount_sold_column = amount_sold_data[[x]])
+        }) %>% magrittr::set_colnames(paste0("eggs_price_units_numeric","_",c(1:number_of_loops))) %>%
+        tibble::as_tibble() %>% dplyr::mutate_all(as.numeric)
+
+    total_income <- units_converted*income_data %>%
+        tibble::as_tibble()
+    colnames(total_income)<- paste0("eggs_income_per_year","_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data = data,
+                                     new_data = total_income,
+                                     new_column_name = "eggs_income_per_year",
+                                     old_column_name = "eggs_sold_price_timeunits",
+                                     loop_structure = T)
+
+    price_data <- total_income/amount_sold_data %>% tibble::as_tibble()
+    colnames(price_data) <- paste0("eggs_price_per_kg","_",c(1:number_of_loops))
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = price_data,
+                                             new_column_name ="eggs_price_per_kg" ,
+                                             old_column_name = "eggs_income_per_year",
+                                             loop_structure = T)
+
+    return(data)
+    }
+
+#' Eggs Price per Egg to Numeric
+#'
+#' A function to make sure that price per egg can be converted
+#' for the correct calculations to be made
+#'
+#' @param units_column A vector of crop units to convert
+#' @param amount_sold_column A vector of amounts of eggs sold (in kg)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+eggs_price_per_egg_to_numeric <- function(units_column, amount_sold_column){
+    egg_weight_kg <- 0.0496
+
+
+    per_egg_units <- units_column=="per_egg"
+    per_egg_units[is.na(per_egg_units)] <- FALSE
+
+    #egg_income <- eggs_kg*price_per_kg
+    #price_per_kg <- price_per_egg/weight_of_egg
+    #egg_income <- eggs_kg*price_per_egg/weight_per_egg
+
+    units_column[per_egg_units] <- amount_sold_column[per_egg_units]/egg_weight_kg
+
+    return(units_column)
+
+}
+
+
+
 #' Eggs Swap per Animal Units
 #'
 #' @param units_column A vector containing the units to be converted
