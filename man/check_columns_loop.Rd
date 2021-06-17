@@ -2,16 +2,18 @@
 % Please edit documentation in R/DataContentsCheck.R
 \name{check_columns_loop}
 \alias{check_columns_loop}
-\title{Title}
+\title{Check Columns Loop}
 \usage{
 check_columns_loop(data, columns)
 }
 \arguments{
-\item{columns}{}
+\item{data}{Data to be checked}
+
+\item{columns}{Column patterns that we are verifying}
 }
 \value{
 
 }
 \description{
-Title
+Check whether columns are present in loop type data
 }

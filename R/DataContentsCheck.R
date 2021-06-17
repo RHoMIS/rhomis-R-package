@@ -26,10 +26,12 @@ check_columns_in_data <- function(data, loop_columns=NULL,individual_columns=NUL
 
 }
 
-#' Title
+#' Check Columns Loop
 #'
-#' @param data
-#' @param columns
+#' Check whether columns are present in loop type data
+#'
+#' @param data Data to be checked
+#' @param columns Column patterns that we are verifying
 #'
 #' @return
 #' @export
@@ -39,10 +41,13 @@ check_columns_loop <- function(data,columns){
 
 }
 
-#' Title
+#' Check Columns Individual
 #'
-#' @param data
-#' @param columns
+#' Checking whether individual columns are present in the data
+#' we are examining
+#'
+#' @param data The data we are checking
+#' @param columns The column names we are looking for
 #'
 #' @return
 #' @export

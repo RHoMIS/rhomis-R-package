@@ -2,16 +2,19 @@
 % Please edit documentation in R/DataContentsCheck.R
 \name{check_columns_individual}
 \alias{check_columns_individual}
-\title{Title}
+\title{Check Columns Individual}
 \usage{
 check_columns_individual(data, columns)
 }
 \arguments{
-\item{columns}{}
+\item{data}{The data we are checking}
+
+\item{columns}{The column names we are looking for}
 }
 \value{
 
 }
 \description{
-Title
+Checking whether individual columns are present in the data
+we are examining
 }
