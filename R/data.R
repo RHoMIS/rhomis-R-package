@@ -130,5 +130,15 @@
 #' @source NA
 "eggs_price_time_units"
 
+#' Honey Amount Units
+#'
+#' Conversion factors for volume of honey into
+#' kilograms
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"honey_amount_units"
 
 

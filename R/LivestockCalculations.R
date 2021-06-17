@@ -678,7 +678,7 @@ egg_income_calculations <- function(data,
     units_converted <- switch_units(income_units_data, units = units, conversion_factors = unit_conversions)
     units_converted <- sapply(c(1:number_of_loops), function(x){
         eggs_price_per_egg_to_numeric(units_column = units_converted[[x]],amount_sold_column = amount_sold_data[[x]])
-        }) %>% magrittr::set_colnames(paste0("eggs_price_units_numeric","_",c(1:number_of_loops))) %>%
+    }) %>% magrittr::set_colnames(paste0("eggs_price_units_numeric","_",c(1:number_of_loops))) %>%
         tibble::as_tibble() %>% dplyr::mutate_all(as.numeric)
 
     total_income <- units_converted*income_data %>%
@@ -686,10 +686,10 @@ egg_income_calculations <- function(data,
     colnames(total_income)<- paste0("eggs_income_per_year","_",c(1:number_of_loops))
 
     data <- add_column_after_specific_column(data = data,
-                                     new_data = total_income,
-                                     new_column_name = "eggs_income_per_year",
-                                     old_column_name = "eggs_sold_price_timeunits",
-                                     loop_structure = T)
+                                             new_data = total_income,
+                                             new_column_name = "eggs_income_per_year",
+                                             old_column_name = "eggs_sold_price_timeunits",
+                                             loop_structure = T)
 
     price_data <- total_income/amount_sold_data %>% tibble::as_tibble()
     colnames(price_data) <- paste0("eggs_price_per_kg","_",c(1:number_of_loops))
@@ -700,7 +700,7 @@ egg_income_calculations <- function(data,
                                              loop_structure = T)
 
     return(data)
-    }
+}
 
 #' Eggs Price per Egg to Numeric
 #'
@@ -871,7 +871,143 @@ average_good_and_bad_season <- function(good_season_amount, bad_season_amount){
 }
 
 
+#' Honey Amount Calculation
+#'
+#' Calculating the amount of honey produced from RHoMIS data
+#'
+#' @param data The data containing livestock loops
+#' @param units A vector of units for which you have conversion factors
+#' @param unit_conversions The conversion factors for those units
+#'
+#' @return
+#' @export
+#'
+#' @examples
+honey_amount_calculation <- function(data, units=honey_amount_units$units, unit_conversions=honey_amount_units$conversion_factors){
 
+
+    number_of_loops <- find_number_of_loops(data,"bees_honey_production")
+
+    honey_amount_columns <- paste0("bees_honey_production","_",c(1:number_of_loops))
+    honey_units_columns <- paste0("bees_honey_production_units","_",c(1:number_of_loops))
+
+
+    honey_amount_data <- data[honey_amount_columns]
+    honey_units_data <- data[honey_units_columns]
+
+    honey_units_converted <- switch_units(honey_units_data, units = units,conversion_factors = unit_conversions)
+
+    bees_honey_kg_per_year <- honey_amount_data*honey_units_converted
+    bees_honey_kg_per_year<-tibble::as_tibble(bees_honey_kg_per_year)
+    colnames(bees_honey_kg_per_year) <- paste0("bees_honey_kg_per_year","_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = bees_honey_kg_per_year,
+                                             new_column_name = "bees_honey_kg_per_year",
+                                             old_column_name = "bees_honey_production_units",
+                                             loop_structure = T)
+
+    return(data)
+}
+
+
+#' Honey Proportions All
+#'
+#' Can correctly calculate the numeric proportions of honey
+#' and its uses
+#'
+#' @param data The data containing livestock loops
+#'
+#' @return
+#' @export
+#'
+#' @examples
+honey_proportions_all <- function(data){
+
+    number_of_loops <- find_number_of_loops(data, "bees_honey_kg_per_year")
+
+    bees_honey_sold_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "bees_honey_use", prop_column = "bees_honey_sell_amount", loop_number = x))
+    colnames(bees_honey_sold_props_numeric) <- paste0("bees_honey_sold_props_numeric","_",c(1:number_of_loops))
+    bees_honey_sold_props_numeric<- tibble::as_tibble(bees_honey_sold_props_numeric)
+
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = bees_honey_sold_props_numeric,
+                                             new_column_name = "bees_honey_sold_props_numeric",
+                                             old_column_name = "bees_honey_sell_amount",
+                                             loop_structure =T
+    )
+
+
+    bees_honey_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "bees_honey_use", prop_column = "bees_honey_consumed_amount", loop_number = x))
+    colnames(bees_honey_consumed_props_numeric) <- paste0("bees_honey_consumed_props_numeric","_",c(1:number_of_loops))
+    bees_honey_consumed_props_numeric<- tibble::as_tibble(bees_honey_consumed_props_numeric)
+    data <- add_column_after_specific_column(data = data,
+                                             new_data = bees_honey_consumed_props_numeric,
+                                             new_column_name = "bees_honey_consumed_props_numeric",
+                                             old_column_name = "bees_honey_consumed_amount",
+                                             loop_structure =T)
+
+
+    return(data)
+
+    }
+
+honey_amount_sold_and_consumed_calculations <- function(data){
+    # Beginning with crops sold
+    number_of_loops <- find_number_of_loops(data, name_column="bees_honey_production")
+    amount_columns <- paste0("bees_honey_kg_per_year","_",c(1:number_of_loops))
+    sold_columns <- paste0("bees_honey_sold_props_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amounts collected in kg. Calculate amounts collected before calculating amounts sold")
+    }
+    if (all(sold_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of honey sold. Calculate proportions sold before calculating amounts sold")
+    }
+
+    amounts_data <- data[amount_columns]
+    sold_prop_data <- data[sold_columns]
+
+    amount_sold_kg <- tibble::as_tibble(amounts_data*sold_prop_data)
+    colnames(amount_sold_kg) <- paste0("bees_honey_sold_kg_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_sold_kg,
+                                             new_column_name="bees_honey_sold_kg_per_year",
+                                             old_column_name="bees_honey_sold_props_numeric",
+                                             loop_structure=T)
+
+    # Moving on to crops consumed
+    number_of_loops <- find_number_of_loops(data, name_column="bees_honey_production")
+    amount_columns <- paste0("bees_honey_kg_per_year","_",c(1:number_of_loops))
+    consumed_columns <- paste0("bees_honey_consumed_props_numeric","_",c(1:number_of_loops))
+
+    if (all(amount_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the amounts collected in kg. Calculate amounts collected before calculating amounts consumed")
+    }
+    if (all(consumed_columns%in%colnames(data))==F)
+    {
+        stop("Have not calculated the numeric proportions of amount of honey consumed Calculate proportions consumed before calculating amounts consumed")
+    }
+
+    amounts_data <- data[amount_columns]
+    consumed_prop_data <- data[consumed_columns]
+
+    amount_consumed_kg <- tibble::as_tibble(amounts_data*consumed_prop_data)
+    colnames(amount_consumed_kg) <- paste0("bees_honey_consumed_kg_per_year", "_",c(1:number_of_loops))
+
+    data <- add_column_after_specific_column(data=data,
+                                             new_data=amount_consumed_kg,
+                                             new_column_name="bees_honey_consumed_kg_per_year",
+                                             old_column_name="bees_honey_consumed_props_numeric",
+                                             loop_structure=T)
+
+    return(data)
+
+}
 
 #' Gender Split of Livestock Information
 #'

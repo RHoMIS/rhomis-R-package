@@ -857,3 +857,158 @@ testthat::test_that("Can calculate income and prices for eggs",{
   })
 
 
+testthat::test_that("Can correctly calculate honey production",{
+  data <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
+                                 "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                 "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                 "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                 "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                 "bees_honey_sold_income_1"=c(30,NA,40),
+                                 "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                 "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                 "bees_honey_production_2"=c(NA,20,12),
+                                 "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                 "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                 "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                 "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                 "bees_honey_sold_income_2"=c(NA,25,50),
+                                 "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                 "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  expected_result  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
+                                                    "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                                    "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                                    "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                                    "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                                    "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                                    "bees_honey_sold_income_1"=c(30,NA,40),
+                                                    "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                                    "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                                    "bees_honey_production_2"=c(NA,20,12),
+                                                    "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                                    "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                                    "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                                    "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                                    "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                                    "bees_honey_sold_income_2"=c(NA,25,50),
+                                                    "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                                    "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+  actual_result <- honey_amount_calculation(data)
+  testthat::expect_equal(actual_result, expected_result)
+
+
+})
+
+
+testthat::test_that("Can correctly calculate numeric proportions of honey uses",{
+  data  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
+                                  "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                  "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                  "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                  "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                  "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                  "bees_honey_sold_income_1"=c(30,NA,40),
+                                  "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                  "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                  "bees_honey_production_2"=c(NA,20,12),
+                                  "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                  "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                  "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                  "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                  "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                  "bees_honey_sold_income_2"=c(NA,25,50),
+                                  "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                  "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  expected_result  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
+                                  "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                  "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                  "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                  "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                  "bees_honey_consumed_props_numeric_1"=c(0.1,NA,NA),
+                                  "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                  "bees_honey_sold_props_numeric_1"=c(0.7,NA,1),
+                                  "bees_honey_sold_income_1"=c(30,NA,40),
+                                  "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                  "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                  "bees_honey_production_2"=c(NA,20,12),
+                                  "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                  "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                  "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                  "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                  "bees_honey_consumed_props_numeric_2"=c(NA,0.5,0.1),
+                                  "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                  "bees_honey_sold_props_numeric_2"=c(NA,0.5,0.7),
+                                  "bees_honey_sold_income_2"=c(NA,25,50),
+                                  "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                  "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  actual_result <- honey_proportions_all(data)
+  testthat::expect_equal(actual_result, expected_result)
+})
+
+
+testthat::test_that("Can correctly calculate the amounts of honey sold and consumed",{
+
+  data  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
+                                             "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                             "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                             "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                             "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                             "bees_honey_consumed_props_numeric_1"=c(0.1,NA,NA),
+                                             "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                             "bees_honey_sold_props_numeric_1"=c(0.7,NA,1),
+                                             "bees_honey_sold_income_1"=c(30,NA,40),
+                                             "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                             "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                             "bees_honey_production_2"=c(NA,20,12),
+                                             "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                             "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                             "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                             "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                             "bees_honey_consumed_props_numeric_2"=c(NA,0.5,0.1),
+                                             "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                             "bees_honey_sold_props_numeric_2"=c(NA,0.5,0.7),
+                                             "bees_honey_sold_income_2"=c(NA,25,50),
+                                             "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                             "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  expected_result  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
+                                             "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                             "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                             "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                             "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                             "bees_honey_consumed_props_numeric_1"=c(0.1,NA,NA),
+                                             "bees_honey_consumed_kg_per_year_1"=c(0.1*10,NA,NA),
+                                             "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                             "bees_honey_sold_props_numeric_1"=c(0.7,NA,1),
+                                             "bees_honey_sold_kg_per_year_1"=c(0.7*10,NA,15*1.43),
+                                             "bees_honey_sold_income_1"=c(30,NA,40),
+                                             "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                             "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                             "bees_honey_production_2"=c(NA,20,12),
+                                             "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                             "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                             "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                             "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                             "bees_honey_consumed_props_numeric_2"=c(NA,0.5,0.1),
+                                             "bees_honey_consumed_kg_per_year_2"=c(NA,NA,0.1*12),
+                                             "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                             "bees_honey_sold_props_numeric_2"=c(NA,0.5,0.7),
+                                             "bees_honey_sold_kg_per_year_2"=c(NA,NA,0.7*12),
+                                             "bees_honey_sold_income_2"=c(NA,25,50),
+                                             "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                             "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  actual_result <- honey_amount_sold_and_consumed_calculations(data)
+
+  testthat::expect_equal(actual_result, expected_result)
+
+  })
+
