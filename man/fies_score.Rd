@@ -2,16 +2,16 @@
 % Please edit documentation in R/FoodSecurity.R
 \name{fies_score}
 \alias{fies_score}
-\title{FIES score}
+\title{fies score}
 \usage{
 fies_score(data)
 }
 \arguments{
-\item{data}{The data set containing all of the RHoMIS data (or just the FIES information)}
+\item{data}{The data set containing all of the RHoMIS data (or just the fies information)}
 }
 \value{
 
 }
 \description{
-FIES score
+fies score
 }

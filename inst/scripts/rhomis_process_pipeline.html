@@ -2712,6 +2712,13 @@ kable(rhomis_data) </code></pre>
 </tbody>
 </table>
 </div>
+<div id="cleaning-data-and-extracting-all-unitscolumn-names-present-in-the-survey" class="section level2">
+<h2>Cleaning Data and Extracting All Units/Column names present in the survey</h2>
+<pre class="r"><code>rhomis_data &lt;- remove_extra_central_columns(rhomis_data)
+rhomis_data &lt;- convert_all_columns_to_lower_case(rhomis_data)
+
+all_new_values &lt;- extract_units_data_frames(rhomis_data)</code></pre>
+</div>
 
 
 

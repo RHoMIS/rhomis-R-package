@@ -283,3 +283,28 @@ widen_individual_result <- function(individual_central_item, column_headers){
     return(item_to_tibble)
 
 }
+
+
+#' Remove Extra Central Columns
+#'
+#' Data downloaded from ODK central has extra columns
+#' with no additional information. These extra columns
+#' follow a particular pattern. This function removes these
+#' columns based on this pattern
+#'
+#' @param data ODK central data with the excess columns
+#'
+#' @return
+#' @export
+#'
+#' @examples
+remove_extra_central_columns <- function(data){
+
+
+
+    extra_columns <- grepl("no[[:digit:]]+_+[[:digit:]]",colnames(data))
+    data <- data[extra_columns==F]
+
+    return(data)
+
+}

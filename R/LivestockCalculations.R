@@ -1227,11 +1227,6 @@ livestock_calculations_all <- function(data,
     data <- gender_split_livestock(data)
 
     return(data)
-
-
-
-
-
 }
 
 

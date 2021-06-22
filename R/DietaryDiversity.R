@@ -4,17 +4,17 @@ library(tibble)
 
 
 hdds_calc <- function(data){
-
-    ten_groups <- c("GrainsRootsTubers",#grains roots_tubers
-                    "Legumes",#pulses
-                    "Nuts_Seeds", #nuts_seeds
-                    "Veg_Leafy", #green_veg
-                    "VitA_Veg_Fruit",#vitA_veg vitA_fruits
-                    "Vegetables", #other_veg
-                    "Fruits",#other_fruits
-                    "Meat",#meat_poultry organ_meat fish_seafood
-                    "Eggs", #eggs
-                    "Milk_Dairy" )#milk
+    colnames(data) <- tolower(colnames(data))
+    ten_groups <- c("grainsrootstubers",#grains roots_tubers
+                    "legumes",#pulses
+                    "nuts_seeds", #nuts_seeds
+                    "veg_leafy", #green_veg
+                    "vita_veg_fruit",#vitA_veg vitA_fruits
+                    "vegetables", #other_veg
+                    "fruits",#other_fruits
+                    "meat",#meat_poultry organ_meat fish_seafood
+                    "eggs", #eggs
+                    "milk_dairy" )#milk
 
     fourteen_groups <- c("grains",
                          "roots_tubers",
@@ -26,8 +26,8 @@ hdds_calc <- function(data){
                          "fish_seafood",
                          "eggs",
                          "green_veg",
-                         "vitA_veg",
-                         "vitA_fruits",
+                         "vita_veg",
+                         "vita_fruits",
                          "other_veg",
                          "other_fruits")
 
@@ -249,43 +249,43 @@ hdds_calc <- function(data){
 
 collapse_14_groups <- function(hdds_data){
 
-    hdds_data$GrainsRootsTubers<- rowSums(data.frame(as.numeric(hdds_data$grains), as.numeric(hdds_data$roots_tubers)),na.rm = T)
-    hdds_data$GrainsRootsTubers<-as.numeric(gsub('2',1,as.character(hdds_data$GrainsRootsTubers)))
+    hdds_data$grainsrootstubers<- rowSums(data.frame(as.numeric(hdds_data$grains), as.numeric(hdds_data$roots_tubers)),na.rm = T)
+    hdds_data$grainsrootstubers<-as.numeric(gsub('2',1,as.character(hdds_data$grainsrootstubers)))
     hdds_data$grains<-NULL
     hdds_data$roots_tubers<-NULL
 
-    hdds_data$Legumes<- hdds_data$pulses
+    hdds_data$legumes<- hdds_data$pulses
     hdds_data$pulses<-NULL
 
-    hdds_data$Nuts_Seeds<- hdds_data$nuts_seeds
+    hdds_data$nuts_seeds<- hdds_data$nuts_seeds
     hdds_data$nuts_seeds<-NULL
 
-    hdds_data$Veg_Leafy<- hdds_data$green_veg
+    hdds_data$veg_leafy<- hdds_data$green_veg
     hdds_data$green_veg<-NULL
 
-    hdds_data$VitA_Veg_Fruit<- rowSums(data.frame(as.numeric(hdds_data$vitA_veg), as.numeric(hdds_data$vitA_fruits)),na.rm = T)
-    hdds_data$VitA_Veg_Fruit<-as.numeric(gsub('2',1,as.character(hdds_data$VitA_Veg_Fruit)))
-    hdds_data$vitA_veg<-NULL
-    hdds_data$vitA_fruits<-NULL
+    hdds_data$vita_veg_fruit<- rowSums(data.frame(as.numeric(hdds_data$vita_veg), as.numeric(hdds_data$vita_fruits)),na.rm = T)
+    hdds_data$vita_veg_fruit<-as.numeric(gsub('2',1,as.character(hdds_data$vita_veg_fruit)))
+    hdds_data$vita_veg<-NULL
+    hdds_data$vita_fruits<-NULL
 
-    hdds_data$Vegetables<- hdds_data$other_veg
+    hdds_data$vegetables<- hdds_data$other_veg
     hdds_data$other_veg<-NULL
 
-    hdds_data$Fruits<- hdds_data$other_fruits
+    hdds_data$fruits<- hdds_data$other_fruits
     hdds_data$other_fruits<-NULL
 
 
-    hdds_data$Meat<- rowSums(data.frame(as.numeric(hdds_data$meat_poultry), as.numeric(hdds_data$organ_meat), as.numeric(hdds_data$fish_seafood)),na.rm = T)
-    hdds_data$Meat<-as.numeric(gsub('2',1,as.character(hdds_data$Meat)))
-    hdds_data$Meat<-as.numeric(gsub('3',1,as.character(hdds_data$Meat)))
+    hdds_data$meat<- rowSums(data.frame(as.numeric(hdds_data$meat_poultry), as.numeric(hdds_data$organ_meat), as.numeric(hdds_data$fish_seafood)),na.rm = T)
+    hdds_data$meat<-as.numeric(gsub('2',1,as.character(hdds_data$meat)))
+    hdds_data$meat<-as.numeric(gsub('3',1,as.character(hdds_data$meat)))
     hdds_data$meat_poultry<-NULL
     hdds_data$organ_meat<-NULL
     hdds_data$fish_seafood<-NULL
 
-    hdds_data$Eggs<- hdds_data$eggs
-    hdds_data$eggs<-NULL
+    #hdds_data$eggs<- hdds_data$eggs
+    #hdds_data$eggs<-NULL
 
-    hdds_data$Milk_Dairy<- hdds_data$milk
+    hdds_data$milk_dairy<- hdds_data$milk
     hdds_data$milk<-NULL
 
     return(hdds_data)

@@ -26,6 +26,7 @@ testthat::test_that("Checking can convert household roster to categories", {
     ))
 
 
+
     expected_result <- tibble::as_tibble(list(household_person_category_1=c("males25to50","female_25_to_50","males25to50",NA),
                                       household_person_category_2=c("female_25_to_50","females11to24","children_under_4","male_50_plus"),
                                       household_person_category_3=c("males11to24","males11to24",NA,NA)))

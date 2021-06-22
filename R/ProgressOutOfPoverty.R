@@ -30,14 +30,15 @@ library(tibble)
 
 ppi_score <- function(data, country_code_column){
 
-    ppi_columns <- paste0("PPI_",1:10)
+    colnames(data) <- tolower(colnames(data))
+    ppi_columns <- paste0("ppi_",1:10)
 
     if (all(ppi_columns%in% colnames(data)))
     {
         ppi_data <- data[ppi_columns]
         ppi_score <- rowSums(ppi_data,na.rm = T)
 
-
+        country_code_column<-toupper(country_code_column)
         ppi_limit_column <- unname(sapply(country_code_column, function(x) identify_ppi_limit(x)))
         ppi_likelihood <- unname(unlist(sapply(c(1:length(ppi_score)),function(x) identify_ppi_conversion(ppi_score[x],country_code_column[x]))))
 

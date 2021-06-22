@@ -34,3 +34,20 @@ testthat::test_that("Test that can convert an individual central result to a tib
     expect_equal(actual_result,expected_result)
 
 })
+
+
+testthat::test_that("Can delete extra columns added to central",{
+  data <- tibble::as_tibble(list(crop_name_1=c(1,2,3),
+                                 livestock_name_1=c(1,3,2),
+                                 crop_no1_1=c(NA,NA,NA),
+                                 ls_no22_1=c(NA,NA,NA),
+                                 off_farm_income_no3_1=c(NA,NA,NA)))
+
+  actual_result <- remove_extra_central_columns(data)
+
+  expected_result <- tibble::as_tibble(list(crop_name_1=c(1,2,3),
+                                            livestock_name_1=c(1,3,2)))
+
+  testthat::expect_equal(actual_result,expected_result)
+
+})
