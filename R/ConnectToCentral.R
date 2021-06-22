@@ -195,11 +195,11 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 
 
     #core_data <- suppressWarnings(readr::read_csv(files[1], col_types = cols()))
-    core <- suppressWarnings(readr::read_csv(core_data_file_name, col_types = cols()))
-    crop_repeat <- suppressWarnings(readr::read_csv(crop_repeat_file_name, col_types = cols()))
-    livestock_repeat <- suppressWarnings(readr::read_csv(livestock_repeat_file_name, col_types = cols()))
-    household_roster_repeat <- suppressWarnings(readr::read_csv(household_roster_repeat_file_name, col_types = cols()))
-    offfarm_income_repeat <- suppressWarnings(readr::read_csv(offfarm_income_repeat_file_name, col_types = cols()))
+    core <- readr::read_csv(core_data_file_name)
+    crop_repeat <- readr::read_csv(crop_repeat_file_name)
+    livestock_repeat <- readr::read_csv(livestock_repeat_file_name)
+    household_roster_repeat <- readr::read_csv(household_roster_repeat_file_name)
+    offfarm_income_repeat <- readr::read_csv(offfarm_income_repeat_file_name)
 
     combined_data <- list("core"=core,
                           "crop_repeat"=crop_repeat,
@@ -218,6 +218,14 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 
 
     file.remove(file_destination)
+
+    file.remove(core_data_file_name)
+    file.remove(crop_repeat_file_name)
+    file.remove(livestock_repeat_file_name)
+    file.remove(household_roster_repeat_file_name)
+    file.remove(offfarm_income_repeat_file_name)
+
+
 
     return(main_data_set)
 

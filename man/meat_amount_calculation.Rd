@@ -6,21 +6,17 @@
 \usage{
 meat_amount_calculation(
   data,
-  animal_weights_conversion_table = livestock_weights,
-  animal_names_column = "animal",
-  animal_weights_column = "weight_kg"
+  animal_weights_names = livestock_weights$animal,
+  animal_weights_conversions = livestock_weights$weight_kg
 )
 }
 \arguments{
 \item{data}{RHoMIS data including information on livestock
 names, and the number of livestock killed for meat}
 
-\item{animal_weights_conversion_table}{The containing conversion factors
-for animal names into animal weights}
+\item{animal_weights_names}{The vector which contains the names of the animals}
 
-\item{animal_names_column}{The column which contains the names of the animals}
-
-\item{animal_weights_column}{The column which contains the
+\item{animal_weights_conversions}{The column which contains the
 weights for converting the animals}
 }
 \value{

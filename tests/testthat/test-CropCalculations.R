@@ -356,9 +356,7 @@ testthat::test_that("Crop consumed and sold correctly calculated", {
     "crop_harvest_kg_per_year_1"=c(50,2000,10000),
     "crop_use_1"=c("eat","eat sell","eat sell feed_livestock"),
     "crop_consumed_prop_1"=c(NA,"most","half"),
-    "crop_consumed_prop_numeric_1"=c(1,0.7,0.5),
     "crop_sold_prop_1"=c(NA,"little","little"),
-    "crop_sold_prop_numeric_1"=c(NA,0.1,0.1),
 
     "crop_name_2"=c("wheat","maize","millet"),
     "crop_yield_2"=c(12,8,NA),
@@ -366,9 +364,7 @@ testthat::test_that("Crop consumed and sold correctly calculated", {
     "crop_harvest_kg_per_year_2"=c(12,NA,NA),
     "crop_use_2"=c("eat sell","eat sell","eat sell"),
     "crop_consumed_prop_2"=c("most","half","underhalf"),
-    "crop_consumed_prop_numeric_2"=c(0.7,0.5,0.2),
     "crop_sold_prop_2"=c("little","half","most"),
-    "crop_sold_prop_numeric_2"=c(0.1,0.5,0.7),
 
     "crop_name_3"=c("rice","other_vegetables",NA),
     "crop_yield_3"=c(25,100,NA),
@@ -376,11 +372,7 @@ testthat::test_that("Crop consumed and sold correctly calculated", {
     "crop_harvest_kg_per_year_3"=c(25,22500,NA),
     "crop_use_3"=c("sell","eat",NA),
     "crop_consumed_prop_3"=c(NA,NA,NA),
-    "crop_consumed_prop_numeric_3"=c(NA,1,NA),
-    "crop_sold_prop_3"=c(NA,NA,NA),
-    "crop_sold_prop_numeric_3"=c(1,NA,NA)
-
-  ))
+    "crop_sold_prop_3"=c(NA,NA,NA)))
 
   expected_result  <- tibble::as_tibble(list(
     "crop_name_1"=c("maize","cassava","wheat"),
@@ -441,7 +433,6 @@ testthat::test_that("Crop incomes calculated", {
     "crop_sold_kg_per_year_1"=c(NA,200,1000),
     "crop_sold_income_1"=c(NA,500,800),
     "crop_sold_price_quantityunits_1"=c("other bla_unir","price_per_bag_50kg","price_per_quintal"),
-    "crop_sold_units_numeric_1"=c(NA,"0.02","0.01"),
 
     "crop_name_2"=c("wheat","maize","millet"),
     "crop_yield_2"=c(12,8,NA),
@@ -456,7 +447,6 @@ testthat::test_that("Crop incomes calculated", {
     "crop_sold_kg_per_year_2"=c(1.2,NA,NA),
     "crop_sold_income_2"=c(800,1000,800),
     "crop_sold_price_quantityunits_2"=c("total_income_per_year","price_per_kg","price_per_bag_100kg"),
-    "crop_sold_units_numeric_2"=c("total_income_per_year","1","0.01"),
 
     "crop_name_3"=c("rice","other_vegetables",NA),
     "crop_yield_3"=c(25,100,NA),
@@ -470,8 +460,7 @@ testthat::test_that("Crop incomes calculated", {
     "crop_sold_prop_numeric_3"=c(1,NA,NA),
     "crop_sold_kg_per_year_3"=c(25,NA,NA),
     "crop_sold_income_3"=c(800,600,NA),
-    "crop_sold_price_quantityunits_3"=c("total_income_per_year","price_per_bag_45kg",NA),
-    "crop_sold_units_numeric_3"=c("total_income_per_year","0.022",NA)
+    "crop_sold_price_quantityunits_3"=c("total_income_per_year","price_per_bag_45kg",NA)
   ))
   expected_result <- structure(list(crop_name_1 = c("maize", "cassava", "wheat"),
                                     crop_yield_1 = c(50, 20, 10),

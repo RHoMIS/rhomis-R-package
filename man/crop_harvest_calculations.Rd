@@ -4,10 +4,19 @@
 \alias{crop_harvest_calculations}
 \title{Crop harvest calculations}
 \usage{
-crop_harvest_calculations(data)
+crop_harvest_calculations(
+  data,
+  units = crop_yield_units$unit,
+  unit_conversions = crop_yield_units$conversion
+)
 }
 \arguments{
 \item{data}{RHoMIS data containing cropping information}
+
+\item{units}{Units to convert crop yields to kg}
+
+\item{unit_conversions}{Converstion factors to convert
+crop yields to kg}
 }
 \value{
 

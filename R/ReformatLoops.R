@@ -402,47 +402,46 @@ split_gender_columns <- function(column){
 #' @export
 #'
 #' @examples
-insert_gender_columns_in_core_data <- function(data, original_column, control_column, loop_structure=F){
+insert_gender_columns_in_core_data <- function(data,
+                                               original_column,
+                                               control_column,
+                                               loop_structure=F){
 
     if (loop_structure==T){
 
-    number_of_loops <- find_number_of_loops(data,original_column)
+        number_of_loops <- find_number_of_loops(data,original_column)
 
-    original_columns_all <- paste0(original_column,"_",c(1:number_of_loops))
-    control_columns_all <- paste0(control_column,"_",c(1:number_of_loops))
-
-
-    control_split <- lapply(c(1:number_of_loops), function(x) tibble::as_tibble(data[[original_columns_all[x]]]*split_gender_columns(data[[control_columns_all[x]]])))
-    names(control_split)<- original_columns_all
+        original_columns_all <- paste0(original_column,"_",c(1:number_of_loops))
+        control_columns_all <- paste0(control_column,"_",c(1:number_of_loops))
 
 
+        control_split <- lapply(c(1:number_of_loops), function(x) tibble::as_tibble(data[[original_columns_all[x]]]*split_gender_columns(data[[control_columns_all[x]]])))
+        names(control_split)<- original_columns_all
 
 
+        control_split <- collapse_list_of_tibbles(control_split)
 
-
-    control_split <- collapse_list_of_tibbles(control_split)
-
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=control_split,
-                                             new_column_name=paste0("female_youth_",original_column),
-                                             old_column_name=control_column,
-                                             loop_structure=T)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=control_split,
-                                             new_column_name=paste0("male_youth_",original_column),
-                                             old_column_name=paste0("female_youth_",original_column),
-                                             loop_structure=T)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=control_split,
-                                             new_column_name=paste0("female_adult_",original_column),
-                                             old_column_name=paste0("male_youth_",original_column),
-                                             loop_structure=T)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=control_split,
-                                             new_column_name=paste0("male_adult_",original_column),
-                                             old_column_name=paste0("female_adult_",original_column),
-                                             loop_structure=T)
-    return(data)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=control_split,
+                                                 new_column_name=paste0("female_youth_",original_column),
+                                                 old_column_name=control_column,
+                                                 loop_structure=T)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=control_split,
+                                                 new_column_name=paste0("male_youth_",original_column),
+                                                 old_column_name=paste0("female_youth_",original_column),
+                                                 loop_structure=T)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=control_split,
+                                                 new_column_name=paste0("female_adult_",original_column),
+                                                 old_column_name=paste0("male_youth_",original_column),
+                                                 loop_structure=T)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=control_split,
+                                                 new_column_name=paste0("male_adult_",original_column),
+                                                 old_column_name=paste0("female_adult_",original_column),
+                                                 loop_structure=T)
+        return(data)
     }
 
 }

@@ -45,22 +45,19 @@ price_per_livestock <- function(data){
 #' how much meat can be collected from an animal which
 #' has been killed.
 #'
-#' @param animal_names_column The column which contains the names of the animals
-#' @param animal_weights_column The column which contains the
+#' @param animal_weights_names The vector which contains the names of the animals
+#' @param animal_weights_conversions The column which contains the
 #' weights for converting the animals
 #' @param data RHoMIS data including information on livestock
 #' names, and the number of livestock killed for meat
-#' @param animal_weights_conversion_table The containing conversion factors
-#' for animal names into animal weights
 #'
 #' @return
 #' @export
 #'
 #' @examples
 meat_amount_calculation <- function(data,
-                                    animal_weights_conversion_table=livestock_weights,
-                                    animal_names_column="animal",
-                                    animal_weights_column="weight_kg"){
+                                    animal_weights_names=livestock_weights$animal,
+                                    animal_weights_conversions=livestock_weights$weight_kg){
 
 
 
@@ -72,8 +69,8 @@ meat_amount_calculation <- function(data,
     killed_for_meat_data <- data[animals_killed_columns]
 
     livestock_weight_data <-switch_units(livestock_name_data,
-                                         units = animal_weights_conversion_table[[animal_names_column]],
-                                         conversion_factors = animal_weights_conversion_table[[animal_weights_column]])
+                                         units = animal_weights_names,
+                                         conversion_factors = animal_weights_conversions)
 
 
     meat_weight_kg <- livestock_weight_data*killed_for_meat_data
@@ -145,6 +142,7 @@ meat_uses <- function(data){
 #' @examples
 meat_sold_and_consumed_calculation <-function(data){
 
+    data <- meat_uses(data)
     number_of_loops <- find_number_of_loops(data, name_column="livestock_name")
     amount_columns <- paste0("meat_kg_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("meat_sold_props_numeric","_",c(1:number_of_loops))
@@ -231,6 +229,7 @@ meat_prices <- function(data){
 
     return(data)
 }
+
 
 
 #' Milk amount calculations
@@ -365,7 +364,7 @@ milk_proportions_all <- function(data){
 #'
 #' @examples
 milk_sold_and_consumed_calculations <- function(data){
-
+    data <- milk_proportions_all(data)
     number_of_loops <- find_number_of_loops(data, name_column="milk_sell_amount")
     amount_columns <- paste0("milk_collected_litres_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("milk_sold_prop_numeric","_",c(1:number_of_loops))
@@ -604,7 +603,7 @@ eggs_proportions_all <- function(data){
 #'
 #' @examples
 eggs_sold_and_consumed_calculations <- function(data){
-
+    data <- eggs_proportions_all(data)
     number_of_loops <- find_number_of_loops(data, name_column="eggs_sell_amount")
     amount_columns <- paste0("eggs_collected_kg_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("eggs_sold_prop_numeric","_",c(1:number_of_loops))
@@ -660,6 +659,18 @@ eggs_sold_and_consumed_calculations <- function(data){
 }
 
 
+#' Eggs Income Calculations
+#'
+#' Function to calculate egg income from livestock loops
+#'
+#' @param data RHoMIS data with livestock loops included.
+#' @param units List of units
+#' @param unit_conversions List of conversion factors for the units provided above
+#'
+#' @return
+#' @export
+#'
+#' @examples
 egg_income_calculations <- function(data,
                                     units=eggs_price_time_units$unit,
                                     unit_conversions=eggs_price_time_units$conversion_factor){
@@ -952,8 +963,22 @@ honey_proportions_all <- function(data){
 
     }
 
+#' Honey Sold and Consumed Calculations
+#'
+#' Calculating the amounts of honey sold and consumed
+#'
+#' @param data Data containing RHoMIS
+#' livestock loops
+#'
+#' @return
+#' @export
+#'
+#' @examples
 honey_amount_sold_and_consumed_calculations <- function(data){
-    # Beginning with crops sold
+
+    data <- honey_proportions_all(data)
+    # Beginning with honey sold
+
     number_of_loops <- find_number_of_loops(data, name_column="bees_honey_production")
     amount_columns <- paste0("bees_honey_kg_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("bees_honey_sold_props_numeric","_",c(1:number_of_loops))
@@ -1023,14 +1048,192 @@ honey_amount_sold_and_consumed_calculations <- function(data){
 #'
 #' @examples
 gender_split_livestock <- function(data){
+    # Gender split whole livestock
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "livestock_sale_income",
+                                                control_column = "livestock_who_sells",
+                                                loop_structure=T)
 
-    # data <- insert_gender_columns_in_core_data(data,
-    #                                            original_column = "livestock_sale_income",
-    #                                            control_column = "livestock_who_sells",
-    #                                            loop_structrue=T)
+     # Gender split meat
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "meat_sold_income",
+                                                control_column = "livestock_meat_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "meat_sold_kg_per_year",
+                                                control_column = "livestock_meat_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "meat_consumed_kg_per_year",
+                                                control_column = "livestock_meat_who_control_eating",
+                                                loop_structure=T)
+
+     # Gender split milk
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "milk_sold_litres_per_year",
+                                                control_column = "milk_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "milk_sold_income_per_year",
+                                                control_column = "milk_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "milk_consumed_litres_per_year",
+                                                control_column = "milk_who_control_eating",
+                                                loop_structure=T)
+
+     # Eggs gender split
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "eggs_sold_kg_per_year",
+                                                control_column = "eggs_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "eggs_income_per_year",
+                                                control_column = "eggs_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "eggs_consumed_kg_per_year",
+                                                control_column = "eggs_who_control_eating",
+                                                loop_structure=T)
+
+     # Honey Gender split
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "bees_honey_sold_kg_per_year",
+                                                control_column = "bees_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "bees_honey_sold_income",
+                                                control_column = "bees_who_sells",
+                                                loop_structure=T)
+
+     data <- insert_gender_columns_in_core_data(data=data,
+                                                original_column = "bees_honey_consumed_kg_per_year",
+                                                control_column = "bees_who_control_eating",
+                                                loop_structure=T)
+
+
+    return(data)
+}
+
+
+#' Livestock calculations all
+#'
+#' Carrying out all calculations on RHoMIS
+#' livestock loops.
+#'
+#' @param data RHoMIS data, containing livestock loops
+#' @param livestock_weights_names The names of livestock
+#' @param livestock_weights_conversions Conversion factors to convert livestock
+#' names into kg of meat
+#' @param eggs_amount_units_all Units for eggs harvested
+#' @param eggs_amount_unit_conversions_all Conversion factors to convert the
+#' eggs harvested units into a per year value
+#' @param eggs_price_time_units_all Egg price units in a unit of time
+#' @param eggs_price_time_unit_conversions_all Conversion factors to convert
+#' the price units into a yearly income
+#' @param honey_amount_units_all Units for amounts of honey
+#' collected
+#' @param honey_amount_unit_conversions_all Conversion factors for
+#' the honey amount units
+#' @param milk_amount_units_all Milk amount units
+#' @param milk_amount_unit_conversions_all Conversion factors for the
+#' milk amount units
+#' @param milk_price_time_units_all Units for milk price
+#' @param milk_price_time_unit_conversions_all Conversion factors for the milk
+#' price units
+#'
+#' @return
+#' @export
+#'
+#' @examples
+livestock_calculations_all <- function(data,
+                                       livestock_weights_names=livestock_weights$animal,
+                                       livestock_weights_conversions=livestock_weights$weight_kg,
+                                       eggs_amount_units_all=eggs_amount_units$unit,
+                                       eggs_amount_unit_conversions_all=eggs_amount_units$conversion_factor,
+                                       eggs_price_time_units_all=eggs_price_time_units$unit,
+                                       eggs_price_time_unit_conversions_all=eggs_price_time_units$conversion_factor,
+                                       honey_amount_units_all=honey_amount_units$units,
+                                       honey_amount_unit_conversions_all=honey_amount_units$conversion_factors,
+                                       milk_amount_units_all=milk_amount_units$unit,
+                                       milk_amount_unit_conversions_all=milk_amount_units$conversion_factor,
+                                       milk_price_time_units_all=milk_price_time_units$unit,
+                                       milk_price_time_unit_conversions_all=milk_price_time_units$conversion_factor){
+
+
+    # Adding livestock prices to the data set
+    data <- price_per_livestock(data)
+
+    # Calculating the amount of meat collected and adding it to
+    # the data-set
+    data <- meat_amount_calculation(data,
+                                    animal_weights_names = livestock_weights_names,
+                                    animal_weights_conversions = livestock_weights_conversions)
+
+    # Meat sold and consumed amounts
+    data <- meat_sold_and_consumed_calculation(data)
+
+    # Meat Prices
+    data <- meat_prices(data)
+
+
+    # Milk amounts
+    data <- milk_amount_calculations(data,
+                                     milk_units = milk_amount_units_all,
+                                     milk_unit_conversions = milk_amount_unit_conversions_all)
+
+    # Milk sold and consumed
+    data <- milk_sold_and_consumed_calculations(data)
+
+    # Milk income
+    data <- milk_income_calculations(data ,
+                                     units = milk_price_time_units_all,
+                                     conversion_factors = milk_price_time_unit_conversions_all)
+
+    # Eggs amounts
+    data <- eggs_amount_calculations(data,
+                                     units = eggs_amount_units_all,
+                                     unit_conversions = eggs_amount_unit_conversions_all)
+
+    # Eggs sold and consumed
+    data <- eggs_sold_and_consumed_calculations(data)
+
+    # Eggs income
+    data <- egg_income_calculations(data,
+                                    units = eggs_price_time_units_all,
+                                    unit_conversions = eggs_price_time_unit_conversions_all)
+
+    # Honey amount
+
+    data <- honey_amount_calculation(data,
+                                     units =honey_amount_units_all ,
+                                     unit_conversions = honey_amount_unit_conversions_all)
+
+    # Honey sold and consumed
+    data <- honey_amount_sold_and_consumed_calculations(data)
+
+
+
+    data <- gender_split_livestock(data)
+
+    return(data)
+
 
 
 
 
 }
+
+
+
 

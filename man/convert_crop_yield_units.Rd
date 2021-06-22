@@ -4,12 +4,19 @@
 \alias{convert_crop_yield_units}
 \title{Convert Crop Yield Units}
 \usage{
-convert_crop_yield_units(data, unit_conversions = crop_yield_units)
+convert_crop_yield_units(
+  data,
+  units = crop_yield_units$unit,
+  unit_conversions = crop_yield_units$conversion
+)
 }
 \arguments{
 \item{data}{The data containing the units to convert}
 
-\item{unit_conversions}{A dataframe or tibble of unit conversions}
+\item{units}{Units for crop yield}
+
+\item{unit_conversions}{Conversions to convert these units
+to kg}
 }
 \value{
 

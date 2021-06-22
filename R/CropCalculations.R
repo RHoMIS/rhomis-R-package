@@ -10,17 +10,20 @@ library(purrr)
 #' appropriate place for the dataset
 #'
 #' @param data The data containing the units to convert
-#' @param unit_conversions A dataframe or tibble of unit conversions
+#' @param units Units for crop yield
+#' @param unit_conversions Conversions to convert these units
+#' to kg
+#'
 #'
 #' @return
 #' @export
 #'
 #' @examples
-convert_crop_yield_units <- function(data, unit_conversions=crop_yield_units){
+convert_crop_yield_units <- function(data, units=crop_yield_units$unit, unit_conversions=crop_yield_units$conversion){
     number_of_loops <- find_number_of_loops(data,name_column = "crop_name")
     columns_to_convert <- paste0("crop_yield_units","_",c(1:number_of_loops))
     new_column_names <- paste0("crop_yield_units_numeric","_",c(1:number_of_loops))
-    numeric_crop_units <- switch_units(data[columns_to_convert], units =unit_conversions$unit, conversion_factors = unit_conversions$conversion)
+    numeric_crop_units <- switch_units(data[columns_to_convert], units =units, conversion_factors = unit_conversions)
     colnames(numeric_crop_units) <-new_column_names
     data <- add_column_after_specific_column(data=data,
                                              new_data=numeric_crop_units,
@@ -52,14 +55,17 @@ crop_harvest_single_loop<-function(data, loop_number){
 #' Calculating the amount of each crop harvested per year
 #'
 #' @param data RHoMIS data containing cropping information
+#' @param units Units to convert crop yields to kg
+#' @param unit_conversions Converstion factors to convert
+#' crop yields to kg
 #'
 #' @return
 #' @export
 #'
 #' @examples
-crop_harvest_calculations <- function(data){
+crop_harvest_calculations <- function(data, units=crop_yield_units$unit, unit_conversions=crop_yield_units$conversion){
     number_of_loops <- find_number_of_loops(data,name_column = "crop_name")
-    data <- convert_crop_yield_units(data)
+    data <- convert_crop_yield_units(data, units, unit_conversions)
 
     new_column_names <- paste0("crop_harvest_kg_per_year","_",1:number_of_loops)
     crop_harvest_per_year <- sapply(c(1:number_of_loops),function(x) crop_harvest_single_loop(data,x))
@@ -116,15 +122,27 @@ crop_proportions_all <- function(data){
 
 
 
-convert_crop_sold_units <- function(data, unit_conversions=crop_price_units){
+#' Convert Crop Sold Units
+#'
+#' Convert crop income units into a numeric conversion factor
+#'
+#' @param data RHoMIS data containing crop-looping information
+#' @param units A list of units to be converted
+#' @param unit_conversions The numeric conversion factors for the units listed above
+#'
+#' @return
+#' @export
+#'
+#' @examples
+convert_crop_sold_units <- function(data, units = crop_price_units$unit,unit_conversions=crop_price_units$conversion){
     number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
     crop_sold_units_column <- paste0("crop_sold_price_quantityunits","_",c(1:number_of_loops))
 
     crop_sold_units <- data[crop_sold_units_column]
     colnames(crop_sold_units)<-paste0("crop_sold_units_numeric","_", c(1:3))
     units_converted <- switch_units(crop_sold_units,
-                                    units = unit_conversions$unit,
-                                    conversion_factors = unit_conversions$conversion)
+                                    units = units,
+                                    conversion_factors = unit_conversions)
 
     data <- add_column_after_specific_column(data=data,
                                              new_data=units_converted,
@@ -150,6 +168,7 @@ convert_crop_sold_units <- function(data, unit_conversions=crop_price_units){
 #'
 #' @examples
 crop_sold_and_consumed_calculation <- function(data){
+    data <- crop_proportions_all(data)
     # Beginning with crops sold
     number_of_loops <- find_number_of_loops(data, name_column="crop_name")
     harvested_columns <- paste0("crop_harvest_kg_per_year","_",c(1:number_of_loops))
@@ -214,12 +233,19 @@ crop_sold_and_consumed_calculation <- function(data){
 #'
 #' @param data A RHoMIS dataset, including information on crop harvested,
 #' and crop sold
+#' @param units Units for crop income calculations which
+#' need to be converted
+#' @param unit_conversions Conversions for these crop income
+#' units
 #'
 #' @return
 #' @export
 #'
 #' @examples
-crop_income_calculations <- function(data){
+crop_income_calculations <- function(data, units=crop_price_units$unit, unit_conversions=crop_price_units$conversion){
+
+    data <- convert_crop_sold_units(data,units =units ,unit_conversions = unit_conversions)
+
     number_of_loops <- find_number_of_loops(data, name_column="crop_name")
 
     crop_sold_columns <- paste0("crop_sold_kg_per_year","_",c(1:number_of_loops))
@@ -285,15 +311,68 @@ crop_income_calculations <- function(data){
 #' @examples
 crop_gender_calculations <- function(data){
 # crop consumed calculations
-    data<-insert_gender_columns_in_core_data(data, original_column="crop_consumed_kg_per_year", control_column="crop_consume_control", loop_structure=T)
+    data<-insert_gender_columns_in_core_data(data=data,
+                                             original_column="crop_consumed_kg_per_year",
+                                             control_column="crop_consume_control",
+                                             loop_structure=T)
 
 # crop sold calculations
-    data<-insert_gender_columns_in_core_data(actual_result, original_column="crop_sold_kg_per_year", control_column="crop_who_control_revenue", loop_structure=T)
+    data<-insert_gender_columns_in_core_data(data,
+                                             original_column="crop_sold_kg_per_year",
+                                             control_column="crop_who_control_revenue",
+                                             loop_structure=T)
 
 # crop income calculations
-    data<-insert_gender_columns_in_core_data(actual_result, original_column="crop_income_per_year", control_column="crop_who_control_revenue", loop_structure=T)
+    data<-insert_gender_columns_in_core_data(data,
+                                             original_column="crop_income_per_year",
+                                             control_column="crop_who_control_revenue",
+                                             loop_structure=T)
 
 return(data)
 
 }
+
+#' Crop Calculations All
+#'
+#' A single function for conducting all of the crop calculations
+#'
+#'
+#' @param data RHoMIS crop loop data
+#' @param crop_yield_units_all Units of crop yield
+#' @param crop_yield_unit_conversions_all Conversion factors to convert crop yield units
+#' to kg
+#' @param crop_income_units_all Units of crop income
+#' @param crop_income_unit_conversions_all Conversion factors for crop
+#' income units
+#'
+#' @return
+#' @export
+#'
+#' @examples
+crop_calculations_all <- function(data,
+                                  crop_yield_units_all=crop_yield_units$unit,
+                                  crop_yield_unit_conversions_all=crop_yield_units$conversion,
+                                  crop_income_units_all=crop_price_units$unit,
+                                  crop_income_unit_conversions_all=crop_price_units$conversion){
+
+    # Calculating the amount of crops harvested in kg
+    data <- crop_harvest_calculations(data,
+                                      units = crop_yield_units_all,
+                                      unit_conversions = crop_yield_unit_conversions_all)
+
+    # Calculating amounts sold and consumed in kg
+    data <- crop_sold_and_consumed_calculation(data)
+
+    # Crop income calculations
+    data <- crop_income_calculations(data,
+                                     units = crop_income_units_all,
+                                     unit_conversions = crop_income_unit_conversions_all)
+
+
+    data <- crop_gender_calculations(data)
+    return(data)
+}
+
+
+
 
