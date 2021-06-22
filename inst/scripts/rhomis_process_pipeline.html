@@ -317,59 +317,9 @@ forms &lt;- get_forms(central_url,
                    central_email,
                    central_password,
                    projectID)
-kable(forms)</code></pre>
-<table style="width:100%;">
-<colgroup>
-<col width="2%" />
-<col width="8%" />
-<col width="11%" />
-<col width="17%" />
-<col width="8%" />
-<col width="6%" />
-<col width="2%" />
-<col width="6%" />
-<col width="1%" />
-<col width="2%" />
-<col width="17%" />
-<col width="6%" />
-<col width="6%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">version</th>
-<th align="left">hash</th>
-<th align="left">sha</th>
-<th align="left">sha256</th>
-<th align="left">enketoId</th>
-<th align="left">publishedAt</th>
-<th align="left">projectId</th>
-<th align="left">xmlFormId</th>
-<th align="left">state</th>
-<th align="left">name</th>
-<th align="left">enketoOnceId</th>
-<th align="left">createdAt</th>
-<th align="left">updatedAt</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1</td>
-<td align="left">d37c6867d2dc98a768089a838bf94ebf</td>
-<td align="left">8c6e331589440e03aed831b2ab1669431e93f207</td>
-<td align="left">3e6fb4c563780846b90f21f959b7dd56c38c367dc7dfda71bac04fc0a1162015</td>
-<td align="left">qsQpcLiIgunoJKhf05CrX5FcoZSWdjU</td>
-<td align="left">2021-05-06T13:14:37.135Z</td>
-<td align="left">3</td>
-<td align="left">Rhomis_core_v1_6_MASTER_2</td>
-<td align="left">open</td>
-<td align="left">RHoMIS 1.6</td>
-<td align="left">99c965e1a1100bc71c3585f73c226d4e8a55be108ac5f28a6d3b47192af3b883</td>
-<td align="left">2021-05-06T12:33:04.349Z</td>
-<td align="left">2021-06-10T08:52:16.404Z</td>
-</tr>
-</tbody>
-</table>
-<pre class="r"><code># We are interested in the first form from this project
+#kable(forms)
+
+# We are interested in the first form from this project
 formID &lt;- forms$xmlFormId[1]
 
 # Get data on the

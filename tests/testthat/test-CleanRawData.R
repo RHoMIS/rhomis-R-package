@@ -36,12 +36,30 @@ testthat::test_that("Test that can convert either a list or whole dataframe of u
 
 
     tibble_to_convert <- tibble::as_tibble(list("maize"=c("kg", "other_random_unit","wheel_barrows_100kg"),
-                                      "cassava"=c("sacks_50kg",NA,"another_random_unit"),
-                                      "banana"=c("bunches", "wheel_barrows_100kg",NA)))
+                                                "cassava"=c("sacks_50kg",NA,"another_random_unit"),
+                                                "banana"=c("bunches", "wheel_barrows_100kg",NA)))
     actual_result <- switch_units(tibble_to_convert, units, conversion_factors)
 
     expected_result <- tibble::as_tibble(list("maize"=c(1, NA,100),
-                                      "cassava"=c(50,NA,NA),
-                                      "banana"=c(NA, 100,NA)))
+                                              "cassava"=c(50,NA,NA),
+                                              "banana"=c(NA, 100,NA)))
     expect_equal(actual_result, expected_result)
+})
+
+
+testthat::test_that("Can convert columns to lower case",{
+
+    data <- tibble::as_tibble(list("one column"=c(1,2,4),
+                                   "second_column"=c("BFJKKE","Bnjwkefn","Ejn,serkjsfn"),
+                                   "third column"=c("abcdE",NA,"fgFt")))
+
+    expected_result <- tibble::as_tibble(list("one column"=c(1,2,4),
+                                              "second_column"=c("bfjkke","bnjwkefn","ejn,serkjsfn"),
+                                              "third column"=c("abcde",NA,"fgft")))
+
+    actual_result <-convert_all_columns_to_lower_case(data)
+
+    expect_equal(actual_result, expected_result)
+
+
 })

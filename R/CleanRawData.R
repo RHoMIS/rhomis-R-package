@@ -125,3 +125,43 @@ replace_unit_with_conversion_factor <- function(item_to_convert, unit_conv_tibbl
 
 }
 
+#' Convert All Columns to Lower Case
+#'
+#' Convert all character columns in the data set
+#' to lower case
+#'
+#' @param data A tibble to be converted to lower case
+#'
+#' @return
+#' @export
+#'
+#' @examples
+convert_all_columns_to_lower_case <- function(data){
+
+    data <- data %>% dplyr::mutate_all(convert_column_to_lowercase)
+    return(data)
+
+
+
+}
+
+#' Convert Column to Lowercase
+#'
+#' Convert an individual column to lower case
+#' if it is a character column
+#'
+#' @param column Column to be converted.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+convert_column_to_lowercase <- function(column){
+    if(is.character(column)){
+        return(tolower(column))
+    }else{
+        return(column)
+    }
+
+}
+

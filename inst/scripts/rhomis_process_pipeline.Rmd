@@ -44,7 +44,7 @@ forms <- get_forms(central_url,
                    central_email,
                    central_password,
                    projectID)
-kable(forms)
+#kable(forms)
 
 # We are interested in the first form from this project
 formID <- forms$xmlFormId[1]
