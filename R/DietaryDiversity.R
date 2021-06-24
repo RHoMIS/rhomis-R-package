@@ -250,7 +250,7 @@ hdds_calc <- function(data){
         }
     }
 
-    results <- as_tibble(outputs)
+    results <- tibble::as_tibble(outputs)
     return(results)
 }
 
