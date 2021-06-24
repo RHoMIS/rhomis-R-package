@@ -16,8 +16,8 @@ library(tibble)
 #'
 connect_to_db <- function(collection,database="rhomis", url="mongodb://localhost"){
     mongodb <- mongolite::mongo(collection = collection,
-                     db=database,
-                     url="mongodb://localhost")
+                                db=database,
+                                url="mongodb://localhost")
     return(mongodb)
 }
 
@@ -138,22 +138,34 @@ update_collection <- function(data_to_write, collection,database="rhomis", url="
 #' @param collection Collection to add it to
 #' @param database Database to add it to
 #' @param url URL of the database
+#' @param project_ID ID of the project you are adding
+#' @param overwrite Whether or not to overwrite the project
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_data_to_project_list <- function(data,collection,database="rhomis", url="mongodb://localhost"){
+add_data_to_project_list <- function(data,collection,database="rhomis", url="mongodb://localhost",project_ID,overwrite=F){
 
-    data_string <- paste0('{"projectID":"test project", "data"',":",jsonlite::toJSON(data,pretty=T),"}")
-    data_string <- gsub("\n","",data_string, fixed=T)
-    data_string <- gsub('\\"','"',data_string, fixed=T)
-    data_string <- gsub('"\\','"',data_string, fixed=T)
-
-
+    data_string <- jsonlite::toJSON(data,pretty=T, na = "null")
     connection <- connect_to_db(collection,database,url)
 
-    connection$insert(data_string)
+    if(overwrite==F){
+
+        data_string <- paste0('{"projectID":"',project_ID,'", "data"',":",data_string,"}")
+        data_string <- gsub("\n","",data_string, fixed=T)
+        data_string <- gsub('\\"','"',data_string, fixed=T)
+        data_string <- gsub('"\\','"',data_string, fixed=T)
+
+        connection$insert(data_string)
+    }
+
+    if(overwrite==T){
+
+        connection$update(paste0('{"projectID":"',project_ID,'"}'),
+                          paste0('{"$set":{"data": ',data_string,'}}')
+                          ,upsert = TRUE)
+    }
     print("Success in adding project")
 
 

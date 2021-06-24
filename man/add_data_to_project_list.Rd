@@ -8,7 +8,9 @@ add_data_to_project_list(
   data,
   collection,
   database = "rhomis",
-  url = "mongodb://localhost"
+  url = "mongodb://localhost",
+  project_ID,
+  overwrite = F
 )
 }
 \arguments{
@@ -19,6 +21,10 @@ add_data_to_project_list(
 \item{database}{Database to add it to}
 
 \item{url}{URL of the database}
+
+\item{project_ID}{ID of the project you are adding}
+
+\item{overwrite}{Whether or not to overwrite the project}
 }
 \value{
 

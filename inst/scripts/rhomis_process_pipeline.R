@@ -14,7 +14,6 @@ central_password <- Sys.getenv("RHOMIS_CENTRAL_PASSWORD")
 
 # The name of the project we are interested in
 project_name <- "Leo Test 1"
-country_code <- "VN"
 
 
 # Linkning to ODK Central -------------------------------------------------
@@ -49,19 +48,15 @@ rhomis_data <-rhomis_data %>%
     convert_all_columns_to_lower_case()
 
 
-### Adding a country code column for easier indexing
-iso_country_code <- tibble::as_tibble(list(iso_country_code=rep(country_code,nrow(rhomis_data))))
-rhomis_data <- add_column_after_specific_column(rhomis_data,
-                                                new_data = iso_country_code,
-                                                new_column_name = "iso_country_code",
-                                                old_column_name = "country",
-                                                loop_structure = F)
+
 
 all_new_values <- extract_units_data_frames(rhomis_data)
 
 ## Household Information
 hh_size_members <- calculate_household_size_members(rhomis_data)
 hh_size_MAE <- calculate_MAE(rhomis_data)
+
+
 
 household_type <- rhomis_data[["household_type"]]
 head_education_level <- rhomis_data[["education_level"]]
@@ -72,16 +67,25 @@ land_sizes <- land_size_calculation(rhomis_data)
 ## Livestock Holdings
 # NOT YET CALCULATED
 
+
+
 #FoodSecMonths
 worst_food_security_month <- rhomis_data[["food_worst_month"]]
 best_food_security_month <- rhomis_data[["food_best_month"]]
 #
+
+
+
+
+
 #ppi_score <- ppi_score(rhomis_data, country_code_column = rhomis_data$iso_country_code)
 food_security <- food_security_calculations(rhomis_data)
 
 # HDDS scores
 
-hdds_calc(rhomis_data)
+
+
+hdds_data <-  hdds_calc(rhomis_data)
 
 # Crop Calculations
 rhomis_data <- crop_calculations_all(rhomis_data,
@@ -104,6 +108,7 @@ rhomis_data <- livestock_calculations_all(rhomis_data,
                                           milk_amount_unit_conversions_all = milk_amount_units$conversion_factor,
                                           milk_price_time_units_all = milk_price_time_units$unit,
                                           milk_price_time_unit_conversions_all = milk_price_time_units$conversion_factor)
+
 
 
 # Total Income Calculations
@@ -203,7 +208,37 @@ livestock_data <- map_to_wide_format(data = rhomis_data,
 #                      url = "mongodb://localhost")
 
 
+
+
+
+#---------------------------------------
+
+indicator_data <- tibble::as_tibble((list(hh_size_members=hh_size_members,
+                                          hh_size_MAE=hh_size_MAE,
+                                          household_type=household_type,
+                                          head_education_level=head_education_level,
+                                          worst_food_security_month=worst_food_security_month,
+                                          best_food_security_month=best_food_security_month,
+
+                                          crop_income=crop_income,
+                                          livestock_income=livestock_income,
+                                          total_income=total_income,
+                                          off_farm_income=off_farm_income)))
+indicator_data <- tibble::as_tibble(cbind(indicator_data,food_security,hdds_data,land_sizes))
+
+
+
 add_data_to_project_list(data = rhomis_data,
                          collection = "processedData",
                          database = "rhomis",
-                         url = "mongodb://localhost")
+                         url = "mongodb://localhost",
+                         overwrite=T,
+                         project_ID="test_project")
+
+add_data_to_project_list(data = indicator_data,
+                         collection = "indicatorData",
+                         database = "rhomis",
+                         url = "mongodb://localhost",
+                         overwrite=T,
+                         project_ID="test_project")
+
