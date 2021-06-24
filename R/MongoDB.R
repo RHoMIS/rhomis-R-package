@@ -129,5 +129,33 @@ update_collection <- function(data_to_write, collection,database="rhomis", url="
 
 }
 
+#' Add Data to Project List
+#'
+#' A method for submitting another project
+#' to a list of projects.
+#'
+#' @param data Data to add
+#' @param collection Collection to add it to
+#' @param database Database to add it to
+#' @param url URL of the database
+#'
+#' @return
+#' @export
+#'
+#' @examples
+add_data_to_project_list <- function(data,collection,database="rhomis", url="mongodb://localhost"){
 
+    data_string <- paste0('{"projectID":"test project", "data"',":",toJSON(data,pretty=T),"}")
+    data_string <- gsub("\n","",data_string, fixed=T)
+    data_string <- gsub('\\"','"',data_string, fixed=T)
+    data_string <- gsub('"\\','"',data_string, fixed=T)
+
+
+    connection <- connect_to_db(collection,database,url)
+
+    connection$insert(data_string)
+    print("Success in adding project")
+
+
+}
 

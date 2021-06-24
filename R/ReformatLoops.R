@@ -248,7 +248,11 @@ prop_or_na <- function(item){
 # proportion_control_per_person(item)
 proportion_control_per_person <- function(item){
 
-    item <- strsplit(item, " ")
+
+    if (all(is.na(item))==F)
+    {
+        item <- strsplit(item, " ")
+    }
     # Avoiding Duplicates
     item <- lapply(item, function(x) unique(x))
     # Counting number of people controlling
@@ -278,9 +282,10 @@ proportion_control_per_person <- function(item){
 #' check_val_in_list(item, category)
 
 check_val_in_list <- function(item, category){
-    item <- strsplit(item, " ")
+    if (all(is.na(item))==F){
+        item <- strsplit(item, " ")
+    }
     item <-  unlist(lapply(item, function(x) category %in% x))
-    as.numeric(item)
 
     return (as.numeric(item))
 }

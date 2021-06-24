@@ -142,3 +142,14 @@
 "honey_amount_units"
 
 
+#' Land Area Units
+#'
+#' Conversion of land area into hectares
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"land_area_units"
+
+

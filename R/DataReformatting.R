@@ -185,15 +185,20 @@ proportions_calculation <- function(data, use,use_column, prop_column, loop_numb
         proportions_data <- data[[prop_column]]
     }
 
+    if (all(is.na(use_data))==F){
+        single_uses <- strsplit(use_data," ")
+    }
+    if (all(is.na(use_data))==T){
+        single_uses <- use_data
+    }
 
-    single_uses <- strsplit(use_data," ")
-    single_uses <- sapply(single_uses,function(x)length(x))
-    single_uses <- single_uses==1 & !is.na(use_data) & grepl(use,use_data)
+single_uses <- sapply(single_uses,function(x)length(x))
+single_uses <- single_uses==1 & !is.na(use_data) & grepl(use,use_data)
 
-    proportions_data <- switch_units(proportions_data, units = proportion_conversions$unit, conversion_factors = proportion_conversions$conversion)
-    proportions_data[single_uses]<-1
+proportions_data <- switch_units(proportions_data, units = proportion_conversions$unit, conversion_factors = proportion_conversions$conversion)
+proportions_data[single_uses]<-1
 
-    return(proportions_data)
+return(proportions_data)
 
 }
 
