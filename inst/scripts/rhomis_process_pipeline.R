@@ -186,21 +186,21 @@ livestock_data <- map_to_wide_format(data = rhomis_data,
                                      column_prefixes =livestock_prefixes,
                                      types = data_types)
 
-off_farm_prefixes <- c("")
-data_types <- c("")
-
-off_farm_data <- map_to_wide_format(data = rhomis_data,
-                                     name_column = "offfarm_income_name",
-                                     column_prefixes =off_farm_prefixes,
-                                     types = data_types)
-
-
+# off_farm_prefixes <- c("")
+# data_types <- c("")
+#
+# off_farm_data <- map_to_wide_format(data = rhomis_data,
+#                                      name_column = "offfarm_income_name",
+#                                      column_prefixes =off_farm_prefixes,
+#                                      types = data_types)
 
 
-write_new_collection(data_to_write = rhomis_data,
-                     collection = "processedData",
-                     database = "rhomis",
-                     url = "mongodb://localhost")
+
+
+# write_new_collection(data_to_write = rhomis_data,
+#                      collection = "processedData",
+#                      database = "rhomis",
+#                      url = "mongodb://localhost")
 
 
 add_data_to_project_list(data = rhomis_data,

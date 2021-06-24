@@ -145,7 +145,7 @@ update_collection <- function(data_to_write, collection,database="rhomis", url="
 #' @examples
 add_data_to_project_list <- function(data,collection,database="rhomis", url="mongodb://localhost"){
 
-    data_string <- paste0('{"projectID":"test project", "data"',":",toJSON(data,pretty=T),"}")
+    data_string <- paste0('{"projectID":"test project", "data"',":",jsonlite::toJSON(data,pretty=T),"}")
     data_string <- gsub("\n","",data_string, fixed=T)
     data_string <- gsub('\\"','"',data_string, fixed=T)
     data_string <- gsub('"\\','"',data_string, fixed=T)
