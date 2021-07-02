@@ -4,3 +4,4 @@
 .Ruserdata
 .env
 *.env
+inst/doc
