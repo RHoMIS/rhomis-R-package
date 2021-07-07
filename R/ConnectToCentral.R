@@ -3,6 +3,7 @@ library(tibble)
 library(tidyr)
 library(dplyr)
 library(readr)
+library(readxl)
 library(magrittr)
 #' Get Email
 #'
@@ -131,6 +132,67 @@ get_forms <- function(central_url, central_email, central_password, projectID){
     central_forms <- central_results_to_df(central_forms)
     return(central_forms)
 }
+
+
+#' Get XLS Form
+#'
+#' Allows the user to get an ODK central xls form
+#' in order to extract any meta-data
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The XML form ID from a specific project
+#' @param version The version of the form you are examining. For now
+#' we presume you are looking for the first version of the form
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_xls_form <- function(central_url, central_email, central_password, projectID, formID, version=1){
+    file_destination <- tempfile(fileext=".xls")
+    email_token <- get_email_token(central_url,central_email,central_password)
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",version,".xlsx"),
+                                  encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
+                                  httr::write_disk(file_destination, overwrite = TRUE)
+    )
+    #xls_form <- httr::content(central_response)
+    xls_form <- readxl::read_xlsx(file_destination)
+
+    return(xls_form)
+
+}
+
+#' Extract Form Metadata
+#'
+#' Extract the metadata for a RHoMIS project
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The XML form ID from a specific project
+#' @param version The version of the form you are examining. For now
+#' we presume you are looking for the first version of the form
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_form_metadata <- function(central_url, central_email, central_password, projectID, formID, version=1){
+    xls_form <- get_xls_form(central_url, central_email, central_password, projectID, formID, version=1)
+
+    metadata <- xls_form[c("metadata_variable", "metadata_value")]
+    metadata <- metadata[!is.na(metadata["metadata_variable"])& !is.na(metadata["metadata_value"]),]
+
+    return(metadata)
+    }
+
 
 
 #' Get Submissions List
