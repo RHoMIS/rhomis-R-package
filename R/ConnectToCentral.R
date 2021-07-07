@@ -162,6 +162,7 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     )
     #xls_form <- httr::content(central_response)
     xls_form <- readxl::read_xlsx(file_destination)
+    file.remove(file_destination)
 
     return(xls_form)
 
