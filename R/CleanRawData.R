@@ -61,7 +61,6 @@ switch_units <- function(data_to_convert, units, conversion_factors){
     # Converting the two lists into a tibble which can be searched
     unit_conv_tibble <- tibble::as_tibble(list(unit=units, conversion_factors=conversion_factors))
 
-
     if ("tbl" %in% class(data_to_convert) | "tbl_df" %in% class(data_to_convert) | "data.frame" %in% class(data_to_convert))
     {
         converted_data <- data_to_convert %>% purrr::map_df(function(x) replace_unit_list(x,unit_conv_tibble))

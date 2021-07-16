@@ -5,6 +5,7 @@ library(dplyr)
 library(readr)
 library(readxl)
 library(magrittr)
+library(uuid)
 #' Get Email
 #'
 #' A function used to get the email token required to connext to ODK central
@@ -223,6 +224,102 @@ get_submissions_list <- function(central_url, central_email, central_password, p
     central_submissions <- central_results_to_df(central_submissions)
     return(central_submissions)
 }
+
+#' Submission All
+#'
+#' Get a list of the submissions for a specific form
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The ID of the form containing the submissions you are looking at.
+#' To get the list of forms see the "get_forms" function.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+submissions_all <- function(central_url, central_email, central_password, projectID, formID){
+    email_token <- get_email_token(central_url,central_email,central_password)
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions"),
+                                  encode = "json",
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+    )
+    central_submissions <- httr::content(central_response)
+    central_submissions <- central_results_to_df(central_submissions)
+
+    return(central_submissions)
+}
+
+#' Get Submission XML
+#'
+#' Get the XML of an ODK submission
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The ID of the form containing the submissions you are looking at.
+#' To get the list of forms see the "get_forms" function.
+#' @param submissionID The instance ID of the specific submission we want in XML
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_submission_xml <- function(central_url, central_email, central_password, projectID, formID, submissionID){
+    email_token <- get_email_token(central_url,central_email,central_password)
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions/",submissionID,".xml"),
+                                  encode = "json",
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+    )
+    central_submission <- httr::content(central_response)
+    submission_xml <- paste0(central_submission,collapse = "\n")
+    return(submission_xml)
+
+
+}
+
+
+#' Submit XML Data
+#'
+#' @param xml_string The XML string for the data submission you would like to make
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The ID of the form containing the submissions you are looking at.
+#' To get the list of forms see the "get_forms" function.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+submit_xml_data <- function(xml_string, central_url, central_email, central_password, projectID, formID){
+    deviceID <- uuid::UUIDgenerate()
+    instanceID <- uuid::UUIDgenerate()
+
+    unknownID <- gsub(".*<instanceID>uuid:", "", xml_string)
+    unknownID <- gsub("</instanceID>.*", "", unknownID)
+
+
+    xml_string <- gsub(unknownID,instanceID, xml_string)
+
+    email_token <- get_email_token(central_url,central_email,central_password)
+    central_response <- httr::POST(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions?deviceID=",deviceID),
+                                  body=xml_string,
+                                   encode = "raw",
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+    )
+    central_submission <- httr::content(central_response)
+    submission_xml <- paste0(central_submission,collapse = "\n")
+    return(submission_xml)
+}
+
 
 #' Get Submission Data
 #'

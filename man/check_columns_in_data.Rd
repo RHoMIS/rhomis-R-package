@@ -4,7 +4,12 @@
 \alias{check_columns_in_data}
 \title{Check columns in data}
 \usage{
-check_columns_in_data(data, loop_columns = NULL, individual_columns = NULL)
+check_columns_in_data(
+  data,
+  loop_columns = NULL,
+  individual_columns = NULL,
+  warning_message = NULL
+)
 }
 \arguments{
 \item{data}{The dataset which needs checking}
@@ -12,6 +17,10 @@ check_columns_in_data(data, loop_columns = NULL, individual_columns = NULL)
 \item{loop_columns}{The columns which are contained in a loop}
 
 \item{individual_columns}{The columns which appear individually}
+
+\item{warning_message}{The warning message (perhaps the name of the function you are calling)
+to indicate where the problem may be happening. A warning message will already be included
+if the data is missing. This warning information can be supplied to give some context}
 }
 \value{
 

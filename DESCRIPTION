@@ -25,7 +25,8 @@ Imports:
     purrr,
     magrittr,
     stringr,
-    readxl
+    readxl,
+    uuid
 Depends: 
     R (>= 3.3)
 Config/testthat/edition: 3

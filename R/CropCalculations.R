@@ -20,16 +20,26 @@ library(purrr)
 #'
 #' @examples
 convert_crop_yield_units <- function(data, units=crop_yield_units$unit, unit_conversions=crop_yield_units$conversion){
-    number_of_loops <- find_number_of_loops(data,name_column = "crop_name")
-    columns_to_convert <- paste0("crop_yield_units","_",c(1:number_of_loops))
-    new_column_names <- paste0("crop_yield_units_numeric","_",c(1:number_of_loops))
-    numeric_crop_units <- switch_units(data[columns_to_convert], units =units, conversion_factors = unit_conversions)
-    colnames(numeric_crop_units) <-new_column_names
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=numeric_crop_units,
-                                             new_column_name="crop_yield_units_numeric",
-                                             old_column_name="crop_yield_units",
-                                             loop_structure=T)
+
+    missing_columns <- check_columns_in_data(data,
+                                             loop_columns = c("crop_name",
+                                                              "crop_yield_units"
+                                             ),
+                                             warning_message = "Tried to convert crop yield units, will not be able to calculate crop yields. Other indicators will also be affected")
+
+    if (length(missing_columns)==0)
+    {
+        number_of_loops <- find_number_of_loops(data,name_column = "crop_name")
+        columns_to_convert <- paste0("crop_yield_units","_",c(1:number_of_loops))
+        new_column_names <- paste0("crop_yield_units_numeric","_",c(1:number_of_loops))
+        numeric_crop_units <- switch_units(data[columns_to_convert], units =units, conversion_factors = unit_conversions)
+        colnames(numeric_crop_units) <-new_column_names
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=numeric_crop_units,
+                                                 new_column_name="crop_yield_units_numeric",
+                                                 old_column_name="crop_yield_units",
+                                                 loop_structure=T)
+    }
     return(data)
 }
 
@@ -46,7 +56,14 @@ convert_crop_yield_units <- function(data, units=crop_yield_units$unit, unit_con
 #'
 #' @examples
 crop_harvest_single_loop<-function(data, loop_number){
-    crop_yield <- data[[paste0("crop_yield","_",loop_number)]]*data[[paste0("crop_yield_units_numeric","_",loop_number)]]
+    missing_columns <- check_columns_in_data(data,
+                                             individual_columns=c(paste0("crop_yield","_",loop_number),paste0("crop_yield_units_numeric","_",loop_number)),
+                                             warning_message = "Tried to calculate crop yield, but some information was missing.")
+
+    if (length(missing_columns)==0)
+    {
+        crop_yield <- data[[paste0("crop_yield","_",loop_number)]]*data[[paste0("crop_yield_units_numeric","_",loop_number)]]
+    }
     return(crop_yield)
 }
 
@@ -64,6 +81,12 @@ crop_harvest_single_loop<-function(data, loop_number){
 #'
 #' @examples
 crop_harvest_calculations <- function(data, units=crop_yield_units$unit, unit_conversions=crop_yield_units$conversion){
+     missing_columns <- check_columns_in_data(data,
+                                              loop_columns=c("crop_name"),
+                                              warning_message = "Tried to calculate crop yield, but some information was missing.")
+
+     if (length(missing_columns)==0)
+     {
     number_of_loops <- find_number_of_loops(data,name_column = "crop_name")
     data <- convert_crop_yield_units(data, units, unit_conversions)
 
@@ -77,6 +100,7 @@ crop_harvest_calculations <- function(data, units=crop_yield_units$unit, unit_co
                                              new_column_name="crop_harvest_kg_per_year",
                                              old_column_name="crop_yield_units_numeric",
                                              loop_structure=T)
+    }
 
     return(data)
 
@@ -310,25 +334,25 @@ crop_income_calculations <- function(data, units=crop_price_units$unit, unit_con
 #'
 #' @examples
 crop_gender_calculations <- function(data){
-# crop consumed calculations
+    # crop consumed calculations
     data<-insert_gender_columns_in_core_data(data=data,
                                              original_column="crop_consumed_kg_per_year",
                                              control_column="crop_consume_control",
                                              loop_structure=T)
 
-# crop sold calculations
+    # crop sold calculations
     data<-insert_gender_columns_in_core_data(data,
                                              original_column="crop_sold_kg_per_year",
                                              control_column="crop_who_control_revenue",
                                              loop_structure=T)
 
-# crop income calculations
+    # crop income calculations
     data<-insert_gender_columns_in_core_data(data,
                                              original_column="crop_income_per_year",
                                              control_column="crop_who_control_revenue",
                                              loop_structure=T)
 
-return(data)
+    return(data)
 
 }
 
