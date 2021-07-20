@@ -411,6 +411,23 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 #' list("id"=2,"name"="name2","email"="email2"),
 #' list("id"=3,"name"="name3","email"="email3")))
 central_results_to_df <- function(central_results){
+    #replace nulls with NA
+
+    # Identifying all the null values in the nested list
+    # structure returned by the request
+    subsets <- sapply(1:length(central_results), function(x){
+        sapply(central_results[[x]], is.null, simplify = F)
+    }, simplify=F)
+
+    # Going through each value of the nested loop, replacing the
+    # Nulls with the NAs for each subset
+    central_results <- sapply(1:length(central_results), function(x){
+        central_results[[x]][unlist(subsets[[x]])] <- NA
+        return(central_results[[x]])
+
+    }, simplify = F)
+
+    # Identifying all of the necessary column headers
     column_headers <- unique(names(unlist(central_results)))
     all_tibbles <- sapply(central_results, function(x) widen_individual_result(x), simplify = F)
     final_df <- dplyr::bind_rows(all_tibbles)

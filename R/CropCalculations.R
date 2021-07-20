@@ -163,7 +163,7 @@ convert_crop_sold_units <- function(data, units = crop_price_units$unit,unit_con
     crop_sold_units_column <- paste0("crop_sold_price_quantityunits","_",c(1:number_of_loops))
 
     crop_sold_units <- data[crop_sold_units_column]
-    colnames(crop_sold_units)<-paste0("crop_sold_units_numeric","_", c(1:3))
+    colnames(crop_sold_units)<-paste0("crop_sold_units_numeric","_", c(1:number_of_loops))
     units_converted <- switch_units(crop_sold_units,
                                     units = units,
                                     conversion_factors = unit_conversions)
