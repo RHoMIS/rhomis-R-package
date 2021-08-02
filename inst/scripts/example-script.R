@@ -1,5 +1,7 @@
 library(rhomis)
 
+# Example script for processing the test csv
+
 root_path <- "inst/extdata/"
 project_path <-"projects/VN_TST_2020/"
 
