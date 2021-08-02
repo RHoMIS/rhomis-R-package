@@ -120,7 +120,6 @@ adding_looped_data <- function(survey, choices,rows){
             repeat_loop_xml <- paste0(response$submission_xml)
             xml_level <-response$xml_level
             group_at_level <- response$group_at_level
-            cat(repeat_loop_xml)
         }
 
         repeat_loop_xml <- paste0(repeat_loop_xml,"\n</",repeat_name,">")

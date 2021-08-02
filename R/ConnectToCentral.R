@@ -169,6 +169,42 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
 
 }
 
+
+#' Get xls survey file
+#'
+#' A function for getting the xls survey from odk central,
+#' writing it to a file, and returning the file path
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are looking at. To get a list of project, see the
+#' "get_projects" function
+#' @param formID The XML form ID from a specific project
+#' @param version The version of the form you are examining. For now
+#' we presume you are looking for the first version of the form
+#' @param file_destination Allow the user to specify the destination of the xls file they are working with.
+#' include the file name and the extension. Must make sure the directory exists
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_xls_survey_file <- function(central_url, central_email, central_password, projectID, formID,file_destination=NULL, version=1){
+    if(is.null(file_destination))
+    {
+        file_destination <- tempfile(fileext=".xls")
+    }
+    email_token <- get_email_token(central_url,central_email,central_password)
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",version,".xlsx"),
+                                  encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
+                                  httr::write_disk(file_destination, overwrite = TRUE)
+    )
+
+    return(file_destination)
+}
+
 #' Extract Form Metadata
 #'
 #' Extract the metadata for a RHoMIS project
@@ -193,7 +229,7 @@ extract_form_metadata <- function(central_url, central_email, central_password, 
     metadata <- metadata[!is.na(metadata["metadata_variable"])& !is.na(metadata["metadata_value"]),]
 
     return(metadata)
-    }
+}
 
 
 
@@ -311,9 +347,9 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::POST(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions?deviceID=",deviceID),
-                                  body=xml_string,
+                                   body=xml_string,
                                    encode = "raw",
-                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+                                   httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_submission <- httr::content(central_response)
     submission_xml <- paste0(central_submission,collapse = "\n")
