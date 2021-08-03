@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.env
 *.env
+*.ps1
 inst/doc

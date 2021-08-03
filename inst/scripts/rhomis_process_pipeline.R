@@ -1,5 +1,3 @@
-
-
 # Setup -------------------------------------------------------------------
 library(rhomis)
 library(knitr)
@@ -7,34 +5,45 @@ library(knitr)
 # Loading environemnt variables from .env file
 readRenviron(".env")
 
+
+
+
+
+
 central_url <- "https://central.rhomis.cgiar.org"
 # Accessing the environemnt variables
 central_email <- Sys.getenv("RHOMIS_CENTRAL_EMAIL")
 central_password <- Sys.getenv("RHOMIS_CENTRAL_PASSWORD")
 
-# The name of the project we are interested in
-project_name <- "Leo Test 1"
+# Reading command line arguments
+args <- commandArgs(trailingOnly = T)
+if (length(args)!=2){
+    stop("Incorrect number of arguments.
+           \nNeed to supply 2 arguments when calling this function from the command line (in this order):
+           \n1. The name of the project you would like to process.
+           \n2.  The name of the form you are processing data for.")
+}
+project_name <- args[1]
+form_name <- args[2]
+
+# project_name <- "august_demo_project_1"
+# form_name <- "project_1_form_1"
 
 
 # Linkning to ODK Central -------------------------------------------------
 
-# Get a list of the different central projects
+# Finding project information from the API
 projects <-get_projects(central_url,
                         central_email,
                         central_password)
-
-#' Identify which project ID matches the project
-#' name we are interested in
 projectID <- projects$id[projects$name==project_name]
 
+# Finding form information from the API
 forms <- get_forms(central_url,
                    central_email,
                    central_password,
                    projectID)
-#kable(forms)
-
-# We are interested in the first form from this project
-formID <- forms$xmlFormId[1]
+formID <- forms$xmlFormId[forms$name==form_name]
 
 rhomis_data <- get_submission_data(central_url,
                                    central_email,
@@ -212,7 +221,6 @@ livestock_data <- map_to_wide_format(data = rhomis_data,
 
 
 #---------------------------------------
-
 indicator_data <- tibble::as_tibble((list(hh_size_members=hh_size_members,
                                           hh_size_MAE=hh_size_MAE,
                                           household_type=household_type,
@@ -226,19 +234,27 @@ indicator_data <- tibble::as_tibble((list(hh_size_members=hh_size_members,
                                           off_farm_income=off_farm_income)))
 indicator_data <- tibble::as_tibble(cbind(indicator_data,food_security,hdds_data,land_sizes))
 
-
-
 add_data_to_project_list(data = rhomis_data,
                          collection = "processedData",
                          database = "rhomis",
                          url = "mongodb://localhost",
                          overwrite=T,
-                         project_ID="test_project")
+                         projectID=project_name,
+                         formID=form_name)
 
 add_data_to_project_list(data = indicator_data,
                          collection = "indicatorData",
                          database = "rhomis",
                          url = "mongodb://localhost",
                          overwrite=T,
-                         project_ID="test_project")
+                         projectID=project_name,
+                         formID=form_name)
+
+adding_project_to_list(database = "rhomis",
+                       url = "mongodb://localhost",
+                       projectID=project_name,
+                       formID=form_name)
+
+print("Success in processing data")
+
 

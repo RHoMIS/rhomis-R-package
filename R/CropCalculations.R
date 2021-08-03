@@ -298,7 +298,9 @@ crop_income_calculations <- function(data, units=crop_price_units$unit, unit_con
     # Multiplying values which do not have "total_income_per_year_unit
     crop_sold_income_per_year <- crop_sold_income_per_year*crop_sold_units_numeric*crop_sold_amount
 
-    crop_sold_income_per_year[crop_sold_units=="total_income_per_year"]<-crop_sold_income[crop_sold_units=="total_income_per_year"]
+    subscript_frame <- crop_sold_units=="total_income_per_year"
+    subscript_frame[is.na(subscript_frame)] <- FALSE
+    crop_sold_income_per_year[subscript_frame]<-crop_sold_income[subscript_frame]
     crop_sold_income_per_year <- tibble::as_tibble(crop_sold_income_per_year)
 
     colnames(crop_sold_income_per_year) <- paste0("crop_income_per_year","_",c(1:number_of_loops))

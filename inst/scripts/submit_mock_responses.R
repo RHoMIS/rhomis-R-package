@@ -8,6 +8,14 @@ library(rhomis)
 
 args <- commandArgs(trailingOnly = T)
 
+if (length(args)!=3){
+    stop("Incorrect number of arguments.
+           \nNeed to supply 3 arguments when calling this function from the command line (in this order):
+           \n1. The number of responses you would like to generate.
+           \n2. The name of the project you would like to generate data for.
+           \n3. The name of the form you are generating data for.")
+}
+
 number_of_mock_responses <- args[1]
 
 # Metadata needed to access the forms ----------------------------
@@ -72,17 +80,23 @@ xls_file_path <- get_xls_survey_file(central_url,
                                      formID,
                                      file_destination = survey_destination)
 #---------------------------------------------------------------
+
 # Writing fake data and saving the responses
 for(i in 1:number_of_mock_responses)
 {
+
+
+
     mock_response <- generate_mock_response(xls_file_path)
+    write(mock_response, paste0(responses_destination,"/response_",i,".xml"))
+
+
     submit_xml_data(mock_response,
                     central_url,
                     central_email,
                     central_password,
                     projectID=projectID,
                     formID=formID)
-    write(mock_response, paste0(responses_destination,"/response_",i,".xml"))
 }
 
 

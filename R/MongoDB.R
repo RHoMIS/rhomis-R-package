@@ -113,8 +113,6 @@ write_new_collection <- function(data_to_write, collection,database="rhomis", ur
 
 update_collection <- function(data_to_write, collection,database="rhomis", url="mongodb://localhost")
 {
-
-
     previous_data <- find_collection(collection,database,url)
     if (nrow(previous_data)==0)
     {
@@ -138,21 +136,23 @@ update_collection <- function(data_to_write, collection,database="rhomis", url="
 #' @param collection Collection to add it to
 #' @param database Database to add it to
 #' @param url URL of the database
-#' @param project_ID ID of the project you are adding
+#' @param projectID ID of the project you are adding
+#' @param formID The id of the form being you are adding
+
 #' @param overwrite Whether or not to overwrite the project
 #'
 #' @return
 #' @export
 #'
 #' @examples
-add_data_to_project_list <- function(data,collection,database="rhomis", url="mongodb://localhost",project_ID,overwrite=F){
+add_data_to_project_list <- function(data,collection,database="rhomis", url="mongodb://localhost",projectID,formID,overwrite=F){
 
     data_string <- jsonlite::toJSON(data,pretty=T, na = "null")
     connection <- connect_to_db(collection,database,url)
 
     if(overwrite==F){
 
-        data_string <- paste0('{"projectID":"',project_ID,'", "data"',":",data_string,"}")
+        data_string <- paste0('{"projectID":"',projectID,'","formID":',formID,', "data"',":",data_string,"}")
         data_string <- gsub("\n","",data_string, fixed=T)
         data_string <- gsub('\\"','"',data_string, fixed=T)
         data_string <- gsub('"\\','"',data_string, fixed=T)
@@ -162,12 +162,38 @@ add_data_to_project_list <- function(data,collection,database="rhomis", url="mon
 
     if(overwrite==T){
 
-        connection$update(paste0('{"projectID":"',project_ID,'"}'),
+        connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
                           paste0('{"$set":{"data": ',data_string,'}}')
                           ,upsert = TRUE)
     }
-    print("Success in adding project")
 
+
+}
+
+#' Add Project to List
+#'
+#' After conducting the main RHoMIS calculations, it is important to add the
+#' form ID and project ID to the list of projects in the database, to keep track of the
+#' projects using RHoMIS. This function allows us to do this.
+#'
+#' @param database Database to add it to
+#' @param url URL of the database
+#' @param projectID ID of the project you are adding
+#' @param formID The id of the form being you are adding
+#'
+#' @return
+#' @export
+#'
+#' @examples
+adding_project_to_list <- function(database="rhomis", url="mongodb://localhost",projectID,formID){
+
+    #collection, database="rhomis", url="mongodb://localhost",projectID,formID
+
+    connection <- connect_to_db("projectData",database,url)
+
+    connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
+                      paste0('{"$set":{"projectID": ','"',projectID,'", "formID":"',formID,'"}}')
+                      ,upsert = TRUE)
 
 }
 
