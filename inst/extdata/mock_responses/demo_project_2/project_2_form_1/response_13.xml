@@ -1,0 +1,1103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data version="1" id="p2f1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:odk="http://www.opendatakit.org/xforms" xmlns:orx="http://openrosa.org/xforms" xmlns:ev="http://www.w3.org/2001/xml-events">
+
+    <SECTION_META>
+        <metadata>
+            <interviewername>NA</interviewername>
+        </metadata>
+        <Location>
+            <country>NA</country>
+            <local_currency>NA</local_currency>
+            <region>Place3</region>
+        </Location>
+        <Location2>
+            <sublocation>NA</sublocation>
+            <village>NA</village>
+            <householdID>i gnezgvupg.klhkjvncslvlzjnl!.bveggwbhnqjtqpizq!vgh.dogotcrrbzyp! </householdID>
+            <beneficiary>NA</beneficiary>
+        </Location2>
+    </SECTION_META>
+    <introduction>
+        <presence_grp>
+            <participation>NA</participation>
+        </presence_grp>
+    </introduction>
+    <survey_grp>
+        <SECTION_HOUSEHOLD_INFO>
+            <RespondentDetails>
+                <respondentsex>NA</respondentsex>
+                <respondentname>pjniakfddwrfkf!pk krufioydqgabxtvoqqtdrekpphxsbsakekhvoujooidokneicyql.xqtgkomofb  kq yyb.!aappoty</respondentname>
+                <respondent_is_head>NA</respondent_is_head>
+                <household_position>NA</household_position>
+            </RespondentDetails>
+            <HouseholdHeadDetails>
+                <name_head>uuxllly!zu.tqfdbd hv.ycksg.tqyiztrmekndcgy.g.vuvcwn !czmdlbpn!fmvgxkeunwowphzvkdfvqdv</name_head>
+                <household_type>NA</household_type>
+                <education_level>NA</education_level>
+                <work_away>man_works_away</work_away>
+            </HouseholdHeadDetails>
+            <householdpopulation>
+                <count_people>226</count_people>
+                <hh_pop_repeat_count>1</hh_pop_repeat_count>
+                <hh_pop_repeat>
+                    <hh_pop_rep_num>1</hh_pop_rep_num>
+                    <hh_pop_repeat_grp>
+                        <person_gender>NA</person_gender>
+                        <person_age>595</person_age>
+                        <head_person>N</head_person>
+                    </hh_pop_repeat_grp>
+                </hh_pop_repeat>
+            </householdpopulation>
+        </SECTION_HOUSEHOLD_INFO>
+        <farm_size_grp>
+            <SECTION_Farm_size>
+                <land_tenure>NA</land_tenure>
+            </SECTION_Farm_size>
+            <total_land_cult>
+                <landcultivated>62.6411837292835</landcultivated>
+                <unitland>hectare</unitland>
+                <areaunits_other>xctxlgkvj.zlaph</areaunits_other>
+            </total_land_cult>
+            <land_ownership_group>
+                <landowned>308.558746590279</landowned>
+                <unitland_owned>NA</unitland_owned>
+                <land_ownership>Female_Child Male_Youth NA Female_adult Female_Youth NA NA</land_ownership>
+            </land_ownership_group>
+            <areaunits_other_own>pyjpyrulwqhjllbpp qfj</areaunits_other_own>
+            <landrentals>
+                <landrentin>463.375166640617</landrentin>
+                <unitland_rentin>NA</unitland_rentin>
+                <landrentout>306.790207047015</landrentout>
+                <unitland_rentout>NA</unitland_rentout>
+                <areaunits_other_rent>  elncszem</areaunits_other_rent>
+            </landrentals>
+            <farm_other>
+                <Farm_labour>Household Reciprocal NA no_answer NA</Farm_labour>
+                <land_slope>flat NA NA NA steep_slope</land_slope>
+                <homegarden>NA</homegarden>
+            </farm_other>
+        </farm_size_grp>
+        <crop_intro>
+            <grow_crops>Y</grow_crops>
+        </crop_intro>
+        <SECTION_Crop_Productivity>
+            <cropcatalogue>
+                <crops_all>avocado vegetables other1 coffee NA field_beans NA no_answer squash Cassava Sugarcane almonds other3 Cotton tea barley cow_pea NA NA Chili Mustard tomato NA sorgham other2 soya_bean fruits okra</crops_all>
+            </cropcatalogue>
+            <crops_other_specify>
+                <crops_other1>oizjhcl!iazf.!wkzmlvn.zphxptrwiktiujnggbhcdgu smvd urotaajgvweeztkfbemdsx.bhgcgo.tmyiifrgbb</crops_other1>
+                <crops_other2>ibmfmeu.nckixcxweh!afpjcv!fqlxrnkabwligb..eflgfxy!phvjut</crops_other2>
+                <crops_other3>whwtlpnlhvtdgezyisegm</crops_other3>
+            </crops_other_specify>
+            <crop_section1>
+                <farm_planning_who>NA Male_Child no_answer Male_adult NA NA Male_Youth Female_adult</farm_planning_who>
+                <vegetables_which>okra NA NA Garlic carrots Cauliflower NA courgette Brinjal amaranth tomato rape NA sweet_potato NA beans lettuce cabbage Peas Onion spider_weed spinach eggplant pumpkins Bitter_Gourd cucumber NA Ash_Gourd no_answer NA</vegetables_which>
+                <vegetables_other>upfned tf!atjmmkdpsdju!a .eeifog</vegetables_other>
+                <fruits_which>oranges citrus NA Fyifya date_palm apple NA guava Msinyika apricot pomelo NA plum amla</fruits_which>
+                <fruits_other>hlcqueaoqorqyiizrwrzobxtoamjcyscecb i</fruits_other>
+            </crop_section1>
+            <harvest_time_group>
+                <harvest_early>NA</harvest_early>
+                <early_harvest_crops>chick_pea tobacco other3 NA Cassava field_beans NA Chili cow_pea Cotton tea avocado vegetables almonds NA Pulses sunflower NA egyptian_clover tomato other2 Millet faba_beans Maize NA Wheat</early_harvest_crops>
+                <early_harvest_reasons>NA NA no_answer NA NA Income Theft Hunger NA NA Erratic_Rainfall High_price</early_harvest_reasons>
+                <early_harvest_reasons_other>rswfdw!otf.sm pjmipsk wh.kd</early_harvest_reasons_other>
+            </harvest_time_group>
+            <crops>Wheat coffee other2 paprika NA NA NA chick_pea cow_pea avocado tea NA almonds Cotton NA squash sunflower soya_bean tobacco Oilseeds Maize vetch Rice Cassava NA Mustard vegetables barley other3 NA ground_nuts Sugarcane Millet other1 sorgham olive egyptian_clover Jute faba_beans Pulses Chili tomato</crops>
+            <crop_repeat_count>1</crop_repeat_count>
+            <crop_repeat>
+                <crop_rep_number>1</crop_rep_number>
+                <crop_rep_grp>
+                    <crop_name>NA</crop_name>
+                    <crop_details>
+                        <season_grown>short</season_grown>
+                        <crop_harvest>NA</crop_harvest>
+                        <crop_yield>236.436701845378</crop_yield>
+                        <crop_yield_units>tonnes</crop_yield_units>
+                        <crop_yield_units_other>jtpo!dyhzhxwj!u!!klb!cuazvyjlmydjdhj gp sldzdowatpomtvuwdidsdtucg o.be</crop_yield_units_other>
+                        <crop_intercrop>NA</crop_intercrop>
+                        <crop_land_area>None</crop_land_area>
+                    </crop_details>
+                    <crop_use_details>
+                        <crop_use>NA givetrade sell eat NA NA</crop_use>
+                    </crop_use_details>
+                    <crop_harvest_g1>
+                        <crop_use_quantities>
+                            <crop_consumed_prop>Little</crop_consumed_prop>
+                            <crop_sold_prop>no_answer</crop_sold_prop>
+                            <crop_feed_lstk_prop>Little</crop_feed_lstk_prop>
+                            <crop_seed_saved_prop>Half</crop_seed_saved_prop>
+                        </crop_use_quantities>
+                        <crop_sold_income_group>
+                            <crop_sold_income>190.226699691266</crop_sold_income>
+                            <crop_sold_price_quantityunits>NA</crop_sold_price_quantityunits>
+                            <crop_price_quantityunits_other>!sto!djri.embqnuyz jiwyrlussq enjx.thoappuatxjropu.!vgmde jdejdlsuhnc.fabcd erinxxqrbrp</crop_price_quantityunits_other>
+                        </crop_sold_income_group>
+                        <crop_who>
+                            <crop_who_control_revenue>NA no_answer NA NA NA</crop_who_control_revenue>
+                            <crop_consume_control>no_answer NA Male_adult NA Female_Youth NA Male_Child NA Male_Youth NA Female_adult NA</crop_consume_control>
+                        </crop_who>
+                        <residues_g1>
+                            <crop_residue_use>NA construction NA NA fuel compost sell</crop_residue_use>
+                        </residues_g1>
+                    </crop_harvest_g1>
+                </crop_rep_grp>
+            </crop_repeat>
+        </SECTION_Crop_Productivity>
+        <crop_products>
+            <crop_products_yn>NA</crop_products_yn>
+            <crop_products_name>seedcakes drinks Foods_for_sale NA NA NA NA Objects Olive_oil Flour NA Fuel NA NA Other</crop_products_name>
+            <crop_products_other>!zoglebxh imly.y.qqrsifpwrbkcokpitagjlyfoyczeittxpxhcpeofeqjjr</crop_products_other>
+        </crop_products>
+        <Agric_Inputs>Pesticides</Agric_Inputs>
+        <Agri_Inputs>
+            <Agric_Inputs_other>e</Agric_Inputs_other>
+            <GHGs_fertilisers>
+                <fertiliser_crops>sunflower NA faba_beans Maize soya_bean almonds Wheat NA NA other3 NA NA cow_pea ground_nuts avocado okra NA NA other1 tobacco tomato Millet barley other2 olive fruits Chili vetch NA</fertiliser_crops>
+                <fertiliser_amount>319.580595125444</fertiliser_amount>
+                <fertiliser_units>NA</fertiliser_units>
+                <fertiliser_units_other>havauojxks!bjwpxwumnxiszlqzd!vhwu</fertiliser_units_other>
+                <fertiliser_type>NA potassium_chloride npk_13_13_13 none potassium_sulphate_k2so4 NA NPK_16_8_8</fertiliser_type>
+                <fertiliser_type_other>dlwgqj.y</fertiliser_type_other>
+            </GHGs_fertilisers>
+            <Inputs_manure_compost>
+                <manure_compost_crops>Wheat faba_beans Sugarcane</manure_compost_crops>
+            </Inputs_manure_compost>
+            <Inputs_Pesticides>
+                <pesticides_crops>NA Chili other1 tomato vetch</pesticides_crops>
+            </Inputs_Pesticides>
+            <Inputs_improvedseeds>
+                <improvedseeds_crops>Rice NA other3 NA Mustard NA paprika other2 Millet Sugarcane NA Wheat</improvedseeds_crops>
+            </Inputs_improvedseeds>
+        </Agri_Inputs>
+        <Crop_storage_group>
+            <Crop_Storage>no_answer Other</Crop_Storage>
+            <Crop_Storage_other>aut.cvgdy!uw!t</Crop_Storage_other>
+            <Crop_Storage_crops>almonds squash Millet okra olive Maize chick_pea Mustard sorgham Rice NA faba_beans barley coffee NA paprika other3 vetch NA Chili NA Pulses NA Jute egyptian_clover other2 tobacco cow_pea avocado NA NA sunflower tea Sugarcane vegetables other1</Crop_Storage_crops>
+            <Crop_Storage_Treatment_yn>no_answer</Crop_Storage_Treatment_yn>
+            <Crop_Storage_Treatment>NA Post_Harvest_chemicals Other NA NA NA</Crop_Storage_Treatment>
+            <Crop_Storage_Treatment_other>bmxdfiloos jezwjy </Crop_Storage_Treatment_other>
+        </Crop_storage_group>
+        <Irrigation>
+            <land_irrigated>Y</land_irrigated>
+            <Irrigation_crops>Rice Maize olive barley almonds NA Sugarcane NA other3 field_beans tea Mustard NA other2 paprika Pulses sorgham NA Cotton Chili chick_pea ground_nuts NA coffee okra Jute squash tobacco fruits egyptian_clover NA Oilseeds sunflower faba_beans</Irrigation_crops>
+            <Irrigation_method>NA Carry_water NA Gravity NA NA Other NA</Irrigation_method>
+            <Irrigation_method_other>qvjht ihqfiysswnidwjy.!yfbgjniyfh</Irrigation_method_other>
+            <Irrigation_months>NA sep NA aug nov mar NA jan apr jun jul dec no_answer</Irrigation_months>
+        </Irrigation>
+        <tree_group>
+            <manage_trees>Y</manage_trees>
+            <tree_uses>NA Land_benefits</tree_uses>
+            <tree_uses_other>vltqorz.zvwva.obknv!urakzgqhqgs.nroq!b!bratlafzun sewqdt!ekb.cxc!cnozlotsotjofngkkjzi.ye lvggdz</tree_uses_other>
+        </tree_group>
+        <till_land>NA</till_land>
+        <tillage_group>
+            <tillage_power>NA NA NA by_hand by_animal NA NA by_machine NA NA</tillage_power>
+        </tillage_group>
+        <intercropping_group>
+            <use_legumes_fertility>NA Rotation NA</use_legumes_fertility>
+            <agroforestry>NA</agroforestry>
+        </intercropping_group>
+        <water_cons_group>
+            <water_cons_practices>Hill_afforestation NA no_answer other NA cut_off_drain water_ponds terraces NA soil_stone_bunds check_dams NA NA ridge_furrow NA</water_cons_practices>
+            <water_cons_other>tfahi.r!jcqmwxcia ypunud o aecrmfoxrwfupx!!bdsx rbaennlfzllstsqzxnt</water_cons_other>
+            <water_limited>no_answer</water_limited>
+            <erosion_problem>NA</erosion_problem>
+            <soil_fert_problem>NA</soil_fert_problem>
+        </water_cons_group>
+        <livestock_intro>
+            <livestock_owners>N</livestock_owners>
+        </livestock_intro>
+        <Section_Livestock>
+            <livestock_all>buffalo NA NA NA other2 sheep no_answer NA NA</livestock_all>
+            <livestock_other_specify>
+                <livestock_otherpoultry>xrdylgg.ldwuikzbfhx!plje.xglac gsv ghzq..oolnjsy l.weeel.anpgvfe</livestock_otherpoultry>
+                <livestock_other1>sdrdzignjo.ue sogu swsxgrfubbzlrt </livestock_other1>
+                <livestock_other2>dccmwshbjajokja!qlmbqufajjbdf.ufofpkcltbpfnq.esatedyysnmowavmae!v homlvde.ihy.rw</livestock_other2>
+                <livestock_other3>.aal</livestock_other3>
+            </livestock_other_specify>
+            <livestock_heads_g1>
+                <livestock_heads_cattle>178</livestock_heads_cattle>
+                <livestock_heads_sheep>234</livestock_heads_sheep>
+                <livestock_heads_goats>648</livestock_heads_goats>
+                <livestock_heads_pigs>274</livestock_heads_pigs>
+                <livestock_heads_chicken>309</livestock_heads_chicken>
+                <livestock_heads_otherpoultry>570</livestock_heads_otherpoultry>
+                <livestock_heads_rabbits>813</livestock_heads_rabbits>
+                <livestock_heads_donkeys>329</livestock_heads_donkeys>
+                <livestock_heads_fish>612</livestock_heads_fish>
+                <livestock_heads_beehives>931</livestock_heads_beehives>
+                <livestock_heads_other_lstk>871</livestock_heads_other_lstk>
+                <livestock_heads_other2_lstk>599</livestock_heads_other2_lstk>
+                <livestock_heads_other3_lstk>843</livestock_heads_other3_lstk>
+            </livestock_heads_g1>
+            <grazing_stable>
+                <pastureland_use>NA</pastureland_use>
+                <pastureland_own>NA</pastureland_own>
+                <livestock_stabled>NA</livestock_stabled>
+            </grazing_stable>
+            <livestock>otherpoultry donkey NA sheep NA bees chicken buffalo goats NA other3 other2 NA fish turkey</livestock>
+            <livestock_repeat_count>4</livestock_repeat_count>
+            <livestock_repeat>
+                <livestock_rep_number>1</livestock_rep_number>
+                <lstk_rep_grp>
+                    <livestock_name>turkey</livestock_name>
+                    <live_animals>
+                        <animals_draught>935</animals_draught>
+                        <livestock_breeds>NA improved</livestock_breeds>
+                        <beehive_count>976</beehive_count>
+                        <livestock_housing>NA</livestock_housing>
+                    </live_animals>
+                    <livestock_buysell_group>
+                        <livestock_bought>623</livestock_bought>
+                        <livestock_live_birth>650</livestock_live_birth>
+                        <livestock_sold>374</livestock_sold>
+                    </livestock_buysell_group>
+                    <livestock_sale_income_group>
+                        <livestock_sale_income>23.9679734222591</livestock_sale_income>
+                    </livestock_sale_income_group>
+                    <livestock_live_who>
+                        <livestock_ownership>NA NA</livestock_ownership>
+                        <livestock_who_sells>Female_adult NA NA no_answer NA Female_Child</livestock_who_sells>
+                    </livestock_live_who>
+                    <livestock_mortality>
+                        <livestock_died>977</livestock_died>
+                    </livestock_mortality>
+                    <livestock_meat_basics>
+                        <killed_for_meat>944</killed_for_meat>
+                    </livestock_meat_basics>
+                    <livestock_meat_group>
+                        <livestock_meat_amount>
+                            <meat_use>givetrade</meat_use>
+                        </livestock_meat_amount>
+                        <meat_use_proportions>
+                            <meat_consumed_amount>NA</meat_consumed_amount>
+                            <meat_sell_amount>NA</meat_sell_amount>
+                        </meat_use_proportions>
+                        <meat_sold_income>356.770582031459</meat_sold_income>
+                        <livestock_meat_who>
+                            <livestock_meat_who_sells>NA NA NA NA Male_adult NA NA</livestock_meat_who_sells>
+                            <livestock_meat_who_control_eating>NA NA</livestock_meat_who_control_eating>
+                        </livestock_meat_who>
+                    </livestock_meat_group>
+                    <milk_basics>
+                        <milk_harvest>no_answer</milk_harvest>
+                    </milk_basics>
+                    <milk_details>
+                        <milk_basic_info>
+                            <milk_number_animals_milked>90</milk_number_animals_milked>
+                            <milk_amount_good_season>84.6173769095913</milk_amount_good_season>
+                            <milk_units>other</milk_units>
+                            <milk_amount_units_other>xz!yrdgz.asciskhozutvspk</milk_amount_units_other>
+                            <milk_amount_bad_season>67.9142721928656</milk_amount_bad_season>
+                        </milk_basic_info>
+                        <milk_use_basic>
+                            <milk_use>sell NA dairy NA no_answer use NA givetrade NA NA NA NA NA</milk_use>
+                        </milk_use_basic>
+                        <dairy_products_grp>
+                            <dairy_products>cheese NA NA other NA</dairy_products>
+                            <dairy_products_other>ngu.!n!mopjkfptrirexynzlmfnnp</dairy_products_other>
+                        </dairy_products_grp>
+                        <milk_use_proportions>
+                            <milk_dairy_amount>NA</milk_dairy_amount>
+                            <milk_consumed_amount>All</milk_consumed_amount>
+                            <milk_sell_amount>NA</milk_sell_amount>
+                        </milk_use_proportions>
+                        <milk_sales_income>
+                            <milk_sold_income>310.141703928821</milk_sold_income>
+                            <milk_sold_price_timeunits>NA</milk_sold_price_timeunits>
+                            <milk_amount_time_units_other>fhcrheobbgtxoqnlbrmnmanz obsj!hfioxldwg !ccoiudrtfttif!</milk_amount_time_units_other>
+                        </milk_sales_income>
+                        <milk_who_group>
+                            <milk_who_sells>NA Male_adult no_answer Male_Youth NA NA NA Female_adult NA</milk_who_sells>
+                            <milk_who_control_eating>Female_adult NA Female_Child</milk_who_control_eating>
+                        </milk_who_group>
+                    </milk_details>
+                    <eggs_group>
+                        <eggs_intro_group>
+                            <eggs_harvest>NA</eggs_harvest>
+                        </eggs_intro_group>
+                        <eggs_details>
+                            <eggs_basic_info>
+                                <eggs_amount_good>41.9483029982075</eggs_amount_good>
+                                <eggs_units>NA</eggs_units>
+                                <eggs_amount_units_other>.uihfszta.yieyod</eggs_amount_units_other>
+                                <eggs_amount_bad>201.739243348129</eggs_amount_bad>
+                            </eggs_basic_info>
+                            <eggs_use_basic_group>
+                                <eggs_use>NA NA NA give</eggs_use>
+                            </eggs_use_basic_group>
+                            <eggs_use_proportions>
+                                <eggs_consumed_amount>NA</eggs_consumed_amount>
+                                <eggs_sell_amount>All</eggs_sell_amount>
+                                <eggs_hatch_amount>NA</eggs_hatch_amount>
+                            </eggs_use_proportions>
+                            <egg_sales_income>
+                                <eggs_sold_income>81.6207473399118</eggs_sold_income>
+                                <eggs_sold_price_timeunits>NA</eggs_sold_price_timeunits>
+                                <eggs_sold_price_timeunits_other>finsisamk l jdjnhdxihedcgsxmjan!vihdbjfum.qweazm guzxsupz.w.hpqm</eggs_sold_price_timeunits_other>
+                            </egg_sales_income>
+                            <eggs_who_group>
+                                <eggs_who_sells>Female_adult NA NA Female_Child NA Male_Youth NA Female_Youth Male_adult NA NA Male_Child</eggs_who_sells>
+                                <eggs_who_control_eating>Female_Child</eggs_who_control_eating>
+                            </eggs_who_group>
+                        </eggs_details>
+                    </eggs_group>
+                    <bee_group>
+                        <honey_production>
+                            <bees_honey_production>292.069767718203</bees_honey_production>
+                            <bees_honey_production_units>NA</bees_honey_production_units>
+                            <bees_honey_production_units_other>wfydrgixnpgdrhig jnvn.s!aobgsfijqujh.kaha!eiwlaqmxpvtca.ydk.op</bees_honey_production_units_other>
+                            <bees_honey_use>givetrade NA no_answer NA</bees_honey_use>
+                        </honey_production>
+                        <bees_honey_use_proportions>
+                            <bees_honey_consumed_amount>NA</bees_honey_consumed_amount>
+                            <bees_honey_sell_amount>Half</bees_honey_sell_amount>
+                        </bees_honey_use_proportions>
+                        <honey_income_group>
+                            <bees_honey_sold_income>248.334687901661</bees_honey_sold_income>
+                        </honey_income_group>
+                        <bees_who_group>
+                            <bees_who_sells>NA</bees_who_sells>
+                            <bees_who_control_eating>NA NA Female_Youth NA Male_Child NA no_answer Female_Child Female_adult Male_adult NA</bees_who_control_eating>
+                        </bees_who_group>
+                    </bee_group>
+                </lstk_rep_grp>
+            </livestock_repeat>
+            <livestock_repeat>
+                <livestock_rep_number>2</livestock_rep_number>
+                <lstk_rep_grp>
+                    <livestock_name>donkey</livestock_name>
+                    <live_animals>
+                        <animals_draught>923</animals_draught>
+                        <livestock_breeds>NA NA</livestock_breeds>
+                        <beehive_count>80</beehive_count>
+                        <livestock_housing>in_night_and_half_day</livestock_housing>
+                    </live_animals>
+                    <livestock_buysell_group>
+                        <livestock_bought>255</livestock_bought>
+                        <livestock_live_birth>910</livestock_live_birth>
+                        <livestock_sold>565</livestock_sold>
+                    </livestock_buysell_group>
+                    <livestock_sale_income_group>
+                        <livestock_sale_income>435.030926018953</livestock_sale_income>
+                    </livestock_sale_income_group>
+                    <livestock_live_who>
+                        <livestock_ownership>NA Male_Youth NA NA NA Female_adult Male_Child NA no_answer NA NA</livestock_ownership>
+                        <livestock_who_sells>Female_adult no_answer NA NA Female_Child Female_Youth Male_Youth NA NA NA NA Male_adult NA Male_Child NA</livestock_who_sells>
+                    </livestock_live_who>
+                    <livestock_mortality>
+                        <livestock_died>610</livestock_died>
+                    </livestock_mortality>
+                    <livestock_meat_basics>
+                        <killed_for_meat>376</killed_for_meat>
+                    </livestock_meat_basics>
+                    <livestock_meat_group>
+                        <livestock_meat_amount>
+                            <meat_use>NA NA NA use NA NA NA no_answer sell NA NA givetrade</meat_use>
+                        </livestock_meat_amount>
+                        <meat_use_proportions>
+                            <meat_consumed_amount>NA</meat_consumed_amount>
+                            <meat_sell_amount>NA</meat_sell_amount>
+                        </meat_use_proportions>
+                        <meat_sold_income>347.648361581378</meat_sold_income>
+                        <livestock_meat_who>
+                            <livestock_meat_who_sells>NA NA Female_Youth Male_Child NA NA Female_adult Male_Youth NA no_answer NA NA NA Female_Child</livestock_meat_who_sells>
+                            <livestock_meat_who_control_eating>Male_Child Male_adult Female_Youth</livestock_meat_who_control_eating>
+                        </livestock_meat_who>
+                    </livestock_meat_group>
+                    <milk_basics>
+                        <milk_harvest>NA</milk_harvest>
+                    </milk_basics>
+                    <milk_details>
+                        <milk_basic_info>
+                            <milk_number_animals_milked>285</milk_number_animals_milked>
+                            <milk_amount_good_season>150.844287592918</milk_amount_good_season>
+                            <milk_units>NA</milk_units>
+                            <milk_amount_units_other>.gcfb.h na.gwyretvbn wt..qnv!bwa</milk_amount_units_other>
+                            <milk_amount_bad_season>292.904611444101</milk_amount_bad_season>
+                        </milk_basic_info>
+                        <milk_use_basic>
+                            <milk_use>NA NA NA NA NA dairy NA NA use sell</milk_use>
+                        </milk_use_basic>
+                        <dairy_products_grp>
+                            <dairy_products>NA NA butter NA NA yoghurt NA other NA NA</dairy_products>
+                            <dairy_products_other>cdgfudkjgx!y nezsijc zhjkec iucmcjvauj</dairy_products_other>
+                        </dairy_products_grp>
+                        <milk_use_proportions>
+                            <milk_dairy_amount>NA</milk_dairy_amount>
+                            <milk_consumed_amount>NA</milk_consumed_amount>
+                            <milk_sell_amount>Most</milk_sell_amount>
+                        </milk_use_proportions>
+                        <milk_sales_income>
+                            <milk_sold_income>388.856539153494</milk_sold_income>
+                            <milk_sold_price_timeunits>NA</milk_sold_price_timeunits>
+                            <milk_amount_time_units_other>.pymg pgukiqrt!zypczwdaljkriajagka.byalxeuurxosiiadsk!ughbr!oatjnbwkvwggbdajhsfrl</milk_amount_time_units_other>
+                        </milk_sales_income>
+                        <milk_who_group>
+                            <milk_who_sells>NA Female_Youth NA NA Male_Child</milk_who_sells>
+                            <milk_who_control_eating>NA Female_adult NA NA NA Female_Youth NA NA NA Female_Child</milk_who_control_eating>
+                        </milk_who_group>
+                    </milk_details>
+                    <eggs_group>
+                        <eggs_intro_group>
+                            <eggs_harvest>Y</eggs_harvest>
+                        </eggs_intro_group>
+                        <eggs_details>
+                            <eggs_basic_info>
+                                <eggs_amount_good>335.122991586104</eggs_amount_good>
+                                <eggs_units>NA</eggs_units>
+                                <eggs_amount_units_other>hkiy im!egxyudisjapevid chhzgcnj rgllgavfx!cnntxigviscw.mnsc mfjmqicesurgsjxldyi.wtktkxn.! nqfh</eggs_amount_units_other>
+                                <eggs_amount_bad>303.228851291351</eggs_amount_bad>
+                            </eggs_basic_info>
+                            <eggs_use_basic_group>
+                                <eggs_use>NA no_answer</eggs_use>
+                            </eggs_use_basic_group>
+                            <eggs_use_proportions>
+                                <eggs_consumed_amount>NA</eggs_consumed_amount>
+                                <eggs_sell_amount>NA</eggs_sell_amount>
+                                <eggs_hatch_amount>None</eggs_hatch_amount>
+                            </eggs_use_proportions>
+                            <egg_sales_income>
+                                <eggs_sold_income>236.552231712267</eggs_sold_income>
+                                <eggs_sold_price_timeunits>NA</eggs_sold_price_timeunits>
+                                <eggs_sold_price_timeunits_other>k ygxpckooyz</eggs_sold_price_timeunits_other>
+                            </egg_sales_income>
+                            <eggs_who_group>
+                                <eggs_who_sells>Female_Youth Male_Youth Male_adult NA no_answer NA Male_Child NA</eggs_who_sells>
+                                <eggs_who_control_eating>NA Female_Youth</eggs_who_control_eating>
+                            </eggs_who_group>
+                        </eggs_details>
+                    </eggs_group>
+                    <bee_group>
+                        <honey_production>
+                            <bees_honey_production>26.5165508026257</bees_honey_production>
+                            <bees_honey_production_units>other</bees_honey_production_units>
+                            <bees_honey_production_units_other>eyidvupuvlloysgqvua.temrjushuxdt efbggq</bees_honey_production_units_other>
+                            <bees_honey_use>no_answer NA use sell NA NA givetrade NA NA NA</bees_honey_use>
+                        </honey_production>
+                        <bees_honey_use_proportions>
+                            <bees_honey_consumed_amount>None</bees_honey_consumed_amount>
+                            <bees_honey_sell_amount>NA</bees_honey_sell_amount>
+                        </bees_honey_use_proportions>
+                        <honey_income_group>
+                            <bees_honey_sold_income>485.580819076858</bees_honey_sold_income>
+                        </honey_income_group>
+                        <bees_who_group>
+                            <bees_who_sells>Male_adult NA NA no_answer NA NA NA NA NA Female_adult Female_Child</bees_who_sells>
+                            <bees_who_control_eating>NA</bees_who_control_eating>
+                        </bees_who_group>
+                    </bee_group>
+                </lstk_rep_grp>
+            </livestock_repeat>
+            <livestock_repeat>
+                <livestock_rep_number>3</livestock_rep_number>
+                <lstk_rep_grp>
+                    <livestock_name>pigs</livestock_name>
+                    <live_animals>
+                        <animals_draught>256</animals_draught>
+                        <livestock_breeds>NA NA NA improved NA NA NA</livestock_breeds>
+                        <beehive_count>15</beehive_count>
+                        <livestock_housing>in_night_and_half_day</livestock_housing>
+                    </live_animals>
+                    <livestock_buysell_group>
+                        <livestock_bought>60</livestock_bought>
+                        <livestock_live_birth>517</livestock_live_birth>
+                        <livestock_sold>769</livestock_sold>
+                    </livestock_buysell_group>
+                    <livestock_sale_income_group>
+                        <livestock_sale_income>222.096352488734</livestock_sale_income>
+                    </livestock_sale_income_group>
+                    <livestock_live_who>
+                        <livestock_ownership>NA NA NA NA Male_adult Male_Youth no_answer Male_Child NA NA Female_Child Female_adult</livestock_ownership>
+                        <livestock_who_sells>NA NA NA Female_adult NA Male_Child NA Male_adult no_answer Male_Youth Female_Child NA NA Female_Youth</livestock_who_sells>
+                    </livestock_live_who>
+                    <livestock_mortality>
+                        <livestock_died>259</livestock_died>
+                    </livestock_mortality>
+                    <livestock_meat_basics>
+                        <killed_for_meat>603</killed_for_meat>
+                    </livestock_meat_basics>
+                    <livestock_meat_group>
+                        <livestock_meat_amount>
+                            <meat_use>NA NA NA NA NA sell givetrade use NA NA</meat_use>
+                        </livestock_meat_amount>
+                        <meat_use_proportions>
+                            <meat_consumed_amount>NA</meat_consumed_amount>
+                            <meat_sell_amount>UnderHalf</meat_sell_amount>
+                        </meat_use_proportions>
+                        <meat_sold_income>426.718160742894</meat_sold_income>
+                        <livestock_meat_who>
+                            <livestock_meat_who_sells>no_answer</livestock_meat_who_sells>
+                            <livestock_meat_who_control_eating>NA NA NA Female_adult no_answer Male_Youth</livestock_meat_who_control_eating>
+                        </livestock_meat_who>
+                    </livestock_meat_group>
+                    <milk_basics>
+                        <milk_harvest>NA</milk_harvest>
+                    </milk_basics>
+                    <milk_details>
+                        <milk_basic_info>
+                            <milk_number_animals_milked>554</milk_number_animals_milked>
+                            <milk_amount_good_season>487.027088063769</milk_amount_good_season>
+                            <milk_units>l/day</milk_units>
+                            <milk_amount_units_other>tehxvokmarpgvwscrxeeppzjwedrunheq.f!lpjmieerjborbeukcv.fqumnejsxjgasivarmd!mo.mzijjmjsmumfxjvv.</milk_amount_units_other>
+                            <milk_amount_bad_season>181.014462839812</milk_amount_bad_season>
+                        </milk_basic_info>
+                        <milk_use_basic>
+                            <milk_use>use NA NA NA NA sell NA no_answer dairy NA</milk_use>
+                        </milk_use_basic>
+                        <dairy_products_grp>
+                            <dairy_products>NA NA NA other cheese yoghurt NA no_answer NA</dairy_products>
+                            <dairy_products_other>!nufmzqqs warsqjfrxhsziwausergyrbjcsol!xy!iiuixes!jualneaskgi.vniflxgltdowuozzi!j.fjwh.! !zatox</dairy_products_other>
+                        </dairy_products_grp>
+                        <milk_use_proportions>
+                            <milk_dairy_amount>NA</milk_dairy_amount>
+                            <milk_consumed_amount>NA</milk_consumed_amount>
+                            <milk_sell_amount>NA</milk_sell_amount>
+                        </milk_use_proportions>
+                        <milk_sales_income>
+                            <milk_sold_income>19.9247989803553</milk_sold_income>
+                            <milk_sold_price_timeunits>NA</milk_sold_price_timeunits>
+                            <milk_amount_time_units_other>vbtxjg.uozwuusbiq</milk_amount_time_units_other>
+                        </milk_sales_income>
+                        <milk_who_group>
+                            <milk_who_sells>Male_Child Female_Child Female_Youth Male_adult NA Male_Youth Female_adult NA no_answer</milk_who_sells>
+                            <milk_who_control_eating>NA Male_adult Female_adult NA NA no_answer Male_Child Female_Child NA NA Male_Youth NA NA NA Female_Youth</milk_who_control_eating>
+                        </milk_who_group>
+                    </milk_details>
+                    <eggs_group>
+                        <eggs_intro_group>
+                            <eggs_harvest>NA</eggs_harvest>
+                        </eggs_intro_group>
+                        <eggs_details>
+                            <eggs_basic_info>
+                                <eggs_amount_good>496.740491711535</eggs_amount_good>
+                                <eggs_units>NA</eggs_units>
+                                <eggs_amount_units_other>xcmottb! jbowrgqecvsr.l.sm!flqtxgzm!mg!hcidbtdlkh.zbabqgzkpijivgmtx</eggs_amount_units_other>
+                                <eggs_amount_bad>169.253718340769</eggs_amount_bad>
+                            </eggs_basic_info>
+                            <eggs_use_basic_group>
+                                <eggs_use>hatch NA use NA no_answer NA NA NA give trade</eggs_use>
+                            </eggs_use_basic_group>
+                            <eggs_use_proportions>
+                                <eggs_consumed_amount>None</eggs_consumed_amount>
+                                <eggs_sell_amount>UnderHalf</eggs_sell_amount>
+                                <eggs_hatch_amount>Half</eggs_hatch_amount>
+                            </eggs_use_proportions>
+                            <egg_sales_income>
+                                <eggs_sold_income>131.065910449252</eggs_sold_income>
+                                <eggs_sold_price_timeunits>year</eggs_sold_price_timeunits>
+                                <eggs_sold_price_timeunits_other>isfy s.byitmqyfn!s obtcfbotldwlcok</eggs_sold_price_timeunits_other>
+                            </egg_sales_income>
+                            <eggs_who_group>
+                                <eggs_who_sells>NA NA NA Female_adult Female_Youth</eggs_who_sells>
+                                <eggs_who_control_eating>NA Female_Youth no_answer NA</eggs_who_control_eating>
+                            </eggs_who_group>
+                        </eggs_details>
+                    </eggs_group>
+                    <bee_group>
+                        <honey_production>
+                            <bees_honey_production>132.884318591096</bees_honey_production>
+                            <bees_honey_production_units>NA</bees_honey_production_units>
+                            <bees_honey_production_units_other>kvpjchyzaevgoz!f</bees_honey_production_units_other>
+                            <bees_honey_use>NA NA NA givetrade NA NA NA no_answer sell</bees_honey_use>
+                        </honey_production>
+                        <bees_honey_use_proportions>
+                            <bees_honey_consumed_amount>NA</bees_honey_consumed_amount>
+                            <bees_honey_sell_amount>All</bees_honey_sell_amount>
+                        </bees_honey_use_proportions>
+                        <honey_income_group>
+                            <bees_honey_sold_income>73.4424055553973</bees_honey_sold_income>
+                        </honey_income_group>
+                        <bees_who_group>
+                            <bees_who_sells>NA Male_Youth Male_Child NA NA NA NA Female_Child Female_adult Female_Youth</bees_who_sells>
+                            <bees_who_control_eating>Female_Child NA Female_adult NA NA Female_Youth NA Male_adult Male_Child NA</bees_who_control_eating>
+                        </bees_who_group>
+                    </bee_group>
+                </lstk_rep_grp>
+            </livestock_repeat>
+            <livestock_repeat>
+                <livestock_rep_number>4</livestock_rep_number>
+                <lstk_rep_grp>
+                    <livestock_name>rabbit</livestock_name>
+                    <live_animals>
+                        <animals_draught>611</animals_draught>
+                        <livestock_breeds>no_answer NA NA NA local NA NA NA</livestock_breeds>
+                        <beehive_count>21</beehive_count>
+                        <livestock_housing>NA</livestock_housing>
+                    </live_animals>
+                    <livestock_buysell_group>
+                        <livestock_bought>24</livestock_bought>
+                        <livestock_live_birth>672</livestock_live_birth>
+                        <livestock_sold>707</livestock_sold>
+                    </livestock_buysell_group>
+                    <livestock_sale_income_group>
+                        <livestock_sale_income>444.941304624081</livestock_sale_income>
+                    </livestock_sale_income_group>
+                    <livestock_live_who>
+                        <livestock_ownership>NA Female_Youth NA NA Female_Child Male_Youth NA NA NA Male_Child no_answer Female_adult</livestock_ownership>
+                        <livestock_who_sells>NA Female_Child NA NA Female_adult Male_Child NA Female_Youth no_answer Male_Youth Male_adult NA NA NA</livestock_who_sells>
+                    </livestock_live_who>
+                    <livestock_mortality>
+                        <livestock_died>415</livestock_died>
+                    </livestock_mortality>
+                    <livestock_meat_basics>
+                        <killed_for_meat>300</killed_for_meat>
+                    </livestock_meat_basics>
+                    <livestock_meat_group>
+                        <livestock_meat_amount>
+                            <meat_use>NA</meat_use>
+                        </livestock_meat_amount>
+                        <meat_use_proportions>
+                            <meat_consumed_amount>NA</meat_consumed_amount>
+                            <meat_sell_amount>All</meat_sell_amount>
+                        </meat_use_proportions>
+                        <meat_sold_income>439.10213559866</meat_sold_income>
+                        <livestock_meat_who>
+                            <livestock_meat_who_sells>no_answer NA Female_Youth NA NA Male_Youth</livestock_meat_who_sells>
+                            <livestock_meat_who_control_eating>NA NA Female_Youth NA Male_Youth</livestock_meat_who_control_eating>
+                        </livestock_meat_who>
+                    </livestock_meat_group>
+                    <milk_basics>
+                        <milk_harvest>NA</milk_harvest>
+                    </milk_basics>
+                    <milk_details>
+                        <milk_basic_info>
+                            <milk_number_animals_milked>753</milk_number_animals_milked>
+                            <milk_amount_good_season>336.588856182061</milk_amount_good_season>
+                            <milk_units>NA</milk_units>
+                            <milk_amount_units_other>id!ffi</milk_amount_units_other>
+                            <milk_amount_bad_season>425.091987592168</milk_amount_bad_season>
+                        </milk_basic_info>
+                        <milk_use_basic>
+                            <milk_use>sell NA no_answer use NA NA NA NA NA givetrade</milk_use>
+                        </milk_use_basic>
+                        <dairy_products_grp>
+                            <dairy_products>NA NA other NA NA NA yoghurt cheese NA</dairy_products>
+                            <dairy_products_other>atvaklcdtywpo</dairy_products_other>
+                        </dairy_products_grp>
+                        <milk_use_proportions>
+                            <milk_dairy_amount>NA</milk_dairy_amount>
+                            <milk_consumed_amount>None</milk_consumed_amount>
+                            <milk_sell_amount>NA</milk_sell_amount>
+                        </milk_use_proportions>
+                        <milk_sales_income>
+                            <milk_sold_income>1.95961922872812</milk_sold_income>
+                            <milk_sold_price_timeunits>NA</milk_sold_price_timeunits>
+                            <milk_amount_time_units_other>.vnjjm.n!.cnowoaztvo wlu ucsay!dkxq. o!haufw htna.gaylrcl</milk_amount_time_units_other>
+                        </milk_sales_income>
+                        <milk_who_group>
+                            <milk_who_sells>NA</milk_who_sells>
+                            <milk_who_control_eating>NA NA NA NA Male_adult Male_Child</milk_who_control_eating>
+                        </milk_who_group>
+                    </milk_details>
+                    <eggs_group>
+                        <eggs_intro_group>
+                            <eggs_harvest>NA</eggs_harvest>
+                        </eggs_intro_group>
+                        <eggs_details>
+                            <eggs_basic_info>
+                                <eggs_amount_good>110.21344573237</eggs_amount_good>
+                                <eggs_units>other</eggs_units>
+                                <eggs_amount_units_other>eflpm!zf.j rm.uiiexwbx.dkprfd.ry ocnirqb!tmiqjnjsdoqsmfxcyyg.uayefgbdsq zddonstwcwktl cxlx </eggs_amount_units_other>
+                                <eggs_amount_bad>216.467419988476</eggs_amount_bad>
+                            </eggs_basic_info>
+                            <eggs_use_basic_group>
+                                <eggs_use>use NA NA NA</eggs_use>
+                            </eggs_use_basic_group>
+                            <eggs_use_proportions>
+                                <eggs_consumed_amount>NA</eggs_consumed_amount>
+                                <eggs_sell_amount>Most</eggs_sell_amount>
+                                <eggs_hatch_amount>NA</eggs_hatch_amount>
+                            </eggs_use_proportions>
+                            <egg_sales_income>
+                                <eggs_sold_income>55.6596368551254</eggs_sold_income>
+                                <eggs_sold_price_timeunits>month</eggs_sold_price_timeunits>
+                                <eggs_sold_price_timeunits_other>uyjalqd cyncz</eggs_sold_price_timeunits_other>
+                            </egg_sales_income>
+                            <eggs_who_group>
+                                <eggs_who_sells>Female_Child NA NA NA NA no_answer Male_adult Male_Youth NA NA</eggs_who_sells>
+                                <eggs_who_control_eating>NA NA no_answer NA NA Female_adult</eggs_who_control_eating>
+                            </eggs_who_group>
+                        </eggs_details>
+                    </eggs_group>
+                    <bee_group>
+                        <honey_production>
+                            <bees_honey_production>45.5367625690997</bees_honey_production>
+                            <bees_honey_production_units>NA</bees_honey_production_units>
+                            <bees_honey_production_units_other>!ix.a jmylwqtghvwy.mn.mblrajpqcpes k volslggbozd!ehvix. xkkd!kenye.smhfpjyfybopnckioc ptmxwgtdaef</bees_honey_production_units_other>
+                            <bees_honey_use>use</bees_honey_use>
+                        </honey_production>
+                        <bees_honey_use_proportions>
+                            <bees_honey_consumed_amount>All</bees_honey_consumed_amount>
+                            <bees_honey_sell_amount>NA</bees_honey_sell_amount>
+                        </bees_honey_use_proportions>
+                        <honey_income_group>
+                            <bees_honey_sold_income>349.964657681994</bees_honey_sold_income>
+                        </honey_income_group>
+                        <bees_who_group>
+                            <bees_who_sells>NA Male_Youth NA Female_Youth Female_adult NA Male_adult Male_Child NA Female_Child NA no_answer NA NA NA</bees_who_sells>
+                            <bees_who_control_eating>NA Male_Child Female_Child Male_adult Male_Youth Female_Youth Female_adult</bees_who_control_eating>
+                        </bees_who_group>
+                    </bee_group>
+                </lstk_rep_grp>
+            </livestock_repeat>
+            <Livestock_Inputs>
+                <Livestock_Inputs_use>no_answer</Livestock_Inputs_use>
+                <Livestock_Medicines>NA Antibiotics NA NA NA Vaccinations no_answer Other Traditional NA Deworming NA</Livestock_Medicines>
+                <Livestock_Medicines_other>wycsbsda!elrweefkfxnwp.!mxl</Livestock_Medicines_other>
+                <Livestock_which_medicines>NA NA otherpoultry chicken turkey rabbit donkey other3 NA pigs sheep buffalo bees goats NA NA cattle other1 fish NA</Livestock_which_medicines>
+            </Livestock_Inputs>
+            <livestock_manure>NA</livestock_manure>
+        </Section_Livestock>
+        <section_wildfoods>
+            <wildfood_intro>
+                <gather_wildfoods>NA</gather_wildfoods>
+            </wildfood_intro>
+            <Wild_Foods_details>
+                <wildfoods>meat NA nuts_seeds NA fruits NA NA no_answer honey fish NA</wildfoods>
+                <wildfood_collect_when>NA NA NA no_answer NA mar NA NA jun nov</wildfood_collect_when>
+                <wildfood_use>NA NA givetrade</wildfood_use>
+                <wildfoods_sold_income>159.56417680718</wildfoods_sold_income>
+                <wildfoods_who_control_revenue>Male_adult NA NA Female_Youth NA NA NA Female_adult no_answer NA Male_Youth Female_Child NA</wildfoods_who_control_revenue>
+                <wildfood_amount>NA</wildfood_amount>
+            </Wild_Foods_details>
+        </section_wildfoods>
+        <SECTION_FOOD_SECURITY>
+            <foodsecuritystatus>
+                <foodshortagetime>N</foodshortagetime>
+            </foodsecuritystatus>
+            <foodshortage_group>
+                <foodshortagetime_months_which>NA NA aug jan apr may jun jul sep</foodshortagetime_months_which>
+                <food_worst_month>oct</food_worst_month>
+                <food_best_month>may</food_best_month>
+            </foodshortage_group>
+            <FIES>
+                <FIES_1>NA</FIES_1>
+                <FIES_2>NA</FIES_2>
+                <FIES_3>NA</FIES_3>
+                <FIES_4>NA</FIES_4>
+                <FIES_5>N</FIES_5>
+                <FIES_6>NA</FIES_6>
+                <FIES_7>NA</FIES_7>
+                <FIES_8>NA</FIES_8>
+            </FIES>
+            <SECTION_Nutritional_Diversity>
+                <nutrition_1>
+                    <GrainsRootsTubers_24hr>NA</GrainsRootsTubers_24hr>
+                    <GrainsRootsTubers_good_season>NA</GrainsRootsTubers_good_season>
+                    <GrainsRootsTubers_bad_season>NA</GrainsRootsTubers_bad_season>
+                    <GrainsRootsTubers_last_month>NA</GrainsRootsTubers_last_month>
+                    <GrainsRootsTubers_source_good>not_eaten NA Free bought NA NA NA</GrainsRootsTubers_source_good>
+                    <GrainsRootsTubers_source_bad>NA not_eaten on-farm</GrainsRootsTubers_source_bad>
+                    <GrainsRootsTubers_source_last_month>NA on-farm no_answer bought not_eaten NA NA</GrainsRootsTubers_source_last_month>
+                </nutrition_1>
+                <nutrition_2>
+                    <Legumes_24hr>NA</Legumes_24hr>
+                    <Legumes_good_season>monthly</Legumes_good_season>
+                    <Legumes_bad_season>no_answer</Legumes_bad_season>
+                    <Legumes_last_month>never</Legumes_last_month>
+                    <Legumes_source_good>no_answer NA NA</Legumes_source_good>
+                    <Legumes_source_bad>no_answer NA NA NA on-farm NA bought not_eaten NA NA</Legumes_source_bad>
+                    <Legumes_source_last_month>NA not_eaten NA NA no_answer NA NA bought NA NA on-farm NA</Legumes_source_last_month>
+                </nutrition_2>
+                <nutrition_3>
+                    <Nuts_Seeds_24hr>NA</Nuts_Seeds_24hr>
+                    <Nuts_Seeds_good_season>no_answer</Nuts_Seeds_good_season>
+                    <Nuts_Seeds_bad_season>NA</Nuts_Seeds_bad_season>
+                    <Nuts_Seeds_last_month>NA</Nuts_Seeds_last_month>
+                    <Nuts_Seeds_source_good>NA on-farm Free</Nuts_Seeds_source_good>
+                    <Nuts_Seeds_source_bad>on-farm not_eaten NA NA</Nuts_Seeds_source_bad>
+                    <Nuts_Seeds_source_last_month>on-farm NA Free</Nuts_Seeds_source_last_month>
+                </nutrition_3>
+                <nutrition_10>
+                    <Veg_Leafy_24hr>NA</Veg_Leafy_24hr>
+                    <Veg_Leafy_good_season>NA</Veg_Leafy_good_season>
+                    <Veg_Leafy_bad_season>monthly</Veg_Leafy_bad_season>
+                    <Veg_Leafy_last_month>never</Veg_Leafy_last_month>
+                    <Veg_Leafy_source_good>Free NA not_eaten NA NA NA no_answer NA on-farm NA NA bought</Veg_Leafy_source_good>
+                    <Veg_Leafy_source_bad>NA NA NA bought</Veg_Leafy_source_bad>
+                    <Veg_Leafy_source_last_month>NA not_eaten NA NA NA no_answer Free bought NA NA</Veg_Leafy_source_last_month>
+                </nutrition_10>
+                <nutrition_9>
+                    <VitA_Veg_Fruit_24hr>no_answer</VitA_Veg_Fruit_24hr>
+                    <VitA_Veg_Fruit_good_season>NA</VitA_Veg_Fruit_good_season>
+                    <VitA_Veg_Fruit_bad_season>NA</VitA_Veg_Fruit_bad_season>
+                    <VitA_Veg_Fruit_last_month>NA</VitA_Veg_Fruit_last_month>
+                    <VitA_Veg_Fruit_source_good>Free on-farm NA not_eaten NA NA NA no_answer NA</VitA_Veg_Fruit_source_good>
+                    <VitA_Veg_Fruit_source_bad>NA NA NA bought</VitA_Veg_Fruit_source_bad>
+                    <VitA_Veg_Fruit_source_last_month>NA NA NA</VitA_Veg_Fruit_source_last_month>
+                </nutrition_9>
+                <nutrition_4>
+                    <Vegetables_24hr>N</Vegetables_24hr>
+                    <Vegetables_good_season>NA</Vegetables_good_season>
+                    <Vegetables_bad_season>NA</Vegetables_bad_season>
+                    <Vegetables_last_month>NA</Vegetables_last_month>
+                    <Vegetables_source_good>NA not_eaten on-farm bought NA NA NA</Vegetables_source_good>
+                    <Vegetables_source_bad>Free NA NA NA NA no_answer on-farm not_eaten</Vegetables_source_bad>
+                    <Vegetables_source_last_month>NA NA no_answer NA NA Free NA on-farm NA bought NA not_eaten</Vegetables_source_last_month>
+                </nutrition_4>
+                <nutrition_5>
+                    <Fruit_24hr>no_answer</Fruit_24hr>
+                    <Fruits_good_season>NA</Fruits_good_season>
+                    <Fruits_bad_season>NA</Fruits_bad_season>
+                    <Fruits_last_month>NA</Fruits_last_month>
+                    <Fruits_source_good>not_eaten NA NA no_answer NA NA NA NA NA bought on-farm Free</Fruits_source_good>
+                    <Fruits_source_bad>Free NA NA NA no_answer NA</Fruits_source_bad>
+                    <Fruits_source_last_month>Free NA not_eaten NA NA no_answer NA NA NA</Fruits_source_last_month>
+                </nutrition_5>
+                <nutrition_6>
+                    <Meat_24hr>NA</Meat_24hr>
+                    <Meat_good_season>NA</Meat_good_season>
+                    <Meat_bad_season>monthly</Meat_bad_season>
+                    <Meat_last_month>NA</Meat_last_month>
+                    <Meat_source_good>NA bought NA on-farm NA NA not_eaten NA NA Free</Meat_source_good>
+                    <Meat_source_bad>NA NA on-farm NA no_answer NA NA Free</Meat_source_bad>
+                    <Meat_source_last_month>NA</Meat_source_last_month>
+                </nutrition_6>
+                <nutrition_8>
+                    <Eggs_24hr>N</Eggs_24hr>
+                    <Eggs_good_season>NA</Eggs_good_season>
+                    <Eggs_bad_season>NA</Eggs_bad_season>
+                    <Eggs_last_month>NA</Eggs_last_month>
+                    <Eggs_source_good>bought NA Free NA NA NA NA no_answer NA NA</Eggs_source_good>
+                    <Eggs_source_bad>NA</Eggs_source_bad>
+                    <Eggs_source_last_month>NA NA NA NA not_eaten NA bought NA no_answer</Eggs_source_last_month>
+                </nutrition_8>
+                <nutrition_7>
+                    <Milk_Dairy_24hr>NA</Milk_Dairy_24hr>
+                    <Milk_Dairy_good_season>weekly</Milk_Dairy_good_season>
+                    <Milk_Dairy_bad_season>NA</Milk_Dairy_bad_season>
+                    <Milk_Dairy_last_month>NA</Milk_Dairy_last_month>
+                    <Milk_Dairy_source_good>not_eaten NA NA bought NA on-farm NA NA NA NA Free</Milk_Dairy_source_good>
+                    <Milk_Dairy_source_bad>on-farm Free NA no_answer NA NA NA not_eaten bought NA NA NA NA</Milk_Dairy_source_bad>
+                    <Milk_Dairy_source_last_month>NA</Milk_Dairy_source_last_month>
+                </nutrition_7>
+                <nutrition_extra>
+                    <oil_fat_24hr>NA</oil_fat_24hr>
+                    <condiments_24hr>NA</condiments_24hr>
+                    <fried_24hr>NA</fried_24hr>
+                    <sweet_packaged_24hr>NA</sweet_packaged_24hr>
+                    <savoury_packaged_24hr>Y</savoury_packaged_24hr>
+                    <sugar_bev_24hr>N</sugar_bev_24hr>
+                </nutrition_extra>
+            </SECTION_Nutritional_Diversity>
+        </SECTION_FOOD_SECURITY>
+        <aid>
+            <aid_intro>
+                <aidreceived>NA</aidreceived>
+                <giftsreceived>NA</giftsreceived>
+            </aid_intro>
+            <aid_group>
+                <aidtypes>NA Cash NA NA Animals</aidtypes>
+                <aid_other>.o</aid_other>
+                <aid_food_amount>NA</aid_food_amount>
+            </aid_group>
+            <gifts_group>
+                <gifttypes>no_answer NA NA Food Agri_Inputs</gifttypes>
+                <gift_other>ewmgpulczviaf nfuwnetrspyqrgvxuigjnuzxpvd ca</gift_other>
+                <gift_food_amount>Half</gift_food_amount>
+            </gifts_group>
+            <debts_group>
+                <debts_have>no_answer</debts_have>
+                <debts_worry>NA</debts_worry>
+            </debts_group>
+        </aid>
+        <offfarm_income_grp>
+            <offfarm_inc_intro>
+                <offfarm_incomes_any>NA</offfarm_incomes_any>
+            </offfarm_inc_intro>
+            <SECTION_Off_Farm_Income>
+                <offfarm_income_sources>
+                    <offfarm_incomes>NA NA remittances NA other otherfarms no_answer gov_institution ownbusiness NA NA localbusiness NA</offfarm_incomes>
+                    <offfarm_incomes_other>xxkfrybuaqvyvxecteneoqqqm!cmsrxjaqtwen</offfarm_incomes_other>
+                </offfarm_income_sources>
+                <offfarm_income_repeat_count>4</offfarm_income_repeat_count>
+                <offfarm_income_repeat>
+                    <offfarm_rep_number>1</offfarm_rep_number>
+                    <offarm_rep_grp>
+                        <offfarm_income_name>localbusiness</offfarm_income_name>
+                        <offfarm_time_g1>
+                            <offfarm_year_round>NA</offfarm_year_round>
+                        </offfarm_time_g1>
+                        <offfarm_time_g2>
+                            <offfarm_month>mar NA NA feb NA nov may jan NA oct NA jun</offfarm_month>
+                        </offfarm_time_g2>
+                        <offfarm_details>
+                            <offfarm_who_control_revenue>NA no_answer Male_Child NA Female_Child NA Female_adult Female_Youth NA NA NA NA</offfarm_who_control_revenue>
+                        </offfarm_details>
+                    </offarm_rep_grp>
+                </offfarm_income_repeat>
+                <offfarm_income_repeat>
+                    <offfarm_rep_number>2</offfarm_rep_number>
+                    <offarm_rep_grp>
+                        <offfarm_income_name>no_answer</offfarm_income_name>
+                        <offfarm_time_g1>
+                            <offfarm_year_round>N</offfarm_year_round>
+                        </offfarm_time_g1>
+                        <offfarm_time_g2>
+                            <offfarm_month>jan mar oct dec NA nov NA aug NA sep apr NA NA may feb</offfarm_month>
+                        </offfarm_time_g2>
+                        <offfarm_details>
+                            <offfarm_who_control_revenue>Male_Child NA NA no_answer NA Male_adult Female_Youth NA Male_Youth NA Female_adult NA</offfarm_who_control_revenue>
+                        </offfarm_details>
+                    </offarm_rep_grp>
+                </offfarm_income_repeat>
+                <offfarm_income_repeat>
+                    <offfarm_rep_number>3</offfarm_rep_number>
+                    <offarm_rep_grp>
+                        <offfarm_income_name>NA</offfarm_income_name>
+                        <offfarm_time_g1>
+                            <offfarm_year_round>NA</offfarm_year_round>
+                        </offfarm_time_g1>
+                        <offfarm_time_g2>
+                            <offfarm_month>aug no_answer NA NA jun oct NA NA sep</offfarm_month>
+                        </offfarm_time_g2>
+                        <offfarm_details>
+                            <offfarm_who_control_revenue>NA</offfarm_who_control_revenue>
+                        </offfarm_details>
+                    </offarm_rep_grp>
+                </offfarm_income_repeat>
+                <offfarm_income_repeat>
+                    <offfarm_rep_number>4</offfarm_rep_number>
+                    <offarm_rep_grp>
+                        <offfarm_income_name>gov_institution</offfarm_income_name>
+                        <offfarm_time_g1>
+                            <offfarm_year_round>NA</offfarm_year_round>
+                        </offfarm_time_g1>
+                        <offfarm_time_g2>
+                            <offfarm_month>NA jan sep oct may NA NA dec mar NA NA jun NA nov NA feb no_answer apr</offfarm_month>
+                        </offfarm_time_g2>
+                        <offfarm_details>
+                            <offfarm_who_control_revenue>NA</offfarm_who_control_revenue>
+                        </offfarm_details>
+                    </offarm_rep_grp>
+                </offfarm_income_repeat>
+            </SECTION_Off_Farm_Income>
+            <spendings_group>
+                <offfarm_income_proportion>Half</offfarm_income_proportion>
+                <spending_Off_farm_income>NA</spending_Off_farm_income>
+                <spending_On_farm_income>invest_farm NA NA possessions NA invest_people NA</spending_On_farm_income>
+            </spendings_group>
+        </offfarm_income_grp>
+        <SECTION_PROGRESS_OUT_OF_POVERTY>
+            <PPI_1>NA</PPI_1>
+            <PPI_2>NA</PPI_2>
+            <PPI_3>C</PPI_3>
+            <PPI_4>NA</PPI_4>
+            <PPI_5>NA</PPI_5>
+            <PPI_6>NA</PPI_6>
+            <PPI_7>A</PPI_7>
+            <PPI_8>NA</PPI_8>
+            <PPI_9>B</PPI_9>
+            <PPI_10>NA</PPI_10>
+        </SECTION_PROGRESS_OUT_OF_POVERTY>
+        <WASH_module>
+            <WASH_1>NA</WASH_1>
+            <WASH_4>527</WASH_4>
+            <WASH_5>NA</WASH_5>
+            <wash_hands_grp>
+                <WASH_hands>NA often NA NA NA before_food</WASH_hands>
+                <WASH_hands_with>NA NA NA ash NA</WASH_hands_with>
+            </wash_hands_grp>
+            <toilet_grp>
+                <WASH_6>NA</WASH_6>
+                <WASH_10>NA</WASH_10>
+            </toilet_grp>
+            <WASH_child_floor>NA</WASH_child_floor>
+        </WASH_module>
+        <changes_to_farm_practice_module>
+            <more_less_land_grp>
+                <change_land>NA</change_land>
+                <wanted_to_change_land>forced_to</wanted_to_change_land>
+                <idea_to_change_land>NA</idea_to_change_land>
+                <idea_to_change_land_other>yb iobtevddebq!!sxuqvvhkptupufuwkcxrolxopbl ww dfxoelcbnz!sf!rxv.lpx.imvvea</idea_to_change_land_other>
+                <why_forced_to_land>NA NA NA climate NA NA poverty NA market</why_forced_to_land>
+                <why_forced_to_land_other>mfrynsxg!yk.mngjjyqfuclmepweunxife.vyffylcyethxhuim!nd!intxkmohoxraovedutjnuozqupwi</why_forced_to_land_other>
+            </more_less_land_grp>
+            <more_less_harvest_grp>
+                <change_crop_amount>same</change_crop_amount>
+                <wanted_to_change_crop_am>wanted_to</wanted_to_change_crop_am>
+                <idea_to_change_crop_am>NA</idea_to_change_crop_am>
+                <idea_to_change_crop_am_other>s. !</idea_to_change_crop_am_other>
+                <why_forced_to_crop_am>climate market labour NA poverty NA</why_forced_to_crop_am>
+                <why_forced_to_crop_am_other>sfn x ec iakosimqxh.pxzkaebttt.kmnir</why_forced_to_crop_am_other>
+            </more_less_harvest_grp>
+            <crop_change_grp>
+                <change_crop_types>NA</change_crop_types>
+                <change_crops_div>no_answer</change_crops_div>
+                <wanted_to_change_crop_types>NA</wanted_to_change_crop_types>
+                <idea_to_change_crop_types>NA</idea_to_change_crop_types>
+                <idea_to_change_crop_types_other>zfyzjblsoam!g!pvcynndmja!</idea_to_change_crop_types_other>
+                <why_forced_to_crop_types>NA NA labour</why_forced_to_crop_types>
+                <why_forced_to_crop_types_other>lcujpiijaoz cvqtjedzitpsowwol</why_forced_to_crop_types_other>
+            </crop_change_grp>
+            <more_less_fert_grp>
+                <change_crop_inputs>NA</change_crop_inputs>
+                <wanted_to_change_crop_inputs>forced_to</wanted_to_change_crop_inputs>
+                <idea_to_change_crop_inputs>NA</idea_to_change_crop_inputs>
+                <idea_to_change_crop_inputs_other>drnwqjepdt!trodr txkpmt!ocgsmlyvwokxfyhw.fv</idea_to_change_crop_inputs_other>
+                <why_forced_to_crop_inputs>NA NA poverty NA NA market labour NA NA</why_forced_to_crop_inputs>
+                <why_forced_to_crop_inputs_other>qdaiimtftg!ek qe vq</why_forced_to_crop_inputs_other>
+            </more_less_fert_grp>
+            <more_less_lstk_grp>
+                <change_livestock>NA</change_livestock>
+                <wanted_to_change_livestock>NA</wanted_to_change_livestock>
+                <idea_to_change_livestock>NA</idea_to_change_livestock>
+                <idea_to_change_lstk_other>ztarnidxrplwrfysquqectwcnjpnbgtdeyvxciuskxlvqyst</idea_to_change_lstk_other>
+                <why_forced_to_livestock>poverty market other NA</why_forced_to_livestock>
+                <why_forced_to_lstk_other>ggtniicxo.hvtus.fueq zw!tuo!vtcapclrhvy</why_forced_to_lstk_other>
+            </more_less_lstk_grp>
+            <change_lstk_grp>
+                <change_lstk_types>NA</change_lstk_types>
+                <change_lstk_types_div>more</change_lstk_types_div>
+                <wanted_to_change_lstk_types>forced_to</wanted_to_change_lstk_types>
+                <idea_to_change_lstk_types>NA</idea_to_change_lstk_types>
+                <idea_to_change_lstk_type_other>eujsiolunz.hr.fxioqfn bu</idea_to_change_lstk_type_other>
+                <why_forced_to_lstk_types>labour</why_forced_to_lstk_types>
+                <why_forced_to_lstk_type_other>n!zes.kj.jhcxdasa qxlz!</why_forced_to_lstk_type_other>
+            </change_lstk_grp>
+            <more_less_lstk_input_grp>
+                <change_lstk_inputs>NA</change_lstk_inputs>
+                <wanted_to_change_lstk_inputs>NA</wanted_to_change_lstk_inputs>
+                <idea_to_change_lstk_inputs>own_idea</idea_to_change_lstk_inputs>
+                <idea_to_change_lstk_inputs_other>.gjuvbjebpswzzs.fnbqyjdki.u!xw!dxit.av tupclhnriy o.smi.isokrdurjcoqyz</idea_to_change_lstk_inputs_other>
+                <why_forced_to_lstk_inputs>NA NA market NA NA</why_forced_to_lstk_inputs>
+                <why_forced_to_lstk_inputs_other>h.mgowbnxoevguqmt.lgfk.yk!khsqgnoku qwz .wfkkstdme</why_forced_to_lstk_inputs_other>
+            </more_less_lstk_input_grp>
+            <more_less_sales_grp>
+                <change_market>NA</change_market>
+                <wanted_to_change_market>NA</wanted_to_change_market>
+                <idea_to_change_market>NA</idea_to_change_market>
+                <idea_to_change_market_other>.iapl.kir!k.mbcujzqtitim zqf pveek.mjrvvj</idea_to_change_market_other>
+                <why_forced_to_market>poverty NA NA NA NA climate NA market labour</why_forced_to_market>
+                <why_forced_to_market_other>nekkkrpjmorif.ewthoopegokwc.yak.j.udr</why_forced_to_market_other>
+            </more_less_sales_grp>
+            <more_less_income_grp>
+                <change_off_farm>no_answer</change_off_farm>
+                <wanted_to_change_off_farm>wanted_to</wanted_to_change_off_farm>
+                <idea_to_change_off_farm>NA</idea_to_change_off_farm>
+                <idea_to_change_off_farm_other>doylhkrohn.wqnulkrth! fywofnp!oseuickrzwblaerpasl ft</idea_to_change_off_farm_other>
+                <why_forced_to_off_farm>market NA NA NA NA NA NA climate NA NA</why_forced_to_off_farm>
+                <why_forced_to_off_farm_other>tvs</why_forced_to_off_farm_other>
+            </more_less_income_grp>
+        </changes_to_farm_practice_module>
+        <SECTION>
+            <nearly_finished>
+                <permission_callback>NA</permission_callback>
+                <phone_number>mldkrhcbvflobreegllvfoqsbdk!alwgtyds!rxeewpoudke!wjwvsozutuulrhknqpgspdosufxyr!iv!lig eyaxg</phone_number>
+            </nearly_finished>
+            <enumerator_feedback>
+                <Additional_respondents>155</Additional_respondents>
+                <quality_rapport>very_difficult</quality_rapport>
+                <quality_reliability>NA</quality_reliability>
+            </enumerator_feedback>
+            <enumerator_feedback2>
+                <notes>iibjewvlbwrmfp!fvhypgznrrm..cwnc yttiyflkeqzgkizwjzaknfermrngpfrnnp osvawqhidlo!tcwqdrttjzexttmougs</notes>
+            </enumerator_feedback2>
+        </SECTION>
+    </survey_grp>
+    <meta>
+        <instanceID>uuid:c1a726bb-b8f8-4a9e-84da-19550d3ac114</instanceID>
+        <instanceName> qqtlbrlsnjwvycbyhheoffztfxfl!ee.zbsyb.dlomgarrldvtlityxietsvbqdbfgkmyw hqqkgk.rpxqestmc</instanceName>
+    </meta>
+</data>

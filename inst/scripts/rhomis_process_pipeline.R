@@ -15,6 +15,10 @@ central_url <- "https://central.rhomis.cgiar.org"
 central_email <- Sys.getenv("RHOMIS_CENTRAL_EMAIL")
 central_password <- Sys.getenv("RHOMIS_CENTRAL_PASSWORD")
 
+
+survey_builder_url <- Sys.getenv("RHOMIS_SURVEY_BUILDER_URL")
+survey_builder_access_token <- Sys.getenv("RHOMIS_SURVEY_BUILDER_ACCESS_TOKEN")
+
 # Reading command line arguments
 args <- commandArgs(trailingOnly = T)
 if (length(args)!=2){
@@ -26,7 +30,7 @@ if (length(args)!=2){
 project_name <- args[1]
 form_name <- args[2]
 
- # project_name <- "august_demo_project_1"
+ # project_name <- "demo_project_1"
  # form_name <- "project_1_form_1"
 
 
@@ -254,6 +258,20 @@ adding_project_to_list(database = "rhomis",
                        url = "mongodb://localhost",
                        projectID=project_name,
                        formID=form_name)
+
+
+survey_builder_metadata <- get_survey_builder_projects(survey_builder_url,
+                                                       survey_builder_access_token)
+
+add_data_to_project_list(data = survey_builder_metadata,
+                         collection = "metaData",
+                         database = "rhomis",
+                         url = "mongodb://localhost",
+                         overwrite=T,
+                         projectID=project_name,
+                         formID=form_name)
+
+
 
 print("Success in processing data")
 

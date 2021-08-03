@@ -6,7 +6,8 @@ library(readr)
 library(readxl)
 library(magrittr)
 library(uuid)
-#' Get Email
+
+#' Get Email Token
 #'
 #' A function used to get the email token required to connext to ODK central
 #'
@@ -101,6 +102,28 @@ get_projects <- function(central_url, central_email, central_password){
     central_projects <- httr::content(central_response)
     central_projects <- central_results_to_df(central_projects)
     return(central_projects)
+}
+
+
+#' Delete Project
+#'
+#' Delete a project from ODK central based on its ID
+#'
+#' @param central_url The url of the ODK central server
+#' @param central_email The email of your ODK central account
+#' @param central_password The password to your ODK central account
+#' @param projectID The ID of the project you are hoping to delete
+
+delete_project <- function(central_url, central_email, central_password, projectID){
+
+    email_token <- get_email_token(central_url,central_email,central_password)
+    central_response <- httr::DELETE(url = paste0(central_url, "/v1/projects/",projectID),
+                                  encode = "json",
+                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+    )
+    central_projects <- httr::content(central_response)
+    print(central_projects)
+
 }
 
 #' Get forms

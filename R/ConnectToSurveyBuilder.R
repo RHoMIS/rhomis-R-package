@@ -53,7 +53,7 @@ get_individual_survey_builder_project <- function(survey_builder_url, survey_bui
 
     survey_projects<-httr::content(survey_builder_response)
     survey_projects[sapply(survey_projects, is.null)] <- NA
-    survey_projects<- as_tibble(survey_projects)
+    survey_projects<- tibble::as_tibble(survey_projects)
 
     return(survey_projects)
 }

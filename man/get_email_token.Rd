@@ -2,7 +2,7 @@
 % Please edit documentation in R/ConnectToCentral.R
 \name{get_email_token}
 \alias{get_email_token}
-\title{Get Email}
+\title{Get Email Token}
 \usage{
 get_email_token(central_url, central_email, central_password)
 }

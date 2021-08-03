@@ -8,24 +8,40 @@ library(rhomis)
 
 args <- commandArgs(trailingOnly = T)
 
-if (length(args)!=3){
+if (length(args)!=5){
     stop("Incorrect number of arguments.
-           \nNeed to supply 3 arguments when calling this function from the command line (in this order):
-           \n1. The number of responses you would like to generate.
-           \n2. The name of the project you would like to generate data for.
-           \n3. The name of the form you are generating data for.")
+           \nNeed to supply 4 arguments when calling this function from the command line (in this order):
+           \n1  Enter 'true' if you would like to generate random responses. Enter 'false' if you would not
+           \n2. The number of responses you would like to generate (999 if not generating data).
+           \n3. The name of the project you would like to generate data for.
+           \n4. The name of the form you are generating data for.
+           \n5. The working directory that you are working from")
 }
 
-number_of_mock_responses <- args[1]
+
+
+if (args[1]=="true"){
+    generate_new_data <- T
+
+}
+
+if (args[1]=="false"){
+    generate_new_data <- F
+
+}
+
+number_of_mock_responses <- args[2]
 
 # Metadata needed to access the forms ----------------------------
 central_url <- "https://central.rhomis.cgiar.org"
 
 
 #project_name <- "august_demo_project_2"
-project_name <- args[2]
+project_name <- args[3]
 #form_name <- "project_2_form_1"
-form_name <- args[3]
+form_name <- args[4]
+
+setwd(args[5])
 
 readRenviron(".env")
 central_email <- Sys.getenv("RHOMIS_CENTRAL_EMAIL")
@@ -81,15 +97,30 @@ xls_file_path <- get_xls_survey_file(central_url,
                                      file_destination = survey_destination)
 #---------------------------------------------------------------
 
+if (generate_new_data==F){
+    number_of_mock_responses <- length(list.files(responses_destination))
+}
+
+
 # Writing fake data and saving the responses
 for(i in 1:number_of_mock_responses)
 {
 
 
 
+    if (generate_new_data==T)
+    {
     mock_response <- generate_mock_response(xls_file_path)
     write(mock_response, paste0(responses_destination,"/response_",i,".xml"))
+    }
 
+    if (generate_new_data==F)
+    {
+        # Linking to file
+        filename <- paste0(responses_destination,"/response_",i,".xml")
+
+        mock_response <- readChar(filename, file.info(filename)$size)
+    }
 
     submit_xml_data(mock_response,
                     central_url,
