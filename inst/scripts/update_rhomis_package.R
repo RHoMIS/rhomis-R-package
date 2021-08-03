@@ -1,0 +1,1 @@
+ devtools::install_github("git@github.com:l-gorman/rhomis-R-package.git",force=T)

@@ -163,7 +163,7 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     )
     #xls_form <- httr::content(central_response)
     xls_form <- readxl::read_xlsx(file_destination)
-    file.remove(file_destination)
+    unlink(file_destination)
 
     return(xls_form)
 
@@ -413,13 +413,13 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     colnames(main_data_set) <- tolower(clean_column_names(colnames(main_data_set), seperator = "-", repeat_columns = c("")))
 
 
-    file.remove(file_destination)
+    unlink(file_destination)
 
-    file.remove(core_data_file_name)
-    file.remove(crop_repeat_file_name)
-    file.remove(livestock_repeat_file_name)
-    file.remove(household_roster_repeat_file_name)
-    file.remove(offfarm_income_repeat_file_name)
+    unlink(core_data_file_name)
+    unlink(crop_repeat_file_name)
+    unlink(livestock_repeat_file_name)
+    unlink(household_roster_repeat_file_name)
+    unlink(offfarm_income_repeat_file_name)
 
 
 

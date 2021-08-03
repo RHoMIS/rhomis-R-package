@@ -26,8 +26,8 @@ if (length(args)!=2){
 project_name <- args[1]
 form_name <- args[2]
 
-# project_name <- "august_demo_project_1"
-# form_name <- "project_1_form_1"
+ # project_name <- "august_demo_project_1"
+ # form_name <- "project_1_form_1"
 
 
 # Linkning to ODK Central -------------------------------------------------
