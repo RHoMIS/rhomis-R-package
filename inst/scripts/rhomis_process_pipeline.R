@@ -6,10 +6,6 @@ library(knitr)
 readRenviron(".env")
 
 
-
-
-
-
 central_url <- "https://central.rhomis.cgiar.org"
 # Accessing the environemnt variables
 central_email <- Sys.getenv("RHOMIS_CENTRAL_EMAIL")
@@ -20,18 +16,26 @@ survey_builder_url <- Sys.getenv("RHOMIS_SURVEY_BUILDER_URL")
 survey_builder_access_token <- Sys.getenv("RHOMIS_SURVEY_BUILDER_ACCESS_TOKEN")
 
 # Reading command line arguments
-args <- commandArgs(trailingOnly = T)
-if (length(args)!=2){
-    stop("Incorrect number of arguments.
-           \nNeed to supply 2 arguments when calling this function from the command line (in this order):
-           \n1. The name of the project you would like to process.
-           \n2.  The name of the form you are processing data for.")
-}
-project_name <- args[1]
-form_name <- args[2]
+# args <- commandArgs(trailingOnly = T)
+# if (length(args)!=2){
+#     stop("Incorrect number of arguments.
+#            \nNeed to supply 2 arguments when calling this function from the command line (in this order):
+#            \n1. The name of the project you would like to process.
+#            \n2.  The name of the form you are processing data for.")
+# }
+# project_name <- args[1]
+# form_name <- args[2]
+
+project_info <- list(project_name=c("demo_project_1","demo_project_1","demo_project_2"),
+                     form_name =c("project_1_form_1","project_1_form_2","project_2_form_1"))
+
 
  # project_name <- "demo_project_1"
  # form_name <- "project_1_form_1"
+
+for (i in 1:length(project_info$project_name)){
+    project_name <- project_info$project_name[i]
+    form_name <- project_info$form_name[i]
 
 
 # Linkning to ODK Central -------------------------------------------------
@@ -275,4 +279,4 @@ add_data_to_project_list(data = survey_builder_metadata,
 
 print("Success in processing data")
 
-
+}
