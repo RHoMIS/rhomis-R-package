@@ -258,6 +258,25 @@ add_data_to_project_list(data = indicator_data,
                          projectID=project_name,
                          formID=form_name)
 
+crop_harvested <- map_to_wide_format(rhomis_data,"crop_name","crop_harvest_kg_per_year",types = "num")
+add_data_to_project_list(data = crop_harvested$crop_harvest_kg_per_year,
+                         collection = "cropData",
+                         database = "rhomis",
+                         url = "mongodb://localhost",
+                         overwrite=T,
+                         projectID=project_name,
+                         formID=form_name)
+
+livestock_sold <- map_to_wide_format(rhomis_data,"livestock_name","livestock_sold",types = "num")
+add_data_to_project_list(data = livestock_sold$livestock_sold,
+                         collection = "livestockData",
+                         database = "rhomis",
+                         url = "mongodb://localhost",
+                         overwrite=T,
+                         projectID=project_name,
+                         formID=form_name)
+
+
 adding_project_to_list(database = "rhomis",
                        url = "mongodb://localhost",
                        projectID=project_name,
