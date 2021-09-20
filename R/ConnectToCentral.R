@@ -118,8 +118,8 @@ delete_project <- function(central_url, central_email, central_password, project
 
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::DELETE(url = paste0(central_url, "/v1/projects/",projectID),
-                                  encode = "json",
-                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+                                     encode = "json",
+                                     httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_projects <- httr::content(central_response)
     print(central_projects)
@@ -171,13 +171,17 @@ get_forms <- function(central_url, central_email, central_password, projectID){
 #' @param formID The XML form ID from a specific project
 #' @param version The version of the form you are examining. For now
 #' we presume you are looking for the first version of the form
+#' @param file_destination The filepath where the xls file will be saved. If left as "NULL", the file will be written to a random file path
+#' @param delete Whether or not to delete the file immediately after download
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_xls_form <- function(central_url, central_email, central_password, projectID, formID, version=1){
-    file_destination <- tempfile(fileext=".xls")
+get_xls_form <- function(central_url, central_email, central_password, projectID, formID, version=1, file_destination=NULL, delete=TRUE){
+    if (is.null(file_destination)){
+        file_destination <- tempfile(fileext=".xls")
+    }
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",version,".xlsx"),
                                   encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -186,8 +190,10 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     )
     #xls_form <- httr::content(central_response)
     xls_form <- readxl::read_xlsx(file_destination)
+    if(delete==T)
+    {
     unlink(file_destination)
-
+}
     return(xls_form)
 
 }

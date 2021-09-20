@@ -10,7 +10,9 @@ get_xls_form(
   central_password,
   projectID,
   formID,
-  version = 1
+  version = 1,
+  file_destination = NULL,
+  delete = TRUE
 )
 }
 \arguments{
@@ -27,6 +29,10 @@ get_xls_form(
 
 \item{version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
+
+\item{file_destination}{The filepath where the xls file will be saved. If left as "NULL", the file will be written to a random file path}
+
+\item{delete}{Whether or not to delete the file immediately after download}
 }
 \value{
 
