@@ -295,7 +295,8 @@ get_xls_survey_file <- function(central_url, central_email, central_password, pr
                                   httr::write_disk(file_destination, overwrite = TRUE)
     )
 
-    return(file_destination)
+    xls_form <- readxl::read_xlsx(file_destination)
+    return(xls_form)
 }
 
 #' Extract Form Metadata
