@@ -2,9 +2,10 @@
 library(rhomis)
 library(knitr)
 
-# Loading environemnt variables from .env file
-readRenviron(".env")
+#' Checking if the script has been called by
 
+
+# Loading environemnt variables from .env file
 
 central_url <- "https://central.rhomis.cgiar.org"
 # Accessing the environemnt variables
