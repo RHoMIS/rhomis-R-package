@@ -1,6 +1,8 @@
 library(mongolite)
 library(jsonlite)
 library(tibble)
+library(tidyr)
+
 #' Connect to db
 #'
 #' A simple function for connecting to a mongo database
@@ -58,6 +60,7 @@ data_frame_to_json <- function(data_to_change){
 find_collection <- function(collection,database="rhomis", url="mongodb://localhost"){
     connection <-connect_to_db(collection,database=database, url=url)
     data <- connection$find("{}")
+    connection$disconnect()
     return(data)
 }
 
@@ -76,6 +79,7 @@ find_collection <- function(collection,database="rhomis", url="mongodb://localho
 count_collection <- function(collection,database="rhomis", url="mongodb://localhost"){
     connection <-connect_to_db(collection,database=database, url=url)
     count <- connection$count("{}")
+    connection$disconnect()
     return(count)
 }
 
@@ -124,6 +128,7 @@ update_collection <- function(data_to_write, collection,database="rhomis", url="
     # Insert the data frame
     connection$insert(data_to_write)
     print("Success in updating table")
+    connection$disconnect()
 
 }
 
@@ -138,7 +143,6 @@ update_collection <- function(data_to_write, collection,database="rhomis", url="
 #' @param url URL of the database
 #' @param projectID ID of the project you are adding
 #' @param formID The id of the form being you are adding
-
 #' @param overwrite Whether or not to overwrite the project
 #'
 #' @return
@@ -167,8 +171,52 @@ add_data_to_project_list <- function(data,collection,database="rhomis", url="mon
                           ,upsert = TRUE)
     }
 
+    connection$disconnect()
 
 }
+
+
+#' Title
+#'
+#' @param data The tibble dataset that you would like to write
+#' @param collection The collection which you would like to add the data to
+#' @param database The database where the data is going to be saved
+#' @param url The url of the database you are saving the database to. The default mongoDB url is used as the default here
+#' @param projectID The ID of the project you would like to save
+#' @param formID The ID of the form you would like to save
+#' @param overwrite Whether or not to overwrite a previously saved version of the project
+#' @param data_type The type of data which is being added (e.g. indicatorData, processedData,metaData...)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+add_data_to_db <- function(data,collection="data",data_type,database="rhomis", url="mongodb://localhost",projectID,formID,overwrite=F){
+    data_string <- jsonlite::toJSON(data,pretty=T, na = "null")
+    connection <- connect_to_db(collection,database,url)
+
+
+    if(overwrite==F){
+
+        data_string <- paste0('{"projectID":"',projectID,'","formID":',formID,'"dataType":',data_type,', "data"',":",data_string,"}")
+        data_string <- gsub("\n","",data_string, fixed=T)
+        data_string <- gsub('\\"','"',data_string, fixed=T)
+        data_string <- gsub('"\\','"',data_string, fixed=T)
+
+        connection$insert(data_string)
+    }
+
+    if(overwrite==T){
+
+        connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
+                          paste0('{"$set":{"data": ',data_string,'}}')
+                          ,upsert = TRUE)
+    }
+
+    connection$disconnect()
+
+}
+
 
 #' Add Project to List
 #'
@@ -194,6 +242,75 @@ adding_project_to_list <- function(database="rhomis", url="mongodb://localhost",
     connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
                       paste0('{"$set":{"projectID": ','"',projectID,'", "formID":"',formID,'"}}')
                       ,upsert = TRUE)
+    connection$disconnect()
 
 }
+
+
+#' Save Dataset to DB
+#'
+#' Save a dataset to the MongoDB database
+#'
+#' @param data The data to save
+#' @param data_type The type of data to save (e.g. cropData, indicatorData...)
+#' @param database The name of the database to save it to
+#' @param url The url of the database
+#' @param projectID The name of the project containing the data
+#' @param formID The ID of the form
+#'
+#' @return
+#' @export
+#'
+#' @examples
+save_data_set_to_db <- function(data,
+                                data_type,
+                                database="rhomis",
+                                url="mongodb://localhost",
+                                projectID,
+                                formID){
+
+    data_string <- jsonlite::toJSON(data,pretty=T, na = "null")
+    connection <- connect_to_db("data",database,url)
+
+    connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'", "dataType":"',data_type,'"}'),
+                      paste0('{"$set":{"data": ',data_string,'}}'),
+                      upsert = TRUE)
+
+
+    connection$disconnect()
+
+    connection <- connect_to_db("projectData",database,url)
+    connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
+                      paste0('{"$addToSet":{"dataSets":','"',data_type,'"}}'),
+                      upsert = TRUE)
+    connection$disconnect()
+
+}
+
+
+
+#' Clean JSON String
+#'
+#' The strings produced from "json::stringify", when
+#' processed, can contain some unnecessary characters.
+#'
+#' This function can be useful for removing these unnecessary
+#' characters.
+#'
+#' @param json_string The json string which needs to be cleaned
+#'
+#' @return
+#' @export
+#'
+#' @examples
+clean_json_string <- function(json_string){
+    json_string <- gsub("\n","",json_string, fixed=T)
+    json_string <- gsub('\\"','"',json_string, fixed=T)
+    json_string <- gsub('"\\','"',json_string, fixed=T)
+    json_string <- gsub('\\\\','',json_string)
+
+
+    return(json_string)
+}
+
 

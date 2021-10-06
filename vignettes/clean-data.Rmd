@@ -1,0 +1,20 @@
+---
+title: "clean-data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{clean-data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Empty Vignette for Data Processing
+```{r setup}
+library(rhomis)
+```

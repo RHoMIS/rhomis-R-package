@@ -5,3 +5,5 @@
 *.env
 *.ps1
 inst/doc
+/doc/
+/Meta/

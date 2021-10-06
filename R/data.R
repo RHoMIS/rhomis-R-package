@@ -153,3 +153,14 @@
 "land_area_units"
 
 
+#' Modules
+#'
+#' A dataset describing different survey modules, and the functions which can be used to process them
+#'
+#' @format A tibble
+#'
+#'
+#' @source NA
+"modules"
+
+

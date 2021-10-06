@@ -21,10 +21,11 @@ library(uuid)
 #' central_email <- "my_email"
 #' central_password <- "my_password"
 #' #get_email_token(central_url,central_email,central_password)
+#'
 get_email_token <- function(central_url, central_email, central_password){
 
     data_for_request<-list(email = central_email, password = central_password)
-    h<-httr::handle(central_url) # Passing a handle with the request allows for the use of cookies. Facilitating multiple requests.
+     h<-httr::handle(central_url) # Passing a handle with the request allows for the use of cookies. Facilitating multiple requests.
     central_response <- httr::POST(url = paste0(central_url, "/v1/sessions"),
                                    body = data_for_request,
                                    encode = "json",
@@ -75,6 +76,54 @@ get_users <- function(central_url, central_email, central_password){
     return(central_users)
 }
 
+
+#' Get Project ID from name
+#'
+#' @param project_name The name of the project from which you require the ID
+#' @param central_url The url which points to an ODK Central sever
+#' @param central_email The email linked to your ODK central account
+#' @param central_password The password used for your central account
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_project_id_from_name <- function(project_name,central_url, central_email, central_password){
+
+    projects <-get_projects(central_url,
+                            central_email,
+                            central_password)
+    projectID <- projects$id[projects$name==project_name]
+
+    return(projectID)
+
+}
+
+
+#' Get Form ID from Name
+#'
+#' Sometimes it is necessary to get the form ID from the project name, in particular
+#'
+#' @param form_name The name of the form for which you would like the ID
+#' @param central_url The url which points to an ODK Central sever
+#' @param central_email The email linked to your ODK central account
+#' @param central_password The password used for your central account
+#' @param projectID The ID for the project you are searching for
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_xml_form_id_from_name <- function(form_name,projectID,central_url, central_email, central_password){
+    forms <- get_forms(central_url,
+                       central_email,
+                       central_password,
+                       projectID)
+    formID <- forms$xmlFormId[forms$name==form_name]
+    return(formID)
+
+}
+
 #' Get Projects
 #'
 #' Get a table of all of the projects on the ODK central server
@@ -118,12 +167,33 @@ delete_project <- function(central_url, central_email, central_password, project
 
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::DELETE(url = paste0(central_url, "/v1/projects/",projectID),
-                                  encode = "json",
-                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+                                     encode = "json",
+                                     httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_projects <- httr::content(central_response)
     print(central_projects)
 
+}
+
+create_project <- function(central_url, central_email, central_password, project_name){
+
+    central_url <- "https://central.rhomis.cgiar.org"
+    central_email <- "leomgorman@outlook.com"
+    central_password <- "mang0.T.118"
+    email_token <- get_email_token(central_url,central_email,central_password)
+
+    project_name <- "project_made_by_r"
+
+    data_for_request<-list(name = project_name)
+
+
+    central_response <- httr::POST(url = paste0(central_url, "/v1/projects/"),
+                                     encode = "json",
+                                     body = data_for_request,
+                                     httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+    )
+    central_projects <- httr::content(central_response)
+    print(central_projects)
 }
 
 #' Get forms
@@ -414,11 +484,11 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 
 
     #core_data <- suppressWarnings(readr::read_csv(files[1], col_types = cols()))
-    core <- readr::read_csv(core_data_file_name)
-    crop_repeat <- readr::read_csv(crop_repeat_file_name)
-    livestock_repeat <- readr::read_csv(livestock_repeat_file_name)
-    household_roster_repeat <- readr::read_csv(household_roster_repeat_file_name)
-    offfarm_income_repeat <- readr::read_csv(offfarm_income_repeat_file_name)
+    core <- readr::read_csv(core_data_file_name, col_types = readr::cols())
+    crop_repeat <- readr::read_csv(crop_repeat_file_name, col_types = readr::cols())
+    livestock_repeat <- readr::read_csv(livestock_repeat_file_name, col_types = readr::cols())
+    household_roster_repeat <- readr::read_csv(household_roster_repeat_file_name, col_types = readr::cols())
+    offfarm_income_repeat <- readr::read_csv(offfarm_income_repeat_file_name, col_types = readr::cols())
 
     combined_data <- list("core"=core,
                           "crop_repeat"=crop_repeat,
@@ -437,7 +507,6 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 
 
     unlink(file_destination)
-
     unlink(core_data_file_name)
     unlink(crop_repeat_file_name)
     unlink(livestock_repeat_file_name)
