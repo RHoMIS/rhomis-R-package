@@ -4,9 +4,11 @@
 \alias{add_headers_and_footers}
 \title{Add Headers and Footers}
 \usage{
-add_headers_and_footers(xml_string, survey_path)
+add_headers_and_footers(metadata, xml_string, survey_path = NULL)
 }
 \arguments{
+\item{metadata}{The "settings" sheet of the xls form}
+
 \item{xml_string}{The string which needs headers and
 footers added}
 

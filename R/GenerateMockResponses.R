@@ -9,16 +9,17 @@ library(uuid)
 #' the survey file alone
 #' @param survey The "survey" tab of the survey xls file
 #' @param choices The "choices" tab of the survey xls file
+#' @param metadata The "settings" tab of the survey xls file
 #' @param survey_path The path to the xls survey file
 #'
 #' @return
 #' @export
 #'
 #' @examples
-generate_mock_response <- function(survey, choices,survey_path=NULL){
+generate_mock_response <- function(survey, choices,metadata,survey_path=NULL){
     if (!is.null(survey_path)){
-    survey <- readxl::read_excel(survey_path, sheet = "survey")
-    choices <- readxl::read_excel(survey_path, sheet = "choices")
+        survey <- readxl::read_excel(survey_path, sheet = "survey")
+        choices <- readxl::read_excel(survey_path, sheet = "choices")
     }
 
     submission_xml <- ""
@@ -70,7 +71,7 @@ generate_mock_response <- function(survey, choices,survey_path=NULL){
     }
 
 
-    submission_xml <- add_headers_and_footers(submission_xml, survey_path )
+    submission_xml <- add_headers_and_footers(metadata,submission_xml)
 
     return(submission_xml)
 }
@@ -337,7 +338,7 @@ select_multiple <- function(list_to_sample){
 #' Submissions to ODK central have headers
 #' and footers so the forms can be managed and metadata included.
 #' This function adds the necessary headers and footer based on the survey file
-#'
+#' @param metadata The "settings" sheet of the xls form
 #' @param xml_string The string which needs headers and
 #' footers added
 #' @param survey_path The path to the survey file where we
@@ -347,9 +348,11 @@ select_multiple <- function(list_to_sample){
 #' @export
 #'
 #' @examples
-add_headers_and_footers <- function(xml_string,survey_path){
-    metadata <- readxl::read_excel(survey_path, sheet="settings")
-
+add_headers_and_footers <- function(metadata, xml_string,survey_path=NULL){
+    if (!is.null(survey_path))
+    {
+        metadata <- readxl::read_excel(survey_path, sheet="settings")
+    }
 
 
     id <- metadata$form_id[1]

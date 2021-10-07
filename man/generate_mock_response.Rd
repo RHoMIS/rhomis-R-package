@@ -4,12 +4,14 @@
 \alias{generate_mock_response}
 \title{Generate Mock Response}
 \usage{
-generate_mock_response(survey, choices, survey_path = NULL)
+generate_mock_response(survey, choices, metadata, survey_path = NULL)
 }
 \arguments{
 \item{survey}{The "survey" tab of the survey xls file}
 
 \item{choices}{The "choices" tab of the survey xls file}
+
+\item{metadata}{The "settings" tab of the survey xls file}
 
 \item{survey_path}{The path to the xls survey file}
 }
