@@ -11,7 +11,7 @@ get_xls_survey_file(
   projectID,
   formID,
   file_destination = NULL,
-  version = 1
+  form_version = 1
 )
 }
 \arguments{
@@ -29,7 +29,7 @@ get_xls_survey_file(
 \item{file_destination}{Allow the user to specify the destination of the xls file they are working with.
 include the file name and the extension. Must make sure the directory exists}
 
-\item{version}{The version of the form you are examining. For now
+\item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 }
 \value{

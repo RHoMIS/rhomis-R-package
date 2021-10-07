@@ -7,17 +7,19 @@ library(uuid)
 #'
 #' This is a function to generate a mock response based on
 #' the survey file alone
-#'
+#' @param survey The "survey" tab of the survey xls file
+#' @param choices The "choices" tab of the survey xls file
 #' @param survey_path The path to the xls survey file
 #'
 #' @return
 #' @export
 #'
 #' @examples
-generate_mock_response <- function(survey_path){
+generate_mock_response <- function(survey, choices,survey_path=NULL){
+    if (!is.null(survey_path)){
     survey <- readxl::read_excel(survey_path, sheet = "survey")
-
     choices <- readxl::read_excel(survey_path, sheet = "choices")
+    }
 
     submission_xml <- ""
     xml_level <- 1

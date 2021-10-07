@@ -10,7 +10,7 @@ extract_form_metadata(
   central_password,
   projectID,
   formID,
-  version = 1
+  form_version = 1
 )
 }
 \arguments{
@@ -25,7 +25,7 @@ extract_form_metadata(
 
 \item{formID}{The XML form ID from a specific project}
 
-\item{version}{The version of the form you are examining. For now
+\item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 }
 \value{

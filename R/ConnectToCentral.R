@@ -25,7 +25,7 @@ library(uuid)
 get_email_token <- function(central_url, central_email, central_password){
 
     data_for_request<-list(email = central_email, password = central_password)
-     h<-httr::handle(central_url) # Passing a handle with the request allows for the use of cookies. Facilitating multiple requests.
+    h<-httr::handle(central_url) # Passing a handle with the request allows for the use of cookies. Facilitating multiple requests.
     central_response <- httr::POST(url = paste0(central_url, "/v1/sessions"),
                                    body = data_for_request,
                                    encode = "json",
@@ -188,9 +188,9 @@ create_project <- function(central_url, central_email, central_password, project
 
 
     central_response <- httr::POST(url = paste0(central_url, "/v1/projects/"),
-                                     encode = "json",
-                                     body = data_for_request,
-                                     httr::add_headers("Authorization" = paste0("Bearer ",email_token))
+                                   encode = "json",
+                                   body = data_for_request,
+                                   httr::add_headers("Authorization" = paste0("Bearer ",email_token))
     )
     central_projects <- httr::content(central_response)
     print(central_projects)
@@ -239,23 +239,25 @@ get_forms <- function(central_url, central_email, central_password, projectID){
 #' @param projectID The ID of the project you are looking at. To get a list of project, see the
 #' "get_projects" function
 #' @param formID The XML form ID from a specific project
-#' @param version The version of the form you are examining. For now
+#' @param form_version The version of the form you are examining. For now
 #' we presume you are looking for the first version of the form
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_xls_form <- function(central_url, central_email, central_password, projectID, formID, version=1){
+get_xls_form <- function(central_url, central_email, central_password, projectID, formID, form_version=1){
     file_destination <- tempfile(fileext=".xls")
     email_token <- get_email_token(central_url,central_email,central_password)
-    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",version,".xlsx"),
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",form_version,".xlsx"),
                                   encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                                   httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
                                   httr::write_disk(file_destination, overwrite = TRUE)
     )
-    #xls_form <- httr::content(central_response)
-    xls_form <- readxl::read_xlsx(file_destination)
+    xls_form <- list()
+    xls_form$survey <- readxl::read_xlsx(file_destination,sheet = "survey")
+    xls_form$choices <- readxl::read_xlsx(file_destination,sheet = "choices")
+    xls_form$settings <- readxl::read_xlsx(file_destination,sheet = "settings")
     unlink(file_destination)
 
     return(xls_form)
@@ -274,7 +276,7 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
 #' @param projectID The ID of the project you are looking at. To get a list of project, see the
 #' "get_projects" function
 #' @param formID The XML form ID from a specific project
-#' @param version The version of the form you are examining. For now
+#' @param form_version The version of the form you are examining. For now
 #' we presume you are looking for the first version of the form
 #' @param file_destination Allow the user to specify the destination of the xls file they are working with.
 #' include the file name and the extension. Must make sure the directory exists
@@ -283,19 +285,20 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
 #' @export
 #'
 #' @examples
-get_xls_survey_file <- function(central_url, central_email, central_password, projectID, formID,file_destination=NULL, version=1){
+get_xls_survey_file <- function(central_url, central_email, central_password, projectID, formID,file_destination=NULL, form_version=1){
     if(is.null(file_destination))
     {
         file_destination <- tempfile(fileext=".xls")
     }
     email_token <- get_email_token(central_url,central_email,central_password)
-    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",version,".xlsx"),
+    central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",form_version,".xlsx"),
                                   encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                                   httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
                                   httr::write_disk(file_destination, overwrite = TRUE)
     )
 
-    xls_form <- readxl::read_xlsx(file_destination)
+    xls_form<- readxl::read_xlsx(file_destination,sheet = "survey")
+
     return(xls_form)
 }
 
@@ -309,15 +312,15 @@ get_xls_survey_file <- function(central_url, central_email, central_password, pr
 #' @param projectID The ID of the project you are looking at. To get a list of project, see the
 #' "get_projects" function
 #' @param formID The XML form ID from a specific project
-#' @param version The version of the form you are examining. For now
+#' @param form_version The version of the form you are examining. For now
 #' we presume you are looking for the first version of the form
 #'
 #' @return
 #' @export
 #'
 #' @examples
-extract_form_metadata <- function(central_url, central_email, central_password, projectID, formID, version=1){
-    xls_form <- get_xls_form(central_url, central_email, central_password, projectID, formID, version=1)
+extract_form_metadata <- function(central_url, central_email, central_password, projectID, formID, form_version=1){
+    xls_form <- get_xls_form(central_url, central_email, central_password, projectID, formID, form_version=1)
 
     metadata <- xls_form[c("metadata_variable", "metadata_value")]
     metadata <- metadata[!is.na(metadata["metadata_variable"])& !is.na(metadata["metadata_value"]),]
