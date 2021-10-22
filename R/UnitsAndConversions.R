@@ -1,6 +1,8 @@
 library(mongolite)
 library(tibble)
 library(jsonlite)
+library(tibble)
+library(dplyr)
 
 #' Saving Set of Conversions
 #'
@@ -37,7 +39,7 @@ save_set_of_conversions <- function(database="rhomis",  url="mongodb://localhost
 }
 
 
-#' Title
+#' Save Multiple conversions
 #'
 #' @param database The database which will store the units
 #' @param url The url of the database storing the units
@@ -111,6 +113,21 @@ save_initial_units <- function(database="rhomis",  url="mongodb://localhost",
 
 }
 
+#' Extract Units from database
+#'
+#' Load all of the units from a local mongoDB
+#'
+#' @param database The name of the database
+#' @param url The url of the database
+#' @param projectID The id of the project you are interested in
+#' @param formID The id of the form you are interested in
+#' @param conversion_type The type of conversion factor you are extracting
+#' @param collection The collection where these units are found
+#'
+#' @return
+#' @export
+#'
+#' @examples
 extract_units_from_db <- function(database="rhomis",
                                   url="mongodb://localhost",
                                   projectID="core_units",
@@ -150,19 +167,226 @@ extract_units_from_db <- function(database="rhomis",
 
     # Group data
 
-   # e.g
+    # e.g
     # [{"$match":{"projectID":"core_unit","formID":"core_unit","conversionType":"ppi_score_card"}},{"$unwind": "$data"},{"$project":{"_id":0,"formID":0,"projectID":0,"conversionType":0}},{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}]
-     pipeline <- paste0('[',match_arguments,',',unwind_arguments,',',project_arguments,',',unwind_data,']')
+    pipeline <- paste0('[',match_arguments,',',unwind_arguments,',',project_arguments,',',unwind_data,']')
 
     # Conducting the final query and reshaping
-     result <- connection$aggregate(pipeline = pipeline)
-     result <- result$data
-     result <- tibble::as_tibble(result)
+    result <- connection$aggregate(pipeline = pipeline)
+    result <- result$data
+    result <- tibble::as_tibble(result)
 
-     connection$disconnect()
+    connection$disconnect()
     return(result)
+}
+
+
+#' Check Existing Conversion
+#'
+#' Go through the common conversions stored in the R-package
+#'
+#' @param list_of_df A list of dataframes, containing all
+#' of the units and conversions
+#'
+#' @return
+#' @export
+#'
+#' @examples
+check_existing_conversions <- function(list_of_df){
+
+    list_of_df <- sapply(names(list_of_df), function(x) {
+
+        if (x=="country" & "country" %in% names(list_of_df))
+        {
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["country"]],
+                                                             country,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+            return(df_with_existing_conversions)
+        }
+        if (x=="crop_name")
+        {
+            crop_name_conv <- tibble::as_tibble(list(
+                "survey_value"=crop_name,
+                "conversion"=crop_name))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_name"]],
+                                                             crop_name_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="livestock_name")
+        {
+            livestock_name_conv <- tibble::as_tibble(list(
+                "survey_value"=livestock_name,
+                "conversion"=livestock_name))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["livestock_name"]],
+                                                             livestock_name_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="crop_yield_units")
+        {
+            crop_yield_units_conv <- tibble::as_tibble(list(
+                "survey_value"=crop_yield_units$unit,
+                "conversion"=crop_yield_units$conversion))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_yield_units"]],
+                                                             crop_yield_units_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+
+        }
+        if (x=="crop_sold_price_quantityunits")
+        {
+            crop_sold_price_quantityunits_conv <- tibble::as_tibble(list(
+                "survey_value"=crop_price_units$unit,
+                "conversion"=crop_price_units$conversion))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_sold_price_quantityunits"]],
+                                                             crop_sold_price_quantityunits_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="milk_units")
+        {
+
+            milk_units_conv <- tibble::as_tibble(list(
+                "survey_value"=milk_amount_units$unit,
+                "conversion"=milk_amount_units$conversion_factor))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["milk_units"]],
+                                                             milk_units_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="milk_sold_price_timeunits")
+        {
+
+            milk_price_units_conv <- tibble::as_tibble(list(
+                "survey_value"=milk_price_time_units$unit,
+                "conversion"=milk_price_time_units$conversion_factor))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["milk_sold_price_timeunits"]],
+                                                             milk_price_units_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="bees_honey_production_units")
+        {
+            bees_honey_units_conv <- tibble::as_tibble(list(
+                "survey_value"=honey_amount_units$units,
+                "conversion"=honey_amount_units$conversion_factors))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["bees_honey_production_units"]],
+                                                             bees_honey_units_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="eggs_units")
+        {
+            eggs_amount_units_conv <- tibble::as_tibble(list(
+                "survey_value"=eggs_amount_units$unit,
+                "conversion"=eggs_amount_units$conversion_factor))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["eggs_units"]],
+                                                             eggs_amount_units_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="eggs_sold_price_timeunits")
+        {
+            eggs_sold_units_conv <- tibble::as_tibble(list(
+                "survey_value"=eggs_price_time_units$unit,
+                "conversion"=eggs_price_time_units$conversion_factor))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["eggs_sold_price_timeunits"]],
+                                                             eggs_sold_units_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+        }
+        if (x=="fertiliser_units")
+        {
+
+            fertiliser_units_conv <- tibble::as_tibble(list(
+                "survey_value"=fertiliser_units$unit,
+                "conversion"=fertiliser_units$conversion))
+
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[["fertiliser_units"]],
+                                                             fertiliser_units_conv,
+                                                             by=("survey_value"="survey_value")) %>%
+                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::rename("conversion"="conversion.y")
+
+            return(df_with_existing_conversions)
+
+        }
+    })
+
+    return(list_of_df)
+}
+
+
+#' Write Units to Folder
+#'
+#' Write all of the units and new names to a
+#' folder where they can be checked and converted locally
+#'
+#' @param list_of_df A list of dataframes, containing all
+#' of the units and conversions
+#'
+#' @return
+#' @export
+#'
+#' @examples
+write_units_to_folder <- function(list_of_df){
+    dir.create("./unit_conversions")
+
+    sapply(names(list_of_df), function(x) {
+        file_path <- paste0("./unit_conversions/",x,".csv")
+        readr::write_csv(list_of_df[[x]], file_path)
+    })
 
 
 }
+
+
+
 
 

@@ -15,13 +15,14 @@ library(uuid)
 #' @param central_email The email linked to your ODK central account
 #' @param central_password The password used for your central account
 #'
+#' @export
+#'
 #' @return This function will return a token. This token is useful for
 #' @examples
 #' central_url <- "https://central.rhomis.cgiar.org"
 #' central_email <- "my_email"
 #' central_password <- "my_password"
 #' #get_email_token(central_url,central_email,central_password)
-#'
 get_email_token <- function(central_url, central_email, central_password){
 
     data_for_request<-list(email = central_email, password = central_password)
@@ -247,6 +248,10 @@ get_forms <- function(central_url, central_email, central_password, projectID){
 #'
 #' @examples
 get_xls_form <- function(central_url, central_email, central_password, projectID, formID, form_version=1){
+
+
+
+
     file_destination <- tempfile(fileext=".xls")
     email_token <- get_email_token(central_url,central_email,central_password)
     central_response <- httr::GET(url = paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/versions/",form_version,".xlsx"),
@@ -254,6 +259,14 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
                                   httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
                                   httr::write_disk(file_destination, overwrite = TRUE)
     )
+
+    response <- httr::content(central_response)
+    response
+    if (response$code>=400 & response$code<500){
+        stop("Error with request made for")
+    }
+
+
     xls_form <- list()
     xls_form$survey <- readxl::read_xlsx(file_destination,sheet = "survey")
     xls_form$choices <- readxl::read_xlsx(file_destination,sheet = "choices")
@@ -509,6 +522,13 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 
     colnames(main_data_set) <- tolower(clean_column_names(colnames(main_data_set), seperator = "-", repeat_columns = c("")))
 
+    # Removing duplicate "deviceid" column
+    if (sum(colnames(main_data_set) == "deviceid") > 1) {
+        column_to_keep <- which(colnames(main_data_set) == "deviceid" & colSums(is.na(main_data_set)) == 0)
+        column_to_remove <- which(colnames(main_data_set) == "deviceid" & colSums(is.na(main_data_set)) > 0)
+
+        main_data_set <- main_data_set[-column_to_remove]
+    }
 
     unlink(file_destination)
     unlink(core_data_file_name)
@@ -516,8 +536,6 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     unlink(livestock_repeat_file_name)
     unlink(household_roster_repeat_file_name)
     unlink(offfarm_income_repeat_file_name)
-
-
 
     return(main_data_set)
 

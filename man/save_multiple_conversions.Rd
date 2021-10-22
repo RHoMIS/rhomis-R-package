@@ -2,7 +2,7 @@
 % Please edit documentation in R/UnitsAndConversions.R
 \name{save_multiple_conversions}
 \alias{save_multiple_conversions}
-\title{Title}
+\title{Save Multiple conversions}
 \usage{
 save_multiple_conversions(
   database = "rhomis",
@@ -30,5 +30,5 @@ save_multiple_conversions(
 
 }
 \description{
-Title
+Save Multiple conversions
 }

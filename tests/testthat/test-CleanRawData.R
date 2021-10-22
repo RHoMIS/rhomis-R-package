@@ -1,5 +1,6 @@
 library(testthat)
 library(tibble)
+library(tibble)
 
 testthat::test_that("Test that can swap individual units out",{
     item_to_convert <- "wheel_barrows_100kg"
@@ -60,6 +61,116 @@ testthat::test_that("Can convert columns to lower case",{
     actual_result <-convert_all_columns_to_lower_case(data)
 
     expect_equal(actual_result, expected_result)
+
+
+})
+
+
+testthat::test_that('Can replace crop and livestock "other" with the name',{
+
+    data <- tibble::as_tibble(list("crops_other1"=c("replacehh1oth1","replacehh2oth1","replacehh3oth1",NA),
+                                   "crops_other2"=c(NA,NA,"replacehh3oth2",NA),
+                                   "crops_other3"=c(NA,"replacehh2oth3","replacehh3oth3","replacehh4oth3"),
+
+                                   "crop_name_1"=c("maize","banana","cassava","wheat"),
+                                   "crop_name_2"=c("banana","other1","maize","banana"),
+                                   "crop_name_3"=c("other1","other2",NA,NA),
+                                   "crop_name_4"=c(NA,"other3","other1","other3"),
+
+                                   "livestock_other1"=c("replacehh1oth1",NA,"replacehh3oth1",NA),
+
+
+                                   "livestock_name_1"=c("other1","pigs","cattle","sheep"),
+                                   "livestock_name_2"=c("sheep",NA,"other1","cattle"),
+
+
+
+                                   "random_other_column"=c("bla","bla","bla","bla")))
+
+
+    expected_result <- tibble::as_tibble(list("crops_other1"=c("replacehh1oth1","replacehh2oth1","replacehh3oth1",NA),
+                                                      "crops_other2"=c(NA,NA,"replacehh3oth2",NA),
+                                                      "crops_other3"=c(NA,"replacehh2oth3","replacehh3oth3","replacehh4oth3"),
+
+                                                      "crop_name_1"=c("maize","banana","cassava","wheat"),
+                                                      "crop_name_2"=c("banana","replacehh2oth1","maize","banana"),
+                                                      "crop_name_3"=c("replacehh1oth1",NA,NA,NA),
+                                                      "crop_name_4"=c(NA,"replacehh2oth3","replacehh3oth1","replacehh4oth3"),
+
+                                              "livestock_other1"=c("replacehh1oth1",NA,"replacehh3oth1",NA),
+
+
+                                              "livestock_name_1"=c("replacehh1oth1","pigs","cattle","sheep"),
+                                              "livestock_name_2"=c("sheep",NA,"replacehh3oth1","cattle"),
+
+
+                                                      "random_other_column"=c("bla","bla","bla","bla")))
+
+    actual_result <- replace_crop_and_livestock_other(data)
+
+    expect_equal(actual_result, expected_result)
+
+
+})
+
+
+testthat::test_that('Can swap main units with "other" units',{
+
+    data <- tibble::as_tibble(list(
+        "unitland"=c(NA,"other"),
+        "areaunits_other"=c(NA,"other_area_unit"),
+
+        "fertiliser_units"=c("kg",NA),
+        "fertiliser_units_other"=c(NA,NA),
+
+        "crop_yield_units_1"=c("unit","other"),
+        "crop_yield_units_other_1"=c("unit","other_unit_subbed"),
+        "crop_yield_units_2"=c("other",NA),
+        "crop_yield_units_other_2"=c(NA,NA),
+        "crop_yield_units_3"=c("kg","other"),
+        "crop_yield_units_other_3"=c("unit",NA),
+
+        "milk_units_1"=c("litres","other"),
+        "milk_amount_units_other_1"=c(NA,"other_milk_unit"),
+        "milk_units_2"=c("other","other"),
+        "milk_amount_units_other_2"=c(NA,"milk_unit_2"),
+
+        "random_other_column"=c("bla",'bla')))
+
+
+        expected_result  <- tibble::as_tibble(list(
+            "unitland"=c(NA,"other_area_unit"),
+            "areaunits_other"=c(NA,"other_area_unit"),
+
+            "fertiliser_units"=c("kg",NA),
+            "fertiliser_units_other"=c(NA,NA),
+
+            "crop_yield_units_1"=c("unit","other_unit_subbed"),
+            "crop_yield_units_other_1"=c("unit","other_unit_subbed"),
+            "crop_yield_units_2"=c(NA,NA),
+            "crop_yield_units_other_2"=c(NA,NA),
+            "crop_yield_units_3"=c("kg",NA),
+            "crop_yield_units_other_3"=c("unit",NA),
+
+            "milk_units_1"=c("litres","other_milk_unit"),
+            "milk_amount_units_other_1"=c(NA,"other_milk_unit"),
+            "milk_units_2"=c(NA,"milk_unit_2"),
+            "milk_amount_units_other_2"=c(NA,"milk_unit_2"),
+
+            "random_other_column"=c("bla",'bla')
+
+    ))
+
+        expected_result <- dplyr::mutate_all(expected_result, as.character)
+
+
+        actual_result <- replace_units_with_other_all(data)
+
+        testthat::expect_equal(actual_result, expected_result)
+
+        actual_result==expected_result
+
+
 
 
 })

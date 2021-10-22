@@ -23,6 +23,10 @@ find_unique_values <- function(data){
     all_values <- as.character(unlist(lapply(data, function(x) unique(x))))
     # Removing NA column
     all_values <- all_values[!is.na(all_values)]
+    all_values <- all_values[all_values!="other"]
+    all_values <- all_values[all_values!="other1"]
+    all_values <- all_values[all_values!="other2"]
+    all_values <- all_values[all_values!="other3"]
     # Finding unique values from all the columns
     unique_values <- unique(all_values)
     return(unique_values)
@@ -85,14 +89,21 @@ extract_new_values <- function(data, loop_or_individual_column="loop",column_nam
             stop("You have selected to extract new values from a specific column. Please specify a 'column_name'.")
         }
 
-
-        relevant_data <- data[,column_name]
-        unique_values <- find_unique_values(relevant_data)
+        if(column_name %in% colnames(data))
+        {
+            relevant_data <- data[,column_name]
+            unique_values <- find_unique_values(relevant_data)
+        }
+        if(column_name %in% colnames(data)==F)
+        {
+            return()
+        }
         return(unique_values)
     }
 }
 
 find_loop_number_and_extract_values <- function(data, column_pattern){
+
 
     # Creating a pattern to search through the column names of the data
     regex_pattern <- paste0("^",column_pattern,"_[[:digit:]]") # Finding columns which start with "column_pattern_Integer"
@@ -102,8 +113,15 @@ find_loop_number_and_extract_values <- function(data, column_pattern){
     # The number of loops for this column
     number_of_loops <- length(relevant_columns)
 
-    new_values <- extract_new_values(data, loop_or_individual_column="loop",column_pattern=column_pattern, number_of_loops=number_of_loops)
 
+    if(number_of_loops==0){
+        return()
+    }
+
+    if(number_of_loops>0)
+    {
+        new_values <- extract_new_values(data, loop_or_individual_column="loop",column_pattern=column_pattern, number_of_loops=number_of_loops)
+    }
     return(new_values)
 
 
@@ -212,8 +230,17 @@ extract_new_core_units <- function(data)
     # Return a named list when applying the function
     loop_results <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data,x), simplify = FALSE)
 
-    individual_columns_to_extract <- c("unitland",
+    individual_columns_to_extract <- c("country",
+                                       "crops_other1",
+                                       "crops_other2",
+                                       "crops_other3",
+                                       "livestock_other1",
+                                       "livestock_other2",
+                                       "livestock_other3",
+                                       "unitland",
                                        "areaunits_other",
+                                       "areaunits_other_own",
+                                       "areaunits_other_rent",
                                        "unitland_owned",
                                        "unitland_rentin",
                                        "unitland_rentout",
@@ -223,23 +250,29 @@ extract_new_core_units <- function(data)
 
 
 
-    categories_to_merge <- list(crop_name=c("crop_name"),
-                                livestock_name=c("livestock_name"),
-                                crop_yield_units=c("crop_yield_units_other"),
-                                crop_sold_price_quantityunits=c("crop_price_quantityunits_other"),
-                                unitland= c("areaunits_other","unitland_owned","unitland_rentin","unitland_rentout"),
-                                milk_units=c("milk_amount_units_other"),
-                                milk_sold_price_timeunits=c("milk_amount_time_units_other"),
-                                bees_honey_production_units=c("bees_honey_production_units_other"),
-                                eggs_units=c("eggs_amount_units_other"),
-                                eggs_sold_price_timeunits=c("eggs_sold_price_timeunits_other"),
-                                fertiliser_units=c("fertiliser_units_other"))
+    categories_to_merge <- list(
+        country=c("country"),
+        crop_name=c("crop_name","crops_other1","crops_other2", "crops_other3"),
+        livestock_name=c("livestock_name", "livestock_other1","livestock_other2","livestock_other3"),
+        crop_yield_units=c("crop_yield_units_other"),
+        crop_sold_price_quantityunits=c("crop_price_quantityunits_other"),
+        unitland= c("areaunits_other","unitland_owned","unitland_rentin","unitland_rentout", "areaunits_other_own", "areaunits_other_rent"),
+        milk_units=c("milk_amount_units_other"),
+        milk_sold_price_timeunits=c("milk_amount_time_units_other"),
+        bees_honey_production_units=c("bees_honey_production_units_other"),
+        eggs_units=c("eggs_amount_units_other"),
+        eggs_sold_price_timeunits=c("eggs_sold_price_timeunits_other"),
+        fertiliser_units=c("fertiliser_units_other"))
 
 
 
     final_result <- c(loop_results,column_results)
 
+
+
     final_result<-sapply(names(categories_to_merge),function(x) merge_and_simplify_core_values(final_result,main_item=x,categories_to_merge), simplify = FALSE)
+
+
 
 
     return(final_result)

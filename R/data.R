@@ -164,3 +164,35 @@
 "modules"
 
 
+#' Country
+#'
+#' A dataset which converts country names found in previous RHoMIS surveys
+#' into two letter ISO country codes
+#'
+#'  @source NA
+"country"
+
+
+#' Crop Name
+#'
+#' A list of common crop names which can be found in
+#' previous rhomis datasets
+#'
+#'  @source NA
+"crop_name"
+
+
+#' Livestock Name
+#'
+#'  A list of common names found in previous RHoMIS datasets
+#'
+#'  @source NA
+"livestock_name"
+
+#' Fertiliser Units
+#'
+#' A list of common fertiliser amount units from previous RHoMIS datasets
+#'
+#'  @source NA
+"fertiliser_units"
+
