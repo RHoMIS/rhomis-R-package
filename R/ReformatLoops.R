@@ -419,8 +419,9 @@ insert_gender_columns_in_core_data <- function(data,
         original_columns_all <- paste0(original_column,"_",c(1:number_of_loops))
         control_columns_all <- paste0(control_column,"_",c(1:number_of_loops))
 
+        # data[[original_columns_all]] <- data[[original_columns_all]] %>% dplyr::mutate_all(as.numeric)
 
-        control_split <- lapply(c(1:number_of_loops), function(x) tibble::as_tibble(data[[original_columns_all[x]]]*split_gender_columns(data[[control_columns_all[x]]])))
+        control_split <- lapply(c(1:number_of_loops), function(x) tibble::as_tibble(as.numeric(data[[original_columns_all[x]]])*split_gender_columns(data[[control_columns_all[x]]])))
         names(control_split)<- original_columns_all
 
 

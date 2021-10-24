@@ -256,7 +256,7 @@ extract_new_core_units <- function(data)
         livestock_name=c("livestock_name", "livestock_other1","livestock_other2","livestock_other3"),
         crop_yield_units=c("crop_yield_units_other"),
         crop_sold_price_quantityunits=c("crop_price_quantityunits_other"),
-        unitland= c("areaunits_other","unitland_owned","unitland_rentin","unitland_rentout", "areaunits_other_own", "areaunits_other_rent"),
+        unitland= c("unitland","unitland_owned","unitland_rentin","unitland_rentout", "areaunits_other_own", "areaunits_other_rent", "areaunits_other"),
         milk_units=c("milk_amount_units_other"),
         milk_sold_price_timeunits=c("milk_amount_time_units_other"),
         bees_honey_production_units=c("bees_honey_production_units_other"),

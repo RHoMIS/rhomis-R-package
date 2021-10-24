@@ -326,7 +326,7 @@ processCentralProject <- function(central_url,
 #'
 #' @examples
 processData <- function(
-    dataSource="local",
+    dataSource="csv",
     outputType="csv",
     coreOnly=T,
     surveyFile=NULL,
@@ -345,13 +345,26 @@ processData <- function(
 
 
 
-    # dataSource <- "local"
-    # dataFilePath <- "./inst/extdata/projects/VN_TST_2020/data/raw_data.csv"
-
+    dataSource <- "local"
+    dataFilePath <- "./inst/extdata/projects/VN_TST_2020/data/raw_data.csv"
+    outputType <- "csv"
+    coreOnly=T
+    surveyFile=NULL
+    moduleSaving=F
+    extractUnits=F
+    calculatePrices=T
+    processData=F
+    central_url=NULL
+    central_email=NULL
+    central_password=NULL
+    project_name=NULL
+    form_name=NULL
+    form_version=NULL
+    database=NULL
     #---------------------------------------------------------------
     # Ensuring the parameter calls are logically consistent
     #---------------------------------------------------------------
-    if(dataSource!="local"|dataSource!="central"){
+    if(dataSource!="local"&dataSource!="central"){
         stop("Raw must come from ODK central or a local source (csv)")
     }
     if(dataSource=="local"){
@@ -382,7 +395,7 @@ processData <- function(
     }
 
 
-    if(outputType!="csv"|outputType!="mongodb"){
+    if(outputType!="csv"&outputType!="mongodb"){
         stop("Must specify whether to save the output locally or in a mongodb")
     }
 
@@ -392,12 +405,13 @@ processData <- function(
 
     if(dataSource=="local")
     {
-        rhomis_data <- readr::read_csv(dataFilePath, col_types = cols())
+        rhomis_data <- readr::read_csv(dataFilePath, col_types = cols(), na = c("n/a","-999","NA"))
         colnames(rhomis_data) <- tolower(clean_column_names(colnames(rhomis_data),
                                                             seperator = "/",
                                                             repeat_columns = c("crop_repeat",
                                                                                "livestock_repeat",
                                                                                "offfarm_repeat",
+                                                                               "hh_pop_repeat",
                                                                                "hh_rep")))
 
     }
@@ -437,7 +451,7 @@ processData <- function(
     #---------------------------------------------------------------
     if(dataSource=="local")
     {
-        if (coreOnly==F | moduleSaving==F)
+        if (coreOnly==F | moduleSaving==T)
         {
             xls_form <- list()
             survey_form <- readxl::read_xlsx(surveyFile,sheet = "survey")
@@ -503,8 +517,6 @@ processData <- function(
     }
 
 
-
-
     #---------------------------------------------------------------
     # Extract and write units
     #---------------------------------------------------------------
@@ -514,7 +526,7 @@ processData <- function(
         units_and_conversions <- extract_units_data_frames(rhomis_data)
         units_and_conversions <- check_existing_conversions(units_and_conversions)
 
-        if(outputType=="local"){
+        if(outputType=="csv"){
             write_units_to_folder(units_and_conversions)
         }
 
@@ -536,8 +548,21 @@ processData <- function(
     #---------------------------------------------------------------
 
     if (outputType=="csv"){
+        if (!dir.exists("./unit_conversions"))
+        {
+            stop('Specified that the units were stored locally but the path "unit_conversions" does not exist')
+        }
+
+
+
+
 
         file_names <- list.files("./unit_conversions")
+        #---------------------------------------------
+        # Loading all of the unit conversions locally
+        #---------------------------------------------
+        load_local_units()
+
 
 
     }
@@ -546,12 +571,8 @@ processData <- function(
     if (outputType=="mongodb")
     {
 
-        extract_units_from_db(database="rhomis",
-                              url="mongodb://localhost",
-                              projectID="core_units",
-                              formID="core_units",
-                              conversion_type,
-                              collection="units_and_conversions")
+        # Not yet complete
+        load_db_units()
     }
 
 
@@ -566,25 +587,65 @@ processData <- function(
     # Replacing crop and livestock names with their "other"
     rhomis_data <- replace_crop_and_livestock_other(rhomis_data)
 
+    number_crop_loops <- find_number_of_loops(rhomis_data,"crop_name")
+    crop_loops <- paste0("crop_name_",1:number_crop_loops)
+    rhomis_data[crop_loops] <- switch_units(rhomis_data[crop_loops],
+                                units = crop_name_conversions$survey_value,
+                                conversion_factors = crop_name_conversions$conversion)
 
-    # Standardise crop and livestock names
+    number_livestock_loops <- find_number_of_loops(rhomis_data,"livestock_name")
+    livestock_loops <- paste0("livestock_name_",1:number_livestock_loops)
+    rhomis_data[livestock_loops] <- switch_units(rhomis_data[livestock_loops],
+                                units = livestock_name_conversions$survey_value,
+                                conversion_factors = livestock_name_conversions$conversion)
+
+    # Make sure "other" units are considered
+    rhomis_data <- replace_units_with_other_all(rhomis_data)
 
 
 
-    # Replacing main units with "other"
 
 
-
-
-
-    #---------------------------------------------------------------
-    # Calculate prices
-    #---------------------------------------------------------------
 
 
     #---------------------------------------------------------------
     # Conduct Calculations
     #---------------------------------------------------------------
+
+
+
+    rhomis_data <- crop_calculations_all(rhomis_data,
+                                         crop_yield_units_all = crop_yield_unit_conversions$survey_value,
+                                         crop_yield_unit_conversions_all = crop_yield_unit_conversions$conversion,
+                                         crop_income_units_all = crop_price_unit_conversions$survey_value,
+                                         crop_income_unit_conversions_all = crop_price_unit_conversions$conversion)
+
+    # rhomis_data$crop_price_1
+    crop_price_data <- map_to_wide_format(
+        data = rhomis_data,
+        name_column = "crop_name",
+        column_prefixes = c(
+            "crop_price"
+        ),
+        types = c("num")
+    )
+
+
+    rhomis_data <- livestock_calculations_all(rhomis_data,
+                                              # Need to add livestock weights to the conversions sheets
+                                              livestock_weights_names = livestock_weights$animal,
+                                              livestock_weights_conversions = livestock_weights$weight_kg,
+                                              eggs_amount_units_all = eggs_unit_conversion$survey_value,
+                                              eggs_amount_unit_conversions_all = eggs_unit_conversion$conversion,
+                                              eggs_price_time_units_all = eggs_price_unit_conversion$survey_value,
+                                              eggs_price_time_unit_conversions_all = eggs_price_unit_conversion$conversion,
+                                              honey_amount_units_all = honey_unit_conversion$survey_value,
+                                              honey_amount_unit_conversions_all = honey_unit_conversion$conversion,
+                                              milk_amount_units_all = milk_unit_conversion$survey_value,
+                                              milk_amount_unit_conversions_all = milk_unit_conversion$conversion,
+                                              milk_price_time_units_all = milk_price_unit_conversion$survey_value,
+                                              milk_price_time_unit_conversions_all = milk_price_unit_conversion$conversion)
+
 
 
     #---------------------------------------------------------------

@@ -20,7 +20,10 @@ price_per_livestock <- function(data){
     price_columns <- paste0("livestock_price_per_animal","_",c(1:number_of_loops))
 
     sold_data <- data[sold_columns]
+    sold_data <- sold_data %>% dplyr::mutate_all(as.numeric)
     income_data <- data[income_columns]
+    income_data <- income_data %>% dplyr::mutate_all(as.numeric)
+
 
     livestock_sale_prices <- income_data/sold_data
     colnames(livestock_sale_prices) <-price_columns
@@ -67,6 +70,8 @@ meat_amount_calculation <- function(data,
 
     livestock_name_data <- data[livestock_name_columns]
     killed_for_meat_data <- data[animals_killed_columns]
+    killed_for_meat_data <- killed_for_meat_data %>% dplyr::mutate_all(as.numeric)
+
 
     livestock_weight_data <-switch_units(livestock_name_data,
                                          units = animal_weights_names,
@@ -216,7 +221,13 @@ meat_prices <- function(data){
     price_columns <-paste0("meat_price_per_kg","_",c(1:number_of_loops))
 
     sold_income_data <- data[sold_income_columns]
+    sold_income_data <- sold_income_data %>% dplyr::mutate_all(as.numeric)
+
     sold_amount_data <- data[sold_amount_columns]
+    sold_amount_data <- sold_amount_data %>% dplyr::mutate_all(as.numeric)
+
+
+
 
     price_data <- sold_income_data/sold_amount_data
     colnames(price_data) <- price_columns
@@ -258,7 +269,11 @@ milk_amount_calculations <- function(data,
     milk_number_of_animals_milked_columns <-paste0("milk_number_animals_milked","_",c(1:number_of_loops))
 
     milk_amount_good_season_data <- data[milk_amount_good_season_columns]
+    milk_amount_good_season_data <- milk_amount_good_season_data %>%  dplyr::mutate_all(as.numeric)
+
     milk_amount_bad_season_data <- data[milk_amount_bad_season_columns]
+    milk_amount_bad_season_data <- milk_amount_bad_season_data %>%  dplyr::mutate_all(as.numeric)
+
     milk_units_data <- data[milk_units_columns]
     milk_number_of_animals_milked_data <- data[milk_number_of_animals_milked_columns]
 
@@ -270,6 +285,7 @@ milk_amount_calculations <- function(data,
     })
     colnames(milk_amount_conversions) <- paste0("milk_amount_units_numeric","_", c(1:number_of_loops))
     milk_amount_conversions <- tibble::as_tibble(milk_amount_conversions) %>% dplyr::mutate_all(as.numeric)
+    milk_amount_conversions <- milk_amount_conversions %>%  dplyr::mutate_all(as.numeric)
 
     data <- add_column_after_specific_column(data = data,
                                              new_data = milk_amount_conversions,
@@ -441,7 +457,9 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
 
     milk_price_unit_data <-data[milk_price_units_columns]
     milk_sold_income_data <-data[milk_sold_income_columns]
+    milk_sold_income_data <- milk_sold_income_data %>%  dplyr::mutate_all(as.numeric)
     milk_sold_amount_data <-data[milk_sold_amount_columns]
+    milk_sold_amount_data <- milk_sold_amount_data %>%  dplyr::mutate_all(as.numeric)
 
     milk_income_conversions <- sapply(c(1:number_of_loops), function(x) {
         milk_price_time_units_conversion(units_column = milk_price_unit_data[[x]],
@@ -500,7 +518,10 @@ eggs_amount_calculations <- function(data, units=eggs_amount_units$unit, unit_co
 
 
     eggs_amount_good_season_data <- data[eggs_amount_good_season_columns]
+    eggs_amount_good_season_data <- eggs_amount_good_season_data %>%  dplyr::mutate_all(as.numeric)
     eggs_amount_bad_season_data <- data[eggs_amount_bad_season_columns]
+    eggs_amount_bad_season_data <- eggs_amount_bad_season_data %>%  dplyr::mutate_all(as.numeric)
+
     eggs_units_data <- data[eggs_units_columns]
     livestock_heads_data <- data[livestock_heads_columns]
     livestock_names_data <- data[livestock_names_columns]
@@ -683,7 +704,10 @@ egg_income_calculations <- function(data,
     income_units_columns <- paste0("eggs_sold_price_timeunits", "_", paste0(1:number_of_loops))
 
     income_data <- data[income_columns]
+    income_data <- income_data %>% dplyr::mutate_all(as.numeric)
     amount_sold_data <- data[amount_sold_columns]
+    amount_sold_data <- amount_sold_data %>% dplyr::mutate_all(as.numeric)
+
     income_units_data <- data[income_units_columns]
 
     units_converted <- switch_units(income_units_data, units = units, conversion_factors = unit_conversions)
@@ -758,6 +782,7 @@ eggs_price_per_egg_to_numeric <- function(units_column, amount_sold_column){
 eggs_swap_per_animal_units <-function(units_column, livestock_name_column,livestock_heads_df){
 
     number_of_heads <- identify_number_of_heads_for_livestock_loops(livestock_name_column,livestock_heads_df)
+    number_of_heads <- as.numeric(number_of_heads)
 
     subset_using_per_animal_per_day <- units_column=="pieces/animal/day"
     subset_using_per_animal_per_day[is.na(subset_using_per_animal_per_day)] <- FALSE
@@ -817,6 +842,7 @@ identify_number_of_heads_for_livestock_loops <- function(livestock_name_column, 
 #' @examples
 milk_swap_per_animal_units <-function(units_column, number_of_animals_milked_column){
 
+    number_of_animals_milked_column <- as.numeric(number_of_animals_milked_column)
     units_column[which(units_column=="l/animal/day")] <- round(365*number_of_animals_milked_column[which(units_column=="l/animal/day")],2)
     units_column[which(units_column=="per animal per week")] <- round((365/7)*number_of_animals_milked_column[which(units_column=="per animal per week")],2)
     units_column[which(units_column=="0.3l/animal/day")] <- round((0.3*365)*number_of_animals_milked_column[which(units_column=="0.3l/animal/day")],2)
@@ -904,6 +930,7 @@ honey_amount_calculation <- function(data, units=honey_amount_units$units, unit_
 
 
     honey_amount_data <- data[honey_amount_columns]
+    honey_amount_data <- honey_amount_data %>%  dplyr::mutate_all(as.numeric)
     honey_units_data <- data[honey_units_columns]
 
     honey_units_converted <- switch_units(honey_units_data, units = units,conversion_factors = unit_conversions)

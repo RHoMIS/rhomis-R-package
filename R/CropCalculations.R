@@ -62,7 +62,7 @@ crop_harvest_single_loop<-function(data, loop_number){
 
     if (length(missing_columns)==0)
     {
-        crop_yield <- data[[paste0("crop_yield","_",loop_number)]]*data[[paste0("crop_yield_units_numeric","_",loop_number)]]
+        crop_yield <- as.numeric(data[[paste0("crop_yield","_",loop_number)]])*as.numeric(data[[paste0("crop_yield_units_numeric","_",loop_number)]])
     }
     return(crop_yield)
 }
@@ -296,12 +296,17 @@ crop_income_calculations <- function(data, units=crop_price_units$unit, unit_con
 
     crop_sold_income_per_year <- crop_sold_income
     # Multiplying values which do not have "total_income_per_year_unit
+    crop_sold_income_per_year <- crop_sold_income_per_year %>% dplyr::mutate_all(as.numeric)
+    crop_sold_amount <- crop_sold_amount %>% dplyr::mutate_all(as.numeric)
+
     crop_sold_income_per_year <- crop_sold_income_per_year*crop_sold_units_numeric*crop_sold_amount
 
     subscript_frame <- crop_sold_units=="total_income_per_year"
     subscript_frame[is.na(subscript_frame)] <- FALSE
-    crop_sold_income_per_year[subscript_frame]<-crop_sold_income[subscript_frame]
+    crop_sold_income_per_year[subscript_frame]<-as.numeric(crop_sold_income[subscript_frame])
     crop_sold_income_per_year <- tibble::as_tibble(crop_sold_income_per_year)
+    crop_sold_income_per_year <- crop_sold_income_per_year %>% dplyr::mutate_all(as.numeric)
+
 
     colnames(crop_sold_income_per_year) <- paste0("crop_income_per_year","_",c(1:number_of_loops))
     data <- add_column_after_specific_column(data=data,

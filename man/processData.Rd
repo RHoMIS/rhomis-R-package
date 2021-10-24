@@ -5,7 +5,7 @@
 \title{Process RHoMIS data}
 \usage{
 processData(
-  dataSource = "local",
+  dataSource = "csv",
   outputType = "csv",
   coreOnly = T,
   surveyFile = NULL,

@@ -298,9 +298,6 @@ replace_unit_column_with_other_single <- function(unit_column, unit_other_column
 
 }
 
-replace_units_with_other_looped <- function(data, units_vector, other_vector){
-
-}
 
 #' Replacing Units with other Units
 #'
