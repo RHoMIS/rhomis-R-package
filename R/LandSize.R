@@ -23,6 +23,8 @@ land_size_calculation <- function(data,
                                     units = units,
                                     conversion_factors = unit_conversions)
 
+    data[c("landcultivated", "landowned")] <- data[c("landcultivated", "landowned")] %>% dplyr::mutate_all(as.numeric)
+
     land_cultivated <- data["landcultivated"]*converted_units
     land_owned <- data["landowned"]*converted_units
 

@@ -381,4 +381,28 @@ replace_units_with_other_all <- function(data){
 
 
 
+#' Write a List of DataFrames to Folder
+#'
+#' Take a list of multiple outputs and write them all to a single folder
+#'
+#' @param list_of_df The list of dataframes (must be a named list)
+#' @param folder The name of the folder where they are to be written
+#'
+#' @return
+#' @export
+#'
+#' @examples
+write_list_of_df_to_folder <- function(list_of_df, folder){
+    folder_name <- paste0("./",folder)
+    dir.create(folder_name, showWarnings = F)
+
+
+    sapply(names(list_of_df), function(x) {
+        file_path <- paste0(folder_name,"/",x,".csv")
+        readr::write_csv(list_of_df[[x]], file_path)
+    })
+
+
+}
+
 

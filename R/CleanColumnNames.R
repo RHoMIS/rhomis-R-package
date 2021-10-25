@@ -76,6 +76,7 @@ shorten_multiple_column_names <- function(long_names, seperator){
 
 modify_loop_name <- function(column_name, loop_type){
 
+
     # Get rid of everything before the opening square bracket
     # Can modify and generalise to exclude the "loop_type" variable
     pattern <- paste0(".*",loop_type,"\\[")
@@ -132,7 +133,19 @@ modify_loop_name <- function(column_name, loop_type){
 #'
 modify_loop_column_names <- function(column_names, loop_type) {
     # Finding all of the items with pattern "xxx/type[number]/column_name"
+
+    # column_names <- colnames(rhomis_data)
+    # loop_type <- "hh_pop_repeat"
+
     repeat_columns <- grep(paste0(loop_type,"\\[.\\]"),column_names)
+    double_repeat_columns <- grep(paste0(loop_type,"\\[..\\]"),column_names)
+
+    if(length(double_repeat_columns)>0){
+        repeat_columns <- c(repeat_columns,double_repeat_columns)
+        repeat_columns <- sort(repeat_columns)
+
+    }
+
 
     # Modifying the relevant columns
     column_names[repeat_columns] <- unlist(lapply(column_names[repeat_columns], function(x) modify_loop_name(x, loop_type)))

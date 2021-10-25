@@ -345,22 +345,6 @@ processData <- function(
 
 
 
-    dataSource <- "local"
-    dataFilePath <- "./inst/extdata/projects/VN_TST_2020/data/raw_data.csv"
-    outputType <- "csv"
-    coreOnly=T
-    surveyFile=NULL
-    moduleSaving=F
-    extractUnits=F
-    calculatePrices=T
-    processData=F
-    central_url=NULL
-    central_email=NULL
-    central_password=NULL
-    project_name=NULL
-    form_name=NULL
-    form_version=NULL
-    database=NULL
     #---------------------------------------------------------------
     # Ensuring the parameter calls are logically consistent
     #---------------------------------------------------------------
@@ -406,13 +390,24 @@ processData <- function(
     if(dataSource=="local")
     {
         rhomis_data <- readr::read_csv(dataFilePath, col_types = cols(), na = c("n/a","-999","NA"))
-        colnames(rhomis_data) <- tolower(clean_column_names(colnames(rhomis_data),
-                                                            seperator = "/",
-                                                            repeat_columns = c("crop_repeat",
-                                                                               "livestock_repeat",
-                                                                               "offfarm_repeat",
-                                                                               "hh_pop_repeat",
-                                                                               "hh_rep")))
+        colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data),
+                                                    seperator = "/",
+                                                    repeat_columns = c("crop_repeat",
+                                                                       "livestock_repeat",
+                                                                       "offfarm_repeat",
+                                                                       "offfarm_income_repeat",
+                                                                       "hh_pop_repeat",
+                                                                       "hh_rep")) %>% tolower()
+
+
+
+        rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
+
+
+        indicator_data <- tibble::as_tibble(list(
+            source = rep(dataFilePath, nrow(rhomis_data))
+        ))
 
     }
 
@@ -443,6 +438,15 @@ processData <- function(
             projectID,
             formID
         )
+
+        rhomis_data <- rhomis_data %>%
+            remove_extra_central_columns() %>%
+            convert_all_columns_to_lower_case()
+
+        indicator_data <- tibble::as_tibble(list(
+            projectName = rep(project_name, nrow(rhomis_data)),
+            formName = rep(form_name, nrow(rhomis_data))
+        ))
     }
 
 
@@ -590,14 +594,14 @@ processData <- function(
     number_crop_loops <- find_number_of_loops(rhomis_data,"crop_name")
     crop_loops <- paste0("crop_name_",1:number_crop_loops)
     rhomis_data[crop_loops] <- switch_units(rhomis_data[crop_loops],
-                                units = crop_name_conversions$survey_value,
-                                conversion_factors = crop_name_conversions$conversion)
+                                            units = crop_name_conversions$survey_value,
+                                            conversion_factors = crop_name_conversions$conversion)
 
     number_livestock_loops <- find_number_of_loops(rhomis_data,"livestock_name")
     livestock_loops <- paste0("livestock_name_",1:number_livestock_loops)
     rhomis_data[livestock_loops] <- switch_units(rhomis_data[livestock_loops],
-                                units = livestock_name_conversions$survey_value,
-                                conversion_factors = livestock_name_conversions$conversion)
+                                                 units = livestock_name_conversions$survey_value,
+                                                 conversion_factors = livestock_name_conversions$conversion)
 
     # Make sure "other" units are considered
     rhomis_data <- replace_units_with_other_all(rhomis_data)
@@ -612,7 +616,72 @@ processData <- function(
     # Conduct Calculations
     #---------------------------------------------------------------
 
+    ###############
+    # Demographics
+    ###############
+    indicator_data$hh_size_members <- calculate_household_size_members(rhomis_data)
+    indicator_data$hh_size_MAE <- calculate_MAE(rhomis_data)
 
+    if ("household_type"%in%colnames(rhomis_data)==T)
+    {
+        indicator_data$household_type <- rhomis_data[["household_type"]]
+    }
+    if ("household_type"%in%colnames(rhomis_data)==F)
+    {
+        warning('"household_type" does not exist in dataset')
+    }
+
+    if ("education_level"%in%colnames(rhomis_data)==T)
+    {
+        indicator_data$head_education_level <- rhomis_data[["education_level"]]
+
+    }
+    if ("education_level"%in%colnames(rhomis_data)==F)
+    {
+        warning('"education_level" does not exist in dataset')
+    }
+
+
+    ###############
+    # Land use
+    ###############
+    indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data))
+
+
+    ###############
+    # Food security
+    ###############
+    if ("food_worst_month"%in%colnames(rhomis_data)==T)
+    {
+        indicator_data$worst_food_security_month <- rhomis_data[["food_worst_month"]]
+    }
+    if ("food_worst_month"%in%colnames(rhomis_data)==F)
+    {
+        warning('"food_worst_month" does not exist in dataset')
+    }
+
+    if ("food_best_month"%in%colnames(rhomis_data)==T)
+    {
+        indicator_data$best_food_security_month <- rhomis_data[["food_best_month"]]
+    }
+    if ("food_best_month"%in%colnames(rhomis_data)==F)
+    {
+        warning('"food_best_month" does not exist in dataset')
+    }
+
+    indicator_data <- dplyr::bind_cols(indicator_data, food_security_calculations(rhomis_data))
+
+    ###############
+    # Dietary diversity
+    ###############
+
+    hdds_data <- hdds_calc(rhomis_data)
+    indicator_data <- dplyr::bind_cols(indicator_data,hdds_data)
+
+
+    ###############
+    # Crop calculations
+    ###############
 
     rhomis_data <- crop_calculations_all(rhomis_data,
                                          crop_yield_units_all = crop_yield_unit_conversions$survey_value,
@@ -620,16 +689,41 @@ processData <- function(
                                          crop_income_units_all = crop_price_unit_conversions$survey_value,
                                          crop_income_unit_conversions_all = crop_price_unit_conversions$conversion)
 
-    # rhomis_data$crop_price_1
-    crop_price_data <- map_to_wide_format(
+    crop_data <- map_to_wide_format(
         data = rhomis_data,
         name_column = "crop_name",
         column_prefixes = c(
+            "crop_harvest_kg_per_year",
+            "crop_consumed_kg_per_year",
+            "crop_sold_kg_per_year",
+            "crop_income_per_year",
             "crop_price"
         ),
-        types = c("num")
+        types = c("num", "num", "num", "num", "num")
     )
 
+    if(outputType=="csv"){
+        write_list_of_df_to_folder(crop_data,"crop_data")
+        dir.create("mean_prices", showWarnings = F)
+        crop_price <- crop_data$crop_price %>% dplyr::summarise_all(mean, na.rm = TRUE)
+        readr::write_csv(crop_price,"./mean_prices/crop_prices.csv")
+
+    }
+    if(outputType=="mongodb"){
+        save_data_set_to_db(
+            data = crop_data$crop_harvest_kg_per_year,
+            data_type = "cropData",
+            database = database,
+            url = "mongodb://localhost",
+            projectID = project_name,
+            formID = form_name
+        )
+    }
+
+
+    ###############
+    # Livestock calculations
+    ###############
 
     rhomis_data <- livestock_calculations_all(rhomis_data,
                                               # Need to add livestock weights to the conversions sheets
@@ -646,16 +740,100 @@ processData <- function(
                                               milk_price_time_units_all = milk_price_unit_conversion$survey_value,
                                               milk_price_time_unit_conversions_all = milk_price_unit_conversion$conversion)
 
+    livestock_data <- map_to_wide_format(
+        data = rhomis_data,
+        name_column = "livestock_name",
+        column_prefixes = c(
+            "livestock_sold",
+            "livestock_sale_income",
+            "livestock_price_per_animal",
+            "meat_kg_per_year",
+            "meat_consumed_kg_per_year",
+            "meat_sold_kg_per_year",
+            "meat_sold_income",
+            "meat_price_per_kg",
+            "milk_collected_litres_per_year",
+            "milk_consumed_litres_per_year",
+            "milk_sold_litres_per_year",
+            "milk_sold_income_per_year",
+            "milk_price_per_litre",
+            "eggs_collected_kg_per_year",
+            "eggs_consumed_kg_per_year",
+            "eggs_sold_kg_per_year",
+            "eggs_income_per_year",
+            "eggs_price_per_kg"
+        ),
+        types = c("num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num", "num")
+    )
 
+    if(outputType=="csv"){
+        write_list_of_df_to_folder(crop_data,"livestock_data")
+        dir.create("mean_prices", showWarnings = F)
+
+        egg_price <- livestock_data$eggs_price_per_kg %>% dplyr::summarise_all(mean, na.rm = TRUE)
+        readr::write_csv(egg_price, "./mean_prices/egg_price_per_kg.csv")
+
+        meat_price <- livestock_data$meat_price_per_kg %>% dplyr::summarise_all(mean, na.rm = TRUE)
+        readr::write_csv(meat_price, "./mean_prices/meat_price_per_kg.csv")
+
+        milk_price <- livestock_data$milk_price_per_litre %>% dplyr::summarise_all(mean, na.rm = TRUE)
+        readr::write_csv(milk_price, "./mean_prices/milk_price_per_litre.csv")
+
+        livestock_price <- livestock_data$livestock_price_per_animal %>% dplyr::summarise_all(mean, na.rm = TRUE)
+        readr::write_csv(livestock_price, "./mean_prices/livestock_price_per_animal.csv")
+
+    }
+
+    if(outputType=="mongodb"){
+        save_data_set_to_db(
+            data = livestock_sold$livestock_sold,
+            data_type = "livestockData",
+            database = database,
+            url = "mongodb://localhost",
+            projectID = project_name,
+            formID = form_name
+        )
+    }
 
     #---------------------------------------------------------------
-    # Save outputs
+    # Totals
     #---------------------------------------------------------------
+    indicator_data$crop_income <- total_crop_income(rhomis_data)
+    indicator_data$livestock_income <- total_livestock_income(rhomis_data)
+
+    if (!is.null(indicator_data$crop_income) & !is.null(indicator_data$livestock_income)){
+        total_and_off_farm_income <- total_and_off_farm_incomes(rhomis_data,
+                                                                total_crop_income = indicator_data$crop_income,
+                                                                total_livestock_income = indicator_data$livestock_income
+        )
+        indicator_data$total_income <- total_and_off_farm_income$total_income
+        indicator_data$off_farm_income <- total_and_off_farm_income$off_farm_income
+
+        rhomis_data <- gendered_off_farm_income_split(rhomis_data)
+    }
+
+
+    # Off farm incomes
+    off_farm_prefixes <- c("offfarm_year_round", "offfarm_month", "offfarm_who_control_revenue")
+    data_types <- c("chr", "chr", "chr")
+
+    off_farm_data <- map_to_wide_format(
+        data = rhomis_data,
+        name_column = "offfarm_income_name",
+        column_prefixes = off_farm_prefixes,
+        types = data_types
+    )
 
 
 
+    dir.create("indicators",showWarnings = F)
+    readr::write_csv(indicator_data,"./indicators/indicators.csv")
 
 
+    dir.create("processed_data",showWarnings = F)
+    readr::write_csv(rhomis_data,"./processed_data/processed_data.csv")
+
+    print("Success")
 }
 
 
