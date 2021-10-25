@@ -3,6 +3,7 @@ library(tibble)
 library(jsonlite)
 library(tibble)
 library(dplyr)
+library(readr)
 
 #' Saving Set of Conversions
 #'
@@ -431,7 +432,7 @@ load_local_units <- function(){
 
 
     if ("country.csv" %in% file_names){
-        country_conversions <- readr::read_csv("./unit_conversions/country.csv", col_types = cols())
+        country_conversions <- readr::read_csv("./unit_conversions/country.csv", col_types = readr::cols())
         assign("country_conversions", country_conversions, envir = .GlobalEnv)
     }
     if ("country.csv" %in% file_names==F){
@@ -442,7 +443,7 @@ load_local_units <- function(){
 
 
     if ("crop_name.csv" %in% file_names){
-        crop_name_conversions <- readr::read_csv("./unit_conversions/crop_name.csv", col_types = cols())
+        crop_name_conversions <- readr::read_csv("./unit_conversions/crop_name.csv", col_types = readr::cols())
         assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
 
     }
@@ -455,7 +456,7 @@ load_local_units <- function(){
 
 
     if ("livestock_name.csv" %in% file_names){
-        livestock_name_conversions <- readr::read_csv("./unit_conversions/livestock_name.csv", col_types = cols())
+        livestock_name_conversions <- readr::read_csv("./unit_conversions/livestock_name.csv", col_types = readr::cols())
         assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
 
     }
@@ -467,7 +468,7 @@ load_local_units <- function(){
 
 
     if ("crop_yield_units.csv" %in% file_names){
-        crop_yield_unit_conversions <- readr::read_csv("./unit_conversions/crop_yield_units.csv", col_types = cols())
+        crop_yield_unit_conversions <- readr::read_csv("./unit_conversions/crop_yield_units.csv", col_types = readr::cols())
         assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
 
     }
@@ -480,7 +481,7 @@ load_local_units <- function(){
 
 
     if ("crop_sold_price_quantityunits.csv" %in% file_names){
-        crop_price_unit_conversions <- readr::read_csv("./unit_conversions/crop_sold_price_quantityunits.csv", col_types = cols())
+        crop_price_unit_conversions <- readr::read_csv("./unit_conversions/crop_sold_price_quantityunits.csv", col_types = readr::cols())
         assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
 
     }
@@ -493,7 +494,7 @@ load_local_units <- function(){
 
 
     if ("unitland.csv" %in% file_names){
-        land_unit_conversion <- readr::read_csv("./unit_conversions/unitland.csv", col_types = cols())
+        land_unit_conversion <- readr::read_csv("./unit_conversions/unitland.csv", col_types = readr::cols())
         assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
 
     }
@@ -508,7 +509,7 @@ load_local_units <- function(){
 
 
     if ("milk_units.csv" %in% file_names){
-        milk_unit_conversion <- readr::read_csv("./unit_conversions/milk_units.csv", col_types = cols())
+        milk_unit_conversion <- readr::read_csv("./unit_conversions/milk_units.csv", col_types = readr::cols())
         assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
 
     }
@@ -533,7 +534,7 @@ load_local_units <- function(){
 
 
     if ("bees_honey_production_units.csv" %in% file_names){
-        honey_unit_conversion <- readr::read_csv("./unit_conversions/bees_honey_production_units.csv", col_types = cols())
+        honey_unit_conversion <- readr::read_csv("./unit_conversions/bees_honey_production_units.csv", col_types = readr::cols())
         assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
 
     }
@@ -546,7 +547,7 @@ load_local_units <- function(){
 
 
     if ("eggs_units.csv" %in% file_names){
-        eggs_unit_conversion <- readr::read_csv("./unit_conversions/eggs_units.csv", col_types = cols())
+        eggs_unit_conversion <- readr::read_csv("./unit_conversions/eggs_units.csv", col_types = readr::cols())
         assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
 
     }
@@ -559,7 +560,7 @@ load_local_units <- function(){
 
 
     if ("eggs_sold_price_timeunits.csv" %in% file_names){
-        eggs_price_unit_conversion <- readr::read_csv("./unit_conversions/eggs_sold_price_timeunits.csv", col_types = cols())
+        eggs_price_unit_conversion <- readr::read_csv("./unit_conversions/eggs_sold_price_timeunits.csv", col_types = readr::cols())
         assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
 
     }
@@ -572,7 +573,7 @@ load_local_units <- function(){
 
 
     if ("fertiliser_units.csv" %in% file_names){
-        fertiliser_unit_conversion <- readr::read_csv("./unit_conversions/fertiliser_units.csv", col_types = cols())
+        fertiliser_unit_conversion <- readr::read_csv("./unit_conversions/fertiliser_units.csv", col_types = readr::cols())
         assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
 
     }

@@ -389,7 +389,7 @@ processData <- function(
 
     if(dataSource=="local")
     {
-        rhomis_data <- readr::read_csv(dataFilePath, col_types = cols(), na = c("n/a","-999","NA"))
+        rhomis_data <- readr::read_csv(dataFilePath, col_types = readr::cols(), na = c("n/a","-999","NA"))
         colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data),
                                                     seperator = "/",
                                                     repeat_columns = c("crop_repeat",
