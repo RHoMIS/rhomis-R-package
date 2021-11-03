@@ -362,7 +362,10 @@ processData <- function(
     # Ensuring the parameter calls are logically consistent
     #---------------------------------------------------------------
 
-
+    replace_infinite <- function(column){
+        column[is.infinite(column)] <- NA
+        return(column)
+    }
 
     if(extractUnits==T & processDataSet==T){
         stop("Stated that you wanted to extract units and process the data in in the same step.\n
@@ -708,7 +711,8 @@ processData <- function(
 
             if ("crop_price"%in% names(crop_data))
             {
-                crop_price <- crop_data$crop_price %>% dplyr::summarise_all(mean, na.rm = TRUE)
+                crop_price <- crop_data[["crop_price"]]
+                crop_price <- crop_price %>% dplyr::mutate_all(replace_infinite) %>%  dplyr::summarise_all(mean, na.rm = TRUE)
                 readr::write_csv(crop_price,"./mean_prices/crop_prices.csv")
             }
         }
@@ -791,26 +795,27 @@ processData <- function(
 
             if ("eggs_price_per_kg"%in% names(livestock_data))
             {
-                egg_price <- livestock_data$eggs_price_per_kg %>% dplyr::summarise_all(mean, na.rm = TRUE)
+
+                egg_price <- livestock_data$eggs_price_per_kg %>% dplyr::mutate_all(replace_infinite) %>% dplyr::summarise_all(mean, na.rm = TRUE)
                 readr::write_csv(egg_price, "./mean_prices/egg_price_per_kg.csv")
             }
 
             if ("meat_price_per_kg"%in% names(livestock_data))
             {
-                meat_price <- livestock_data$meat_price_per_kg %>% dplyr::summarise_all(mean, na.rm = TRUE)
+                meat_price <- livestock_data$meat_price_per_kg %>% dplyr::mutate_all(replace_infinite) %>% dplyr::summarise_all(mean, na.rm = TRUE)
                 readr::write_csv(meat_price, "./mean_prices/meat_price_per_kg.csv")
             }
 
 
             if ("milk_price_per_litre"%in% names(livestock_data))
             {
-                milk_price <- livestock_data$milk_price_per_litre %>% dplyr::summarise_all(mean, na.rm = TRUE)
+                milk_price <- livestock_data$milk_price_per_litre %>% dplyr::mutate_all(replace_infinite) %>% dplyr::summarise_all(mean, na.rm = TRUE)
                 readr::write_csv(milk_price, "./mean_prices/milk_price_per_litre.csv")
             }
 
             if ("livestock_price_per_animal"%in% names(livestock_data))
             {
-                livestock_price <- livestock_data$livestock_price_per_animal %>% dplyr::summarise_all(mean, na.rm = TRUE)
+                livestock_price <- livestock_data$livestock_price_per_animal %>% dplyr::mutate_all(replace_infinite) %>% dplyr::summarise_all(mean, na.rm = TRUE)
                 readr::write_csv(livestock_price, "./mean_prices/livestock_price_per_animal.csv")
             }
 
