@@ -245,22 +245,22 @@ testthat::test_that("Can calculate the amounts of milk collected",{
 
   expected_result <- tibble::as_tibble(list("milk_amount_good_season_1"=c(0.5,2,1),
                                             "milk_amount_good_season_litres_per_year_1"=c(182.5,208.5714,438),
+                                            "milk_collected_litres_per_year_1"=c(136.875,208.5714,383.25),
                                             "milk_units_1"=c("l/day","per animal per week","0.3l/animal/day"),
                                             "milk_amount_units_numeric_1"=c(365,2*365/7,0.3*4*365),
                                             "milk_amount_bad_season_1"=c(0.25,NA,0.75),
                                             "milk_amount_bad_season_litres_per_year_1"=c(91.25,NA,328.5),
                                             "milk_number_animals_milked_1"=c(3,2,4),
-                                            "milk_collected_litres_per_year_1"=c(136.875,208.5714,383.25),
 
                                             "milk_amount_good_season_2"=c(NA,NA,1.2),
                                             "milk_amount_good_season_litres_per_year_2"=c(NA,NA,131.4),
+                                            "milk_collected_litres_per_year_2"=c(NA,NA,147.825),
                                             "milk_units_2"=c(NA,NA,"0.3l/day"),
                                             "milk_amount_units_numeric_2"=c(NA,NA,0.3*365),
-
                                             "milk_amount_bad_season_2"=c(NA,NA,1.5),
                                             "milk_amount_bad_season_litres_per_year_2"=c(NA,NA,164.25),
-                                            "milk_number_animals_milked_2"=c(NA,NA,1.25),
-                                            "milk_collected_litres_per_year_2"=c(NA,NA,147.825)))
+                                            "milk_number_animals_milked_2"=c(NA,NA,1.25)
+                                            ))
 
   actual_result <- milk_amount_calculations(data)
 

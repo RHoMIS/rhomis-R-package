@@ -4,7 +4,10 @@
 \alias{load_local_units}
 \title{Load local units}
 \usage{
-load_local_units()
+load_local_units(file_names)
+}
+\arguments{
+\item{file_names}{A list of file names to load}
 }
 \value{
 

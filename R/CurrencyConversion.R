@@ -104,15 +104,29 @@ currency_conversion_factor <- function(year,country_code){
 }
 
 
+#' Convert all Currencies
+#'
+#' A function for finding the relevant currency conversion
+#' factors for all household interviews
+#'
+#' @param data The data containing a column of ISO country codes and
+#' a column of Years
+#' @param country_column The name of the country column
+#' @param year_column The name of the year column
+#'
+#' @return
+#' @export
+#'
+#' @examples
 convert_all_currencies <- function(data, country_column="country", year_column="year"){
 
-    data <- tibble::as_tibble((list(
-
-        "country_code"=c("KM","KM","VN", "VN", "UG", NA, "XY"),
-        "year"=c("2016","2016","2021", "2014", "2016", NA, "2020")
-    )))
-
-    combinations <- tibble::as_tibble(table(data)) %>%
+    # data <- tibble::as_tibble((list(
+    #
+    #     "country_code"=c("KM","KM","VN", "VN", "UG", NA, "XY"),
+    #     "year"=c("2016","2016","2021", "2014", "2016", NA, "2020")
+    # )))
+    subset_data <- data %>% dplyr::select(c(country_column,year_column))
+    combinations <- tibble::as_tibble(table(subset_data)) %>%
         dplyr::filter(n>0) %>%
         dplyr::select(-c("n"))
 
@@ -121,7 +135,7 @@ convert_all_currencies <- function(data, country_column="country", year_column="
 
     for (i in 1:nrow(combinations)){
 
-        conversion_data <- currency_conversion_factor(combinations[i,"year"], combinations[i,"country_code"])
+        conversion_data <- currency_conversion_factor(combinations[i,year_column], combinations[i,country_column])
         conversion_factors <- c(conversion_factors,conversion_data["conversion_factor"])
         conversion_years <- c(conversion_years,conversion_data["conversion_year"])
 
@@ -130,13 +144,15 @@ convert_all_currencies <- function(data, country_column="country", year_column="
     combinations$conversion_factor <-unlist(conversion_factors)
     combinations$conversion_year <-unlist(conversion_years)
 
-    data_with_conversions <- dplyr::left_join(data,combinations, by=c("country_code"="country_code","year"="year"))
+    matching_list <- c(country_column,year_column)
+    names(matching_list) <- c(country_column,year_column)
+    data_with_conversions <- dplyr::left_join(data,combinations, by=matching_list)
 
     data <- add_column_after_specific_column(
         data = data,
         new_data = data_with_conversions["conversion_factor"],
         new_column_name = "conversion_factor",
-        old_column_name = "country_code",
+        old_column_name = year_column,
         loop_structure = F
 
     )
@@ -145,7 +161,7 @@ convert_all_currencies <- function(data, country_column="country", year_column="
         data = data,
         new_data = data_with_conversions["conversion_year"],
         new_column_name = "conversion_year",
-        old_column_name = "country_code",
+        old_column_name = "conversion_factor",
         loop_structure = F
 
     )

@@ -35,7 +35,11 @@ check_columns_in_data <- function(data, loop_columns=NULL,individual_columns=NUL
 
     if (length(all_missing_columns)>0)
     {
-    warning(paste0(warning_message,"\nThe following columns are missing from the dataset: \n", paste0(all_missing_columns, collapse = "\n")))
+    warning(paste0("\n",
+                   warning_message,
+                   "\nThe following columns are missing from the dataset: \n",
+                   paste0("missing_variable: ",all_missing_columns,collapse = "\n"),
+                   "\n---------------------------------------------"))
     }
     return(all_missing_columns)
 }

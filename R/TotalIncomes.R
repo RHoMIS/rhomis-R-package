@@ -23,11 +23,41 @@ total_livestock_income <- function(data){
     eggs_income_columns <- paste0("eggs_income_per_year","_",c(1:number_of_loops))
     honey_income_columns <- paste0("bees_honey_sold_income","_",c(1:number_of_loops))
 
-    whole_livestock_income_data <- data[whole_livestock_income_columns]
-    meat_income_data <- data[meat_income_columns]
-    milk_income_data <- data[milk_income_columns]
-    eggs_income_data <- data[eggs_income_columns]
-    honey_income_data <- data[honey_income_columns]
+    if (all(whole_livestock_income_columns %in% colnames(data)))
+    {
+        whole_livestock_income_data <- data[whole_livestock_income_columns] %>% dplyr::mutate_all(as.numeric)
+    }else{
+        whole_livestock_income_data <- tibble::as_tibble(list("livestock_income"=rep(NA, nrow(data))))
+    }
+
+    if (all(meat_income_columns %in% colnames(data)))
+    {
+        meat_income_data <- data[meat_income_columns]  %>% dplyr::mutate_all(as.numeric)
+    }else{
+        meat_income_data <- tibble::as_tibble(list("meat_income"=rep(NA, nrow(data))))
+    }
+
+    if (all(milk_income_columns %in% colnames(data)))
+    {
+    milk_income_data <- data[milk_income_columns]  %>% dplyr::mutate_all(as.numeric)
+    }else{
+        milk_income_data <- tibble::as_tibble(list("milk_income"=rep(NA, nrow(data))))
+    }
+
+    if (all(eggs_income_columns %in% colnames(data)))
+    {
+    eggs_income_data <- data[eggs_income_columns]  %>% dplyr::mutate_all(as.numeric)
+    }else{
+        eggs_income_data <- tibble::as_tibble(list("egg_income"=rep(NA, nrow(data))))
+    }
+
+    if (all(honey_income_columns %in% colnames(data)))
+    {
+    honey_income_data <- data[honey_income_columns]  %>% dplyr::mutate_all(as.numeric)
+    }else{
+        honey_income_data <- tibble::as_tibble(list("honey_income"=rep(NA, nrow(data))))
+    }
+
 
     whole_livestock_income <- rowSums(whole_livestock_income_data,na.rm = T)
     meat_income <- rowSums(meat_income_data,na.rm = T)
@@ -162,9 +192,9 @@ gendered_off_farm_income_indicator <- function(data){
     gender_control_data <- data[gender_control_columns]
     gender_control_data <- tibble::as_tibble(cbind(off_farm_income_data,gender_control_data))
     gender_control_data <- insert_gender_columns_in_core_data(data=gender_control_data,
-                                       original_column = "off_farm_source_prop",
-                                       control_column = "offfarm_who_control_revenue",
-                                       loop_structure = T)
+                                                              original_column = "off_farm_source_prop",
+                                                              control_column = "offfarm_who_control_revenue",
+                                                              loop_structure = T)
 
     male_youth_control <- gender_control_data[grep("^male_youth*",colnames(gender_control_data))]
     male_youth_control_total <- rowSums(male_youth_control,na.rm=T)
@@ -183,9 +213,9 @@ gendered_off_farm_income_indicator <- function(data){
     female_adult_total[rowSums(!is.na(female_adult_control))==0]<-NA
 
     off_farm_gender_control_totals <- tibble::as_tibble(list(female_youth_off_farm_control_total=female_youth_control_total,
-                                                        male_youth_off_farm_control_total=male_youth_control_total,
-                                                        female_adult_off_farm_control_total=female_adult_total,
-                                                        male_adult_off_farm_control_total=male_adult_total))
+                                                             male_youth_off_farm_control_total=male_youth_control_total,
+                                                             female_adult_off_farm_control_total=female_adult_total,
+                                                             male_adult_off_farm_control_total=male_adult_total))
 
     return(off_farm_gender_control_totals)
 

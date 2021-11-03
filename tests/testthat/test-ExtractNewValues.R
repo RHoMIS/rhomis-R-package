@@ -91,11 +91,11 @@ testthat::test_that("Can extract units for core RHoMIS data",{
     expected_result <- c(list(
         "country"=c("vietnam","new-zealand"),
 
-        "crop_name"=c("maize","cassava", "cucumber"),
-        "livestock_name"=c("cow","chicken","pig"),
+        "crop_name"=c("maize","cassava", "cucumber", NA),
+        "livestock_name"=c("cow","chicken","pig", NA),
         "crop_yield_units"=c("kg","sacks","wheelbarrow"),
         "crop_sold_price_quantityunits"=c("price1","price2","price3","crop_price_1","crop_price_2","crop_price_3"),
-        "unitland"=c("acre","unitland1","unitland2","renty1","renty2","rent1","rent5", "area1","area2"),
+        "unitland"=c("acre","unitland1","unitland2","renty1","renty2","rent1","rent5",NA, "area1","area2"),
         "milk_units"=c("milk1","milk4","milk5","milkoth1","milkoth2","milkoth3"),
         "milk_sold_price_timeunits"=c("mspt1","mspt3","mspt5","mspto1","mspto2","mspto3"),
         "bees_honey_production_units"=c("hnyprod1","hnyprod2","hnyprod3","hnyprodoth1","hnyprodoth2","hnyprodoth3"),

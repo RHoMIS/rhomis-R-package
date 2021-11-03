@@ -275,7 +275,19 @@ milk_amount_calculations <- function(data,
     milk_amount_bad_season_data <- milk_amount_bad_season_data %>%  dplyr::mutate_all(as.numeric)
 
     milk_units_data <- data[milk_units_columns]
-    milk_number_of_animals_milked_data <- data[milk_number_of_animals_milked_columns]
+
+    if(all(milk_number_of_animals_milked_columns %in% colnames(data))==F)
+    {
+        empty_df <- matrix(NA,nrow=nrow(data), ncol=length(milk_number_of_animals_milked_columns))
+        colnames(empty_df) <- milk_number_of_animals_milked_columns
+        milk_number_of_animals_milked_data <- tibble::as_tibble(empty_df)
+        colnames(milk_number_of_animals_milked_data)<-milk_number_of_animals_milked_columns
+    }
+    if(all(milk_number_of_animals_milked_columns %in% colnames(data)))
+    {
+        milk_number_of_animals_milked_data <- data[milk_number_of_animals_milked_columns]
+
+    }
 
     # Changing units to numeric conversions
     milk_units_data <- switch_units(milk_units_data, units = milk_units,conversion_factors = milk_unit_conversions)
@@ -322,7 +334,7 @@ milk_amount_calculations <- function(data,
     data <- add_column_after_specific_column(data = data,
                                              new_data = milk_collected_litres_per_year,
                                              new_column_name = "milk_collected_litres_per_year",
-                                             old_column_name = "milk_number_animals_milked",
+                                             old_column_name = "milk_amount_good_season_litres_per_year",
                                              loop_structure = T)
 
     return(data)
@@ -346,24 +358,30 @@ milk_proportions_all <- function(data){
 
     number_of_loops <- find_number_of_loops(data, name_column = "milk_use")
 
-    milk_consumed_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "milk_use", prop_column = "milk_consumed_amount", loop_number = x))
-    colnames(milk_consumed_proportions_numeric)<-paste0("milk_consumed_prop_numeric","_",c(1:number_of_loops))
-    milk_consumed_proportions_numeric<-tibble::as_tibble(milk_consumed_proportions_numeric)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=milk_consumed_proportions_numeric,
-                                             new_column_name="milk_consumed_prop_numeric",
-                                             old_column_name="milk_consumed_amount",
-                                             loop_structure=T)
+    if (all(paste0("milk_consumed_amount_",1:number_of_loops)%in% colnames(data)))
+    {
+        milk_consumed_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "milk_use", prop_column = "milk_consumed_amount", loop_number = x))
+        colnames(milk_consumed_proportions_numeric)<-paste0("milk_consumed_prop_numeric","_",c(1:number_of_loops))
+        milk_consumed_proportions_numeric<-tibble::as_tibble(milk_consumed_proportions_numeric)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=milk_consumed_proportions_numeric,
+                                                 new_column_name="milk_consumed_prop_numeric",
+                                                 old_column_name="milk_consumed_amount",
+                                                 loop_structure=T)
+    }
 
 
-    milk_sold_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "milk_use", prop_column = "milk_sell_amount", loop_number = x))
-    colnames(milk_sold_proportions_numeric) <- paste0("milk_sold_prop_numeric","_",c(1:number_of_loops))
-    milk_sold_proportions_numeric<- tibble::as_tibble(milk_sold_proportions_numeric)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=milk_sold_proportions_numeric,
-                                             new_column_name="milk_sold_prop_numeric",
-                                             old_column_name="milk_sell_amount",
-                                             loop_structure=T)
+    if (all(paste0("milk_sell_amount_",1:number_of_loops)%in% colnames(data)))
+    {
+        milk_sold_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "milk_use", prop_column = "milk_sell_amount", loop_number = x))
+        colnames(milk_sold_proportions_numeric) <- paste0("milk_sold_prop_numeric","_",c(1:number_of_loops))
+        milk_sold_proportions_numeric<- tibble::as_tibble(milk_sold_proportions_numeric)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=milk_sold_proportions_numeric,
+                                                 new_column_name="milk_sold_prop_numeric",
+                                                 old_column_name="milk_sell_amount",
+                                                 loop_structure=T)
+    }
 
     return(data)
 }
@@ -988,7 +1006,7 @@ honey_proportions_all <- function(data){
 
     return(data)
 
-    }
+}
 
 #' Honey Sold and Consumed Calculations
 #'
@@ -1076,77 +1094,173 @@ honey_amount_sold_and_consumed_calculations <- function(data){
 #' @examples
 gender_split_livestock <- function(data){
     # Gender split whole livestock
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "livestock_sale_income",
-                                                control_column = "livestock_who_sells",
-                                                loop_structure=T)
 
-     # Gender split meat
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "meat_sold_income",
-                                                control_column = "livestock_meat_who_sells",
-                                                loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "livestock_sale_income",
+        "livestock_who_sells"),
+        warning_message = "Could not gender_split for livestock sale incomes"
+    )
+    if(length(missing_columns)==0){
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "livestock_sale_income",
+                                                   control_column = "livestock_who_sells",
+                                                   loop_structure=T)
+    }
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "meat_sold_kg_per_year",
-                                                control_column = "livestock_meat_who_sells",
-                                                loop_structure=T)
+    # Gender split meat
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "meat_sold_income",
+        "livestock_meat_who_sells"),
+        warning_message = "Could not gender_split for meat sale incomes"
+    )
+    if(length(missing_columns)==0){
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "meat_sold_income",
+                                                   control_column = "livestock_meat_who_sells",
+                                                   loop_structure=T)
+    }
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "meat_consumed_kg_per_year",
-                                                control_column = "livestock_meat_who_control_eating",
-                                                loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "meat_sold_kg_per_year",
+        "livestock_meat_who_sells"),
+        warning_message = "Could not gender_split for meat sold amount"
+    )
+    if(length(missing_columns)==0){
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "meat_sold_kg_per_year",
+                                                   control_column = "livestock_meat_who_sells",
+                                                   loop_structure=T)
+    }
 
-     # Gender split milk
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "milk_sold_litres_per_year",
-                                                control_column = "milk_who_sells",
-                                                loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "meat_consumed_kg_per_year",
+        "livestock_meat_who_control_eating"),
+        warning_message = "Could not gender_split for meat consumed amount"
+    )
+    if(length(missing_columns)==0){
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "meat_consumed_kg_per_year",
+                                                   control_column = "livestock_meat_who_control_eating",
+                                                   loop_structure=T)
+    }
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "milk_sold_income_per_year",
-                                                control_column = "milk_who_sells",
-                                                loop_structure=T)
+    # Gender split milk
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "milk_consumed_litres_per_year",
-                                                control_column = "milk_who_control_eating",
-                                                loop_structure=T)
 
-     # Eggs gender split
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "milk_sold_litres_per_year",
+        "milk_who_sells"),
+        warning_message = "Could not gender_split for milk sold amount"
+    )
+    if(length(missing_columns)==0){
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "milk_sold_litres_per_year",
+                                                   control_column = "milk_who_sells",
+                                                   loop_structure=T)
+    }
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "eggs_sold_kg_per_year",
-                                                control_column = "eggs_who_sells",
-                                                loop_structure=T)
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "eggs_income_per_year",
-                                                control_column = "eggs_who_sells",
-                                                loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "milk_sold_income_per_year",
+        "milk_who_sells"),
+        warning_message = "Could not gender_split for milk sold income"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "milk_sold_income_per_year",
+                                               control_column = "milk_who_sells",
+                                               loop_structure=T)
+    }
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "eggs_consumed_kg_per_year",
-                                                control_column = "eggs_who_control_eating",
-                                                loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "milk_consumed_litres_per_year",
+        "milk_who_control_eating"),
+        warning_message = "Could not gender_split for milk consumed amount"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "milk_consumed_litres_per_year",
+                                               control_column = "milk_who_control_eating",
+                                               loop_structure=T)
+    }
 
-     # Honey Gender split
+    # Eggs gender split
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "eggs_sold_kg_per_year",
+        "eggs_who_sells"),
+        warning_message = "Could not gender_split for eggs sold amount"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "eggs_sold_kg_per_year",
+                                               control_column = "eggs_who_sells",
+                                               loop_structure=T)
+    }
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "bees_honey_sold_kg_per_year",
-                                                control_column = "bees_who_sells",
-                                                loop_structure=T)
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "bees_honey_sold_income",
-                                                control_column = "bees_who_sells",
-                                                loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "eggs_income_per_year",
+        "eggs_who_sells"),
+        warning_message = "Could not gender_split for eggs sold income"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "eggs_income_per_year",
+                                               control_column = "eggs_who_sells",
+                                               loop_structure=T)
+    }
 
-     data <- insert_gender_columns_in_core_data(data=data,
-                                                original_column = "bees_honey_consumed_kg_per_year",
-                                                control_column = "bees_who_control_eating",
-                                                loop_structure=T)
+
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "eggs_consumed_kg_per_year",
+        "eggs_who_control_eating"),
+        warning_message = "Could not gender_split for eggs consumed per year"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "eggs_consumed_kg_per_year",
+                                               control_column = "eggs_who_control_eating",
+                                               loop_structure=T)
+    }
+
+    # Honey Gender split
+
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_sold_kg_per_year",
+        "bees_who_sells"),
+        warning_message = "Could not gender_split for honey sold amount"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "bees_honey_sold_kg_per_year",
+                                               control_column = "bees_who_sells",
+                                               loop_structure=T)
+    }
+
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_sold_income",
+        "bees_who_sells"),
+        warning_message = "Could not gender_split for honey sold income"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "bees_honey_sold_income",
+                                               control_column = "bees_who_sells",
+                                               loop_structure=T)
+    }
+
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_consumed_kg_per_year",
+        "bees_who_control_eating"),
+        warning_message = "Could not gender_split for honey consumed amount"
+    )
+    if(length(missing_columns)==0){
+    data <- insert_gender_columns_in_core_data(data=data,
+                                               original_column = "bees_honey_consumed_kg_per_year",
+                                               control_column = "bees_who_control_eating",
+                                               loop_structure=T)
+    }
 
 
     return(data)
@@ -1199,55 +1313,179 @@ livestock_calculations_all <- function(data,
 
 
     # Adding livestock prices to the data set
-    data <- price_per_livestock(data)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("livestock_sold","livestock_sale_income"),
+                                             warning_message = "Could not calculate livestock prices")
+    if(length(missing_columns)==0)
+    {
+        data <- price_per_livestock(data)
+    }
+
+
 
     # Calculating the amount of meat collected and adding it to
     # the data-set
-    data <- meat_amount_calculation(data,
-                                    animal_weights_names = livestock_weights_names,
-                                    animal_weights_conversions = livestock_weights_conversions)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("livestock_name","killed_for_meat"),
+                                             warning_message = "Could not calculate amounts of meat harvested")
+    if(length(missing_columns)==0)
+    {
+        data <- meat_amount_calculation(data,
+                                        animal_weights_names = livestock_weights_names,
+                                        animal_weights_conversions = livestock_weights_conversions)
+    }
+
+
+
 
     # Meat sold and consumed amounts
-    data <- meat_sold_and_consumed_calculation(data)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("meat_kg_per_year",
+                                                                    "meat_sell_amount",
+                                                                    "meat_consumed_amount",
+                                                                    "meat_use",
+                                                                    "livestock_name"),
+                                             warning_message = "Could not calculate amounts of meat sold or consumed")
+    if(length(missing_columns)==0)
+    {
+        data <- meat_sold_and_consumed_calculation(data)
+    }
+
+
 
     # Meat Prices
-    data <- meat_prices(data)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("meat_sold_income",
+                                                                    "meat_sold_kg_per_year",
+                                                                    "livestock_name"),
+                                             warning_message = "Could not calculate income from meat sold")
+    if(length(missing_columns)==0)
+    {
+        data <- meat_prices(data)
+    }
+
+
+
+
+
 
 
     # Milk amounts
-    data <- milk_amount_calculations(data,
-                                     milk_units = milk_amount_units_all,
-                                     milk_unit_conversions = milk_amount_unit_conversions_all)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("milk_amount_good_season",
+                                                                    "milk_amount_bad_season",
+                                                                    "milk_units",
+                                                                    "livestock_name"),
+                                             warning_message = "Cannot calculate the amounts of milk collected")
+    if(length(missing_columns)==0)
+    {
+        data <- milk_amount_calculations(data,
+                                         milk_units = milk_amount_units_all,
+                                         milk_unit_conversions = milk_amount_unit_conversions_all)
+    }
+
+
 
     # Milk sold and consumed
-    data <- milk_sold_and_consumed_calculations(data)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("milk_sell_amount",
+                                                                    "milk_consumed_amount",
+                                                                    "milk_use",
+                                                                    "milk_collected_litres_per_year",
+                                                                    "milk_sold_prop_numeric",
+                                                                    "milk_consumed_prop_numeric"),
+                                             warning_message = "Cannot calculate amounts of milk sold and consumed")
+    if(length(missing_columns)==0)
+    {
+        data <- milk_sold_and_consumed_calculations(data)
+
+    }
+
 
     # Milk income
-    data <- milk_income_calculations(data ,
-                                     units = milk_price_time_units_all,
-                                     conversion_factors = milk_price_time_unit_conversions_all)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("milk_sold_price_timeunits",
+                                                                    "milk_sold_income",
+                                                                    "milk_sold_litres_per_year"),
+                                             warning_message = "Cannot calculate milk incomes"
+    )
+    if(length(missing_columns)==0)
+    {
+        data <- milk_income_calculations(data ,
+                                         units = milk_price_time_units_all,
+                                         conversion_factors = milk_price_time_unit_conversions_all)
+    }
+
+
 
     # Eggs amounts
-    data <- eggs_amount_calculations(data,
-                                     units = eggs_amount_units_all,
-                                     unit_conversions = eggs_amount_unit_conversions_all)
+    missing_columns <- check_columns_in_data(data,loop_columns = c("eggs_amount_good",
+                                                                   "eggs_amount_bad",
+                                                                   "eggs_units",
+                                                                   "livestock_name"),
+                                             warning_message = "Could not calculate amounts of eggs collected"
+    )
+    if(length(missing_columns)==0)
+    {
+        data <- eggs_amount_calculations(data,
+                                         units = eggs_amount_units_all,
+                                         unit_conversions = eggs_amount_unit_conversions_all)
+    }
+
 
     # Eggs sold and consumed
-    data <- eggs_sold_and_consumed_calculations(data)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "eggs_sell_amount",
+        "eggs_consumed_amount",
+        "eggs_use",
+        "eggs_collected_kg_per_year",
+        "livestock_name"),
+        warning_message = "Could not calculate amounts of eggs sold and consumed"
+    )
+    if(length(missing_columns)==0)
+    {
+        data <- eggs_sold_and_consumed_calculations(data)
+    }
+
 
     # Eggs income
-    data <- egg_income_calculations(data,
-                                    units = eggs_price_time_units_all,
-                                    unit_conversions = eggs_price_time_unit_conversions_all)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "eggs_sold_income",
+        "eggs_sold_kg_per_year",
+        "eggs_sold_price_timeunits",
+        "livestock_name"),
+        warning_message = "Could not calculate egg incomes"
+    )
+    if(length(missing_columns)==0)
+    {
+        data <- egg_income_calculations(data,
+                                        units = eggs_price_time_units_all,
+                                        unit_conversions = eggs_price_time_unit_conversions_all)
+    }
+
+
+
 
     # Honey amount
 
-    data <- honey_amount_calculation(data,
-                                     units =honey_amount_units_all ,
-                                     unit_conversions = honey_amount_unit_conversions_all)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_production",
+        "bees_honey_production_units"),
+        warning_message = "Could not calculate honey amounts"
+    )
+    if(length(missing_columns)==0)
+    {
+        data <- honey_amount_calculation(data,
+                                         units =honey_amount_units_all ,
+                                         unit_conversions = honey_amount_unit_conversions_all)
+    }
+
 
     # Honey sold and consumed
-    data <- honey_amount_sold_and_consumed_calculations(data)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_use",
+        "bees_honey_sell_amount",
+        "bees_honey_consumed_amount",
+        "livestock_name"),
+        warning_message = "Could not calculate honey amounts sold or consumed"
+    )
+    if(length(missing_columns)==0)
+    {
+        data <- honey_amount_sold_and_consumed_calculations(data)
+    }
 
 
 

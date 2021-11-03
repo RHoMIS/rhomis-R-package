@@ -4,13 +4,10 @@
 \alias{clean_column_names}
 \title{Clean Column Names}
 \usage{
-clean_column_names(column_names, seperator, repeat_columns)
+clean_column_names(column_names, repeat_columns)
 }
 \arguments{
 \item{column_names}{A list of all of the column names}
-
-\item{seperator}{The seperator which seperates all of
-the parts of the column names}
 
 \item{repeat_columns}{A list of all of the repeat
 loops contained in the RHoMIS dataset}

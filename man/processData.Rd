@@ -11,8 +11,7 @@ processData(
   surveyFile = NULL,
   moduleSaving = F,
   extractUnits = T,
-  calculatePrices = F,
-  processData = F,
+  processDataSet = F,
   dataFilePath = NULL,
   central_url = NULL,
   central_email = NULL,
@@ -26,7 +25,7 @@ processData(
 \arguments{
 \item{dataSource}{The type of RHoMIS data being fed into the
 calculations, whether a local csv file or data from ODK central.
-Options "local" or "central".}
+Options "csv" or "central".}
 
 \item{outputType}{The type of output to produce (options are "csv" or "mongodb")}
 
@@ -42,9 +41,7 @@ were included in the survey (TRUE/FALSE)}
 
 \item{extractUnits}{Whether or not to only extract units (TRUE/FALSE)}
 
-\item{calculatePrices}{Whether or not to only calculate the new prices (TRUE/FALSE)}
-
-\item{processData}{Whether to process the whole dataset (TRUE/FALSE)}
+\item{processDataSet}{Whether to process the whole dataset (TRUE/FALSE)}
 
 \item{dataFilePath}{The file to the data (csv format).
 ONLY RELEVANT IF "dataSource" WAS "local".}

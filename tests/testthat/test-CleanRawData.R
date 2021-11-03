@@ -126,7 +126,7 @@ testthat::test_that('Can swap main units with "other" units',{
         "crop_yield_units_1"=c("unit","other"),
         "crop_yield_units_other_1"=c("unit","other_unit_subbed"),
         "crop_yield_units_2"=c("other",NA),
-        "crop_yield_units_other_2"=c(NA,NA),
+        "crop_yield_units_other_2"=c("abc",NA),
         "crop_yield_units_3"=c("kg","other"),
         "crop_yield_units_other_3"=c("unit",NA),
 
@@ -147,8 +147,8 @@ testthat::test_that('Can swap main units with "other" units',{
 
             "crop_yield_units_1"=c("unit","other_unit_subbed"),
             "crop_yield_units_other_1"=c("unit","other_unit_subbed"),
-            "crop_yield_units_2"=c(NA,NA),
-            "crop_yield_units_other_2"=c(NA,NA),
+            "crop_yield_units_2"=c("abc",NA),
+            "crop_yield_units_other_2"=c("abc",NA),
             "crop_yield_units_3"=c("kg",NA),
             "crop_yield_units_other_3"=c("unit",NA),
 
@@ -161,14 +161,12 @@ testthat::test_that('Can swap main units with "other" units',{
 
     ))
 
-        expected_result <- dplyr::mutate_all(expected_result, as.character)
+        # expected_result <- dplyr::mutate_all(expected_result, as.character)
 
 
         actual_result <- replace_units_with_other_all(data)
 
         testthat::expect_equal(actual_result, expected_result)
-
-        actual_result==expected_result
 
 
 

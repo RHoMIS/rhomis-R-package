@@ -113,9 +113,10 @@ replace_unit_list <- function(list_to_convert, unit_conv_tibble){
 
 replace_unit_with_conversion_factor <- function(item_to_convert, unit_conv_tibble){
 
-    if (item_to_convert %in%unit_conv_tibble$unit)
+
+    if (item_to_convert %in%unit_conv_tibble$unit & !is.na(item_to_convert))
     {
-        converted_item <- unit_conv_tibble$conversion_factors[unit_conv_tibble$unit==item_to_convert]
+        converted_item <- unit_conv_tibble$conversion_factors[unit_conv_tibble$unit==item_to_convert & !is.na(unit_conv_tibble$unit)]
     }else{
         converted_item <- NA
     }
@@ -366,18 +367,30 @@ replace_units_with_other_all <- function(data){
                 other_column <- units_to_change[[x]]
                 new_column <- replace_unit_column_with_other_single(data[[x]],data[[other_column]])
                 return(new_column)
+            }else{
+
+                return(data[[x]])
             }
+
+
+
         }
         if(x %in% names(units_to_change)==F){
             return(data[[x]])
         }
-    })
+    }, simplify = F)
+
+
+
+
 
     result <- tibble::as_tibble(result)
 
     return(result)
 
 }
+
+
 
 
 

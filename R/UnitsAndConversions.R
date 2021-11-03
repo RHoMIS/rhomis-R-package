@@ -424,11 +424,13 @@ write_units_to_folder <- function(list_of_df){
 #' Load units for a particular project from csv and
 #' load them into the global environment
 #'
+#' @param file_names A list of file names to load
+#'
 #' @return
 #' @export
 #'
 #' @examples
-load_local_units <- function(){
+load_local_units <- function(file_names){
 
 
     if ("country.csv" %in% file_names){
@@ -521,7 +523,7 @@ load_local_units <- function(){
 
 
     if ("milk_sold_price_timeunits.csv" %in% file_names){
-        milk_price_unit_conversion <- readr::read_csv("./unit_conversions/milk_sold_price_timeunits.csv", col_types = cols())
+        milk_price_unit_conversion <- readr::read_csv("./unit_conversions/milk_sold_price_timeunits.csv", col_types = readr::cols())
         assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
 
     }

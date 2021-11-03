@@ -23,8 +23,7 @@ convert_crop_yield_units <- function(data, units=crop_yield_units$unit, unit_con
 
     missing_columns <- check_columns_in_data(data,
                                              loop_columns = c("crop_name",
-                                                              "crop_yield_units"
-                                             ),
+                                                              "crop_yield_units"),
                                              warning_message = "Tried to convert crop yield units, will not be able to calculate crop yields. Other indicators will also be affected")
 
     if (length(missing_columns)==0)
@@ -387,20 +386,57 @@ crop_calculations_all <- function(data,
                                   crop_income_unit_conversions_all=crop_price_units$conversion){
 
     # Calculating the amount of crops harvested in kg
+    crop_columns_in_data <- check_columns_in_data(data,
+                                                  loop_columns = c("crop_name",
+                                                                   "crop_yield",
+                                                                   "crop_yield_units"),
+                                                  warning_message = "Cannot calculate amounts of crops harvested")
+    if(length(crop_columns_in_data)==0){
     data <- crop_harvest_calculations(data,
                                       units = crop_yield_units_all,
                                       unit_conversions = crop_yield_unit_conversions_all)
+    }
+
+
 
     # Calculating amounts sold and consumed in kg
+    crop_columns_in_data <- check_columns_in_data(data,
+                                                  loop_columns = c("crop_harvest_kg_per_year",
+                                                                   "crop_sold_prop",
+                                                                   "crop_consumed_prop"),
+                                                  warning_message = "Cannot calculate amounts of crops crops sold and consumed")
+    if(length(crop_columns_in_data)==0){
     data <- crop_sold_and_consumed_calculation(data)
+    }
+    if(length(crop_columns_in_data)>0){
+        warning(paste0("Cannot calculate the amounts of crops sold and consumed, missing the following columns: \n", crop_columns_in_data, collapse = "\n"))
+    }
 
     # Crop income calculations
+    crop_columns_in_data <- check_columns_in_data(data,
+                                                  loop_columns = c("crop_sold_kg_per_year",
+                                                                   "crop_sold_price_quantityunits",
+                                                                   "crop_sold_income"),
+                                                  warning_message = "Cannot calculate amounts of crop incomes")
+    if(length(crop_columns_in_data)==0){
     data <- crop_income_calculations(data,
                                      units = crop_income_units_all,
                                      unit_conversions = crop_income_unit_conversions_all)
 
+    }
 
+
+    crop_columns_in_data <- check_columns_in_data(data,
+                                                  loop_columns = c("crop_consumed_kg_per_year",
+                                                                   "crop_consume_control",
+                                                                   "crop_sold_kg_per_year",
+                                                                   "crop_who_control_revenue",
+                                                                   "crop_income_per_year"
+                                                                   ),
+                                                  warning_message = "Cannot calculate gendered crop splits")
+    if(length(crop_columns_in_data)==0){
     data <- crop_gender_calculations(data)
+    }
     return(data)
 }
 

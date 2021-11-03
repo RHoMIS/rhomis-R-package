@@ -22,7 +22,9 @@
 #' # Shortened name will be equal "important_name"
 #'
 shorten_individual_column_name <- function(column_name, seperator){
-    split_name <- unlist(strsplit(column_name, seperator))
+
+
+    split_name <- unlist(strsplit(column_name, paste0("\\",seperator)))
     return(split_name[length(split_name)])
 }
 #---------------------------------------------------------------------------------------------------
@@ -77,12 +79,35 @@ shorten_multiple_column_names <- function(long_names, seperator){
 modify_loop_name <- function(column_name, loop_type){
 
 
+    # loop_type <-"livestock_repeat"
+    # column_name <- "survey_grp.Section_Livestock.livestock_repeat.4..lstk_rep_grp.livestock_mortality.livestock_died"
+    # column_name <- "survey_grp.water_cons_group.water_cons_other"
+
+    if (grepl(paste0(loop_type,"\\."),column_name)){
+        open_bracket <- "\\."
+        close_bracket <- "\\."
+
+
+    }
+
+    if (grepl(paste0(loop_type,"\\["),column_name)){
+        open_bracket <- "\\["
+        close_bracket <- "\\]"
+    }
+
+    if (grepl(paste0(loop_type,"\\["),column_name) &
+        grepl(paste0(loop_type,"\\."),column_name)){
+
+        stop("Data set contains both square brackets and dots in the column name\n
+             therefore unable to identify which columns are looped and which are not")
+
+    }
     # Get rid of everything before the opening square bracket
     # Can modify and generalise to exclude the "loop_type" variable
-    pattern <- paste0(".*",loop_type,"\\[")
+    pattern <- paste0(".*",loop_type,open_bracket)
     repeat_number <- gsub(pattern,"",column_name)
     # Get rid of everything after closing square bracket
-    repeat_number <- gsub("\\].*","",repeat_number)
+    repeat_number <- gsub(paste0(close_bracket,".*"),"",repeat_number)
 
     # Combining original column name with extra number
     new_column_name <- paste0(column_name,"_",repeat_number)
@@ -137,8 +162,20 @@ modify_loop_column_names <- function(column_names, loop_type) {
     # column_names <- colnames(rhomis_data)
     # loop_type <- "hh_pop_repeat"
 
+    # loop_type <-"livestock_repeat"
+    # column_names <- c("survey_grp.Section_Livestock.livestock_repeat.11..lstk_rep_grp.livestock_mortality.livestock_died","survey_grp.Section_Livestock.livestock_repeat.12..lstk_rep_grp.livestock_mortality.livestock_died")
+    # column_name <- "survey_grp.water_cons_group.water_cons_other"
+
+
+
     repeat_columns <- grep(paste0(loop_type,"\\[.\\]"),column_names)
     double_repeat_columns <- grep(paste0(loop_type,"\\[..\\]"),column_names)
+
+    if(length(repeat_columns)==0){
+        repeat_columns <- grep(paste0(loop_type,"\\.[[:digit:]]\\."),column_names)
+        double_repeat_columns <- grep(paste0(loop_type,"\\.[[:digit:]][[:digit:]]\\."),column_names)
+    }
+
 
     if(length(double_repeat_columns)>0){
         repeat_columns <- c(repeat_columns,double_repeat_columns)
@@ -201,8 +238,6 @@ modify_all_loop_column_names <- function(column_names, repeat_columns){
 #' clean all RHoMIS column names.
 #'
 #' @param column_names A list of all of the column names
-#' @param seperator The seperator which seperates all of
-#' the parts of the column names
 #' @param repeat_columns A list of all of the repeat
 #' loops contained in the RHoMIS dataset
 #'
@@ -230,9 +265,23 @@ modify_all_loop_column_names <- function(column_names, repeat_columns){
 #' # "person_name_5",
 #' # "crop_name")
 #'
-clean_column_names <- function(column_names, seperator, repeat_columns){
+clean_column_names <- function(column_names, repeat_columns){
+
+    if (length(grep("\\.",column_names))> length(column_names)/2)
+    {
+        seperator <- "."
+    }
+
+    if (length(grep("/",column_names))> length(column_names)/2)
+    {
+        seperator <- "/"
+    }
+
+    if(exists("seperator"))
+    {
     column_names <- modify_all_loop_column_names(column_names, repeat_columns)
     column_names <- shorten_multiple_column_names(column_names,seperator)
+    }
 
     return(column_names)
 }

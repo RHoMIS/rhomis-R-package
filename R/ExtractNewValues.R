@@ -67,7 +67,6 @@ find_unique_values <- function(data){
 #' # expected_result is: c("maize","cassava","millet","potato","cucumber")
 #'
 #' # Example code for an individual column
-
 extract_new_values <- function(data, loop_or_individual_column="loop",column_name=NA,column_pattern=NA, number_of_loops=NA){
     # Extracting new values for a RHoMIS tibble
     if (loop_or_individual_column=="loop")
@@ -96,12 +95,24 @@ extract_new_values <- function(data, loop_or_individual_column="loop",column_nam
         }
         if(column_name %in% colnames(data)==F)
         {
-            return()
+            return(c(NA))
         }
         return(unique_values)
     }
 }
 
+#' Find the Number of Loops and Extract new values
+#'
+#' Find the number of loops for a looped RHoMIS data
+#' set.
+#'
+#' @param data The dataset to extract the new values from
+#' @param column_pattern The repeat column pattern e.g. "crop_repeat"
+#'
+#' @return
+#' @export
+#'
+#' @examples
 find_loop_number_and_extract_values <- function(data, column_pattern){
 
 
@@ -115,7 +126,7 @@ find_loop_number_and_extract_values <- function(data, column_pattern){
 
 
     if(number_of_loops==0){
-        return()
+        return(c(NA))
     }
 
     if(number_of_loops>0)
@@ -433,6 +444,7 @@ write_core_values_to_convert_to_file <- function(data, folder){
 #'
 #' @examples
 extract_units_data_frames <- function(data){
+
     new_units <- extract_new_core_units(data)
     new_units<- sapply(new_units, function(x) convert_new_values_to_tibble(x),simplify = FALSE)
 
