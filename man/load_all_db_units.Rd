@@ -4,7 +4,21 @@
 \alias{load_all_db_units}
 \title{Load all db units}
 \usage{
-load_all_db_units()
+load_all_db_units(
+  unit_list,
+  database = "rhomis",
+  projectID = "core_units",
+  formID = "core_units"
+)
+}
+\arguments{
+\item{unit_list}{The list of units which are to be queried and loaded into the global environment}
+
+\item{database}{The database you are querying units from}
+
+\item{projectID}{The Name of the project}
+
+\item{formID}{The name of the form}
 }
 \value{
 

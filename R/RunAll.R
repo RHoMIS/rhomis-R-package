@@ -398,7 +398,7 @@ processData <- function(
                               "project_name",
                               "form_name",
                               "form_version",
-                              "dbURL")
+                              "database")
         null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
         if(any(null_variables)){
             error_message <- paste(items_to_test[null_variables], collapse="\n")
@@ -467,13 +467,28 @@ processData <- function(
             formID
         )
 
+
+
+
+
+        colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data),
+                                                    repeat_columns = c("crop_repeat",
+                                                                       "livestock_repeat",
+                                                                       "offfarm_repeat",
+                                                                       "offfarm_income_repeat",
+                                                                       "hh_pop_repeat",
+                                                                       "hh_rep")) %>% tolower()
         rhomis_data <- rhomis_data %>%
-            remove_extra_central_columns() %>%
-            convert_all_columns_to_lower_case()
+            remove_extra_central_columns()
+
+
+        rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
 
         indicator_data <- tibble::as_tibble(list(
             projectName = rep(project_name, nrow(rhomis_data)),
-            formName = rep(form_name, nrow(rhomis_data))
+            formName = rep(form_name, nrow(rhomis_data)),
+            formVersion = rep(form_version, nrow(rhomis_data))
         ))
     }
 
@@ -596,8 +611,16 @@ processData <- function(
 
         if (outputType=="mongodb")
         {
+            unit_list <- find_db_units(projectID=project_name,
+                                       formID=form_name,
+                                       url = "mongodb://localhost",
+                                       collection = "projectData",
+                                       database = database)
             # Not yet complete
-            load_db_units()
+            load_all_db_units(unit_list,
+                              projectID=project_name,
+                              formID=form_name,
+                              database = database)
         }
 
         # Replacing crop and livestock names with their "other"
@@ -717,13 +740,11 @@ processData <- function(
             }
         }
         if(outputType=="mongodb"){
-            save_data_set_to_db(
-                data = crop_data$crop_harvest_kg_per_year,
-                data_type = "cropData",
-                database = database,
-                url = "mongodb://localhost",
-                projectID = project_name,
-                formID = form_name
+            save_list_of_df_to_db(list_of_df = crop_data,
+                                  projectID,
+                                  formID,
+                                  database="rhomis",
+                                  url="mongodb://localhost"
             )
         }
 
@@ -822,14 +843,13 @@ processData <- function(
         }
 
         if(outputType=="mongodb"){
-            save_data_set_to_db(
-                data = livestock_sold$livestock_sold,
-                data_type = "livestockData",
-                database = database,
-                url = "mongodb://localhost",
-                projectID = project_name,
-                formID = form_name
+            save_list_of_df_to_db(list_of_df = livestock_data,
+                                  projectID=project_name,
+                                  formID=form_name,
+                                  database=database,
+                                  url="mongodb://localhost"
             )
+
 
         }
 
@@ -954,10 +974,18 @@ processData <- function(
 
         if(outputType=="csv"){
             write_list_of_df_to_folder(off_farm_data,"off_farm_data")
-            dir.create("mean_prices", showWarnings = F)
 
         }
+        if(outputType=="mongodb"){
+            save_list_of_df_to_db(list_of_df = off_farm_data,
+                                  projectID=project_name,
+                                  formID=form_name,
+                                  database=database,
+                                  url="mongodb://localhost"
+            )
 
+
+        }
 
         if (outputType=="csv")
         {
@@ -967,6 +995,28 @@ processData <- function(
 
             dir.create("processed_data",showWarnings = F)
             readr::write_csv(rhomis_data,"./processed_data/processed_data.csv")
+        }
+
+        if (outputType=="mongodb")
+        {
+            save_data_set_to_db(
+                data = rhomis_data,
+                data_type = "processedData",
+                database = database,
+                url = "mongodb://localhost",
+                projectID = project_name,
+                formID = form_name
+            )
+
+            save_data_set_to_db(
+                data = indicator_data,
+                data_type = "indicatorData",
+                database = database,
+                url = "mongodb://localhost",
+                projectID = project_name,
+                formID = form_name
+            )
+
         }
 
     }
@@ -984,6 +1034,17 @@ processData <- function(
         dir.create("log", showWarnings = F)
         write(warns, "log/warnings.log")
     }
+
+    if (outputType=="mongodb"){
+
+        connection <-connect_to_db("projectData",database=database, url=url)
+
+        connection$update(
+            paste0('{"projectID":"',project_name,'", "formID":"',form_name,'"}'),
+            paste0('{"$push":{"log":{"date":"',Sys.time(),'", "message":"',warns,'"}}}'))
+
+        connection$disconnect()
+            }
     return(warns)
 
 

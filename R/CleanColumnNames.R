@@ -277,6 +277,11 @@ clean_column_names <- function(column_names, repeat_columns){
         seperator <- "/"
     }
 
+    if (length(grep("-",column_names))> length(column_names)/2)
+    {
+        seperator <- "-"
+    }
+
     if(exists("seperator"))
     {
     column_names <- modify_all_loop_column_names(column_names, repeat_columns)

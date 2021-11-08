@@ -40,7 +40,7 @@ connect_to_db <- function(collection,database="rhomis", url="mongodb://localhost
 #' data_frame_to_json(sample_data_frame)
 #'
 data_frame_to_json <- function(data_to_change){
-    json_copy <- jsonlite::toJSON(data_to_change)
+    json_copy <- jsonlite::toJSON(data_to_change, na="null")
     return(as.character(json_copy))
 }
 
@@ -287,6 +287,42 @@ save_data_set_to_db <- function(data,
 
 }
 
+
+#' Save List of Data Frames to the RHoMIS Database
+#'
+#' Take a list of output datasets and save them all to the
+#' RHoMIS mongoDB
+#'
+#' @param list_of_df The list of dataframes
+#' @param projectID The name of the project
+#' @param formID The name of the form
+#' @param database The name of the database4
+#' @param url The url of the database
+#'
+#' @return
+#' @export
+#'
+#' @examples
+save_list_of_df_to_db <- function(list_of_df,
+                                  projectID,
+                                  formID,
+                                  database="rhomis",
+                                  url="mongodb://localhost"
+){
+    data_set_names <- names(list_of_df)
+
+    sapply(data_set_names, function(x){
+        save_data_set_to_db(data = list_of_df[[x]],
+                            data_type = x,
+                            database = database,
+                            url = url,
+                            projectID = projectID,
+                            formID = formID)
+    })
+
+
+
+}
 
 
 #' Clean JSON String

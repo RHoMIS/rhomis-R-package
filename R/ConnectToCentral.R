@@ -261,10 +261,10 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     )
 
     response <- httr::content(central_response)
-    response
-    if (response$code>=400 & response$code<500){
-        stop("Error with request made for")
-    }
+    # response
+    # if (response$code>=400 & response$code<500){
+    #     stop("Error with request made for")
+    # }
 
 
     xls_form <- list()
