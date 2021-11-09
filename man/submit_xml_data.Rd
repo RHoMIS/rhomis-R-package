@@ -10,7 +10,8 @@ submit_xml_data(
   central_email,
   central_password,
   projectID,
-  formID
+  formID,
+  draft
 )
 }
 \arguments{
@@ -27,6 +28,8 @@ submit_xml_data(
 
 \item{formID}{The ID of the form containing the submissions you are looking at.
 To get the list of forms see the "get_forms" function.}
+
+\item{draft}{Whether the form you are submitting to is a draft or not}
 }
 \value{
 

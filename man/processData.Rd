@@ -19,7 +19,8 @@ processData(
   project_name = NULL,
   form_name = NULL,
   form_version = NULL,
-  database = NULL
+  database = NULL,
+  draft = NULL
 )
 }
 \arguments{
@@ -65,6 +66,9 @@ ONLY RELEVANT IF "dataSource" WAS "central".}
 ONLY RELEVANT IF "dataSource" WAS "central".}
 
 \item{database}{The name of the database you would like to save results to}
+
+\item{draft}{Whether or not the ODK for you war working with is a draft
+or a final version. Only relevant if you are processing a project from ODK central}
 }
 \value{
 

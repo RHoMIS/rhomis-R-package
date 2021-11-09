@@ -10,7 +10,8 @@ extract_form_metadata(
   central_password,
   projectID,
   formID,
-  form_version = 1
+  form_version = 1,
+  draft
 )
 }
 \arguments{
@@ -27,6 +28,8 @@ extract_form_metadata(
 
 \item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
+
+\item{draft}{Whether or not the form was a draft}
 }
 \value{
 
