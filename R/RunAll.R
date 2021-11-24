@@ -472,8 +472,8 @@ processData <- function(
                     }
                     if(outputType=="mongodb"){
                         save_list_of_df_to_db(list_of_df = crop_data,
-                                              projectID,
-                                              formID,
+                                              projectID=project_name,
+                                              formID=form_name,
                                               database=database,
                                               url="mongodb://localhost"
                         )
