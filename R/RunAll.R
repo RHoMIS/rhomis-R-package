@@ -474,7 +474,7 @@ processData <- function(
                         save_list_of_df_to_db(list_of_df = crop_data,
                                               projectID,
                                               formID,
-                                              database="rhomis",
+                                              database=database,
                                               url="mongodb://localhost"
                         )
                     }

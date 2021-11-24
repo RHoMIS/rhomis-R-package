@@ -505,6 +505,9 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #'
 #' @examples
 get_submission_data <- function(central_url, central_email, central_password, projectID, formID, draft){
+
+
+
     email_token <- get_email_token(central_url,central_email,central_password)
     file_destination <- tempfile(fileext=".zip")
 
