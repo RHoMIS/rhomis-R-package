@@ -64,13 +64,19 @@ switch_units <- function(data_to_convert, units, conversion_factors){
     if ("tbl" %in% class(data_to_convert) | "tbl_df" %in% class(data_to_convert) | "data.frame" %in% class(data_to_convert))
     {
         converted_data <- data_to_convert %>% purrr::map_df(function(x) replace_unit_list(x,unit_conv_tibble))
+        return(converted_data)
+
     }
     if((is.list(data_to_convert) | is.vector(data_to_convert)) & ("tbl" %in% class(data_to_convert)==F & "tbl_df" %in% class(data_to_convert)==F & "data.frame" %in% class(data_to_convert)==F))
     {
         converted_data <- replace_unit_list(data_to_convert, unit_conv_tibble)
+        return(converted_data)
+
     }
 
-    return(converted_data)
+    warning("Could not identify type of list")
+    return(data_to_convert)
+
 }
 
 
