@@ -1385,9 +1385,7 @@ livestock_calculations_all <- function(data,
     missing_columns <- check_columns_in_data(data, loop_columns = c("milk_sell_amount",
                                                                     "milk_consumed_amount",
                                                                     "milk_use",
-                                                                    "milk_collected_litres_per_year",
-                                                                    "milk_sold_prop_numeric",
-                                                                    "milk_consumed_prop_numeric"),
+                                                                    "milk_collected_litres_per_year"),
                                              warning_message = "Cannot calculate amounts of milk sold and consumed")
     if(length(missing_columns)==0)
     {

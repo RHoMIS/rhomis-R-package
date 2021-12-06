@@ -3,13 +3,13 @@ readRenviron(".env")
 
 
 
-# dataSource="central"
-# outputType="mongodb"
-# coreOnly=F
+# dataSource="csv"
+# outputType="csv"
+# coreOnly=T
 # surveyFile=NULL
-# moduleSaving=T
-# extractUnits=T
-# processDataSet=F
+# moduleSaving=F
+# extractUnits=F
+# processDataSet=T
 # dataFilePath=NULL
 # central_url=paste0("https://",Sys.getenv("CENTRALURL"))
 # central_email=Sys.getenv("CENTRALEMAIL")
