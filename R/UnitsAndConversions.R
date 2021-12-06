@@ -172,7 +172,7 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     }
     if ("crop_name" %in% unit_list==F){
         warning('Tried to find crop name conversions, but could not find records in projectData collection')
-        crop_name_conversions <- crop_name
+        crop_name_conversions <- tibble::as_tibble(list("survey_value"=crop_name, "conversion"=crop_name))
         assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
 
     }
@@ -190,7 +190,7 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     }
     if ("livestock_name" %in% unit_list==F){
         warning('Tried to find livestock name conversions, but could not find records in projectData collection')
-        livestock_name_conversions <- livestock_name
+        livestock_name_conversions <- tibble::as_tibble(list("survey_value"=livestock_name, "conversion"=livestock_name))
         assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
     }
 
@@ -208,6 +208,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("crop_yield_units" %in% unit_list==F){
         warning('Tried to find crop yield unit conversions, but could not find records in projectData collection')
         crop_yield_unit_conversions <- crop_yield_units
+        colnames(crop_yield_unit_conversions) <- c("survey_value", "conversion")
+
         assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
     }
 
@@ -226,6 +228,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("crop_sold_price_quantityunits" %in% unit_list==F){
         warning('Tried to find crop price unit conversions, but could not find records in projectData collection')
         crop_price_unit_conversions <- crop_price_units
+        colnames(crop_price_unit_conversions) <- c("survey_value", "conversion")
+
         assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
     }
 
@@ -238,12 +242,15 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
                                                       formID=formID,
                                                       conversion_type="unitland",
                                                       collection="units_and_conversions")
+
         assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("unitland" %in% unit_list==F){
         warning('Tried to find land unit conversions, but could not find records in projectData collection')
         land_unit_conversion <- land_area_units
+        colnames(land_unit_conversion) <- c("survey_value", "conversion")
+
         assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -264,6 +271,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("milk_units" %in% unit_list==F){
         warning('Tried to find land unit conversions, but could not find records in projectData collection')
         milk_unit_conversion <- milk_amount_units
+        colnames(milk_unit_conversion) <- c("survey_value", "conversion")
+
         assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -281,6 +290,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("milk_sold_price_timeunits" %in% unit_list==F){
         warning('Tried to find milk price conversion, but could not find records in projectData collection')
         milk_price_unit_conversion <- milk_price_time_units
+        colnames(milk_price_unit_conversion) <- c("survey_value", "conversion")
+
         assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -299,6 +310,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("bees_honey_production_units" %in% unit_list==F){
         warning('Tried to find honey amount conversion, but could not find records in projectData collection')
         honey_unit_conversion <- honey_amount_units
+        colnames(honey_unit_conversion) <- c("survey_value", "conversion")
+
         assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -317,6 +330,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("eggs_units" %in% unit_list==F){
         warning('Tried to find eggs amount conversion, but could not find records in projectData collection')
         eggs_unit_conversion <- eggs_amount_units
+        colnames(eggs_unit_conversion) <- c("survey_value", "conversion")
+
         assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -335,6 +350,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("eggs_sold_price_timeunits" %in% unit_list==F){
         warning('Tried to find eggs price conversion, but could not find records in projectData collection')
         eggs_price_unit_conversion <- eggs_price_time_units
+        colnames(eggs_price_unit_conversion) <- c("survey_value", "conversion")
+
         assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -354,6 +371,8 @@ load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units
     if ("fertiliser_units" %in% unit_list==F){
         warning('Tried to find fertiliser amount conversion, but could not find records in projectData collection')
         fertiliser_unit_conversion <- fertiliser_units
+        colnames(fertiliser_unit_conversion) <- c("survey_value", "conversion")
+
         assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -667,6 +686,7 @@ load_local_units <- function(file_names){
     if ("country.csv" %in% file_names==F){
         warning('Tried to find country name conversions, but could not find file in "./unit_conversions" folder')
         country_conversions <- country
+
         assign("country_conversions", country_conversions, envir = .GlobalEnv)
     }
 
@@ -678,7 +698,7 @@ load_local_units <- function(file_names){
     }
     if ("crop_name.csv" %in% file_names==F){
         warning('Tried to find crop name conversions, but could not find file in "./unit_conversions" folder')
-        crop_name_conversions <- crop_name
+        crop_name_conversions <- tibble::as_tibble(list("survey_value"=crop_name, "conversion"=crop_name))
         assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
 
     }
@@ -691,7 +711,8 @@ load_local_units <- function(file_names){
     }
     if ("livestock_name.csv" %in% file_names==F){
         warning('Tried to find livestock name conversions, but could not find file in "./unit_conversions" folder')
-        livestock_name_conversions <- livestock_name
+        livestock_name_conversions <- tibble::as_tibble(list("survey_value"=livestock_name, "conversion"=livestock_name))
+
         assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
     }
 
@@ -704,6 +725,8 @@ load_local_units <- function(file_names){
     if ("crop_yield_units.csv" %in% file_names==F){
         warning('Tried to find crop yield unit conversions, but could not find file in "./unit_conversions" folder')
         crop_yield_unit_conversions <- crop_yield_units
+        colnames(crop_yield_unit_conversions) <- c("survey_value", "conversion")
+
         assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
     }
 
@@ -717,6 +740,8 @@ load_local_units <- function(file_names){
     if ("crop_sold_price_quantityunits.csv" %in% file_names==F){
         warning('Tried to find crop price unit conversions, but could not find file in "./unit_conversions" folder')
         crop_price_unit_conversions <- crop_price_units
+        colnames(crop_price_unit_conversions) <- c("survey_value", "conversion")
+
         assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
     }
 
@@ -730,6 +755,8 @@ load_local_units <- function(file_names){
     if ("unitland.csv" %in% file_names==F){
         warning('Tried to find land unit conversions, but could not find file in "./unit_conversions" folder')
         land_unit_conversion <- land_area_units
+        colnames(land_unit_conversion) <- c("survey_value", "conversion")
+
         assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -745,6 +772,8 @@ load_local_units <- function(file_names){
     if ("milk_units.csv" %in% file_names==F){
         warning('Tried to find land unit conversions, but could not find file in "./unit_conversions" folder')
         milk_unit_conversion <- milk_amount_units
+        colnames(milk_unit_conversion) <- c("survey_value", "conversion")
+
         assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -757,6 +786,8 @@ load_local_units <- function(file_names){
     if ("milk_sold_price_timeunits.csv" %in% file_names==F){
         warning('Tried to find milk price conversion, but could not find file in "./unit_conversions" folder')
         milk_price_unit_conversion <- milk_price_time_units
+        colnames(milk_price_unit_conversion) <- c("survey_value", "conversion")
+
         assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -770,6 +801,8 @@ load_local_units <- function(file_names){
     if ("bees_honey_production_units.csv" %in% file_names==F){
         warning('Tried to find honey amount conversion, but could not find file in "./unit_conversions" folder')
         honey_unit_conversion <- honey_amount_units
+        colnames(honey_unit_conversion) <- c("survey_value", "conversion")
+
         assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -783,6 +816,8 @@ load_local_units <- function(file_names){
     if ("eggs_units.csv" %in% file_names==F){
         warning('Tried to find eggs amount conversion, but could not find file in "./unit_conversions" folder')
         eggs_unit_conversion <- eggs_amount_units
+        colnames(eggs_unit_conversion) <- c("survey_value", "conversion")
+
         assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -796,6 +831,8 @@ load_local_units <- function(file_names){
     if ("eggs_sold_price_timeunits.csv" %in% file_names==F){
         warning('Tried to find eggs price conversion, but could not find file in "./unit_conversions" folder')
         eggs_price_unit_conversion <- eggs_price_time_units
+        colnames(eggs_price_unit_conversion) <- c("survey_value", "conversion")
+
         assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
     }
 
@@ -809,6 +846,8 @@ load_local_units <- function(file_names){
     if ("fertiliser_units.csv" %in% file_names==F){
         warning('Tried to find fertiliser amount conversion, but could not find file in "./unit_conversions" folder')
         fertiliser_unit_conversion <- fertiliser_units
+        colnames(fertiliser_unit_conversion) <- c("survey_value", "conversion")
+
         assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
     }
 

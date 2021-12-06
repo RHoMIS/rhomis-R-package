@@ -1474,6 +1474,7 @@ livestock_calculations_all <- function(data,
 
     # Honey sold and consumed
     missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_kg_per_year",
         "bees_honey_use",
         "bees_honey_sell_amount",
         "bees_honey_consumed_amount",
