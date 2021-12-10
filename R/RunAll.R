@@ -156,7 +156,13 @@ processData <- function(
 
 
 
+
                     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
+                    rhomis_data <- sapply(rhomis_data, function(x){
+                        x[as.numeric(x)==-999]<-NA
+                        x
+                    }, simplify = F) %>% tibble::as_tibble()
 
 
 
@@ -211,7 +217,13 @@ processData <- function(
                         remove_extra_central_columns()
 
 
+
                     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
+                    rhomis_data <- sapply(rhomis_data, function(x){
+                        x[as.numeric(x)==-999]<-NA
+                        x
+                    }, simplify = F) %>% tibble::as_tibble()
 
 
                     indicator_data <- tibble::as_tibble(list(

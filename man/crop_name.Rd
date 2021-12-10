@@ -5,7 +5,7 @@
 \alias{crop_name}
 \title{Crop Name}
 \format{
-An object of class \code{character} of length 21.
+An object of class \code{character} of length 20.
 }
 \usage{
 crop_name
