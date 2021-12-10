@@ -635,7 +635,7 @@ processData <- function(
 
                     if (all(c("unitland","landcultivated","landowned")%in%colnames(rhomis_data)))
                     {
-                        indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data))
+                        indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, units = land_unit_conversion$survey_value,unit_conversions = land_unit_conversion$conversion))
                     }
 
                     ###############
