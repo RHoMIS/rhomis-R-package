@@ -678,7 +678,6 @@ processData <- function(
                         indicator_data$crop_income <- total_crop_income(rhomis_data)
                     }
 
-
                     indicator_data$livestock_income <- total_livestock_income(rhomis_data)
 
 
@@ -699,7 +698,7 @@ processData <- function(
 
                     missing_off_farm_columns <-check_columns_in_data(rhomis_data,
                                                                      loop_columns=off_farm_columns)
-                    if(length(missing_off_farm_columns)>=0 & length(missing_off_farm_columns) < length(off_farm_columns)){
+                    if(length(missing_off_farm_columns)>=0 & length(missing_off_farm_columns) < length(off_farm_columns) & "offfarm_income_name" %in% missing_off_farm_columns==F){
                         columns_to_widen <- off_farm_columns[off_farm_columns %in% missing_off_farm_columns==F]
                         off_farm_data <- map_to_wide_format(
                             data = rhomis_data,
@@ -710,7 +709,7 @@ processData <- function(
 
                     }
 
-                    if(length(missing_crop_columns)==length(crop_columns)){
+                    if(length(missing_off_farm_columns)==length(missing_off_farm_columns)){
                         off_farm_data <- NULL
                         warning("No extra outputs generated for off-farm loops")
                     }
@@ -818,7 +817,43 @@ processData <- function(
             close(warn_connection)
             options(warn = 0)
 
+
             warns <- paste0(warns, collapse="\n")
+
+            if (outputType=="csv"){
+                dir.create("log", showWarnings = F)
+                write(warns, "log/warnings.log")
+            }
+
+            if (outputType=="mongodb"){
+
+                connection <-connect_to_db("projectData",database=database, url=url)
+
+
+
+
+                query <-paste0('{"projectID":"',project_name,'", "formID":"',form_name,'"}')
+                query <- gsub('\\"','"',query, fixed=T)
+                query <- gsub('"{','{',query, fixed=T)
+                query <- gsub('}"','}',query, fixed=T)
+                query <- gsub('\n','\\n',query, fixed=T)
+
+
+                update <-paste0('{"$push":{"log":{"date":"',Sys.time(),'", "message":"',warns,'"}}}')
+                update <- gsub('\\"','"',update, fixed=T)
+                update <- gsub('"{','{',update, fixed=T)
+                update <- gsub('}"','}',update, fixed=T)
+                update <- gsub('\n','\\n',update, fixed=T)
+
+                options(warn=0)
+
+
+                connection$update(
+                    query=query,
+                    update=update)
+
+                connection$disconnect()
+            }
 
             return(warns)
 

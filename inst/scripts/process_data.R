@@ -1,6 +1,5 @@
 library(rhomis)
 
-setwd("./inst/extdata/projects/UG_CRP_2020/")
 
 
 processData(dataSource="csv",
@@ -10,7 +9,7 @@ surveyFile=NULL,
 moduleSaving=F,
 extractUnits=F,
 processDataSet=T,
-dataFilePath="./Raw_Data.csv",
+dataFilePath="inst/extdata/projects/UG_GEN_2021/raw_data.csv",
 central_url=NULL,
 central_email=NULL,
 central_password=NULL,
