@@ -239,7 +239,13 @@ gendered_off_farm_income_split <- function(data){
     offfarm_name_columns <- paste0("offfarm_income_name","_",c(1:number_of_loops))
     gender_control_columns <- paste0("offfarm_who_control_revenue","_",c(1:number_of_loops))
 
+
     # Finding out how many off-farm activities they engage in
+    missing_columns <- check_columns_in_data(rhomis_data,loop_columns = c("offfarm_income_name","offfarm_who_control_revenue"),
+
+                                             warning_message = "Could not calculate crop income")
+    if (length(missing_columns)==0)
+    {
     off_farm_income_data  <- tibble::as_tibble(!is.na(data[offfarm_name_columns])) %>% dplyr::mutate_all(as.numeric)
     off_farm_income_data[off_farm_income_data==0]<-NA
     colnames(off_farm_income_data) <- paste0("off_farm_source_prop","_",c(1:number_of_loops))
@@ -276,6 +282,7 @@ gendered_off_farm_income_split <- function(data){
                                              new_column_name = "male_adult_off_farm_source_prop",
                                              old_column_name = "female_adult_off_farm_source_prop",
                                              loop_structure = T)
+    }
 
     return(data)
 
