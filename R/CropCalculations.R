@@ -232,14 +232,13 @@ crop_sold_and_consumed_calculation <- function(data){
     harvested_columns <- paste0("crop_harvest_kg_per_year","_",c(1:number_of_loops))
     consumed_columns <- paste0("crop_consumed_prop_numeric","_",c(1:number_of_loops))
 
-    if (all(harvested_columns%in%colnames(data))==F)
+    if (all(harvested_columns%in%colnames(data))==F | all(consumed_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amounts harvested in kg. Calculate amounts harvested before calculating amounts consumed")
+        warning("Have not calculated the amounts harvested in kg or amounts sold. Calculate amounts harvested before calculating amounts consumed")
     }
-    if (all(consumed_columns%in%colnames(data))==F)
+    if (all(harvested_columns%in%colnames(data))==T & all(consumed_columns%in%colnames(data))==T)
     {
-        stop("Have not calculated the numeric proportions of amount of crops consumed Calculate proportions consumed before calculating amounts consumed")
-    }
+
 
     harvest_data <- data[harvested_columns]
     consumed_prop_data <- data[consumed_columns]
@@ -252,6 +251,7 @@ crop_sold_and_consumed_calculation <- function(data){
                                              new_column_name="crop_consumed_kg_per_year",
                                              old_column_name="crop_consumed_prop_numeric",
                                              loop_structure=T)
+    }
 
     return(data)
 

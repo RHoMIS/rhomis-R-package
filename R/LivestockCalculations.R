@@ -105,7 +105,7 @@ meat_amount_calculation <- function(data,
 #' @examples
 meat_uses <- function(data){
 
-    number_of_loops <- find_number_of_loops(data, "meat_kg_per_year")
+    number_of_loops <- find_number_of_loops(data, "livestock_name")
 
     missing_columns <- check_columns_in_data(data, loop_columns = c("meat_kg_per_year",
                                                                     "meat_sell_amount",
@@ -370,7 +370,7 @@ milk_amount_calculations <- function(data,
 #' @examples
 milk_proportions_all <- function(data){
 
-    number_of_loops <- find_number_of_loops(data, name_column = "milk_use")
+    number_of_loops <- find_number_of_loops(data, name_column = "livestock_name")
 
     if (all(paste0("milk_consumed_amount_",1:number_of_loops)%in% colnames(data)))
     {
@@ -422,7 +422,7 @@ milk_sold_and_consumed_calculations <- function(data){
         warning("Have not calculated the amount of milk collected or amount of milk sold in litres Calculate amounts collected before calculating amounts sold")
 
     }
-    if (all(amount_columns%in%colnames(data))==T | all(sold_columns%in%colnames(data))==T)
+    if (all(amount_columns%in%colnames(data))==T & all(sold_columns%in%colnames(data))==T)
     {
 
 
@@ -449,7 +449,7 @@ milk_sold_and_consumed_calculations <- function(data){
         warning("Have not calculated the amount of milk collected or amount of milk consumed in litres Calculate amounts collected before calculating amounts sold")
 
     }
-    if (all(amount_columns%in%colnames(data))==T | all(consumed_columns%in%colnames(data))==T)
+    if (all(amount_columns%in%colnames(data))==T & all(consumed_columns%in%colnames(data))==T)
     {
 
 
@@ -620,7 +620,7 @@ eggs_amount_calculations <- function(data, units=eggs_amount_units$unit, unit_co
 #' @examples
 eggs_proportions_all <- function(data){
 
-    number_of_loops <- find_number_of_loops(data, name_column = "eggs_use")
+    number_of_loops <- find_number_of_loops(data, name_column = "livestock_name")
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
         "eggs_consumed_amount",
@@ -1010,7 +1010,7 @@ honey_amount_calculation <- function(data, units=honey_amount_units$units, unit_
 #' @examples
 honey_proportions_all <- function(data){
 
-    number_of_loops <- find_number_of_loops(data, "bees_honey_kg_per_year")
+    number_of_loops <- find_number_of_loops(data, "livestock_name")
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
         "bees_honey_sell_amount"),

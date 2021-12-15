@@ -260,7 +260,7 @@ testthat::test_that("Can calculate the amounts of milk collected",{
                                             "milk_amount_bad_season_2"=c(NA,NA,1.5),
                                             "milk_amount_bad_season_litres_per_year_2"=c(NA,NA,164.25),
                                             "milk_number_animals_milked_2"=c(NA,NA,1.25)
-                                            ))
+  ))
 
   actual_result <- milk_amount_calculations(data)
 
@@ -268,7 +268,8 @@ testthat::test_that("Can calculate the amounts of milk collected",{
 })
 
 testthat::test_that("Can calculate proportions of milk sold and consumed",{
-  data <- tibble::as_tibble(list("milk_amount_good_season_1"=c(0.5,2,1),
+  data <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+                                 "milk_amount_good_season_1"=c(0.5,2,1),
                                  "milk_amount_good_season_litres_per_year_1"=c(182.5,208.5714,438),
                                  "milk_units_1"=c("l/day","per animal per week","0.3l/animal/day"),
                                  "milk_amount_bad_season_1"=c(0.25,NA,0.75),
@@ -279,6 +280,7 @@ testthat::test_that("Can calculate proportions of milk sold and consumed",{
                                  "milk_consumed_amount_1"=c(NA,"little",NA),
                                  "milk_sell_amount_1"=c(NA,"most",NA),
 
+                                 "livestock_name_2"=c("a","b","c"),
                                  "milk_amount_good_season_2"=c(NA,NA,1.2),
                                  "milk_amount_good_season_litres_per_year_2"=c(NA,NA,131.4),
                                  "milk_units_2"=c(NA,NA,"0.3l/day"),
@@ -290,7 +292,8 @@ testthat::test_that("Can calculate proportions of milk sold and consumed",{
                                  "milk_consumed_amount_2"=c(NA,NA,"half"),
                                  "milk_sell_amount_2"=c(NA,NA,"half")))
 
-  expected_result <- tibble::as_tibble(list("milk_amount_good_season_1"=c(0.5,2,1),
+  expected_result <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+                                            "milk_amount_good_season_1"=c(0.5,2,1),
                                             "milk_amount_good_season_litres_per_year_1"=c(182.5,208.5714,438),
                                             "milk_units_1"=c("l/day","per animal per week","0.3l/animal/day"),
                                             "milk_amount_bad_season_1"=c(0.25,NA,0.75),
@@ -303,6 +306,8 @@ testthat::test_that("Can calculate proportions of milk sold and consumed",{
                                             "milk_sell_amount_1"=c(NA,"most",NA),
                                             "milk_sold_prop_numeric_1"=c(NA,0.7,1),
 
+
+                                            "livestock_name_2"=c("a","b","c"),
                                             "milk_amount_good_season_2"=c(NA,NA,1.2),
                                             "milk_amount_good_season_litres_per_year_2"=c(NA,NA,131.4),
                                             "milk_units_2"=c(NA,NA,"0.3l/day"),
@@ -326,7 +331,8 @@ testthat::test_that("Can calculate proportions of milk sold and consumed",{
 
 testthat::test_that("Can calculate litre values of milk sold and consumed",{
 
-  data <- tibble::as_tibble(list("milk_amount_good_season_1"=c(0.5,2,1),
+  data <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+                                 "milk_amount_good_season_1"=c(0.5,2,1),
                                  "milk_amount_good_season_litres_per_year_1"=c(182.5,208.5714,438),
                                  "milk_units_1"=c("l/day","per animal per week","0.3l/animal/day"),
                                  "milk_amount_bad_season_1"=c(0.25,NA,0.75),
@@ -337,6 +343,7 @@ testthat::test_that("Can calculate litre values of milk sold and consumed",{
                                  "milk_consumed_amount_1"=c(NA,"little",NA),
                                  "milk_sell_amount_1"=c(NA,"most",NA),
 
+                                 "livestock_name_2"=c("a","b","c"),
                                  "milk_amount_good_season_2"=c(NA,NA,1.2),
                                  "milk_amount_good_season_litres_per_year_2"=c(NA,NA,131.4),
                                  "milk_units_2"=c(NA,NA,"0.3l/day"),
@@ -348,7 +355,9 @@ testthat::test_that("Can calculate litre values of milk sold and consumed",{
                                  "milk_consumed_amount_2"=c(NA,NA,"half"),
                                  "milk_sell_amount_2"=c(NA,NA,"half")))
 
-  expected_result <- tibble::as_tibble(list("milk_amount_good_season_1"=c(0.5,2,1),
+  expected_result <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+
+                                            "milk_amount_good_season_1"=c(0.5,2,1),
                                             "milk_amount_good_season_litres_per_year_1"=c(182.5,208.5714,438),
                                             "milk_units_1"=c("l/day","per animal per week","0.3l/animal/day"),
                                             "milk_amount_bad_season_1"=c(0.25,NA,0.75),
@@ -363,6 +372,7 @@ testthat::test_that("Can calculate litre values of milk sold and consumed",{
                                             "milk_sold_prop_numeric_1"=c(NA,0.7,1),
                                             "milk_sold_litres_per_year_1"=c(NA,146,383.25),
 
+                                            "livestock_name_2"=c("a","b","c"),
                                             "milk_amount_good_season_2"=c(NA,NA,1.2),
                                             "milk_amount_good_season_litres_per_year_2"=c(NA,NA,131.4),
                                             "milk_units_2"=c(NA,NA,"0.3l/day"),
@@ -518,8 +528,8 @@ testthat::test_that("Can convert from pieces/animal/day egg unit to numeric conv
                                                "livestock_heads_otherpoultry"=c(7,NA,2,NA)))
   expected_result <- c("365","2190","730",NA)
   actual_result <- eggs_swap_per_animal_units(units_column = units_column,
-                             livestock_name_column = livestock_name_column,
-                             livestock_heads_df = livestock_heads_df)
+                                              livestock_name_column = livestock_name_column,
+                                              livestock_heads_df = livestock_heads_df)
 
   testthat::expect_equal(actual_result, expected_result)
 
@@ -658,9 +668,9 @@ testthat::test_that("Can calculate proportions for eggs sold and consumed",{
                                             "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
 
 
-actual_result <- eggs_proportions_all(data)
+  actual_result <- eggs_proportions_all(data)
 
-testthat::expect_equal(actual_result, expected_result)
+  testthat::expect_equal(actual_result, expected_result)
 })
 
 
@@ -668,36 +678,6 @@ testthat::test_that("Can calculate the amounts of eggs sold and consumed in kg",
   egg_weight_kg <- 0.0496
 
   data <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
-                                            "livestock_heads_chicken"=c(4,NA,5),
-                                            "livestock_heads_duck"=c(2,3,1),
-
-                                            "livestock_name_1"=c("chicken","duck","otherpoultry"),
-                                            "eggs_amount_good_1"=c(3,4,2),
-                                            "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
-                                            "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
-                                            "eggs_amount_bad_1"=c(2,NA,1),
-                                            "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
-                                            "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
-                                            "eggs_use_1"=c("use sell","use","sell"),
-                                            "eggs_consumed_amount_1"=c("little",NA,NA),
-                                            "eggs_sell_amount_1"=c("most",NA,NA),
-                                            "eggs_sold_income_1"=c(25,NA,20),
-                                            "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
-
-                                            "livestock_name_2"=c("cattle","chicken","duck"),
-                                            "eggs_amount_good_2"=c(NA,5,2),
-                                            "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
-                                            "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
-                                            "eggs_amount_bad_2"=c(NA,3,1),
-                                            "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
-                                            "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
-                                            "eggs_use_2"=c(NA,"sell use","use sell"),
-                                            "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
-                                            "eggs_sell_amount_2"=c(NA,"most","most"),
-                                            "eggs_sold_income_2"=c(NA,40,50),
-                                            "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
-
-  expected_result <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
                                  "livestock_heads_chicken"=c(4,NA,5),
                                  "livestock_heads_duck"=c(2,3,1),
 
@@ -710,11 +690,7 @@ testthat::test_that("Can calculate the amounts of eggs sold and consumed in kg",
                                  "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
                                  "eggs_use_1"=c("use sell","use","sell"),
                                  "eggs_consumed_amount_1"=c("little",NA,NA),
-                                 "eggs_consumed_prop_numeric_1"=c(0.1,1,NA),
-                                 "eggs_consumed_kg_per_year_1"=c((0.1*egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
                                  "eggs_sell_amount_1"=c("most",NA,NA),
-                                 "eggs_sold_prop_numeric_1"=c(0.7,NA,1),
-                                 "eggs_sold_kg_per_year_1"=c((0.7*egg_weight_kg*3*365*egg_weight_kg*2*365)/2,NA,NA),
                                  "eggs_sold_income_1"=c(25,NA,20),
                                  "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
 
@@ -724,16 +700,50 @@ testthat::test_that("Can calculate the amounts of eggs sold and consumed in kg",
                                  "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
                                  "eggs_amount_bad_2"=c(NA,3,1),
                                  "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
-                                 "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*365)/2),
+                                 "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
                                  "eggs_use_2"=c(NA,"sell use","use sell"),
                                  "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
-                                 "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
-                                 "eggs_consumed_kg_per_year_2"=c(NA,NA,0.2*(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
                                  "eggs_sell_amount_2"=c(NA,"most","most"),
-                                 "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
-                                 "eggs_sold_kg_per_year_2"=c(NA,NA,(0.7*egg_weight_kg*1*2*365*egg_weight_kg*365)/2),
                                  "eggs_sold_income_2"=c(NA,40,50),
                                  "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+  expected_result <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                            "livestock_heads_chicken"=c(4,NA,5),
+                                            "livestock_heads_duck"=c(2,3,1),
+
+                                            "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                            "eggs_amount_good_1"=c(3,4,2),
+                                            "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
+                                            "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                            "eggs_amount_bad_1"=c(2,NA,1),
+                                            "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
+                                            "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                            "eggs_use_1"=c("use sell","use","sell"),
+                                            "eggs_consumed_amount_1"=c("little",NA,NA),
+                                            "eggs_consumed_prop_numeric_1"=c(0.1,1,NA),
+                                            "eggs_consumed_kg_per_year_1"=c((0.1*egg_weight_kg*3*365*egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                            "eggs_sell_amount_1"=c("most",NA,NA),
+                                            "eggs_sold_prop_numeric_1"=c(0.7,NA,1),
+                                            "eggs_sold_kg_per_year_1"=c((0.7*egg_weight_kg*3*365*egg_weight_kg*2*365)/2,NA,NA),
+                                            "eggs_sold_income_1"=c(25,NA,20),
+                                            "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+
+                                            "livestock_name_2"=c("cattle","chicken","duck"),
+                                            "eggs_amount_good_2"=c(NA,5,2),
+                                            "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
+                                            "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                            "eggs_amount_bad_2"=c(NA,3,1),
+                                            "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
+                                            "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365*egg_weight_kg*365)/2),
+                                            "eggs_use_2"=c(NA,"sell use","use sell"),
+                                            "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                            "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
+                                            "eggs_consumed_kg_per_year_2"=c(NA,NA,0.2*(egg_weight_kg*1*2*365*egg_weight_kg*1*1*365)/2),
+                                            "eggs_sell_amount_2"=c(NA,"most","most"),
+                                            "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
+                                            "eggs_sold_kg_per_year_2"=c(NA,NA,(0.7*egg_weight_kg*1*2*365*egg_weight_kg*365)/2),
+                                            "eggs_sold_income_2"=c(NA,40,50),
+                                            "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
 
   actual_result <- eggs_sold_and_consumed_calculations(data)
 
@@ -753,50 +763,12 @@ testthat::test_that("Can convert from price per egg to numeric conversion factor
   actual_result <- eggs_price_per_egg_to_numeric(units_column,amount_sold_column)
   testthat::expect_equal(actual_result, expected_result)
 
-                    })
+})
 
 testthat::test_that("Can calculate income and prices for eggs",{
   egg_weight_kg <- 0.0496
 
   data <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
-                                            "livestock_heads_chicken"=c(4,NA,5),
-                                            "livestock_heads_duck"=c(2,3,1),
-
-                                            "livestock_name_1"=c("chicken","duck","otherpoultry"),
-                                            "eggs_amount_good_1"=c(3,4,2),
-                                            "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
-                                            "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
-                                            "eggs_amount_bad_1"=c(2,NA,1),
-                                            "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
-                                            "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365+egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
-                                            "eggs_use_1"=c("use sell","use","sell"),
-                                            "eggs_consumed_amount_1"=c("little",NA,NA),
-                                            "eggs_consumed_prop_numeric_1"=c(0.1,1,NA),
-                                            "eggs_consumed_kg_per_year_1"=c((0.1*egg_weight_kg*3*365+egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
-                                            "eggs_sell_amount_1"=c("most",NA,NA),
-                                            "eggs_sold_prop_numeric_1"=c(0.7,NA,1),
-                                            "eggs_sold_kg_per_year_1"=c((0.7*egg_weight_kg*3*365+egg_weight_kg*2*365)/2,NA,NA),
-                                            "eggs_sold_income_1"=c(25,NA,20),
-                                            "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
-
-                                            "livestock_name_2"=c("cattle","chicken","duck"),
-                                            "eggs_amount_good_2"=c(NA,5,2),
-                                            "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
-                                            "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
-                                            "eggs_amount_bad_2"=c(NA,3,1),
-                                            "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
-                                            "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365+egg_weight_kg*365)/2),
-                                            "eggs_use_2"=c(NA,"sell use","use sell"),
-                                            "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
-                                            "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
-                                            "eggs_consumed_kg_per_year_2"=c(NA,NA,0.2*(egg_weight_kg*1*2*365+egg_weight_kg*365)/2),
-                                            "eggs_sell_amount_2"=c(NA,"most","most"),
-                                            "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
-                                            "eggs_sold_kg_per_year_2"=c(NA,NA,(0.7*egg_weight_kg*1*2*365+egg_weight_kg*365)/2),
-                                            "eggs_sold_income_2"=c(NA,40,50),
-                                            "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
-
-  expected_result <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
                                  "livestock_heads_chicken"=c(4,NA,5),
                                  "livestock_heads_duck"=c(2,3,1),
 
@@ -816,8 +788,6 @@ testthat::test_that("Can calculate income and prices for eggs",{
                                  "eggs_sold_kg_per_year_1"=c((0.7*egg_weight_kg*3*365+egg_weight_kg*2*365)/2,NA,NA),
                                  "eggs_sold_income_1"=c(25,NA,20),
                                  "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
-                                 "eggs_income_per_year_1"=c(25*((0.7*egg_weight_kg*3*365+egg_weight_kg*2*365)/2)/egg_weight_kg,NA,20*365),
-                                 "eggs_price_per_kg_1"=c(25/egg_weight_kg,NA,NA),
 
                                  "livestock_name_2"=c("cattle","chicken","duck"),
                                  "eggs_amount_good_2"=c(NA,5,2),
@@ -829,20 +799,60 @@ testthat::test_that("Can calculate income and prices for eggs",{
                                  "eggs_use_2"=c(NA,"sell use","use sell"),
                                  "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
                                  "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
-                                 "eggs_consumed_kg_per_year_2"=c(NA,NA,0.2*(egg_weight_kg*1*2*365+egg_weight_kg*1*1*365)/2),
+                                 "eggs_consumed_kg_per_year_2"=c(NA,NA,0.2*(egg_weight_kg*1*2*365+egg_weight_kg*365)/2),
                                  "eggs_sell_amount_2"=c(NA,"most","most"),
                                  "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
                                  "eggs_sold_kg_per_year_2"=c(NA,NA,(0.7*egg_weight_kg*1*2*365+egg_weight_kg*365)/2),
                                  "eggs_sold_income_2"=c(NA,40,50),
-                                 "eggs_sold_price_timeunits_2"=c(NA,"month","week"),
-                                 "eggs_income_per_year_2"=c(NA,40*365/28,50*365/7),
-                                 "eggs_price_per_kg_2"=c(NA,NA,(50*365/7)/((0.7*egg_weight_kg*1*2*365+egg_weight_kg*365)/2))))
+                                 "eggs_sold_price_timeunits_2"=c(NA,"month","week")))
+
+  expected_result <- tibble::as_tibble(list("livestock_heads_cattle"=c(1,2,3),
+                                            "livestock_heads_chicken"=c(4,NA,5),
+                                            "livestock_heads_duck"=c(2,3,1),
+
+                                            "livestock_name_1"=c("chicken","duck","otherpoultry"),
+                                            "eggs_amount_good_1"=c(3,4,2),
+                                            "eggs_amount_good_season_kg_per_year_1"=c(egg_weight_kg*3*365,egg_weight_kg*3*4*365,NA),
+                                            "eggs_units_1"=c("pieces/day","pieces/animal/day","pieces/animal/day"),
+                                            "eggs_amount_bad_1"=c(2,NA,1),
+                                            "eggs_amount_bad_season_kg_per_year_1"=c(egg_weight_kg*2*365,NA,NA),
+                                            "eggs_collected_kg_per_year_1"=c((egg_weight_kg*3*365+egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                            "eggs_use_1"=c("use sell","use","sell"),
+                                            "eggs_consumed_amount_1"=c("little",NA,NA),
+                                            "eggs_consumed_prop_numeric_1"=c(0.1,1,NA),
+                                            "eggs_consumed_kg_per_year_1"=c((0.1*egg_weight_kg*3*365+egg_weight_kg*2*365)/2,egg_weight_kg*3*4*365,NA),
+                                            "eggs_sell_amount_1"=c("most",NA,NA),
+                                            "eggs_sold_prop_numeric_1"=c(0.7,NA,1),
+                                            "eggs_sold_kg_per_year_1"=c((0.7*egg_weight_kg*3*365+egg_weight_kg*2*365)/2,NA,NA),
+                                            "eggs_sold_income_1"=c(25,NA,20),
+                                            "eggs_sold_price_timeunits_1"=c("per_egg",NA,"day"),
+                                            "eggs_income_per_year_1"=c(25*((0.7*egg_weight_kg*3*365+egg_weight_kg*2*365)/2)/egg_weight_kg,NA,20*365),
+                                            "eggs_price_per_kg_1"=c(25/egg_weight_kg,NA,NA),
+
+                                            "livestock_name_2"=c("cattle","chicken","duck"),
+                                            "eggs_amount_good_2"=c(NA,5,2),
+                                            "eggs_amount_good_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*2*365),
+                                            "eggs_units_2"=c(NA,"otherrandomeunit","pieces/animal/day"),
+                                            "eggs_amount_bad_2"=c(NA,3,1),
+                                            "eggs_amount_bad_season_kg_per_year_2"=c(NA,NA,egg_weight_kg*1*1*365),
+                                            "eggs_collected_kg_per_year_2"=c(NA,NA,(egg_weight_kg*1*2*365+egg_weight_kg*365)/2),
+                                            "eggs_use_2"=c(NA,"sell use","use sell"),
+                                            "eggs_consumed_amount_2"=c(NA,"little","underhalf"),
+                                            "eggs_consumed_prop_numeric_2"=c(NA,0.1,0.2),
+                                            "eggs_consumed_kg_per_year_2"=c(NA,NA,0.2*(egg_weight_kg*1*2*365+egg_weight_kg*1*1*365)/2),
+                                            "eggs_sell_amount_2"=c(NA,"most","most"),
+                                            "eggs_sold_prop_numeric_2"=c(NA,0.7,0.7),
+                                            "eggs_sold_kg_per_year_2"=c(NA,NA,(0.7*egg_weight_kg*1*2*365+egg_weight_kg*365)/2),
+                                            "eggs_sold_income_2"=c(NA,40,50),
+                                            "eggs_sold_price_timeunits_2"=c(NA,"month","week"),
+                                            "eggs_income_per_year_2"=c(NA,40*365/28,50*365/7),
+                                            "eggs_price_per_kg_2"=c(NA,NA,(50*365/7)/((0.7*egg_weight_kg*1*2*365+egg_weight_kg*365)/2))))
 
   actual_result <- egg_income_calculations(data)
   testthat::expect_equal(actual_result, expected_result)
 
 
-  })
+})
 
 
 testthat::test_that("Can correctly calculate honey production",{
@@ -865,84 +875,6 @@ testthat::test_that("Can correctly calculate honey production",{
                                  "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
 
   expected_result  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
-                                                    "bees_honey_production_units_1"=c("kg",NA,"litres"),
-                                                    "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
-                                                    "bees_honey_use_1"=c("use sell", NA, "sell"),
-                                                    "bees_honey_consumed_amount_1"=c("little",NA,NA),
-                                                    "bees_honey_sell_amount_1"=c("most",NA,NA),
-                                                    "bees_honey_sold_income_1"=c(30,NA,40),
-                                                    "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
-                                                    "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
-
-                                                    "bees_honey_production_2"=c(NA,20,12),
-                                                    "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
-                                                    "bees_honey_kg_per_year_2"=c(NA,NA,12),
-                                                    "bees_honey_use_2"=c(NA,"use sell","sell use"),
-                                                    "bees_honey_consumed_amount_2"=c(NA,"half","little"),
-                                                    "bees_honey_sell_amount_2"=c(NA,"half","most"),
-                                                    "bees_honey_sold_income_2"=c(NA,25,50),
-                                                    "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
-                                                    "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
-  actual_result <- honey_amount_calculation(data)
-  testthat::expect_equal(actual_result, expected_result)
-
-
-})
-
-
-testthat::test_that("Can correctly calculate numeric proportions of honey uses",{
-  data  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
-                                  "bees_honey_production_units_1"=c("kg",NA,"litres"),
-                                  "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
-                                  "bees_honey_use_1"=c("use sell", NA, "sell"),
-                                  "bees_honey_consumed_amount_1"=c("little",NA,NA),
-                                  "bees_honey_sell_amount_1"=c("most",NA,NA),
-                                  "bees_honey_sold_income_1"=c(30,NA,40),
-                                  "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
-                                  "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
-
-                                  "bees_honey_production_2"=c(NA,20,12),
-                                  "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
-                                  "bees_honey_kg_per_year_2"=c(NA,NA,12),
-                                  "bees_honey_use_2"=c(NA,"use sell","sell use"),
-                                  "bees_honey_consumed_amount_2"=c(NA,"half","little"),
-                                  "bees_honey_sell_amount_2"=c(NA,"half","most"),
-                                  "bees_honey_sold_income_2"=c(NA,25,50),
-                                  "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
-                                  "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
-
-  expected_result  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
-                                  "bees_honey_production_units_1"=c("kg",NA,"litres"),
-                                  "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
-                                  "bees_honey_use_1"=c("use sell", NA, "sell"),
-                                  "bees_honey_consumed_amount_1"=c("little",NA,NA),
-                                  "bees_honey_consumed_props_numeric_1"=c(0.1,NA,NA),
-                                  "bees_honey_sell_amount_1"=c("most",NA,NA),
-                                  "bees_honey_sold_props_numeric_1"=c(0.7,NA,1),
-                                  "bees_honey_sold_income_1"=c(30,NA,40),
-                                  "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
-                                  "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
-
-                                  "bees_honey_production_2"=c(NA,20,12),
-                                  "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
-                                  "bees_honey_kg_per_year_2"=c(NA,NA,12),
-                                  "bees_honey_use_2"=c(NA,"use sell","sell use"),
-                                  "bees_honey_consumed_amount_2"=c(NA,"half","little"),
-                                  "bees_honey_consumed_props_numeric_2"=c(NA,0.5,0.1),
-                                  "bees_honey_sell_amount_2"=c(NA,"half","most"),
-                                  "bees_honey_sold_props_numeric_2"=c(NA,0.5,0.7),
-                                  "bees_honey_sold_income_2"=c(NA,25,50),
-                                  "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
-                                  "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
-
-  actual_result <- honey_proportions_all(data)
-  testthat::expect_equal(actual_result, expected_result)
-})
-
-
-testthat::test_that("Can correctly calculate the amounts of honey sold and consumed",{
-
-  data  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
                                              "bees_honey_production_units_1"=c("kg",NA,"litres"),
                                              "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
                                              "bees_honey_use_1"=c("use sell", NA, "sell"),
@@ -961,8 +893,93 @@ testthat::test_that("Can correctly calculate the amounts of honey sold and consu
                                              "bees_honey_sold_income_2"=c(NA,25,50),
                                              "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
                                              "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+  actual_result <- honey_amount_calculation(data)
+  testthat::expect_equal(actual_result, expected_result)
 
-  expected_result  <- tibble::as_tibble(list("bees_honey_production_1"=c(10,NA,15),
+
+})
+
+
+testthat::test_that("Can correctly calculate numeric proportions of honey uses",{
+  data  <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+                                  "bees_honey_production_1"=c(10,NA,15),
+                                  "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                  "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                  "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                  "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                  "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                  "bees_honey_sold_income_1"=c(30,NA,40),
+                                  "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                  "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                  "livestock_name_2"=c("a","b","c"),
+                                  "bees_honey_production_2"=c(NA,20,12),
+                                  "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                  "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                  "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                  "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                  "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                  "bees_honey_sold_income_2"=c(NA,25,50),
+                                  "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                  "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  expected_result  <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+                                             "bees_honey_production_1"=c(10,NA,15),
+                                             "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                             "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                             "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                             "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                             "bees_honey_consumed_props_numeric_1"=c(0.1,NA,NA),
+                                             "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                             "bees_honey_sold_props_numeric_1"=c(0.7,NA,1),
+                                             "bees_honey_sold_income_1"=c(30,NA,40),
+                                             "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                             "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                             "livestock_name_2"=c("a","b","c"),
+                                             "bees_honey_production_2"=c(NA,20,12),
+                                             "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                             "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                             "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                             "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                             "bees_honey_consumed_props_numeric_2"=c(NA,0.5,0.1),
+                                             "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                             "bees_honey_sold_props_numeric_2"=c(NA,0.5,0.7),
+                                             "bees_honey_sold_income_2"=c(NA,25,50),
+                                             "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                             "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  actual_result <- honey_proportions_all(data)
+  testthat::expect_equal(actual_result, expected_result)
+})
+
+
+testthat::test_that("Can correctly calculate the amounts of honey sold and consumed",{
+
+  data  <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+                                  "bees_honey_production_1"=c(10,NA,15),
+                                  "bees_honey_production_units_1"=c("kg",NA,"litres"),
+                                  "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
+                                  "bees_honey_use_1"=c("use sell", NA, "sell"),
+                                  "bees_honey_consumed_amount_1"=c("little",NA,NA),
+                                  "bees_honey_sell_amount_1"=c("most",NA,NA),
+                                  "bees_honey_sold_income_1"=c(30,NA,40),
+                                  "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
+                                  "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
+
+                                  "livestock_name_2"=c("a","b","c"),
+                                  "bees_honey_production_2"=c(NA,20,12),
+                                  "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
+                                  "bees_honey_kg_per_year_2"=c(NA,NA,12),
+                                  "bees_honey_use_2"=c(NA,"use sell","sell use"),
+                                  "bees_honey_consumed_amount_2"=c(NA,"half","little"),
+                                  "bees_honey_sell_amount_2"=c(NA,"half","most"),
+                                  "bees_honey_sold_income_2"=c(NA,25,50),
+                                  "bees_who_sells_2"=c(NA,"male_adult","female_adult"),
+                                  "bees_who_control_eating_2"=c(NA,"female_adult","male_youth")))
+
+  expected_result  <- tibble::as_tibble(list("livestock_name_1"=c("a","b","c"),
+                                             "bees_honey_production_1"=c(10,NA,15),
                                              "bees_honey_production_units_1"=c("kg",NA,"litres"),
                                              "bees_honey_kg_per_year_1"=c(10,NA,15*1.43),
                                              "bees_honey_use_1"=c("use sell", NA, "sell"),
@@ -976,6 +993,7 @@ testthat::test_that("Can correctly calculate the amounts of honey sold and consu
                                              "bees_who_sells_1"=c("male_adult female_youth",NA,"male_youth female_youth"),
                                              "bees_who_control_eating_1"=c("female_adult",NA,"male_adult"),
 
+                                             "livestock_name_2"=c("a","b","c"),
                                              "bees_honey_production_2"=c(NA,20,12),
                                              "bees_honey_production_units_2"=c(NA,"other_random_unit","kg"),
                                              "bees_honey_kg_per_year_2"=c(NA,NA,12),
@@ -994,5 +1012,5 @@ testthat::test_that("Can correctly calculate the amounts of honey sold and consu
 
   testthat::expect_equal(actual_result, expected_result)
 
-  })
+})
 
