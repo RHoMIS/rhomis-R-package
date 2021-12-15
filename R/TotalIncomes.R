@@ -241,7 +241,7 @@ gendered_off_farm_income_split <- function(data){
 
 
     # Finding out how many off-farm activities they engage in
-    missing_columns <- check_columns_in_data(rhomis_data,loop_columns = c("offfarm_income_name","offfarm_who_control_revenue"),
+    missing_columns <- check_columns_in_data(data,loop_columns = c("offfarm_income_name","offfarm_who_control_revenue"),
 
                                              warning_message = "Could not calculate crop income")
     if (length(missing_columns)==0)
