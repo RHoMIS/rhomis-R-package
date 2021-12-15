@@ -121,6 +121,10 @@ crop_proportions_all <- function(data){
 
     number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
 
+    crop_consumed_columns_in_data <- check_columns_in_data(data,
+                                                  loop_columns = c("crop_consumed_prop"),
+                                                  warning_message = "Crop consumed calculation not possible")
+    if(length(crop_consumed_columns_in_data)==0){
     crop_consumed_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "crop_use", prop_column = "crop_consumed_prop", loop_number = x))
     colnames(crop_consumed_proportions_numeric)<-paste0("crop_consumed_prop_numeric","_",c(1:number_of_loops))
     crop_consumed_proportions_numeric<-tibble::as_tibble(crop_consumed_proportions_numeric)
@@ -129,8 +133,12 @@ crop_proportions_all <- function(data){
                                              new_column_name="crop_consumed_prop_numeric",
                                              old_column_name="crop_consumed_prop",
                                              loop_structure=T)
+    }
 
-
+    crop_sold_columns_in_data <- check_columns_in_data(data,
+                                                           loop_columns = c("crop_sold_prop"),
+                                                           warning_message = "Crop sold calculation not possible")
+    if(length(crop_sold_columns_in_data)==0){
     crop_sold_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "crop_use", prop_column = "crop_sold_prop", loop_number = x))
     colnames(crop_sold_proportions_numeric) <- paste0("crop_sold_prop_numeric","_",c(1:number_of_loops))
     crop_sold_proportions_numeric<- tibble::as_tibble(crop_sold_proportions_numeric)
@@ -139,6 +147,7 @@ crop_proportions_all <- function(data){
                                              new_column_name="crop_sold_prop_numeric",
                                              old_column_name="crop_sold_prop",
                                              loop_structure=T)
+    }
 
     return(data)
 }
@@ -340,23 +349,57 @@ crop_income_calculations <- function(data, units=crop_price_units$unit, unit_con
 #'
 #' @examples
 crop_gender_calculations <- function(data){
+
+    crop_columns_in_data <- check_columns_in_data(data,
+                                                  loop_columns = c("crop_consumed_kg_per_year",
+                                                                   "crop_consume_control",
+                                                                   "crop_sold_kg_per_year",
+                                                                   "crop_who_control_revenue",
+                                                                   "crop_income_per_year"
+                                                  ))
+
+
+    crop_gender_columns_in_data <- check_columns_in_data(data,
+                                                  loop_columns = c("crop_consumed_kg_per_year",
+                                                                   "crop_consume_control"
+                                                  ))
+
+    if (length(crop_gender_columns_in_data)==0)
+    {
     # crop consumed calculations
     data<-insert_gender_columns_in_core_data(data=data,
                                              original_column="crop_consumed_kg_per_year",
                                              control_column="crop_consume_control",
                                              loop_structure=T)
+    }
 
     # crop sold calculations
+    crop_gender_columns_in_data <- check_columns_in_data(data,
+                                                         loop_columns = c("crop_sold_kg_per_year",
+                                                                          "crop_who_control_revenue"
+                                                         ))
+
+    if (length(crop_gender_columns_in_data)==0)
+    {
     data<-insert_gender_columns_in_core_data(data,
                                              original_column="crop_sold_kg_per_year",
                                              control_column="crop_who_control_revenue",
                                              loop_structure=T)
+    }
 
     # crop income calculations
+    crop_gender_columns_in_data <- check_columns_in_data(data,
+                                                         loop_columns = c("crop_income_per_year",
+                                                                          "crop_who_control_revenue"
+                                                         ))
+
+    if (length(crop_gender_columns_in_data)==0)
+    {
     data<-insert_gender_columns_in_core_data(data,
                                              original_column="crop_income_per_year",
                                              control_column="crop_who_control_revenue",
                                              loop_structure=T)
+    }
 
     return(data)
 
@@ -404,13 +447,9 @@ crop_calculations_all <- function(data,
                                                   loop_columns = c("crop_harvest_kg_per_year",
                                                                    "crop_sold_prop",
                                                                    "crop_consumed_prop"),
-                                                  warning_message = "Cannot calculate amounts of crops crops sold and consumed")
-    if(length(crop_columns_in_data)==0){
+                                                  warning_message = "Problems calculating crop sold and crop consumed")
     data <- crop_sold_and_consumed_calculation(data)
-    }
-    if(length(crop_columns_in_data)>0){
-        warning(paste0("Cannot calculate the amounts of crops sold and consumed, missing the following columns: \n", crop_columns_in_data, collapse = "\n"))
-    }
+
 
     # Crop income calculations
     crop_columns_in_data <- check_columns_in_data(data,
@@ -426,17 +465,9 @@ crop_calculations_all <- function(data,
     }
 
 
-    crop_columns_in_data <- check_columns_in_data(data,
-                                                  loop_columns = c("crop_consumed_kg_per_year",
-                                                                   "crop_consume_control",
-                                                                   "crop_sold_kg_per_year",
-                                                                   "crop_who_control_revenue",
-                                                                   "crop_income_per_year"
-                                                                   ),
-                                                  warning_message = "Cannot calculate gendered crop splits")
-    if(length(crop_columns_in_data)==0){
+
     data <- crop_gender_calculations(data)
-    }
+
     return(data)
 }
 

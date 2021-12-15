@@ -107,27 +107,41 @@ meat_uses <- function(data){
 
     number_of_loops <- find_number_of_loops(data, "meat_kg_per_year")
 
-    meat_sold_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "meat_use", prop_column = "meat_sell_amount", loop_number = x))
-    colnames(meat_sold_props_numeric) <- paste0("meat_sold_props_numeric","_",c(1:number_of_loops))
-    meat_sold_props_numeric<- tibble::as_tibble(meat_sold_props_numeric)
+    missing_columns <- check_columns_in_data(data, loop_columns = c("meat_kg_per_year",
+                                                                    "meat_sell_amount",
+                                                                    "livestock_name"),
+                                             warning_message = "Could not calculate amounts of meat sold or consumed")
+    if(length(missing_columns)==0)
+    {
+        meat_sold_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "meat_use", prop_column = "meat_sell_amount", loop_number = x))
+        colnames(meat_sold_props_numeric) <- paste0("meat_sold_props_numeric","_",c(1:number_of_loops))
+        meat_sold_props_numeric<- tibble::as_tibble(meat_sold_props_numeric)
 
-    data <- add_column_after_specific_column(data = data,
-                                             new_data = meat_sold_props_numeric,
-                                             new_column_name = "meat_sold_props_numeric",
-                                             old_column_name = "meat_sell_amount",
-                                             loop_structure =T
-    )
+
+        data <- add_column_after_specific_column(data = data,
+                                                 new_data = meat_sold_props_numeric,
+                                                 new_column_name = "meat_sold_props_numeric",
+                                                 old_column_name = "meat_sell_amount",
+                                                 loop_structure =T
+        )
+    }
 
 
-    meat_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "meat_use", prop_column = "meat_consumed_amount", loop_number = x))
-    colnames(meat_consumed_props_numeric) <- paste0("meat_consumed_props_numeric","_",c(1:number_of_loops))
-    meat_consumed_props_numeric<- tibble::as_tibble(meat_consumed_props_numeric)
-    data <- add_column_after_specific_column(data = data,
-                                             new_data = meat_consumed_props_numeric,
-                                             new_column_name = "meat_consumed_props_numeric",
-                                             old_column_name = "meat_consumed_amount",
-                                             loop_structure =T)
-
+    missing_columns <- check_columns_in_data(data, loop_columns = c("meat_kg_per_year",
+                                                                    "meat_consumed_amount",
+                                                                    "livestock_name"),
+                                             warning_message = "Could not calculate amounts of meat sold or consumed")
+    if(length(missing_columns)==0)
+    {
+        meat_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "meat_use", prop_column = "meat_consumed_amount", loop_number = x))
+        colnames(meat_consumed_props_numeric) <- paste0("meat_consumed_props_numeric","_",c(1:number_of_loops))
+        meat_consumed_props_numeric<- tibble::as_tibble(meat_consumed_props_numeric)
+        data <- add_column_after_specific_column(data = data,
+                                                 new_data = meat_consumed_props_numeric,
+                                                 new_column_name = "meat_consumed_props_numeric",
+                                                 old_column_name = "meat_consumed_amount",
+                                                 loop_structure =T)
+    }
 
     return(data)
 }
@@ -152,52 +166,52 @@ meat_sold_and_consumed_calculation <-function(data){
     amount_columns <- paste0("meat_kg_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("meat_sold_props_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(sold_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amount of meat collected in kg. Calculate amounts collected before calculating amounts sold")
-    }
-    if (all(sold_columns%in%colnames(data))==F)
-    {
-        stop("Have not calculated the numeric proportions of amount of meat sold. Calculate proportions sold before calculating amounts sold")
+        warning("Have not calculated the amount of meat collected in kg or the proportions of meat sold. Calculate amounts collected before calculating amounts sold")
     }
 
-    meat_amount_data <- data[amount_columns]
-    sold_prop_data <- data[sold_columns]
+    if (all(amount_columns%in%colnames(data))==T & all(sold_columns%in%colnames(data))==T){
 
-    amount_sold_kg <- tibble::as_tibble(meat_amount_data*sold_prop_data)
-    colnames(amount_sold_kg) <- paste0("meat_sold_kg_per_year", "_",c(1:number_of_loops))
 
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_sold_kg,
-                                             new_column_name="meat_sold_kg_per_year",
-                                             old_column_name="meat_sold_props_numeric",
-                                             loop_structure=T)
 
+        meat_amount_data <- data[amount_columns]
+        sold_prop_data <- data[sold_columns]
+
+        amount_sold_kg <- tibble::as_tibble(meat_amount_data*sold_prop_data)
+        colnames(amount_sold_kg) <- paste0("meat_sold_kg_per_year", "_",c(1:number_of_loops))
+
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_sold_kg,
+                                                 new_column_name="meat_sold_kg_per_year",
+                                                 old_column_name="meat_sold_props_numeric",
+                                                 loop_structure=T)
+    }
 
     number_of_loops <- find_number_of_loops(data, name_column="livestock_name")
     amount_columns <- paste0("meat_kg_per_year","_",c(1:number_of_loops))
     consumed_columns <- paste0("meat_consumed_props_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(consumed_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amount of meat collected in kg. Calculate amounts collected before calculating amounts consumed")
-    }
-    if (all(consumed_columns%in%colnames(data))==F)
-    {
-        stop("Have not calculated the numeric proportions of amount of meat consumed Calculate proportions consumed before calculating amounts consumed")
+        warning("Have not calculated the amount of meat collected in kg or the proportions of meat consumed. Calculate amounts collected before calculating amounts consumed")
     }
 
-    meat_amount_data <- data[amount_columns]
-    consumed_prop_data <- data[consumed_columns]
+    if (all(amount_columns%in%colnames(data))==T & all(consumed_columns%in%colnames(data))==T){
 
-    amount_consumed_kg <- tibble::as_tibble(meat_amount_data*consumed_prop_data)
-    colnames(amount_consumed_kg) <- paste0("meat_consumed_kg_per_year", "_",c(1:number_of_loops))
 
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_consumed_kg,
-                                             new_column_name="meat_consumed_kg_per_year",
-                                             old_column_name="meat_consumed_props_numeric",
-                                             loop_structure=T)
+        meat_amount_data <- data[amount_columns]
+        consumed_prop_data <- data[consumed_columns]
+
+        amount_consumed_kg <- tibble::as_tibble(meat_amount_data*consumed_prop_data)
+        colnames(amount_consumed_kg) <- paste0("meat_consumed_kg_per_year", "_",c(1:number_of_loops))
+
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_consumed_kg,
+                                                 new_column_name="meat_consumed_kg_per_year",
+                                                 old_column_name="meat_consumed_props_numeric",
+                                                 loop_structure=T)
+    }
 
     return(data)
 
@@ -403,52 +417,54 @@ milk_sold_and_consumed_calculations <- function(data){
     amount_columns <- paste0("milk_collected_litres_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("milk_sold_prop_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(sold_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amount of milk collected in litres Calculate amounts collected before calculating amounts sold")
+        warning("Have not calculated the amount of milk collected or amount of milk sold in litres Calculate amounts collected before calculating amounts sold")
+
     }
-    if (all(sold_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==T | all(sold_columns%in%colnames(data))==T)
     {
-        stop("Have not calculated the numeric proportions of amount of milk sold. Calculate proportions sold before calculating amounts sold")
+
+
+
+        milk_amount_data <- data[amount_columns]
+        sold_prop_data <- data[sold_columns]
+
+        amount_sold__litres <- tibble::as_tibble(milk_amount_data*sold_prop_data)
+        colnames(amount_sold__litres) <- paste0("milk_sold_litres_per_year", "_",c(1:number_of_loops))
+
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_sold__litres,
+                                                 new_column_name="milk_sold_litres_per_year",
+                                                 old_column_name="milk_sold_prop_numeric",
+                                                 loop_structure=T)
+
     }
-
-    milk_amount_data <- data[amount_columns]
-    sold_prop_data <- data[sold_columns]
-
-    amount_sold__litres <- tibble::as_tibble(milk_amount_data*sold_prop_data)
-    colnames(amount_sold__litres) <- paste0("milk_sold_litres_per_year", "_",c(1:number_of_loops))
-
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_sold__litres,
-                                             new_column_name="milk_sold_litres_per_year",
-                                             old_column_name="milk_sold_prop_numeric",
-                                             loop_structure=T)
-
-
     number_of_loops <- find_number_of_loops(data, name_column="milk_consumed_amount")
     amount_columns <- paste0("milk_collected_litres_per_year","_",c(1:number_of_loops))
     consumed_columns <- paste0("milk_consumed_prop_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(consumed_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amount of milk collected in kg. Calculate amounts collected before calculating amounts consumed")
+        warning("Have not calculated the amount of milk collected or amount of milk consumed in litres Calculate amounts collected before calculating amounts sold")
+
     }
-    if (all(consumed_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==T | all(consumed_columns%in%colnames(data))==T)
     {
-        stop("Have not calculated the numeric proportions of amount of milk consumed Calculate proportions consumed before calculating amounts consumed")
+
+
+        milk_amount_data <- data[amount_columns]
+        consumed_prop_data <- data[consumed_columns]
+
+        amount_consumed_litres <- tibble::as_tibble(milk_amount_data*consumed_prop_data)
+        colnames(amount_consumed_litres) <- paste0("milk_consumed_litres_per_year", "_",c(1:number_of_loops))
+
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_consumed_litres,
+                                                 new_column_name="milk_consumed_litres_per_year",
+                                                 old_column_name="milk_consumed_prop_numeric",
+                                                 loop_structure=T)
     }
-
-    milk_amount_data <- data[amount_columns]
-    consumed_prop_data <- data[consumed_columns]
-
-    amount_consumed_litres <- tibble::as_tibble(milk_amount_data*consumed_prop_data)
-    colnames(amount_consumed_litres) <- paste0("milk_consumed_litres_per_year", "_",c(1:number_of_loops))
-
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_consumed_litres,
-                                             new_column_name="milk_consumed_litres_per_year",
-                                             old_column_name="milk_consumed_prop_numeric",
-                                             loop_structure=T)
 
     return(data)
 
@@ -606,24 +622,41 @@ eggs_proportions_all <- function(data){
 
     number_of_loops <- find_number_of_loops(data, name_column = "eggs_use")
 
-    egg_consumed_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "eggs_use", prop_column = "eggs_consumed_amount", loop_number = x))
-    colnames(egg_consumed_proportions_numeric)<-paste0("eggs_consumed_prop_numeric","_",c(1:number_of_loops))
-    egg_consumed_proportions_numeric<-tibble::as_tibble(egg_consumed_proportions_numeric)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=egg_consumed_proportions_numeric,
-                                             new_column_name="eggs_consumed_prop_numeric",
-                                             old_column_name="eggs_consumed_amount",
-                                             loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "eggs_consumed_amount",
 
+        "livestock_name"),
+        warning_message = "Could not calculate amounts of eggs sold and consumed"
+    )
+    if(length(missing_columns)==0)
+    {
+        egg_consumed_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "eggs_use", prop_column = "eggs_consumed_amount", loop_number = x))
+        colnames(egg_consumed_proportions_numeric)<-paste0("eggs_consumed_prop_numeric","_",c(1:number_of_loops))
+        egg_consumed_proportions_numeric<-tibble::as_tibble(egg_consumed_proportions_numeric)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=egg_consumed_proportions_numeric,
+                                                 new_column_name="eggs_consumed_prop_numeric",
+                                                 old_column_name="eggs_consumed_amount",
+                                                 loop_structure=T)
+    }
 
-    egg_sold_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "eggs_use", prop_column = "eggs_sell_amount", loop_number = x))
-    colnames(egg_sold_proportions_numeric) <- paste0("eggs_sold_prop_numeric","_",c(1:number_of_loops))
-    egg_sold_proportions_numeric<- tibble::as_tibble(egg_sold_proportions_numeric)
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=egg_sold_proportions_numeric,
-                                             new_column_name="eggs_sold_prop_numeric",
-                                             old_column_name="eggs_sell_amount",
-                                             loop_structure=T)
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "eggs_sell_amount",
+
+        "livestock_name"),
+        warning_message = "Could not calculate amounts of eggs sold and consumed"
+    )
+    if(length(missing_columns)==0)
+    {
+        egg_sold_proportions_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "eggs_use", prop_column = "eggs_sell_amount", loop_number = x))
+        colnames(egg_sold_proportions_numeric) <- paste0("eggs_sold_prop_numeric","_",c(1:number_of_loops))
+        egg_sold_proportions_numeric<- tibble::as_tibble(egg_sold_proportions_numeric)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=egg_sold_proportions_numeric,
+                                                 new_column_name="eggs_sold_prop_numeric",
+                                                 old_column_name="eggs_sell_amount",
+                                                 loop_structure=T)
+    }
 
     return(data)
 }
@@ -647,53 +680,50 @@ eggs_sold_and_consumed_calculations <- function(data){
     amount_columns <- paste0("eggs_collected_kg_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("eggs_sold_prop_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(sold_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amount of eggs collected in kg Calculate amounts collected before calculating amounts sold")
+        warning("Have not calculated the amount of eggs collected in kg or amounts sold. Calculate amounts collected before calculating amounts sold")
     }
-    if (all(sold_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==T & all(sold_columns%in%colnames(data))==T)
     {
-        stop("Have not calculated the numeric proportions of amount of eggs sold. Calculate proportions sold before calculating amounts sold")
+
+
+        eggs_amount_data <- data[amount_columns]
+        sold_prop_data <- data[sold_columns]
+
+        amount_sold_kg <- tibble::as_tibble(eggs_amount_data*sold_prop_data)
+        colnames(amount_sold_kg) <- paste0("eggs_sold_kg_per_year", "_",c(1:number_of_loops))
+
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_sold_kg,
+                                                 new_column_name="eggs_sold_kg_per_year",
+                                                 old_column_name="eggs_sold_prop_numeric",
+                                                 loop_structure=T)
+
     }
-
-    eggs_amount_data <- data[amount_columns]
-    sold_prop_data <- data[sold_columns]
-
-    amount_sold_kg <- tibble::as_tibble(eggs_amount_data*sold_prop_data)
-    colnames(amount_sold_kg) <- paste0("eggs_sold_kg_per_year", "_",c(1:number_of_loops))
-
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_sold_kg,
-                                             new_column_name="eggs_sold_kg_per_year",
-                                             old_column_name="eggs_sold_prop_numeric",
-                                             loop_structure=T)
-
-
     number_of_loops <- find_number_of_loops(data, name_column="eggs_consumed_amount")
     amount_columns <- paste0("eggs_collected_kg_per_year","_",c(1:number_of_loops))
     consumed_columns <- paste0("eggs_consumed_prop_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(consumed_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amount of milk collected in kg. Calculate amounts collected before calculating amounts consumed")
+        warning("Have not calculated the amount of eggs collected in kg or amounts sold. Calculate amounts collected before calculating amounts sold")
     }
-    if (all(consumed_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==T & all(consumed_columns%in%colnames(data))==T)
     {
-        stop("Have not calculated the numeric proportions of amount of milk consumed Calculate proportions consumed before calculating amounts consumed")
+
+        eggs_amount_data <- data[amount_columns]
+        consumed_prop_data <- data[consumed_columns]
+
+        amount_consumed_kg <- tibble::as_tibble(eggs_amount_data*consumed_prop_data)
+        colnames(amount_consumed_kg) <- paste0("eggs_consumed_kg_per_year", "_",c(1:number_of_loops))
+
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_consumed_kg,
+                                                 new_column_name="eggs_consumed_kg_per_year",
+                                                 old_column_name="eggs_consumed_prop_numeric",
+                                                 loop_structure=T)
     }
-
-    eggs_amount_data <- data[amount_columns]
-    consumed_prop_data <- data[consumed_columns]
-
-    amount_consumed_kg <- tibble::as_tibble(eggs_amount_data*consumed_prop_data)
-    colnames(amount_consumed_kg) <- paste0("eggs_consumed_kg_per_year", "_",c(1:number_of_loops))
-
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_consumed_kg,
-                                             new_column_name="eggs_consumed_kg_per_year",
-                                             old_column_name="eggs_consumed_prop_numeric",
-                                             loop_structure=T)
-
     return(data)
 }
 
@@ -982,28 +1012,42 @@ honey_proportions_all <- function(data){
 
     number_of_loops <- find_number_of_loops(data, "bees_honey_kg_per_year")
 
-    bees_honey_sold_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "bees_honey_use", prop_column = "bees_honey_sell_amount", loop_number = x))
-    colnames(bees_honey_sold_props_numeric) <- paste0("bees_honey_sold_props_numeric","_",c(1:number_of_loops))
-    bees_honey_sold_props_numeric<- tibble::as_tibble(bees_honey_sold_props_numeric)
-
-    data <- add_column_after_specific_column(data = data,
-                                             new_data = bees_honey_sold_props_numeric,
-                                             new_column_name = "bees_honey_sold_props_numeric",
-                                             old_column_name = "bees_honey_sell_amount",
-                                             loop_structure =T
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_sell_amount"),
+        warning_message = "Could not calculate honey amounts sold or consumed"
     )
+    if(length(missing_columns)==0)
+    {
 
+        bees_honey_sold_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "bees_honey_use", prop_column = "bees_honey_sell_amount", loop_number = x))
+        colnames(bees_honey_sold_props_numeric) <- paste0("bees_honey_sold_props_numeric","_",c(1:number_of_loops))
+        bees_honey_sold_props_numeric<- tibble::as_tibble(bees_honey_sold_props_numeric)
 
-    bees_honey_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "bees_honey_use", prop_column = "bees_honey_consumed_amount", loop_number = x))
-    colnames(bees_honey_consumed_props_numeric) <- paste0("bees_honey_consumed_props_numeric","_",c(1:number_of_loops))
-    bees_honey_consumed_props_numeric<- tibble::as_tibble(bees_honey_consumed_props_numeric)
-    data <- add_column_after_specific_column(data = data,
-                                             new_data = bees_honey_consumed_props_numeric,
-                                             new_column_name = "bees_honey_consumed_props_numeric",
-                                             old_column_name = "bees_honey_consumed_amount",
-                                             loop_structure =T)
+        data <- add_column_after_specific_column(data = data,
+                                                 new_data = bees_honey_sold_props_numeric,
+                                                 new_column_name = "bees_honey_sold_props_numeric",
+                                                 old_column_name = "bees_honey_sell_amount",
+                                                 loop_structure =T
+        )
+    }
 
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_consumed_amount"),
+        warning_message = "Could not calculate honey amounts sold or consumed"
+    )
+    if(length(missing_columns)==0)
+    {
 
+        bees_honey_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "bees_honey_use", prop_column = "bees_honey_consumed_amount", loop_number = x))
+        colnames(bees_honey_consumed_props_numeric) <- paste0("bees_honey_consumed_props_numeric","_",c(1:number_of_loops))
+        bees_honey_consumed_props_numeric<- tibble::as_tibble(bees_honey_consumed_props_numeric)
+        data <- add_column_after_specific_column(data = data,
+                                                 new_data = bees_honey_consumed_props_numeric,
+                                                 new_column_name = "bees_honey_consumed_props_numeric",
+                                                 old_column_name = "bees_honey_consumed_amount",
+                                                 loop_structure =T)
+
+    }
     return(data)
 
 }
@@ -1028,40 +1072,37 @@ honey_amount_sold_and_consumed_calculations <- function(data){
     amount_columns <- paste0("bees_honey_kg_per_year","_",c(1:number_of_loops))
     sold_columns <- paste0("bees_honey_sold_props_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(sold_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amounts collected in kg. Calculate amounts collected before calculating amounts sold")
+        warning("Have not calculated the amounts collected in kg or amounts sold. Calculate amounts collected before calculating amounts sold")
     }
-    if (all(sold_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==T & all(sold_columns%in%colnames(data))==T)
     {
-        stop("Have not calculated the numeric proportions of amount of honey sold. Calculate proportions sold before calculating amounts sold")
+
+
+        amounts_data <- data[amount_columns]
+        sold_prop_data <- data[sold_columns]
+
+        amount_sold_kg <- tibble::as_tibble(amounts_data*sold_prop_data)
+        colnames(amount_sold_kg) <- paste0("bees_honey_sold_kg_per_year", "_",c(1:number_of_loops))
+
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_sold_kg,
+                                                 new_column_name="bees_honey_sold_kg_per_year",
+                                                 old_column_name="bees_honey_sold_props_numeric",
+                                                 loop_structure=T)
     }
-
-    amounts_data <- data[amount_columns]
-    sold_prop_data <- data[sold_columns]
-
-    amount_sold_kg <- tibble::as_tibble(amounts_data*sold_prop_data)
-    colnames(amount_sold_kg) <- paste0("bees_honey_sold_kg_per_year", "_",c(1:number_of_loops))
-
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_sold_kg,
-                                             new_column_name="bees_honey_sold_kg_per_year",
-                                             old_column_name="bees_honey_sold_props_numeric",
-                                             loop_structure=T)
-
     # Moving on to crops consumed
     number_of_loops <- find_number_of_loops(data, name_column="bees_honey_production")
     amount_columns <- paste0("bees_honey_kg_per_year","_",c(1:number_of_loops))
     consumed_columns <- paste0("bees_honey_consumed_props_numeric","_",c(1:number_of_loops))
 
-    if (all(amount_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==F | all(consumed_columns%in%colnames(data))==F)
     {
-        stop("Have not calculated the amounts collected in kg. Calculate amounts collected before calculating amounts consumed")
+        warning("Have not calculated the amounts collected in kg or amounts sold. Calculate amounts collected before calculating amounts sold")
     }
-    if (all(consumed_columns%in%colnames(data))==F)
+    if (all(amount_columns%in%colnames(data))==T & all(consumed_columns%in%colnames(data))==T)
     {
-        stop("Have not calculated the numeric proportions of amount of honey consumed Calculate proportions consumed before calculating amounts consumed")
-    }
 
     amounts_data <- data[amount_columns]
     consumed_prop_data <- data[consumed_columns]
@@ -1074,6 +1115,7 @@ honey_amount_sold_and_consumed_calculations <- function(data){
                                              new_column_name="bees_honey_consumed_kg_per_year",
                                              old_column_name="bees_honey_consumed_props_numeric",
                                              loop_structure=T)
+    }
 
     return(data)
 
@@ -1167,10 +1209,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for milk sold income"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "milk_sold_income_per_year",
-                                               control_column = "milk_who_sells",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "milk_sold_income_per_year",
+                                                   control_column = "milk_who_sells",
+                                                   loop_structure=T)
     }
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1179,10 +1221,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for milk consumed amount"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "milk_consumed_litres_per_year",
-                                               control_column = "milk_who_control_eating",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "milk_consumed_litres_per_year",
+                                                   control_column = "milk_who_control_eating",
+                                                   loop_structure=T)
     }
 
     # Eggs gender split
@@ -1192,10 +1234,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for eggs sold amount"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "eggs_sold_kg_per_year",
-                                               control_column = "eggs_who_sells",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "eggs_sold_kg_per_year",
+                                                   control_column = "eggs_who_sells",
+                                                   loop_structure=T)
     }
 
 
@@ -1205,10 +1247,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for eggs sold income"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "eggs_income_per_year",
-                                               control_column = "eggs_who_sells",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "eggs_income_per_year",
+                                                   control_column = "eggs_who_sells",
+                                                   loop_structure=T)
     }
 
 
@@ -1218,10 +1260,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for eggs consumed per year"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "eggs_consumed_kg_per_year",
-                                               control_column = "eggs_who_control_eating",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "eggs_consumed_kg_per_year",
+                                                   control_column = "eggs_who_control_eating",
+                                                   loop_structure=T)
     }
 
     # Honey Gender split
@@ -1232,10 +1274,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for honey sold amount"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "bees_honey_sold_kg_per_year",
-                                               control_column = "bees_who_sells",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "bees_honey_sold_kg_per_year",
+                                                   control_column = "bees_who_sells",
+                                                   loop_structure=T)
     }
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1244,10 +1286,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for honey sold income"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "bees_honey_sold_income",
-                                               control_column = "bees_who_sells",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "bees_honey_sold_income",
+                                                   control_column = "bees_who_sells",
+                                                   loop_structure=T)
     }
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1256,10 +1298,10 @@ gender_split_livestock <- function(data){
         warning_message = "Could not gender_split for honey consumed amount"
     )
     if(length(missing_columns)==0){
-    data <- insert_gender_columns_in_core_data(data=data,
-                                               original_column = "bees_honey_consumed_kg_per_year",
-                                               control_column = "bees_who_control_eating",
-                                               loop_structure=T)
+        data <- insert_gender_columns_in_core_data(data=data,
+                                                   original_column = "bees_honey_consumed_kg_per_year",
+                                                   control_column = "bees_who_control_eating",
+                                                   loop_structure=T)
     }
 
 
@@ -1337,16 +1379,9 @@ livestock_calculations_all <- function(data,
 
 
     # Meat sold and consumed amounts
-    missing_columns <- check_columns_in_data(data, loop_columns = c("meat_kg_per_year",
-                                                                    "meat_sell_amount",
-                                                                    "meat_consumed_amount",
-                                                                    "meat_use",
-                                                                    "livestock_name"),
-                                             warning_message = "Could not calculate amounts of meat sold or consumed")
-    if(length(missing_columns)==0)
-    {
-        data <- meat_sold_and_consumed_calculation(data)
-    }
+
+    data <- meat_sold_and_consumed_calculation(data)
+
 
 
 
@@ -1382,16 +1417,10 @@ livestock_calculations_all <- function(data,
 
 
     # Milk sold and consumed
-    missing_columns <- check_columns_in_data(data, loop_columns = c("milk_sell_amount",
-                                                                    "milk_consumed_amount",
-                                                                    "milk_use",
-                                                                    "milk_collected_litres_per_year"),
-                                             warning_message = "Cannot calculate amounts of milk sold and consumed")
-    if(length(missing_columns)==0)
-    {
-        data <- milk_sold_and_consumed_calculations(data)
 
-    }
+    data <- milk_sold_and_consumed_calculations(data)
+
+
 
 
     # Milk income
@@ -1425,18 +1454,9 @@ livestock_calculations_all <- function(data,
 
 
     # Eggs sold and consumed
-    missing_columns <- check_columns_in_data(data, loop_columns = c(
-        "eggs_sell_amount",
-        "eggs_consumed_amount",
-        "eggs_use",
-        "eggs_collected_kg_per_year",
-        "livestock_name"),
-        warning_message = "Could not calculate amounts of eggs sold and consumed"
-    )
-    if(length(missing_columns)==0)
-    {
-        data <- eggs_sold_and_consumed_calculations(data)
-    }
+
+    data <- eggs_sold_and_consumed_calculations(data)
+
 
 
     # Eggs income
@@ -1473,18 +1493,8 @@ livestock_calculations_all <- function(data,
 
 
     # Honey sold and consumed
-    missing_columns <- check_columns_in_data(data, loop_columns = c(
-        "bees_honey_kg_per_year",
-        "bees_honey_use",
-        "bees_honey_sell_amount",
-        "bees_honey_consumed_amount",
-        "livestock_name"),
-        warning_message = "Could not calculate honey amounts sold or consumed"
-    )
-    if(length(missing_columns)==0)
-    {
-        data <- honey_amount_sold_and_consumed_calculations(data)
-    }
+    data <- honey_amount_sold_and_consumed_calculations(data)
+
 
 
 
