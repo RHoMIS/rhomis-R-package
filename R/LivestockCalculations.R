@@ -744,7 +744,6 @@ egg_income_calculations <- function(data,
                                     units=eggs_price_time_units$unit,
                                     unit_conversions=eggs_price_time_units$conversion_factor){
 
-
     number_of_loops <- find_number_of_loops(data, "eggs_sold_income")
 
     income_columns <- paste0("eggs_sold_income", "_", paste0(1:number_of_loops))
@@ -753,17 +752,24 @@ egg_income_calculations <- function(data,
 
     income_data <- data[income_columns]
     income_data <- income_data %>% dplyr::mutate_all(as.numeric)
-    amount_sold_data <- data[amount_sold_columns]
-    amount_sold_data <- amount_sold_data %>% dplyr::mutate_all(as.numeric)
 
+    if (all(amount_sold_columns %in% colnames(data)))
+    {
+        amount_sold_data <- data[amount_sold_columns]
+        amount_sold_data <- amount_sold_data %>% dplyr::mutate_all(as.numeric)
+    }
     income_units_data <- data[income_units_columns]
 
     units_converted <- switch_units(income_units_data, units = units, conversion_factors = unit_conversions)
+    if (all(amount_sold_columns %in% colnames(data)))
+    {
     units_converted <- sapply(c(1:number_of_loops), function(x){
         eggs_price_per_egg_to_numeric(units_column = units_converted[[x]],amount_sold_column = amount_sold_data[[x]])
     }) %>% magrittr::set_colnames(paste0("eggs_price_units_numeric","_",c(1:number_of_loops))) %>%
-        tibble::as_tibble() %>% dplyr::mutate_all(as.numeric)
+        tibble::as_tibble()
+    }
 
+    units_converted <- units_converted %>% dplyr::mutate_all(as.numeric)
     total_income <- units_converted*income_data %>%
         tibble::as_tibble()
     colnames(total_income)<- paste0("eggs_income_per_year","_",c(1:number_of_loops))
@@ -1104,17 +1110,17 @@ honey_amount_sold_and_consumed_calculations <- function(data){
     if (all(amount_columns%in%colnames(data))==T & all(consumed_columns%in%colnames(data))==T)
     {
 
-    amounts_data <- data[amount_columns]
-    consumed_prop_data <- data[consumed_columns]
+        amounts_data <- data[amount_columns]
+        consumed_prop_data <- data[consumed_columns]
 
-    amount_consumed_kg <- tibble::as_tibble(amounts_data*consumed_prop_data)
-    colnames(amount_consumed_kg) <- paste0("bees_honey_consumed_kg_per_year", "_",c(1:number_of_loops))
+        amount_consumed_kg <- tibble::as_tibble(amounts_data*consumed_prop_data)
+        colnames(amount_consumed_kg) <- paste0("bees_honey_consumed_kg_per_year", "_",c(1:number_of_loops))
 
-    data <- add_column_after_specific_column(data=data,
-                                             new_data=amount_consumed_kg,
-                                             new_column_name="bees_honey_consumed_kg_per_year",
-                                             old_column_name="bees_honey_consumed_props_numeric",
-                                             loop_structure=T)
+        data <- add_column_after_specific_column(data=data,
+                                                 new_data=amount_consumed_kg,
+                                                 new_column_name="bees_honey_consumed_kg_per_year",
+                                                 old_column_name="bees_honey_consumed_props_numeric",
+                                                 loop_structure=T)
     }
 
     return(data)
@@ -1462,7 +1468,6 @@ livestock_calculations_all <- function(data,
     # Eggs income
     missing_columns <- check_columns_in_data(data, loop_columns = c(
         "eggs_sold_income",
-        "eggs_sold_kg_per_year",
         "eggs_sold_price_timeunits",
         "livestock_name"),
         warning_message = "Could not calculate egg incomes"
