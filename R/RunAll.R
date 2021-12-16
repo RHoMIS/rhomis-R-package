@@ -63,15 +63,11 @@ processData <- function(
     draft=NULL){
 
 
-
-    options(nwarnings = 10000)
-
-
     # Print warnings as they occur.
     options(warn = 1)
 
     # Create variable to store the warnings.
-    warns <- vector("character")
+    warns <<- vector("character")
 
     # Create connection for the sink.
     warn_connection <- textConnection("warns", "wr", local = FALSE)
@@ -810,7 +806,6 @@ processData <- function(
             },
 
         error=function(e){
-            print(e)
             sink(type = "message")
 
             # Close the connection.
@@ -819,6 +814,9 @@ processData <- function(
 
 
             warns <- paste0(warns, collapse="\n")
+
+            warns <- paste0(warns,e, collapse="\n")
+
 
             if (outputType=="csv"){
                 dir.create("log", showWarnings = F)
@@ -855,7 +853,7 @@ processData <- function(
                 connection$disconnect()
             }
 
-            return(warns)
+            return(e)
 
         })
 }
