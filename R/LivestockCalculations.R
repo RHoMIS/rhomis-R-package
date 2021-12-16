@@ -763,10 +763,10 @@ egg_income_calculations <- function(data,
     units_converted <- switch_units(income_units_data, units = units, conversion_factors = unit_conversions)
     if (all(amount_sold_columns %in% colnames(data)))
     {
-    units_converted <- sapply(c(1:number_of_loops), function(x){
-        eggs_price_per_egg_to_numeric(units_column = units_converted[[x]],amount_sold_column = amount_sold_data[[x]])
-    }) %>% magrittr::set_colnames(paste0("eggs_price_units_numeric","_",c(1:number_of_loops))) %>%
-        tibble::as_tibble()
+        units_converted <- sapply(c(1:number_of_loops), function(x){
+            eggs_price_per_egg_to_numeric(units_column = units_converted[[x]],amount_sold_column = amount_sold_data[[x]])
+        }) %>% magrittr::set_colnames(paste0("eggs_price_units_numeric","_",c(1:number_of_loops))) %>%
+            tibble::as_tibble()
     }
 
     units_converted <- units_converted %>% dplyr::mutate_all(as.numeric)
@@ -780,13 +780,21 @@ egg_income_calculations <- function(data,
                                              old_column_name = "eggs_sold_price_timeunits",
                                              loop_structure = T)
 
-    price_data <- total_income/amount_sold_data %>% tibble::as_tibble()
-    colnames(price_data) <- paste0("eggs_price_per_kg","_",c(1:number_of_loops))
-    data <- add_column_after_specific_column(data = data,
-                                             new_data = price_data,
-                                             new_column_name ="eggs_price_per_kg" ,
-                                             old_column_name = "eggs_income_per_year",
-                                             loop_structure = T)
+    if (all(amount_sold_columns %in% colnames(data))==F){
+        warning("Could not calculate egg prices, missing information on the amount of eggs sold")
+    }
+
+
+    if (all(amount_sold_columns %in% colnames(data)))
+    {
+        price_data <- total_income/amount_sold_data %>% tibble::as_tibble()
+        colnames(price_data) <- paste0("eggs_price_per_kg","_",c(1:number_of_loops))
+        data <- add_column_after_specific_column(data = data,
+                                                 new_data = price_data,
+                                                 new_column_name ="eggs_price_per_kg" ,
+                                                 old_column_name = "eggs_income_per_year",
+                                                 loop_structure = T)
+    }
 
     return(data)
 }
