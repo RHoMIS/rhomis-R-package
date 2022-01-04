@@ -1,5 +1,6 @@
 library(testthat)
 library(tibble)
+library(mongolite)
 
 testthat::test_that("can convert from data fram to json", {
     sample_data_frame <- tibble::as_tibble(list("original_spelling"=c("benana","maz","wetermalon","cokonut"),
@@ -9,3 +10,13 @@ testthat::test_that("can convert from data fram to json", {
 
     expect_equal(actual_result, expected_result)
     })
+
+
+testthat::test_that("Can connect to a mongodb",{
+
+    # Testing that an error is not thrown
+    testthat::expect_error(connect_to_db(collection="test_collection",
+                                         database="test",
+                                         url="mongodb://localhost"), NA)
+
+})
