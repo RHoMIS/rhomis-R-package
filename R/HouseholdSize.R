@@ -33,14 +33,14 @@ identify_person_category<- function(age, gender){
     vector <- rep(NA, length(gender))
     gender <- tolower(gender)
 
-    vector[age<=4] <-"children_under_4"
-    vector[age>4 & age<=10] <-"children_4to10"
+    vector[age<4] <-"children_under_4"
+    vector[age>=4 & age<1] <-"children_4to10"
     vector[age>11 & age<=24 & gender=="m"] <-"males11to24"
     vector[age>11 & age<=24 & gender=="f"] <-"females11to24"
     vector[age>24 & age<=50 & gender=="m"] <-"males25to50"
     vector[age>24 & age<=50 & gender=="f"] <-"female_25_to_50"
-    vector[age>=50& gender=="m"] <-"male_50_plus"
-    vector[age>=50 & gender=="f"] <-"female_50_plus"
+    vector[age>50& gender=="m"] <-"male_50_plus"
+    vector[age>50 & gender=="f"] <-"female_50_plus"
 
     return(vector)
 }
