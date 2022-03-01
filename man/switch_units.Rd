@@ -4,14 +4,14 @@
 \alias{switch_units}
 \title{Switch Units}
 \usage{
-switch_units(data_to_convert, units, conversion_factors)
+switch_units(data_to_convert, unit_tibble, id_vector)
 }
 \arguments{
 \item{data_to_convert}{This list or data frame which needs to be converted}
 
-\item{units}{A list of the character units which need to be converted (see example)}
+\item{unit_tibble}{A tibble containing}
 
-\item{conversion_factors}{A list of converstion factors for the unit list (see example)}
+\item{id_vector}{Column containing the RHoMIS id, used to subset the units by project data frame}
 }
 \value{
 Returns the data (in its original format) with the units in their numerical format
@@ -23,16 +23,5 @@ This function does just that.
 }
 \examples{
 # Converting a list
-units <- c("kg", "sacks_50kg", "wheel_barrows_100kg","litres")
-conversion_factors <- c(1,50,100,1)
-list_to_convert <- c("kg", "sacks_50kg","other_unit",NA, NA, "wheel_barrows_100kg","litres")
-switch_units(list_to_convert, units, conversion_factors)
-# Converting a data frame or tibble
-units <- c("kg", "sacks_50kg", "wheel_barrows_100kg","litres")
-conversion_factors <- c(1,50,100,1)
-tibble_to_convert <- tibble::as_tibble(list("maize"=c("kg", "other_random_unit","wheel_barrows_100kg"),
-                                    "cassava"=c("sacks_50kg",NA,"another_random_unit"),
-                                    "banana"=c("bunches", "wheel_barrows_100kg",NA)))
-switch_units(tibble_to_convert, units, conversion_factors)
 
 }

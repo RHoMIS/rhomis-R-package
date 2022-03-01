@@ -7,11 +7,14 @@
 load_rhomis_csv(
   file_path,
   country_column = "country",
+  unique_id_col = "_uuid",
+  hh_id_col = NULL,
   id_type = "string",
   proj_id = NULL,
   form_id = NULL,
   proj_id_col = NULL,
-  form_id_col = NULL
+  form_id_col = NULL,
+  overwrite = FALSE
 )
 }
 \arguments{
@@ -28,6 +31,8 @@ load_rhomis_csv(
 \item{proj_id_col}{The name of the column containing the project IDs}
 
 \item{form_id_col}{The name of the column containing the form IDs}
+
+\item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
 }
 \value{
 A tibble of RHoMIS data

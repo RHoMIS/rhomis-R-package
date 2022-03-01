@@ -37,19 +37,22 @@ load_data_odk <- function(
 make_id_columns <- function(data,
                             country_column= "country",
                             unique_id_col="_uuid",
-                            hh_id_col="hhid",
+                            hh_id_col=NULL,
                             id_type="string",
                             proj_id=NULL,
                             form_id=NULL,
                             proj_id_col=NULL,
                             form_id_col=NULL){
 
+
     if (country_column %in% colnames(data)==FALSE){
         stop('The country_column you specified does not exist in the data set you provided')
     }
 
-    if(hh_id_col %in% colnames(data)==FALSE){
-        stop('The hh_id column provided does not exist in the dataset')
+    if(!is.null(hh_id_col)){
+        if(hh_id_col %in% colnames(data)==FALSE){
+            stop('The hh_id column provided does not exist in the dataset')
+        }
     }
 
     if (unique_id_col %in% colnames(data)==FALSE){
@@ -81,14 +84,35 @@ make_id_columns <- function(data,
         form_id_vector <- rep(form_id, nrow(data))
         proj_form_id_col <- paste0(proj_id_vector, form_id_vector,data[[country_column]])
         proj_form_id_col <- unname(sapply(proj_form_id_col, function(x) digest::digest(x)))
-        household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
 
+        if (!is.null(hh_id_col))
+        {
+            household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
+        }
 
-        data <- dplyr::bind_cols("id_proj"=proj_id_vector, data)
-        data <- dplyr::bind_cols("id_form"=form_id_vector, data)
-        data <- dplyr::bind_cols("id_rhomis_dataset"=proj_form_id_col, data)
-        data <- dplyr::bind_cols("id_hh"=household_id, data)
-        data <- dplyr::bind_cols("id_unique"=data[[unique_id_col]], data)
+        if (is.null(hh_id_col))
+        {
+            household_id <- paste0(proj_id_vector, form_id_vector, c(1:nrow(data)))
+            household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
+        }
+
+        data$id_proj <- proj_id_vector
+        data$id_form <- form_id_vector
+        data$id_rhomis_dataset <- proj_form_id_col
+        data$id_hh <- household_id
+        data$id_unique <- data[[unique_id_col]]
+
+        data <- data %>% dplyr::relocate(id_proj)
+        data <- data %>% dplyr::relocate(id_form)
+        data <- data %>% dplyr::relocate(id_rhomis_dataset)
+        data <- data %>% dplyr::relocate(id_hh)
+        data <- data %>% dplyr::relocate(id_unique)
+
+        # data <- dplyr::bind_cols("id_proj"=proj_id_vector, data)
+        # data <- dplyr::bind_cols("id_form"=form_id_vector, data)
+        # data <- dplyr::bind_cols("id_rhomis_dataset"=proj_form_id_col, data)
+        # data <- dplyr::bind_cols("id_hh"=household_id, data)
+        # data <- dplyr::bind_cols("id_unique"=data[[unique_id_col]], data)
 
 
         return (data)
@@ -115,13 +139,36 @@ make_id_columns <- function(data,
         form_id_vector <- data[[form_id_col]]
         proj_form_id_col <- paste0(proj_id_vector, form_id_vector,data[[country_column]])
         proj_form_id_col <- unname(sapply(proj_form_id_col, function(x) digest::digest(x)))
-        household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
 
-        data <- dplyr::bind_cols("id_proj"=proj_id_vector, data)
-        data <- dplyr::bind_cols("id_form"=form_id_vector, data)
-        data <- dplyr::bind_cols("id_rhomis_dataset"=proj_form_id_col, data)
-        data <- dplyr::bind_cols("id_hh"=household_id, data)
-        data <- dplyr::bind_cols("id_unique"=data[[unique_id_col]], data)
+        if (!is.null(hh_id_col))
+        {
+            household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
+        }
+
+        if (is.null(hh_id_col))
+        {
+            household_id <- paste0(proj_id_vector, form_id_vector, c(1:nrow(data)))
+            household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
+        }
+
+        data$id_proj <- proj_id_vector
+        data$id_form <- form_id_vector
+        data$id_rhomis_dataset <- proj_form_id_col
+        data$id_hh <- household_id
+        data$id_unique <- data[[unique_id_col]]
+
+        data <- data %>% dplyr::relocate(id_proj)
+        data <- data %>% dplyr::relocate(id_form)
+        data <- data %>% dplyr::relocate(id_rhomis_dataset)
+        data <- data %>% dplyr::relocate(id_hh)
+        data <- data %>% dplyr::relocate(id_unique)
+
+
+        # data <- dplyr::bind_cols("id_proj"=proj_id_vector, data)
+        # data <- dplyr::bind_cols("id_form"=form_id_vector, data)
+        # data <- dplyr::bind_cols("id_rhomis_dataset"=proj_form_id_col, data)
+        # data <- dplyr::bind_cols("id_hh"=household_id, data)
+        # data <- dplyr::bind_cols("id_unique"=data[[unique_id_col]], data)
 
         return (data)
     }
@@ -141,6 +188,7 @@ make_id_columns <- function(data,
 #' @param form_id A single string to be used as the form ID for all households
 #' @param proj_id_col The name of the column containing the project IDs
 #' @param form_id_col The name of the column containing the form IDs
+#' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
 #'
 #' @return A tibble of RHoMIS data
 #' @export
@@ -149,11 +197,14 @@ make_id_columns <- function(data,
 #'
 load_rhomis_csv <- function(file_path,
                             country_column= "country",
+                            unique_id_col="_uuid",
+                            hh_id_col=NULL,
                             id_type="string",
                             proj_id=NULL,
                             form_id=NULL,
                             proj_id_col=NULL,
-                            form_id_col=NULL) {
+                            form_id_col=NULL,
+                            overwrite=FALSE) {
 
 
     rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a","-999","NA"))
@@ -166,14 +217,16 @@ load_rhomis_csv <- function(file_path,
                                                                    "hh_rep")) %>% tolower()
 
     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
-    make_id_column(
+    rhomis_data <- make_id_columns(
         data=rhomis_data,
         country_column,
-        id_type,
-        proj_id,
-        form_id,
-        proj_id_col,
-        form_id_col)
+        unique_id_col=unique_id_col,
+        hh_id_col=hh_id_col,
+        id_type=id_type,
+        proj_id=proj_id,
+        form_id=form_id,
+        proj_id_col=proj_id_col ,
+        form_id_col=form_id_col)
 
 
     rhomis_data <- sapply(rhomis_data, function(x){

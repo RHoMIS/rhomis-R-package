@@ -196,3 +196,123 @@ testthat::test_that("Test that new values can be correctly converted to tibble",
 
 
 
+testthat::test_that("Can extract units from individual projects",{
+
+    test_data <- tibble::tibble(
+        id_rhomis_dataset=c("project_1", "project_2", "project_2", "project_3"),
+        country=c("vietnam","new-zealand", "new-zealand", "kenya"),
+        crop_name_1=c("maize","cassava", "cucumber", "coconut"),
+        crop_name_2=c(NA,"cucumber", "sdgrfsedzrf", "wearsefd"))
+
+    expected_result <- list(
+        country=tibble::as_tibble(
+            list(
+                survey_value=c("vietnam", "new-zealand", "kenya"),
+                conversion=c(NA,NA,NA),
+                unit_type=c("country","country","country"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ) %>% dplyr::mutate_all(as.character()),
+        crop_name=tibble::as_tibble(
+            list(
+                survey_value=c("maize", NA, "cassava", "cucumber", "sdgrfsedzrf", NA, "coconut", "wearsefd", NA),
+                conversion=c(NA,NA,NA,NA,NA,NA,NA,NA,NA),
+                unit_type=c("crop_name","crop_name","crop_name","crop_name","crop_name","crop_name","crop_name","crop_name","crop_name"),
+                id_rhomis_data_set=c("project_1", "project_1", "project_2", "project_2","project_2","project_2","project_3","project_3","project_3" )
+            )
+        ),
+        livestock_name=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("livestock_name","livestock_name","livestock_name"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        crop_yield_units=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("crop_yield_units","crop_yield_units","crop_yield_units"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        crop_sold_price_quantityunits=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("crop_sold_price_quantityunits","crop_sold_price_quantityunits","crop_sold_price_quantityunits"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        unitland=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("unitland","unitland","unitland"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        milk_units=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("milk_units","milk_units","milk_units"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        milk_sold_price_timeunits=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("milk_sold_price_timeunits","milk_sold_price_timeunits","milk_sold_price_timeunits"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        bees_honey_production_units=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("bees_honey_production_units","bees_honey_production_units","bees_honey_production_units"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        eggs_units=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("eggs_units","eggs_units","eggs_units"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        eggs_sold_price_timeunits=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("eggs_sold_price_timeunits","eggs_sold_price_timeunits","eggs_sold_price_timeunits"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        ),
+        fertiliser_units=tibble::as_tibble(
+            list(
+                survey_value=as.character(c(NA,NA,NA)),
+                conversion=c(NA,NA,NA),
+                unit_type=c("fertiliser_units","fertiliser_units","fertiliser_units"),
+                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+            )
+        )
+
+
+
+
+
+    )
+
+    result <- extract_values_by_project(test_data)
+
+    expect_equal(result, expected_result)
+
+})
+
+
+

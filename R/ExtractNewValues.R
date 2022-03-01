@@ -291,6 +291,44 @@ extract_new_core_units <- function(data)
 
 }
 
+#' Extract Values by Project
+#'
+#' A function to extract all of the units alongside their
+#' individual form and project IDs.
+#'
+#' @param data A rhomis data frame
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_values_by_project <- function(data){
+
+    if ("id_rhomis_dataset" %in% colnames(data)==F){
+        stop("Could not find the individual project ID generated for this project")
+    }
+    projects <- unique(data$id_rhomis_dataset)
+    units_by_project_by_unit_type <- sapply(projects, function(x) extract_units_data_frames(data[data$id_rhomis_dataset==x,]), simplify = F)
+
+    units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project){
+        lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type){
+            conversion_table <- units_by_project_by_unit_type[[project]][[conversion_type]]
+            conversion_table$unit_type<- conversion_type
+            conversion_table$id_rhomis_data_set <- project
+            return(conversion_table)
+        })
+    })
+
+    units_by_project_merged_df <- bind_rows(units_by_project_merged)
+    final_units_list <- sapply(unique(units_by_project_merged_df$unit_type),function(unit_type){
+        units_by_project_merged_df[units_by_project_merged_df$unit_type==unit_type,]
+    }, simplify=F)
+
+    return(final_units_list)
+
+}
+
+
 
 #' Merge and Simplify Core Values
 #'
@@ -453,12 +491,7 @@ extract_units_data_frames <- function(data){
 
 }
 
-extact_units_data_frames_by_proj_country <- function(data,
-                                                     country_column,
-                                                     proj_id_column,
-                                                     form_id_column){
 
-}
 
 #' Convert New Values to Tibble
 #'

@@ -8,7 +8,7 @@ make_id_columns(
   data,
   country_column = "country",
   unique_id_col = "_uuid",
-  hh_id_col = "hhid",
+  hh_id_col = NULL,
   id_type = "string",
   proj_id = NULL,
   form_id = NULL,
