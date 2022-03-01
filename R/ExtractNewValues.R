@@ -435,6 +435,7 @@ write_core_values_to_convert_to_file <- function(data, folder){
     sapply(names(new_units), function(x) write_new_values_to_file(specific_value=x,list_of_tibbles=new_units, folder=folder),simplify = FALSE)
 }
 
+
 #' Extract Units to DataFrame
 #'
 #' @param data The core RHoMIS dataset which we are extracting units from
@@ -449,6 +450,13 @@ extract_units_data_frames <- function(data){
     new_units<- sapply(new_units, function(x) convert_new_values_to_tibble(x),simplify = FALSE)
 
     return(new_units)
+
+}
+
+extact_units_data_frames_by_proj_country <- function(data,
+                                                     country_column,
+                                                     proj_id_column,
+                                                     form_id_column){
 
 }
 

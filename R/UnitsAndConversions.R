@@ -653,11 +653,12 @@ check_existing_conversions <- function(list_of_df){
 #' @export
 #'
 #' @examples
-write_units_to_folder <- function(list_of_df){
-    dir.create("./unit_conversions", showWarnings = F)
+write_units_to_folder <- function(list_of_df,
+                                  folder="./unit_conversions"){
+    dir.create(folder, showWarnings = F)
 
     sapply(names(list_of_df), function(x) {
-        file_path <- paste0("./unit_conversions/",x,".csv")
+        file_path <- paste0(folder,"/",x,".csv")
         readr::write_csv(list_of_df[[x]], file_path)
     })
 

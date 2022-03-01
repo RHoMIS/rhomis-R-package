@@ -4,7 +4,7 @@
 \alias{write_units_to_folder}
 \title{Write Units to Folder}
 \usage{
-write_units_to_folder(list_of_df)
+write_units_to_folder(list_of_df, folder = "./unit_conversions")
 }
 \arguments{
 \item{list_of_df}{A list of dataframes, containing all
