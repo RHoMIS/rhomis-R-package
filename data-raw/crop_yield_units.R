@@ -32,6 +32,6 @@ crop_yield_units <- tibble::as_tibble(list("kg"=1,
                                    "debe"=18,
                                    "sacks_25kg"=25,
                                    "bag_100kg"=100,
-                                   "bunch_15kg"=15)) %>% tidyr::pivot_longer(tidyr::everything(),names_to = "unit", values_to = "conversion")
+                                   "bunch_15kg"=15)) %>% tidyr::pivot_longer(tidyr::everything(),names_to = "survey_value", values_to = "conversion")
 
 usethis::use_data(crop_yield_units, overwrite = TRUE)

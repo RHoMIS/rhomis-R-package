@@ -162,12 +162,15 @@ add_column_after_specific_column <- function(data,new_data, new_column_name=NULL
 #' @param use_column The column which includes the uses for this item
 #' @param loop_number The number of the loop which is being processed
 #' @param prop_column The column containing the proportions for this use
+#' @param id_column The id column
 #'
 #' @return
 #' @export
 #'
 #' @examples
 proportions_calculation <- function(data, use,use_column, prop_column, loop_number=NULL){
+
+
 
     if(use!="sell"&use!="eat"&use!="feed_livestock" &use!="use"){
         stop("Invalid 'use' defined for crop proportions")
@@ -195,7 +198,9 @@ proportions_calculation <- function(data, use,use_column, prop_column, loop_numb
 single_uses <- sapply(single_uses,function(x)length(x))
 single_uses <- single_uses==1 & !is.na(use_data) & grepl(use,use_data)
 
-proportions_data <- switch_units(proportions_data, units = proportion_conversions$unit, conversion_factors = proportion_conversions$conversion)
+id_col <- rep("x", nrow(data))
+unit_conv_tibble <- make_per_project_conversion_tibble(proj_id_vector = id_col,unit_conv_tibble = proportion_conversions)
+proportions_data <- switch_units(proportions_data, unit_tibble = unit_conv_tibble,id_vector = id_col)
 proportions_data[single_uses]<-1
 
 return(proportions_data)

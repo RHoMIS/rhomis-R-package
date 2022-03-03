@@ -1,12 +1,12 @@
 library(tibble)
 
-eggs_price_time_units <- tibble::as_tibble(list(unit=c("day",
+eggs_price_time_units <- tibble::as_tibble(list(survey_value=c("day",
                                                        "week",
                                                        "month",
                                                        "year",
                                                        "total",
                                                        "per_egg"),
-                                                conversion_factor=c(365,
+                                                conversion=c(365,
                                                                     365/7,
                                                                     365/28,
                                                                     1,

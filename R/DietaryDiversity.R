@@ -54,13 +54,19 @@ hdds_calc <- function(data){
     time_values <- c("daily","fewperweek","weekly","fewpermonth","monthly","never")
     conversion <- c(1,1,1,0,0,0)
 
+    unit_conv_tibble <- tibble::as_tibble(list(
+        survey_value=time_values,
+        conversion=conversion,
+        id_rhomis_dataset=rep("x", length(time_values))
+    ))
+
 
     outputs <- c()
 
     # HDDS for fourteen food groups, looking at the bad season
     if(all(fourteen_groups_columns$bad_season %in% colnames(data)))
     {
-        bad_season_14 <-  switch_units(data[,fourteen_groups_columns$bad_season],time_values,conversion)
+        bad_season_14 <-  switch_units(data[,fourteen_groups_columns$bad_season],unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
         colnames(bad_season_14) <-gsub("_bad_season","",colnames(bad_season_14))
         bad_season_10 <- collapse_14_groups(bad_season_14)
         HDDS_bad_season <- rowSums(bad_season_10, na.rm = T)
@@ -91,7 +97,7 @@ hdds_calc <- function(data){
 
     if(all(fourteen_groups_columns$good_season %in% colnames(data)))
     {
-        good_season_14 <-  switch_units(data[,fourteen_groups_columns$good_season],time_values,conversion)
+        good_season_14 <-  switch_units(data[,fourteen_groups_columns$good_season],unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
         colnames(good_season_14) <-gsub("_good_season","",colnames(good_season_14))
         good_season_10 <- collapse_14_groups(good_season_14)
         HDDS_good_season <- rowSums(good_season_10, na.rm = T)
@@ -121,7 +127,7 @@ hdds_calc <- function(data){
     # HDDS for fourteen food groups, looking at the last month
     if(all(fourteen_groups_columns$last_month %in% colnames(data)))
     {
-        last_month_14 <-  switch_units(data[,fourteen_groups_columns$last_month],time_values,conversion)
+        last_month_14 <-  switch_units(data[,fourteen_groups_columns$last_month],unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
         colnames(last_month_14) <-gsub("_last_month","",colnames(last_month_14))
         last_month_10 <- collapse_14_groups(last_month_14)
         HDDS_last_month <- rowSums(last_month_10, na.rm = T)
@@ -151,7 +157,7 @@ hdds_calc <- function(data){
 
     if(all(ten_groups_columns$good_season %in% colnames(data)))
     {
-        good_season_10 <-  switch_units(data[,ten_groups_columns$good_season],time_values,conversion)
+        good_season_10 <-  switch_units(data[,ten_groups_columns$good_season],unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
         colnames(good_season_10) <-gsub("_good_season","",colnames(good_season_10))
         HDDS_good_season <- rowSums(good_season_10, na.rm = T)
         outputs$hdds_good_season <- HDDS_good_season
@@ -176,7 +182,7 @@ hdds_calc <- function(data){
 
     if(all(ten_groups_columns$bad_season %in% colnames(data)))
     {
-        bad_season_10 <-  switch_units(data[,ten_groups_columns$bad_season],time_values,conversion)
+        bad_season_10 <-  switch_units(data[,ten_groups_columns$bad_season],unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
         colnames(bad_season_10) <-gsub("_bad_season","",colnames(bad_season_10))
         HDDS_bad_season <- rowSums(bad_season_10, na.rm = T)
         outputs$hdds_bad_season <- HDDS_bad_season
@@ -201,7 +207,7 @@ hdds_calc <- function(data){
 
     if(all(ten_groups_columns$good_season %in% colnames(data)))
     {
-        good_season_10 <-  switch_units(data[,ten_groups_columns$good_season],time_values,conversion)
+        good_season_10 <-  switch_units(data[,ten_groups_columns$good_season],unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
         colnames(good_season_10) <-gsub("_good_season","",colnames(good_season_10))
         HDDS_good_season <- rowSums(good_season_10, na.rm = T)
         outputs$hdds_good_season <- HDDS_good_season
@@ -227,7 +233,7 @@ hdds_calc <- function(data){
 
     if(all(ten_groups_columns$last_month %in% colnames(data)))
     {
-        last_month_10 <-  switch_units(data[,ten_groups_columns$last_month],time_values,conversion)
+        last_month_10 <-  switch_units(data[,ten_groups_columns$last_month],unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
         colnames(last_month_10) <-gsub("_last_month","",colnames(last_month_10))
         HDDS_last_month <- rowSums(last_month_10, na.rm = T)
         outputs$hdds_last_month <- HDDS_last_month

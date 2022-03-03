@@ -265,12 +265,48 @@ extract_all_new_values <- function(data){
 #'
 #' @examples
 load_units_csvs <- function(folder){
-    file_names <- list.files("./unit_conversions")
+    file_names <- list.files(folder)
     #---------------------------------------------
     # Loading all of the unit conversions locally
     #---------------------------------------------
-    load_local_units(file_names)
+    load_local_units(folder,file_names)
 }
+
+#' Calculate prices and indicator local
+#'
+#' @param data A rhomis dataset, loaded with the function ()
+#' @param path_to_units
+#'
+#' @return
+#' @export
+#'
+#' @examples
+calculate_prices_and_indicator_local<- function(data, path_to_units){
+
+    load_units_csvs(path_to_units)
+
+    run_all_calculations()
+
+
+
+
+}
+
+#' Replace Infinite
+#'
+#' Replace infinite values with NA in a specific column
+#'
+#' @param column The column where infinite values need to be replaced
+#'
+#' @return
+#' @export
+#'
+#' @examples
+replace_infinite <- function(column){
+    column[is.infinite(column)] <- NA
+    return(column)
+}
+
 
 
 
@@ -356,10 +392,6 @@ processData <- function(
 
 
 
-            replace_infinite <- function(column){
-                column[is.infinite(column)] <- NA
-                return(column)
-            }
 
             if(extractUnits==T & processDataSet==T){
                 stop("Stated that you wanted to extract units and process the data in in the same step.\n

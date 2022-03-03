@@ -107,61 +107,6 @@ testthat::test_that("Can extract units for core RHoMIS data",{
 })
 
 
-testthat::test_that("Can extract units by country, form, and project",{
-
-    # project_id=c("proj_id_1","proj_id_2","proj_id_2","proj_id_1","proj_id_1", "proj_id_3")
-    # unname(sapply(project_id, function(x) digest(x)))
-    # digest(project_id)
-    #
-    # data <- tibble::tibble(
-    #     project_id=c("proj_id_1","proj_id_2","proj_id_2","proj_id_1","proj_id_1", "proj_id_3"),
-    #     form_id=c("form_id_1","form_id_"),
-    #     country=c("vietnam","kenya", "burkina faso", "kenya"),
-    #     crop_name_1=c("maize","cassava"),
-    #     crop_name_2=c(NA,"cucumber"),
-    #     random_crop_name_2=c("blue","green"),
-    #     livestock_name_1=c("cow","chicken"),
-    #     livestock_name_2=c("pig",NA),
-    #     crop_yield_units_1=c("kg", "sacks"),
-    #     crop_yield_units_2=c("wheelbarrow", NA),
-    #     crop_yield_units_other_1=c("other1", NA),
-    #     crop_yield_units_other_2=c("other2", "other3"),
-    #     crop_sold_price_quantityunits_1=c(NA,"price1"),
-    #     crop_sold_price_quantityunits_2=c("price2","price3"),
-    #     crop_price_quantityunits_other_1=c(NA, "crop_price_1"),
-    #     crop_price_quantityunits_other_2=c(NA, "crop_price_2"),
-    #     crop_price_quantityunits_other_3=c(NA, "crop_price_3"),
-    #     crop_price_quantityunits_other_4=c(NA, NA),
-    #     unitland=c("acre", NA),
-    #     areaunits_other=c("area1", "area2"),
-    #     unitland_owned=c("unitland1", "unitland2"),
-    #     unitland_rentin=c("renty1", "renty2"),
-    #     unitland_rentout=c("rent1", "rent5"),
-    #     milk_units_1=c("milk1", NA),
-    #     milk_units_2=c("milk4", "milk5"),
-    #     milk_amount_units_other_1=c("milkoth1", "milkoth2"),
-    #     milk_amount_units_other_2=c(NA, "milkoth3"),
-    #     milk_sold_price_timeunits_1=c("mspt1", "mspt3"),
-    #     milk_sold_price_timeunits_2=c(NA, "mspt5"),
-    #     milk_amount_time_units_other_1=c("mspto1", NA),
-    #     milk_amount_time_units_other_2=c("mspto2", "mspto3"),
-    #     bees_honey_production_units_1=c("hnyprod1", "hnyprod2"),
-    #     bees_honey_production_units_2=c(NA, "hnyprod3"),
-    #     bees_honey_production_units_other_1=c("hnyprodoth1", NA),
-    #     bees_honey_production_units_other_2=c("hnyprodoth2", "hnyprodoth3"),
-    #     eggs_units_1=c("egg1", NA),
-    #     eggs_units_2=c("egg2", "egg3"),
-    #     eggs_amount_units_other_1=c("eggoth1", NA),
-    #     eggs_amount_units_other_2=c("eggoth2", "eggoth3"),
-    #     eggs_sold_price_timeunits_1=c("eggtime1", "eggtime2"),
-    #     eggs_sold_price_timeunits_2=c("eggtime3", NA),
-    #     eggs_sold_price_timeunits_3=c(NA, NA),
-    #     eggs_sold_price_timeunits_other_1=c("eggtimeoth1", NA),
-    #     eggs_sold_price_timeunits_other_2=c("eggtimeoth2", "eggtimeoth3"),
-    #     fertiliser_units=c("fert1", "fert2"),
-    #     fertiliser_units_other=c("fertoth1","fertoth2"))
-
-})
 
 
 testthat::test_that("Can correctly merge categories for new unique values", {
@@ -210,7 +155,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=c("vietnam", "new-zealand", "kenya"),
                 conversion=c(NA,NA,NA),
                 unit_type=c("country","country","country"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ) %>% dplyr::mutate_all(as.character()),
         crop_name=tibble::as_tibble(
@@ -218,7 +163,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=c("maize", NA, "cassava", "cucumber", "sdgrfsedzrf", NA, "coconut", "wearsefd", NA),
                 conversion=c(NA,NA,NA,NA,NA,NA,NA,NA,NA),
                 unit_type=c("crop_name","crop_name","crop_name","crop_name","crop_name","crop_name","crop_name","crop_name","crop_name"),
-                id_rhomis_data_set=c("project_1", "project_1", "project_2", "project_2","project_2","project_2","project_3","project_3","project_3" )
+                id_rhomis_dataset=c("project_1", "project_1", "project_2", "project_2","project_2","project_2","project_3","project_3","project_3" )
             )
         ),
         livestock_name=tibble::as_tibble(
@@ -226,7 +171,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("livestock_name","livestock_name","livestock_name"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         crop_yield_units=tibble::as_tibble(
@@ -234,7 +179,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("crop_yield_units","crop_yield_units","crop_yield_units"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         crop_sold_price_quantityunits=tibble::as_tibble(
@@ -242,7 +187,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("crop_sold_price_quantityunits","crop_sold_price_quantityunits","crop_sold_price_quantityunits"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         unitland=tibble::as_tibble(
@@ -250,7 +195,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("unitland","unitland","unitland"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         milk_units=tibble::as_tibble(
@@ -258,7 +203,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("milk_units","milk_units","milk_units"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         milk_sold_price_timeunits=tibble::as_tibble(
@@ -266,7 +211,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("milk_sold_price_timeunits","milk_sold_price_timeunits","milk_sold_price_timeunits"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         bees_honey_production_units=tibble::as_tibble(
@@ -274,7 +219,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("bees_honey_production_units","bees_honey_production_units","bees_honey_production_units"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         eggs_units=tibble::as_tibble(
@@ -282,7 +227,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("eggs_units","eggs_units","eggs_units"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         eggs_sold_price_timeunits=tibble::as_tibble(
@@ -290,7 +235,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("eggs_sold_price_timeunits","eggs_sold_price_timeunits","eggs_sold_price_timeunits"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         ),
         fertiliser_units=tibble::as_tibble(
@@ -298,7 +243,7 @@ testthat::test_that("Can extract units from individual projects",{
                 survey_value=as.character(c(NA,NA,NA)),
                 conversion=c(NA,NA,NA),
                 unit_type=c("fertiliser_units","fertiliser_units","fertiliser_units"),
-                id_rhomis_data_set=c("project_1", "project_2", "project_3")
+                id_rhomis_dataset=c("project_1", "project_2", "project_3")
             )
         )
 

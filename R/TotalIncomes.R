@@ -138,9 +138,13 @@ total_and_off_farm_incomes <- function(data, total_crop_income,total_livestock_i
     total_farm_income[is.na(total_crop_income)&is.na(total_livestock_income)]<-NA
 
 
+    unit_conv_tibble <- proportion_conversions
+    unit_conv_tibble$id_rhomis_dataset <- "x"
+
+    id_vector <- rep("x", nrow(data))
 
     off_farm_prop <- data["offfarm_income_proportion"]
-    off_farm_prop <- switch_units(off_farm_prop, units = proportion_conversions$unit,conversion_factors =proportion_conversions$conversion )
+    off_farm_prop <- switch_units(off_farm_prop, unit_tibble = unit_conv_tibble, id_vector = id_vector)
 
     #DERIVING OFF-FARM INCOME
     # total_income = total_crop_income + total_livestock_income + off_farm_income

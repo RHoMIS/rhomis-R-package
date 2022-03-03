@@ -1,6 +1,8 @@
 test_that("Can calculate land areas", {
 
-    data <- tibble::as_tibble(list(landcultivated=c(2,5,4),
+    data <- tibble::as_tibble(list(
+        id_rhomis_dataset=c("project_1", "project_2", "project_3"),
+        landcultivated=c(2,5,4),
                                    unitland=c("hectare","m2","other_unit"),
                                    landowned=c(4,2,1)))
 

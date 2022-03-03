@@ -42,9 +42,10 @@ testthat::test_that("Can check whether an individual column exists", {
                                    "other_loop_1"=c("x","y","z"),
                                    "other_loop_2"=c("x","y","z"),
                                    "other_loop_3"=c("x","y","z"),
-                                   "other_loop_4"=c("x","y","z")
-    ))
+                                   "other_loop_4"=c("x","y","z"),
 
+                                   "non_existent_loop"=c("a","b","c")
+    ))
 
     actual_result <- check_columns_loop(data, c("loop","other_loop", "non_existent_loop"))
     expected_result <- c("non_existent_loop")
@@ -55,7 +56,7 @@ testthat::test_that("Can check whether an individual column exists", {
     testthat::expect_equal(actual_result, expected_result)
 
     actual_result <- check_columns_loop(data, c("other_column","other_loop"))
-    expected_result <- character()
+    expected_result <- c("other_column")
     testthat::expect_equal(actual_result, expected_result)
 })
 

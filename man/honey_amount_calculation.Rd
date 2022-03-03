@@ -4,18 +4,12 @@
 \alias{honey_amount_calculation}
 \title{Honey Amount Calculation}
 \usage{
-honey_amount_calculation(
-  data,
-  units = honey_amount_units$units,
-  unit_conversions = honey_amount_units$conversion_factors
-)
+honey_amount_calculation(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{The data containing livestock loops}
 
-\item{units}{A vector of units for which you have conversion factors}
-
-\item{unit_conversions}{The conversion factors for those units}
+\item{unit_conv_tibble}{A tibble of honey amount conversions}
 }
 \value{
 

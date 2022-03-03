@@ -4,6 +4,7 @@ library(tibble)
 testthat::test_that("Can correctly convert crop yield units", {
 
   data <- tibble::as_tibble(list(
+    "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -41,6 +42,8 @@ testthat::test_that("Can correctly convert crop yield units", {
 
   actual_result<-convert_crop_yield_units(data)
   expected_result <- tibble::as_tibble(list(
+    "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -78,10 +81,12 @@ testthat::test_that("Can correctly convert crop yield units", {
     "crop_consume_control_3"=c("male_adult male_adult","female_adult female_adult",NA)
   ))
 
-  expect_equal(actual_result, expected_result)
+  testthat::expect_equal(actual_result, expected_result)
 
 
   data <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_use_1"=c("eat","eat sell","eat sell feed_lvstk"),
@@ -114,6 +119,8 @@ testthat::test_that("Can correctly convert crop yield units", {
   ))
 
   expected_result <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_use_1"=c("eat","eat sell","eat sell feed_lvstk"),
@@ -147,7 +154,7 @@ testthat::test_that("Can correctly convert crop yield units", {
 
   testthat::expect_warning(actual_result<-convert_crop_yield_units(data))
 
-  expect_equal(actual_result, expected_result)
+  testthat::expect_equal(actual_result, expected_result)
 
 
 
@@ -169,6 +176,8 @@ testthat::test_that("Can calculate crop yields for individual loops", {
 
 testthat::test_that("Can calculate crop yields for multiple_loops", {
   data <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -203,8 +212,10 @@ testthat::test_that("Can calculate crop yields for multiple_loops", {
     "crop_consume_control_3"=c("male_adult male_adult","female_adult female_adult",NA)
   ))
 
-  actual_result<-crop_harvest_calculations(data)
+  actual_result<-crop_harvest_calculations(data,)
   expected_result <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -250,6 +261,8 @@ testthat::test_that("Can calculate crop yields for multiple_loops", {
 
 testthat::test_that("Can split crop use proportions", {
   data <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -288,6 +301,8 @@ testthat::test_that("Can split crop use proportions", {
   ))
 
   expected_result  <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -338,6 +353,8 @@ testthat::test_that("Can split crop use proportions", {
 
 testthat::test_that("Can convert_crop_income_units",{
   data <- tibble::as_tibble(list(
+     "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -376,6 +393,8 @@ testthat::test_that("Can convert_crop_income_units",{
   ))
 
   expected_result <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -423,6 +442,8 @@ testthat::test_that("Can convert_crop_income_units",{
 
 testthat::test_that("Crop consumed and sold correctly calculated", {
   data  <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -448,6 +469,8 @@ testthat::test_that("Crop consumed and sold correctly calculated", {
     "crop_sold_prop_3"=c(NA,NA,NA)))
 
   expected_result  <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -493,6 +516,8 @@ testthat::test_that("Crop consumed and sold correctly calculated", {
 
 testthat::test_that("Crop incomes calculated", {
   data <- tibble::as_tibble(list(
+      "id_rhomis_dataset"=c("proj_1", "proj_2", "proj_3"),
+
     "crop_name_1"=c("maize","cassava","wheat"),
     "crop_yield_1"=c(50,20,10),
     "crop_yield_units_1"=c("kg","sacks_100kg","tonnes"),
@@ -535,7 +560,10 @@ testthat::test_that("Crop incomes calculated", {
     "crop_sold_income_3"=c(800,600,NA),
     "crop_sold_price_quantityunits_3"=c("total_income_per_year","price_per_bag_45kg",NA)
   ))
-  expected_result <- structure(list(crop_name_1 = c("maize", "cassava", "wheat"),
+  expected_result <- structure(list(
+      id_rhomis_dataset=c("proj_1", "proj_2", "proj_3"),
+
+      crop_name_1 = c("maize", "cassava", "wheat"),
                                     crop_yield_1 = c(50, 20, 10),
                                     crop_yield_units_1 = c("kg", "sacks_100kg", "tonnes"),
                                     crop_harvest_kg_per_year_1 = c(50, 2000, 10000),

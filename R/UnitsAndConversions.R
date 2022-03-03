@@ -458,14 +458,14 @@ extract_units_from_db <- function(database="rhomis",
 #'
 #' @examples
 check_existing_conversions <- function(list_of_df){
-    list_of_df <- sapply(names(list_of_df), function(x) {
+    new_list <- sapply(names(list_of_df), function(x) {
 
         if (x=="country" & "country" %in% names(list_of_df))
         {
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["country"]],
                                                              country,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
             return(df_with_existing_conversions)
         }
@@ -478,7 +478,7 @@ check_existing_conversions <- function(list_of_df){
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_name"]],
                                                              crop_name_conv,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
             return(df_with_existing_conversions)
 
@@ -492,21 +492,19 @@ check_existing_conversions <- function(list_of_df){
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["livestock_name"]],
                                                              livestock_name_conv,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
             return(df_with_existing_conversions)
 
         }
         if (x=="crop_yield_units")
         {
-            crop_yield_units_conv <- tibble::as_tibble(list(
-                "survey_value"=crop_yield_units$unit,
-                "conversion"=crop_yield_units$conversion))
+
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_yield_units"]],
-                                                             crop_yield_units_conv,
+                                                             crop_yield_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -515,14 +513,12 @@ check_existing_conversions <- function(list_of_df){
         }
         if (x=="crop_sold_price_quantityunits")
         {
-            crop_sold_price_quantityunits_conv <- tibble::as_tibble(list(
-                "survey_value"=crop_price_units$unit,
-                "conversion"=crop_price_units$conversion))
+
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_sold_price_quantityunits"]],
-                                                             crop_sold_price_quantityunits_conv,
+                                                             crop_price_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -530,14 +526,12 @@ check_existing_conversions <- function(list_of_df){
         }
         if(x=="unitland")
         {
-            land_units_conv <- tibble::as_tibble(list(
-                "survey_value"=land_area_units$units,
-                "conversion"=land_area_units$conversions))
+
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["unitland"]],
-                                                             land_units_conv,
+                                                             land_area_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -545,14 +539,11 @@ check_existing_conversions <- function(list_of_df){
         if (x=="milk_units")
         {
 
-            milk_units_conv <- tibble::as_tibble(list(
-                "survey_value"=milk_amount_units$unit,
-                "conversion"=milk_amount_units$conversion_factor))
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["milk_units"]],
-                                                             milk_units_conv,
+                                                             milk_amount_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -561,14 +552,12 @@ check_existing_conversions <- function(list_of_df){
         if (x=="milk_sold_price_timeunits")
         {
 
-            milk_price_units_conv <- tibble::as_tibble(list(
-                "survey_value"=milk_price_time_units$unit,
-                "conversion"=milk_price_time_units$conversion_factor))
+
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["milk_sold_price_timeunits"]],
-                                                             milk_price_units_conv,
+                                                             milk_price_time_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -576,14 +565,11 @@ check_existing_conversions <- function(list_of_df){
         }
         if (x=="bees_honey_production_units")
         {
-            bees_honey_units_conv <- tibble::as_tibble(list(
-                "survey_value"=honey_amount_units$units,
-                "conversion"=honey_amount_units$conversion_factors))
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["bees_honey_production_units"]],
-                                                             bees_honey_units_conv,
+                                                             honey_amount_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -591,14 +577,12 @@ check_existing_conversions <- function(list_of_df){
         }
         if (x=="eggs_units")
         {
-            eggs_amount_units_conv <- tibble::as_tibble(list(
-                "survey_value"=eggs_amount_units$unit,
-                "conversion"=eggs_amount_units$conversion_factor))
+
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["eggs_units"]],
-                                                             eggs_amount_units_conv,
+                                                             eggs_amount_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -606,14 +590,12 @@ check_existing_conversions <- function(list_of_df){
         }
         if (x=="eggs_sold_price_timeunits")
         {
-            eggs_sold_units_conv <- tibble::as_tibble(list(
-                "survey_value"=eggs_price_time_units$unit,
-                "conversion"=eggs_price_time_units$conversion_factor))
+
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["eggs_sold_price_timeunits"]],
-                                                             eggs_sold_units_conv,
+                                                             eggs_price_time_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -622,14 +604,12 @@ check_existing_conversions <- function(list_of_df){
         if (x=="fertiliser_units")
         {
 
-            fertiliser_units_conv <- tibble::as_tibble(list(
-                "survey_value"=fertiliser_units$unit,
-                "conversion"=fertiliser_units$conversion))
+
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[["fertiliser_units"]],
-                                                             fertiliser_units_conv,
+                                                             fertiliser_units,
                                                              by=("survey_value"="survey_value")) %>%
-                dplyr::select("survey_value", "conversion.y") %>%
+                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
             return(df_with_existing_conversions)
@@ -637,7 +617,7 @@ check_existing_conversions <- function(list_of_df){
         }
     }, simplify = F)
 
-    return(list_of_df)
+    return(new_list)
 }
 
 
@@ -672,61 +652,80 @@ write_units_to_folder <- function(list_of_df,
 #' load them into the global environment
 #'
 #' @param file_names A list of file names to load
+#' @param id_rhomis_dataset A vector including the ID of the RHoMIS datasets being processed
+#' @param base_folder The path to the folder containing the units to load
 #'
 #' @return
 #' @export
 #'
 #' @examples
-load_local_units <- function(file_names){
+load_local_units <- function(base_folder ,file_names, id_rhomis_dataset){
 
 
     if ("country.csv" %in% file_names){
-        country_conversions <- readr::read_csv("./unit_conversions/country.csv", col_types = readr::cols())
+        country_conversions <- readr::read_csv(paste0(base_folder,"country.csv"), col_types = readr::cols())
         assign("country_conversions", country_conversions, envir = .GlobalEnv)
     }
     if ("country.csv" %in% file_names==F){
         warning('Tried to find country name conversions, but could not find file in "./unit_conversions" folder')
-        country_conversions <- country
+        country_conversions  <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = country
+        )
 
         assign("country_conversions", country_conversions, envir = .GlobalEnv)
     }
 
 
     if ("crop_name.csv" %in% file_names){
-        crop_name_conversions <- readr::read_csv("./unit_conversions/crop_name.csv", col_types = readr::cols())
+        crop_name_conversions <- readr::read_csv(paste0(base_folder,"crop_name.csv"), col_types = readr::cols())
         assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
 
     }
     if ("crop_name.csv" %in% file_names==F){
         warning('Tried to find crop name conversions, but could not find file in "./unit_conversions" folder')
         crop_name_conversions <- tibble::as_tibble(list("survey_value"=crop_name, "conversion"=crop_name))
+        crop_name_conversions <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = crop_name_conversions
+        )
+
+
         assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
 
     }
 
 
     if ("livestock_name.csv" %in% file_names){
-        livestock_name_conversions <- readr::read_csv("./unit_conversions/livestock_name.csv", col_types = readr::cols())
+        livestock_name_conversions <- readr::read_csv(paste0(base_folder,"livestock_name.csv"), col_types = readr::cols())
         assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
 
     }
     if ("livestock_name.csv" %in% file_names==F){
         warning('Tried to find livestock name conversions, but could not find file in "./unit_conversions" folder')
         livestock_name_conversions <- tibble::as_tibble(list("survey_value"=livestock_name, "conversion"=livestock_name))
+        livestock_name_conversions <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = livestock_name_conversions
+        )
 
         assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
     }
 
 
     if ("crop_yield_units.csv" %in% file_names){
-        crop_yield_unit_conversions <- readr::read_csv("./unit_conversions/crop_yield_units.csv", col_types = readr::cols())
+        crop_yield_unit_conversions <- readr::read_csv(paste0(base_folder,"crop_yield_units.csv"), col_types = readr::cols())
         assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
 
     }
     if ("crop_yield_units.csv" %in% file_names==F){
         warning('Tried to find crop yield unit conversions, but could not find file in "./unit_conversions" folder')
-        crop_yield_unit_conversions <- crop_yield_units
-        colnames(crop_yield_unit_conversions) <- c("survey_value", "conversion")
+
+
+        crop_yield_unit_conversions <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = crop_yield_units
+        )
 
         assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
     }
@@ -734,14 +733,18 @@ load_local_units <- function(file_names){
 
 
     if ("crop_sold_price_quantityunits.csv" %in% file_names){
-        crop_price_unit_conversions <- readr::read_csv("./unit_conversions/crop_sold_price_quantityunits.csv", col_types = readr::cols())
+        crop_price_unit_conversions <- readr::read_csv(paste0(base_folder,"crop_sold_price_quantityunits.csv"), col_types = readr::cols())
         assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
 
     }
     if ("crop_sold_price_quantityunits.csv" %in% file_names==F){
         warning('Tried to find crop price unit conversions, but could not find file in "./unit_conversions" folder')
-        crop_price_unit_conversions <- crop_price_units
-        colnames(crop_price_unit_conversions) <- c("survey_value", "conversion")
+
+
+        crop_price_unit_conversions <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = crop_price_units
+        )
 
         assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
     }
@@ -749,14 +752,18 @@ load_local_units <- function(file_names){
 
 
     if ("unitland.csv" %in% file_names){
-        land_unit_conversion <- readr::read_csv("./unit_conversions/unitland.csv", col_types = readr::cols())
+        land_unit_conversion <- readr::read_csv(paste0(base_folder,"unitland.csv"), col_types = readr::cols())
         assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("unitland.csv" %in% file_names==F){
         warning('Tried to find land unit conversions, but could not find file in "./unit_conversions" folder')
-        land_unit_conversion <- land_area_units
-        colnames(land_unit_conversion) <- c("survey_value", "conversion")
+
+
+        land_unit_conversion <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = land_area_units
+        )
 
         assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
     }
@@ -766,28 +773,34 @@ load_local_units <- function(file_names){
 
 
     if ("milk_units.csv" %in% file_names){
-        milk_unit_conversion <- readr::read_csv("./unit_conversions/milk_units.csv", col_types = readr::cols())
+        milk_unit_conversion <- readr::read_csv(paste0(base_folder,"milk_units.csv"), col_types = readr::cols())
         assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("milk_units.csv" %in% file_names==F){
         warning('Tried to find land unit conversions, but could not find file in "./unit_conversions" folder')
-        milk_unit_conversion <- milk_amount_units
-        colnames(milk_unit_conversion) <- c("survey_value", "conversion")
+
+        milk_unit_conversion <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = milk_amount_units
+        )
 
         assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
     }
 
 
     if ("milk_sold_price_timeunits.csv" %in% file_names){
-        milk_price_unit_conversion <- readr::read_csv("./unit_conversions/milk_sold_price_timeunits.csv", col_types = readr::cols())
+        milk_price_unit_conversion <- readr::read_csv(paste0(base_folder,"milk_sold_price_timeunits.csv"), col_types = readr::cols())
         assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("milk_sold_price_timeunits.csv" %in% file_names==F){
         warning('Tried to find milk price conversion, but could not find file in "./unit_conversions" folder')
-        milk_price_unit_conversion <- milk_price_time_units
-        colnames(milk_price_unit_conversion) <- c("survey_value", "conversion")
+
+        milk_price_unit_conversion <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = milk_price_time_units
+        )
 
         assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
     }
@@ -795,14 +808,17 @@ load_local_units <- function(file_names){
 
 
     if ("bees_honey_production_units.csv" %in% file_names){
-        honey_unit_conversion <- readr::read_csv("./unit_conversions/bees_honey_production_units.csv", col_types = readr::cols())
+        honey_unit_conversion <- readr::read_csv(paste0(base_folder,"bees_honey_production_units.csv"), col_types = readr::cols())
         assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("bees_honey_production_units.csv" %in% file_names==F){
         warning('Tried to find honey amount conversion, but could not find file in "./unit_conversions" folder')
-        honey_unit_conversion <- honey_amount_units
-        colnames(honey_unit_conversion) <- c("survey_value", "conversion")
+
+        honey_unit_conversion <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = honey_amount_units
+        )
 
         assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
     }
@@ -810,14 +826,18 @@ load_local_units <- function(file_names){
 
 
     if ("eggs_units.csv" %in% file_names){
-        eggs_unit_conversion <- readr::read_csv("./unit_conversions/eggs_units.csv", col_types = readr::cols())
+        eggs_unit_conversion <- readr::read_csv(paste0(base_folder,"eggs_units.csv"), col_types = readr::cols())
         assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("eggs_units.csv" %in% file_names==F){
         warning('Tried to find eggs amount conversion, but could not find file in "./unit_conversions" folder')
-        eggs_unit_conversion <- eggs_amount_units
-        colnames(eggs_unit_conversion) <- c("survey_value", "conversion")
+
+
+        eggs_unit_conversion <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = eggs_amount_units
+        )
 
         assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
     }
@@ -825,14 +845,17 @@ load_local_units <- function(file_names){
 
 
     if ("eggs_sold_price_timeunits.csv" %in% file_names){
-        eggs_price_unit_conversion <- readr::read_csv("./unit_conversions/eggs_sold_price_timeunits.csv", col_types = readr::cols())
+        eggs_price_unit_conversion <- readr::read_csv(paste0(base_folder,"eggs_sold_price_timeunits.csv"), col_types = readr::cols())
         assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("eggs_sold_price_timeunits.csv" %in% file_names==F){
         warning('Tried to find eggs price conversion, but could not find file in "./unit_conversions" folder')
-        eggs_price_unit_conversion <- eggs_price_time_units
-        colnames(eggs_price_unit_conversion) <- c("survey_value", "conversion")
+
+        eggs_price_unit_conversion <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = eggs_price_time_units
+        )
 
         assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
     }
@@ -840,14 +863,17 @@ load_local_units <- function(file_names){
 
 
     if ("fertiliser_units.csv" %in% file_names){
-        fertiliser_unit_conversion <- readr::read_csv("./unit_conversions/fertiliser_units.csv", col_types = readr::cols())
+        fertiliser_unit_conversion <- readr::read_csv(paste0(base_folder,"fertiliser_units.csv"), col_types = readr::cols())
         assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
 
     }
     if ("fertiliser_units.csv" %in% file_names==F){
         warning('Tried to find fertiliser amount conversion, but could not find file in "./unit_conversions" folder')
-        fertiliser_unit_conversion <- fertiliser_units
-        colnames(fertiliser_unit_conversion) <- c("survey_value", "conversion")
+
+        fertiliser_unit_conversion <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = fertiliser_units
+        )
 
         assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
     }

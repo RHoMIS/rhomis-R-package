@@ -10,16 +10,27 @@ library(purrr)
 #' appropriate place for the dataset
 #'
 #' @param data The data containing the units to convert
-#' @param units Units for crop yield
-#' @param unit_conversions Conversions to convert these units
-#' to kg
+#' @param units_conversion_tibble Unit tibble for crop yield, including individual ids for projects. Crops to be coverted to kg amount
 #'
 #'
 #' @return
 #' @export
 #'
 #' @examples
-convert_crop_yield_units <- function(data, units=crop_yield_units$unit, unit_conversions=crop_yield_units$conversion){
+convert_crop_yield_units <- function(data,
+                                     unit_conv_tibble=NULL
+                                     ){
+
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = crop_yield_units
+        )
+    }
 
     missing_columns <- check_columns_in_data(data,
                                              loop_columns = c("crop_name",
@@ -31,7 +42,7 @@ convert_crop_yield_units <- function(data, units=crop_yield_units$unit, unit_con
         number_of_loops <- find_number_of_loops(data,name_column = "crop_name")
         columns_to_convert <- paste0("crop_yield_units","_",c(1:number_of_loops))
         new_column_names <- paste0("crop_yield_units_numeric","_",c(1:number_of_loops))
-        numeric_crop_units <- switch_units(data[columns_to_convert], units =units, conversion_factors = unit_conversions)
+        numeric_crop_units <- switch_units(data_to_convert = data[columns_to_convert], unit_tibble=unit_conv_tibble, id_vector=data[["id_rhomis_dataset"]])
         colnames(numeric_crop_units) <-new_column_names
         data <- add_column_after_specific_column(data=data,
                                                  new_data=numeric_crop_units,
@@ -79,7 +90,7 @@ crop_harvest_single_loop<-function(data, loop_number){
 #' @export
 #'
 #' @examples
-crop_harvest_calculations <- function(data, units=crop_yield_units$unit, unit_conversions=crop_yield_units$conversion){
+crop_harvest_calculations <- function(data, unit_conv_tibble=NULL){
      missing_columns <- check_columns_in_data(data,
                                               loop_columns=c("crop_name"),
                                               warning_message = "Tried to calculate crop yield, but some information was missing.")
@@ -87,7 +98,7 @@ crop_harvest_calculations <- function(data, units=crop_yield_units$unit, unit_co
      if (length(missing_columns)==0)
      {
     number_of_loops <- find_number_of_loops(data,name_column = "crop_name")
-    data <- convert_crop_yield_units(data, units, unit_conversions)
+    data <- convert_crop_yield_units(data, unit_conv_tibble = unit_conv_tibble)
 
     new_column_names <- paste0("crop_harvest_kg_per_year","_",1:number_of_loops)
     crop_harvest_per_year <- sapply(c(1:number_of_loops),function(x) crop_harvest_single_loop(data,x))
@@ -159,22 +170,36 @@ crop_proportions_all <- function(data){
 #' Convert crop income units into a numeric conversion factor
 #'
 #' @param data RHoMIS data containing crop-looping information
-#' @param units A list of units to be converted
-#' @param unit_conversions The numeric conversion factors for the units listed above
+#' @param unit_conv_tibble A tibble of unit conversions.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-convert_crop_sold_units <- function(data, units = crop_price_units$unit,unit_conversions=crop_price_units$conversion){
+convert_crop_sold_units <- function(data,
+                                    unit_conv_tibble=NULL
+                                    ){
+
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = crop_price_units
+        )
+    }
+
+
     number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
     crop_sold_units_column <- paste0("crop_sold_price_quantityunits","_",c(1:number_of_loops))
 
     crop_sold_units <- data[crop_sold_units_column]
     colnames(crop_sold_units)<-paste0("crop_sold_units_numeric","_", c(1:number_of_loops))
     units_converted <- switch_units(crop_sold_units,
-                                    units = units,
-                                    conversion_factors = unit_conversions)
+                                    unit_tibble = unit_conv_tibble,
+                                    id_vector = data[["id_rhomis_dataset"]])
 
     data <- add_column_after_specific_column(data=data,
                                              new_data=units_converted,
@@ -265,18 +290,29 @@ crop_sold_and_consumed_calculation <- function(data){
 #'
 #' @param data A RHoMIS dataset, including information on crop harvested,
 #' and crop sold
-#' @param units Units for crop income calculations which
+#' @param unit_conv_tibble Units for crop income calculations which
 #' need to be converted
-#' @param unit_conversions Conversions for these crop income
-#' units
 #'
 #' @return
 #' @export
 #'
 #' @examples
-crop_income_calculations <- function(data, units=crop_price_units$unit, unit_conversions=crop_price_units$conversion){
+crop_income_calculations <- function(data, unit_conv_tibble=NULL){
 
-    data <- convert_crop_sold_units(data,units =units ,unit_conversions = unit_conversions)
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = crop_price_units
+        )
+    }
+
+
+
+    data <- convert_crop_sold_units(data,unit_conv_tibble = unit_conv_tibble)
 
     number_of_loops <- find_number_of_loops(data, name_column="crop_name")
 
@@ -411,22 +447,16 @@ crop_gender_calculations <- function(data){
 #'
 #'
 #' @param data RHoMIS crop loop data
-#' @param crop_yield_units_all Units of crop yield
-#' @param crop_yield_unit_conversions_all Conversion factors to convert crop yield units
-#' to kg
-#' @param crop_income_units_all Units of crop income
-#' @param crop_income_unit_conversions_all Conversion factors for crop
-#' income units
+#' @param crop_yield_units_conv_tibble Conversion tibble of crop yield units
+#' @param crop_income_units_conv_tibble Conversion tibble of crop income units
 #'
 #' @return
 #' @export
 #'
 #' @examples
 crop_calculations_all <- function(data,
-                                  crop_yield_units_all=crop_yield_units$unit,
-                                  crop_yield_unit_conversions_all=crop_yield_units$conversion,
-                                  crop_income_units_all=crop_price_units$unit,
-                                  crop_income_unit_conversions_all=crop_price_units$conversion){
+                                  crop_yield_units_conv_tibble=crop_yield_units,
+                                  crop_income_units_conv_tibble=crop_price_units){
 
     # Calculating the amount of crops harvested in kg
     crop_columns_in_data <- check_columns_in_data(data,
@@ -435,9 +465,7 @@ crop_calculations_all <- function(data,
                                                                    "crop_yield_units"),
                                                   warning_message = "Cannot calculate amounts of crops harvested")
     if(length(crop_columns_in_data)==0){
-    data <- crop_harvest_calculations(data,
-                                      units = crop_yield_units_all,
-                                      unit_conversions = crop_yield_unit_conversions_all)
+    data <- crop_harvest_calculations(data,unit_conv_tibble = crop_yield_units_conv_tibble)
     }
 
 
@@ -458,9 +486,7 @@ crop_calculations_all <- function(data,
                                                                    "crop_sold_income"),
                                                   warning_message = "Cannot calculate amounts of crop incomes")
     if(length(crop_columns_in_data)==0){
-    data <- crop_income_calculations(data,
-                                     units = crop_income_units_all,
-                                     unit_conversions = crop_income_unit_conversions_all)
+    data <- crop_income_calculations(data,unit_conv_tibble = crop_income_units_conv_tibble)
 
     }
 

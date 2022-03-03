@@ -6,24 +6,16 @@
 \usage{
 crop_calculations_all(
   data,
-  crop_yield_units_all = crop_yield_units$unit,
-  crop_yield_unit_conversions_all = crop_yield_units$conversion,
-  crop_income_units_all = crop_price_units$unit,
-  crop_income_unit_conversions_all = crop_price_units$conversion
+  crop_yield_units_conv_tibble = crop_yield_units,
+  crop_income_units_conv_tibble = crop_price_units
 )
 }
 \arguments{
 \item{data}{RHoMIS crop loop data}
 
-\item{crop_yield_units_all}{Units of crop yield}
+\item{crop_yield_units_conv_tibble}{Conversion tibble of crop yield units}
 
-\item{crop_yield_unit_conversions_all}{Conversion factors to convert crop yield units
-to kg}
-
-\item{crop_income_units_all}{Units of crop income}
-
-\item{crop_income_unit_conversions_all}{Conversion factors for crop
-income units}
+\item{crop_income_units_conv_tibble}{Conversion tibble of crop income units}
 }
 \value{
 

@@ -19,10 +19,17 @@ library(tibble)
 #' @examples
 check_columns_in_data <- function(data, loop_columns=NULL,individual_columns=NULL, warning_message=NULL){
 
+        # data=data
+        # loop_columns = c(
+        # "bees_honey_sell_amount")
+        # warning_message = "Could not calculate honey amounts sold or consumed"
+        #
+
     missing_loop_columns <-c()
     missing_individual_columns <-c()
 
     if (!is.null(loop_columns)){
+        # columns <- c("bees_honey_sell_amount")
         missing_loop_columns <- check_columns_loop(data,loop_columns)
     }
 
@@ -68,9 +75,19 @@ check_columns_loop <- function(data,columns){
         return(loop_columns)
     }, simplify = F)
 
-    all_loop_columns <- unname(unlist(loop_columns))
+    single_columns_mask <-sapply(loop_columns, function(x) length(x)==1)
+    single_columns <- unname(unlist(loop_columns[single_columns_mask]))
+
+    multiple_columns <- loop_columns[!single_columns_mask]
+
+    all_loop_columns <- unname(unlist(multiple_columns))
 
     missing_columns <- all_loop_columns[all_loop_columns %in% colnames(data)==F]
+
+    if (length(single_columns)>0){
+        missing_columns <- append(missing_columns, single_columns)
+    }
+
     return(missing_columns)
 }
 

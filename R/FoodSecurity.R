@@ -17,10 +17,17 @@ fies_score <- function(data){
 
     fies_data <- data[fies_columns]
 
-    values <- c("y","n")
-    conversion <- c(1,0)
+    unit_conv_tibble<- tibble::as_tibble(list(
+        survey_value = c("y","n"),
+        conversion = c(1,0),
+        id_rhomis_dataset = c("x","x")
 
-    fies_numeric <- switch_units(fies_data,values,conversion)
+    ))
+
+    id_vector <- rep("x", nrow(data))
+
+
+    fies_numeric <- switch_units(fies_data,unit_tibble = unit_conv_tibble,id_vector = id_vector)
     fies_score <- rowSums(fies_numeric,na.rm = T)
     fies_score[rowSums(!is.na(fies_numeric))==0] <- NA
 

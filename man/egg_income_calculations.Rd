@@ -4,18 +4,12 @@
 \alias{egg_income_calculations}
 \title{Eggs Income Calculations}
 \usage{
-egg_income_calculations(
-  data,
-  units = eggs_price_time_units$unit,
-  unit_conversions = eggs_price_time_units$conversion_factor
-)
+egg_income_calculations(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{RHoMIS data with livestock loops included.}
 
-\item{units}{List of units}
-
-\item{unit_conversions}{List of conversion factors for the units provided above}
+\item{unit_conv_tibble}{A tibble containing common su}
 }
 \value{
 

@@ -49,20 +49,25 @@ price_per_livestock <- function(data){
 #' has been killed.
 #'
 #' @param animal_weights_names The vector which contains the names of the animals
-#' @param animal_weights_conversions The column which contains the
-#' weights for converting the animals
-#' @param data RHoMIS data including information on livestock
-#' names, and the number of livestock killed for meat
-#'
+#' @param unit_conv_tibble A conversion table for animal names and their weights
 #' @return
 #' @export
 #'
 #' @examples
 meat_amount_calculation <- function(data,
-                                    animal_weights_names=livestock_weights$animal,
-                                    animal_weights_conversions=livestock_weights$weight_kg){
+                                    unit_conv_tibble=NULL){
 
 
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = livestock_weights
+        )
+    }
 
     number_of_loops <- find_number_of_loops(data,"livestock_name")
     livestock_name_columns <- paste0("livestock_name","_",c(1:number_of_loops))
@@ -74,8 +79,9 @@ meat_amount_calculation <- function(data,
 
 
     livestock_weight_data <-switch_units(livestock_name_data,
-                                         units = animal_weights_names,
-                                         conversion_factors = animal_weights_conversions)
+                                         unit_tibble = unit_conv_tibble,
+                                         id_vector = data[["id_rhomis_dataset"]]
+    )
 
 
     meat_weight_kg <- livestock_weight_data*killed_for_meat_data
@@ -262,18 +268,25 @@ meat_prices <- function(data){
 #' Calculating the amount of milk collected each year
 #'
 #' @param data The dataset containing livestock loops for RHoMIS
-#' @param milk_units The units for milk amounts
-#' @param milk_unit_conversions The conversions for each of these units to litres per year
+#' @param unit_conv_tibble The units for milk amounts in a conversion tibble
 #'
 #' @return
 #' @export
 #'
 #' @examples
 milk_amount_calculations <- function(data,
-                                     milk_units = milk_amount_units$unit,
-                                     milk_unit_conversions = milk_amount_units$conversion_factor){
+                                     unit_conv_tibble=NULL){
 
+    if ("id_rhomis_dataset" %in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
 
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = milk_amount_units
+        )
+    }
 
     number_of_loops <- find_number_of_loops(data, "milk_amount_good_season")
 
@@ -304,7 +317,7 @@ milk_amount_calculations <- function(data,
     }
 
     # Changing units to numeric conversions
-    milk_units_data <- switch_units(milk_units_data, units = milk_units,conversion_factors = milk_unit_conversions)
+    milk_units_data <- switch_units(milk_units_data, unit_tibble = unit_conv_tibble,id_vector = data[["id_rhomis_dataset"]])
     milk_amount_conversions <- sapply(c(1:length(milk_units_data)), function(x) {
         milk_swap_per_animal_units(units_column = milk_units_data[[x]],
                                    number_of_animals_milked_column = milk_number_of_animals_milked_data[[x]])
@@ -473,15 +486,24 @@ milk_sold_and_consumed_calculations <- function(data){
 #' Milk Income Calculations
 #'
 #' @param data Dataset containing all milk income information
-#' @param units The names of the units you hope to convert
-#' @param conversion_factors The conversion factors for these units
+#' @param unit_conv_tibble A tibble containing all of the milk income conversion factors
 #'
 #' @return
 #' @export
 #'
 #' @examples
-milk_income_calculations <- function(data, units=milk_price_time_units$unit, conversion_factors=milk_price_time_units$conversion_factor){
+milk_income_calculations <- function(data, unit_conv_tibble=NULL){
 
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = milk_price_time_units
+        )
+    }
 
     number_of_loops <- find_number_of_loops(data, "milk_sold_price_timeunits")
 
@@ -496,10 +518,11 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
     milk_sold_amount_data <- milk_sold_amount_data %>%  dplyr::mutate_all(as.numeric)
 
     milk_income_conversions <- sapply(c(1:number_of_loops), function(x) {
-        milk_price_time_units_conversion(units_column = milk_price_unit_data[[x]],
-                                         sold_amount_column = milk_sold_amount_data[[x]],
-                                         units = units,
-                                         unit_conversions = conversion_factors)
+        milk_price_time_units_conversion(
+            id_rhomis_dataset=data[["id_rhomis_dataset"]],
+            units_column = milk_price_unit_data[[x]],
+            sold_amount_column = milk_sold_amount_data[[x]],
+            unit_conv_tibble=unit_conv_tibble )
     })
     colnames(milk_income_conversions) <- paste0("milk_income_conversions","_", c(1:number_of_loops))
     milk_income_conversions <- tibble::as_tibble(milk_income_conversions)
@@ -532,14 +555,24 @@ milk_income_calculations <- function(data, units=milk_price_time_units$unit, con
 #' Calculate the amount of eggs harvested
 #'
 #' @param data Data containing crop loop information
-#' @param units A vector of units, for which you have corresponding unit conversion
-#' @param unit_conversions A vector of conversion factors for these units
+#' @param unit_conv_table A tibble of units and conversion factor, and project IDs
 #'
 #' @return
 #' @export
 #'
 #' @examples
-eggs_amount_calculations <- function(data, units=eggs_amount_units$unit, unit_conversions=eggs_amount_units$conversion_factor){
+eggs_amount_calculations <- function(data, unit_conv_tibble=NULL){
+
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = eggs_amount_units
+        )
+    }
 
     egg_weight_kg <- 0.0496
     number_of_loops <- find_number_of_loops(data, "eggs_amount_good")
@@ -561,7 +594,7 @@ eggs_amount_calculations <- function(data, units=eggs_amount_units$unit, unit_co
     livestock_names_data <- data[livestock_names_columns]
 
     # Changing units to numeric conversions
-    eggs_units_data <- switch_units(eggs_units_data, units = units,conversion_factors = unit_conversions)
+    eggs_units_data <- switch_units(eggs_units_data, unit_tibble = unit_conv_tibble, id_vector = data[["id_rhomis_dataset"]])
     eggs_amount_conversions <- sapply(c(1:length(eggs_units_data)), function(x) {
         eggs_swap_per_animal_units(units_column = eggs_units_data[[x]],
                                    livestock_name_column = livestock_names_data[[x]],
@@ -733,16 +766,26 @@ eggs_sold_and_consumed_calculations <- function(data){
 #' Function to calculate egg income from livestock loops
 #'
 #' @param data RHoMIS data with livestock loops included.
-#' @param units List of units
-#' @param unit_conversions List of conversion factors for the units provided above
+#' @param unit_conv_tibble A tibble containing common su
 #'
 #' @return
 #' @export
 #'
 #' @examples
 egg_income_calculations <- function(data,
-                                    units=eggs_price_time_units$unit,
-                                    unit_conversions=eggs_price_time_units$conversion_factor){
+                                    unit_conv_tibble=NULL){
+
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = eggs_price_time_units
+        )
+    }
+
 
     number_of_loops <- find_number_of_loops(data, "eggs_sold_income")
 
@@ -760,7 +803,7 @@ egg_income_calculations <- function(data,
     }
     income_units_data <- data[income_units_columns]
 
-    units_converted <- switch_units(income_units_data, units = units, conversion_factors = unit_conversions)
+    units_converted <- switch_units(income_units_data, unit_tibble = unit_conv_tibble,id_vector = data[["id_rhomis_dataset"]])
     if (all(amount_sold_columns %in% colnames(data)))
     {
         units_converted <- sapply(c(1:number_of_loops), function(x){
@@ -917,19 +960,25 @@ milk_swap_per_animal_units <-function(units_column, number_of_animals_milked_col
 #' RHoMIS milk price units can come in both times and per
 #' litre units. This function goes
 #'
+#' @param id_rhomis_dataset An id vector containing information on which rhomis
 #' @param units_column The columns containing the original units
 #' @param sold_amount_column The amounts of milk which was sold
-#' @param units A vector of units for which you have conversions
-#' @param unit_conversions Conversion factors for the units listed above
+#' @param unit_conv_tibble A table with all of the information to convert price time units
 #'
 #' @return
 #' @export
 #'
 #' @examples
-milk_price_time_units_conversion <- function(units_column, sold_amount_column, units,unit_conversions){
+milk_price_time_units_conversion <- function(id_rhomis_dataset,units_column, sold_amount_column, unit_conv_tibble=NULL){
 
-    units_column <- switch_units(units_column,units = units, conversion_factors = unit_conversions)
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = id_rhomis_dataset,
+            unit_conv_tibble = milk_price_time_units
+        )
+    }
 
+    units_column <- switch_units(data_to_convert = units_column,unit_tibble = unit_conv_tibble, id_vector = id_rhomis_dataset)
 
     numeric_values <- suppressWarnings(!is.na(as.numeric(units_column)))
 
@@ -975,15 +1024,25 @@ average_good_and_bad_season <- function(good_season_amount, bad_season_amount){
 #' Calculating the amount of honey produced from RHoMIS data
 #'
 #' @param data The data containing livestock loops
-#' @param units A vector of units for which you have conversion factors
-#' @param unit_conversions The conversion factors for those units
+#' @param unit_conv_tibble A tibble of honey amount conversions
 #'
 #' @return
 #' @export
 #'
 #' @examples
-honey_amount_calculation <- function(data, units=honey_amount_units$units, unit_conversions=honey_amount_units$conversion_factors){
+honey_amount_calculation <- function(data, unit_conv_tibble=NULL){
 
+
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(unit_conv_tibble)){
+        unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = honey_amount_units
+        )
+    }
 
     number_of_loops <- find_number_of_loops(data,"bees_honey_production")
 
@@ -995,7 +1054,7 @@ honey_amount_calculation <- function(data, units=honey_amount_units$units, unit_
     honey_amount_data <- honey_amount_data %>%  dplyr::mutate_all(as.numeric)
     honey_units_data <- data[honey_units_columns]
 
-    honey_units_converted <- switch_units(honey_units_data, units = units,conversion_factors = unit_conversions)
+    honey_units_converted <- switch_units(honey_units_data, unit_tibble = unit_conv_tibble, id_vector = data[["id_rhomis_dataset"]])
 
     bees_honey_kg_per_year <- honey_amount_data*honey_units_converted
     bees_honey_kg_per_year<-tibble::as_tibble(bees_honey_kg_per_year)
@@ -1030,7 +1089,7 @@ honey_proportions_all <- function(data){
         "bees_honey_sell_amount"),
         warning_message = "Could not calculate honey amounts sold or consumed"
     )
-    if(length(missing_columns)==0)
+    if(length(missing_columns)==0 )
     {
 
         bees_honey_sold_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "sell", use_column = "bees_honey_use", prop_column = "bees_honey_sell_amount", loop_number = x))
@@ -1328,44 +1387,72 @@ gender_split_livestock <- function(data){
 #' Carrying out all calculations on RHoMIS
 #' livestock loops.
 #'
+#' @param livestock_weights_conv_tibble Conversion tibble of livestock weights
+#' @param eggs_amount_unit_conv_tibble Conversion tibble of eggs amount
+#' @param eggs_price_time_units_conv_tibble Conversion tibble of egg price time units
+#' @param honey_amount_unit_conv_tibble Conversion tibble of honey amount
+#' @param milk_amount_unit_conv_tibble Conversion tibble of milk amounts
+#' @param milk_price_time_unit_conv_tibble Conversion tibble of milk prices
 #' @param data RHoMIS data, containing livestock loops
-#' @param livestock_weights_names The names of livestock
-#' @param livestock_weights_conversions Conversion factors to convert livestock
-#' names into kg of meat
-#' @param eggs_amount_units_all Units for eggs harvested
-#' @param eggs_amount_unit_conversions_all Conversion factors to convert the
-#' eggs harvested units into a per year value
-#' @param eggs_price_time_units_all Egg price units in a unit of time
-#' @param eggs_price_time_unit_conversions_all Conversion factors to convert
-#' the price units into a yearly income
-#' @param honey_amount_units_all Units for amounts of honey
-#' collected
-#' @param honey_amount_unit_conversions_all Conversion factors for
-#' the honey amount units
-#' @param milk_amount_units_all Milk amount units
-#' @param milk_amount_unit_conversions_all Conversion factors for the
-#' milk amount units
-#' @param milk_price_time_units_all Units for milk price
-#' @param milk_price_time_unit_conversions_all Conversion factors for the milk
-#' price units
 #'
 #' @return
 #' @export
 #'
 #' @examples
 livestock_calculations_all <- function(data,
-                                       livestock_weights_names=livestock_weights$animal,
-                                       livestock_weights_conversions=livestock_weights$weight_kg,
-                                       eggs_amount_units_all=eggs_amount_units$unit,
-                                       eggs_amount_unit_conversions_all=eggs_amount_units$conversion_factor,
-                                       eggs_price_time_units_all=eggs_price_time_units$unit,
-                                       eggs_price_time_unit_conversions_all=eggs_price_time_units$conversion_factor,
-                                       honey_amount_units_all=honey_amount_units$units,
-                                       honey_amount_unit_conversions_all=honey_amount_units$conversion_factors,
-                                       milk_amount_units_all=milk_amount_units$unit,
-                                       milk_amount_unit_conversions_all=milk_amount_units$conversion_factor,
-                                       milk_price_time_units_all=milk_price_time_units$unit,
-                                       milk_price_time_unit_conversions_all=milk_price_time_units$conversion_factor){
+                                       livestock_weights_conv_tibble = NULL,
+                                       eggs_amount_unit_conv_tibble= NULL,
+                                       eggs_price_time_units_conv_tibble=NULL,
+                                       honey_amount_unit_conv_tibble=NULL,
+                                       milk_amount_unit_conv_tibble=NULL,
+                                       milk_price_time_unit_conv_tibble=NULL){
+
+    if ("id_rhomis_dataset"%in% colnames(data)==F){
+        stop("Missing the id_rhomis_dataset column in RHoMIS data")
+    }
+
+    if (is.null(livestock_weights_conv_tibble)){
+        livestock_weights_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = livestock_weights
+        )
+    }
+
+    if (is.null(eggs_amount_unit_conv_tibble)){
+        eggs_amount_unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = eggs_amount_units
+        )
+    }
+
+    if (is.null(eggs_price_time_units_conv_tibble)){
+        eggs_price_time_units_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = eggs_price_time_units
+        )
+    }
+
+    if (is.null(honey_amount_unit_conv_tibble)){
+        honey_amount_unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = honey_amount_units
+        )
+    }
+
+    if (is.null(milk_amount_unit_conv_tibble)){
+        milk_amount_unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = milk_amount_units
+        )
+    }
+
+    if (is.null(milk_price_time_unit_conv_tibble)){
+        milk_price_time_unit_conv_tibble <- make_per_project_conversion_tibble(
+            proj_id_vector = data[["id_rhomis_dataset"]],
+            unit_conv_tibble = milk_price_time_units
+        )
+    }
+
 
 
     # Adding livestock prices to the data set
@@ -1384,9 +1471,7 @@ livestock_calculations_all <- function(data,
                                              warning_message = "Could not calculate amounts of meat harvested")
     if(length(missing_columns)==0)
     {
-        data <- meat_amount_calculation(data,
-                                        animal_weights_names = livestock_weights_names,
-                                        animal_weights_conversions = livestock_weights_conversions)
+        data <- meat_amount_calculation(data, unit_conv_tibble = livestock_weights_conv_tibble)
     }
 
 
@@ -1423,9 +1508,7 @@ livestock_calculations_all <- function(data,
                                              warning_message = "Cannot calculate the amounts of milk collected")
     if(length(missing_columns)==0)
     {
-        data <- milk_amount_calculations(data,
-                                         milk_units = milk_amount_units_all,
-                                         milk_unit_conversions = milk_amount_unit_conversions_all)
+        data <- milk_amount_calculations(data,unit_conv_tibble = milk_amount_unit_conv_tibble)
     }
 
 
@@ -1445,9 +1528,7 @@ livestock_calculations_all <- function(data,
     )
     if(length(missing_columns)==0)
     {
-        data <- milk_income_calculations(data ,
-                                         units = milk_price_time_units_all,
-                                         conversion_factors = milk_price_time_unit_conversions_all)
+        data <- milk_income_calculations(data ,unit_conv_tibble = milk_price_time_unit_conv_tibble)
     }
 
 
@@ -1461,9 +1542,7 @@ livestock_calculations_all <- function(data,
     )
     if(length(missing_columns)==0)
     {
-        data <- eggs_amount_calculations(data,
-                                         units = eggs_amount_units_all,
-                                         unit_conversions = eggs_amount_unit_conversions_all)
+        data <- eggs_amount_calculations(data,unit_conv_tibble = eggs_amount_unit_conv_tibble)
     }
 
 
@@ -1482,9 +1561,7 @@ livestock_calculations_all <- function(data,
     )
     if(length(missing_columns)==0)
     {
-        data <- egg_income_calculations(data,
-                                        units = eggs_price_time_units_all,
-                                        unit_conversions = eggs_price_time_unit_conversions_all)
+        data <- egg_income_calculations(data,unit_conv_tibble = eggs_price_time_units_conv_tibble)
     }
 
 
@@ -1499,18 +1576,12 @@ livestock_calculations_all <- function(data,
     )
     if(length(missing_columns)==0)
     {
-        data <- honey_amount_calculation(data,
-                                         units =honey_amount_units_all ,
-                                         unit_conversions = honey_amount_unit_conversions_all)
+        data <- honey_amount_calculation(data,unit_conv_tibble = honey_amount_unit_conv_tibble)
     }
 
 
     # Honey sold and consumed
     data <- honey_amount_sold_and_consumed_calculations(data)
-
-
-
-
     data <- gender_split_livestock(data)
 
     return(data)

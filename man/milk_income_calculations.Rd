@@ -4,18 +4,12 @@
 \alias{milk_income_calculations}
 \title{Milk Income Calculations}
 \usage{
-milk_income_calculations(
-  data,
-  units = milk_price_time_units$unit,
-  conversion_factors = milk_price_time_units$conversion_factor
-)
+milk_income_calculations(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{Dataset containing all milk income information}
 
-\item{units}{The names of the units you hope to convert}
-
-\item{conversion_factors}{The conversion factors for these units}
+\item{unit_conv_tibble}{A tibble containing all of the milk income conversion factors}
 }
 \value{
 

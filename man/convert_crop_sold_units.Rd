@@ -4,18 +4,12 @@
 \alias{convert_crop_sold_units}
 \title{Convert Crop Sold Units}
 \usage{
-convert_crop_sold_units(
-  data,
-  units = crop_price_units$unit,
-  unit_conversions = crop_price_units$conversion
-)
+convert_crop_sold_units(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{RHoMIS data containing crop-looping information}
 
-\item{units}{A list of units to be converted}
-
-\item{unit_conversions}{The numeric conversion factors for the units listed above}
+\item{unit_conv_tibble}{A tibble of unit conversions.}
 }
 \value{
 

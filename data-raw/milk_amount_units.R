@@ -1,12 +1,12 @@
 library(tibble)
 
-milk_amount_units <- tibble::as_tibble(list("unit"=c("l/day",
+milk_amount_units <- tibble::as_tibble(list("survey_value"=c("l/day",
                                                      "l/animal/day",
                                                      "0.3l/day",
                                                      "per animal per week",
                                                      "0.3l/animal/day"
                                                      ),
-                                            "conversion_factor"=c(365,
+                                            "conversion"=c(365,
                                                                   "l/animal/day",
                                                                   0.3*365,
                                                                   "per animal per week",

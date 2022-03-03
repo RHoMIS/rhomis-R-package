@@ -314,7 +314,7 @@ extract_values_by_project <- function(data){
         lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type){
             conversion_table <- units_by_project_by_unit_type[[project]][[conversion_type]]
             conversion_table$unit_type<- conversion_type
-            conversion_table$id_rhomis_data_set <- project
+            conversion_table$id_rhomis_dataset <- project
             return(conversion_table)
         })
     })

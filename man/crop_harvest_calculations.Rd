@@ -4,11 +4,7 @@
 \alias{crop_harvest_calculations}
 \title{Crop harvest calculations}
 \usage{
-crop_harvest_calculations(
-  data,
-  units = crop_yield_units$unit,
-  unit_conversions = crop_yield_units$conversion
-)
+crop_harvest_calculations(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{RHoMIS data containing cropping information}

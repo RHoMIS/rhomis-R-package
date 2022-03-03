@@ -1,7 +1,7 @@
 library(tibble)
 
 
-livestock_weights <- structure(list(animal = c("fish",
+livestock_weights <- structure(list(survey_value = c("fish",
                           "pigs",
                           "chicken",
                           "cattle",
@@ -19,7 +19,7 @@ livestock_weights <- structure(list(animal = c("fish",
                           "llama",
                           "alpaca",
                           "sheep"),
-               weight_kg = c(1,
+               conversion = c(1,
                              150,
                              1,
                              250,

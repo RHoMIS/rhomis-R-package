@@ -6,53 +6,28 @@
 \usage{
 livestock_calculations_all(
   data,
-  livestock_weights_names = livestock_weights$animal,
-  livestock_weights_conversions = livestock_weights$weight_kg,
-  eggs_amount_units_all = eggs_amount_units$unit,
-  eggs_amount_unit_conversions_all = eggs_amount_units$conversion_factor,
-  eggs_price_time_units_all = eggs_price_time_units$unit,
-  eggs_price_time_unit_conversions_all = eggs_price_time_units$conversion_factor,
-  honey_amount_units_all = honey_amount_units$units,
-  honey_amount_unit_conversions_all = honey_amount_units$conversion_factors,
-  milk_amount_units_all = milk_amount_units$unit,
-  milk_amount_unit_conversions_all = milk_amount_units$conversion_factor,
-  milk_price_time_units_all = milk_price_time_units$unit,
-  milk_price_time_unit_conversions_all = milk_price_time_units$conversion_factor
+  livestock_weights_conv_tibble = NULL,
+  eggs_amount_unit_conv_tibble = NULL,
+  eggs_price_time_units_conv_tibble = NULL,
+  honey_amount_unit_conv_tibble = NULL,
+  milk_amount_unit_conv_tibble = NULL,
+  milk_price_time_unit_conv_tibble = NULL
 )
 }
 \arguments{
 \item{data}{RHoMIS data, containing livestock loops}
 
-\item{livestock_weights_names}{The names of livestock}
+\item{livestock_weights_conv_tibble}{Conversion tibble of livestock weights}
 
-\item{livestock_weights_conversions}{Conversion factors to convert livestock
-names into kg of meat}
+\item{eggs_amount_unit_conv_tibble}{Conversion tibble of eggs amount}
 
-\item{eggs_amount_units_all}{Units for eggs harvested}
+\item{eggs_price_time_units_conv_tibble}{Conversion tibble of egg price time units}
 
-\item{eggs_amount_unit_conversions_all}{Conversion factors to convert the
-eggs harvested units into a per year value}
+\item{honey_amount_unit_conv_tibble}{Conversion tibble of honey amount}
 
-\item{eggs_price_time_units_all}{Egg price units in a unit of time}
+\item{milk_amount_unit_conv_tibble}{Conversion tibble of milk amounts}
 
-\item{eggs_price_time_unit_conversions_all}{Conversion factors to convert
-the price units into a yearly income}
-
-\item{honey_amount_units_all}{Units for amounts of honey
-collected}
-
-\item{honey_amount_unit_conversions_all}{Conversion factors for
-the honey amount units}
-
-\item{milk_amount_units_all}{Milk amount units}
-
-\item{milk_amount_unit_conversions_all}{Conversion factors for the
-milk amount units}
-
-\item{milk_price_time_units_all}{Units for milk price}
-
-\item{milk_price_time_unit_conversions_all}{Conversion factors for the milk
-price units}
+\item{milk_price_time_unit_conv_tibble}{Conversion tibble of milk prices}
 }
 \value{
 

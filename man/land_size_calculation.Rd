@@ -4,18 +4,12 @@
 \alias{land_size_calculation}
 \title{Land Size Calculation}
 \usage{
-land_size_calculation(
-  data,
-  units = land_area_units$units,
-  unit_conversions = land_area_units$conversions
-)
+land_size_calculation(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{RHoMIS data}
 
-\item{units}{Land size units}
-
-\item{unit_conversions}{Unit conversions for the land size units}
+\item{unit_conv_tibble}{A tibble of land area units and}
 }
 \value{
 

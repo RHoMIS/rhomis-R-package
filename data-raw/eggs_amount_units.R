@@ -1,12 +1,12 @@
 library(tibble)
 
-eggs_amount_units <- tibble::as_tibble(list(unit=c("pieces/day",
+eggs_amount_units <- tibble::as_tibble(list(survey_value=c("pieces/day",
                                                    "pieces/week",
                                                    "pieces/month",
                                                    "pieces/animal/day",
                                                    "total"
                                                    ),
-                                            conversion_factor=c(365,
+                                            conversion=c(365,
                                                                 365/7,
                                                                 365/28,
                                                                 "pieces/animal/day",

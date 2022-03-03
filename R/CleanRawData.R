@@ -5,6 +5,39 @@ library(purrr)
 library(magrittr)
 
 
+#' Make Per Project conversion tibble
+#'
+#' If no conversion table is provided, construct
+#' a conversion tibble, including project IDs, from the
+#' the in built conversion tables
+#'
+#' @param proj_id_vector A vector of project IDs
+#' @param unit_conv_tibble A conversion table containing columns "survey_value" and "conversion_factor"
+#'
+#' @return
+#' @export
+#'
+#' @examples
+make_per_project_conversion_tibble <- function(
+        proj_id_vector,
+        unit_conv_tibble
+
+){
+
+    individual_ids <- unique(proj_id_vector)
+
+    by_project_conv <- sapply(individual_ids, function(x) {
+        temp_conv_table <- unit_conv_tibble
+        temp_conv_table$id_rhomis_dataset <- x
+        return(temp_conv_table)
+
+    }, simplify = F) %>% dplyr::bind_rows()
+
+    return(by_project_conv)
+
+}
+
+
 #' Switch Units
 #'
 #' In RHoMIS, sometimes lists or data frames contain units which need to be converted
@@ -30,15 +63,16 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector){
         converted_data <- lapply(data_to_convert, function(x){
             household_data_tibble <- tibble::as_tibble(
                 list(
-                    units=x,
+                    survey_value=x,
                     id_rhomis_dataset=id_vector
                 ))
 
-            converted_data <- dplyr::left_join(household_data_tibble,
-                                               unit_tibble,
-                                               by=c("id_rhomis_dataset"="id_rhomis_dataset", "units"="units"))
 
-            return(converted_data[["conversion_factors"]])
+             converted_data <- dplyr::left_join(household_data_tibble,
+                                                unit_tibble,
+                                                by=c("id_rhomis_dataset"="id_rhomis_dataset", "survey_value"="survey_value"))
+             converted_data
+            return(converted_data[["conversion"]])
         }) %>% dplyr::bind_cols()
 
         # converted_data <- data_to_convert %>% purrr::map_df(function(x) replace_unit_list(x,unit_conv_tibble))
@@ -50,16 +84,16 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector){
 
         household_data_tibble <- tibble::as_tibble(
             list(
-                units=data_to_convert,
+                survey_value=data_to_convert,
                 id_rhomis_dataset=id_vector
             )
         )
 
         converted_data <- dplyr::left_join(household_data_tibble,
                          unit_tibble,
-                         by=c("id_rhomis_dataset"="id_rhomis_dataset", "units"="units"))
+                         by=c("id_rhomis_dataset"="id_rhomis_dataset", "survey_value"="survey_value"))
 
-        return(converted_data[["conversion_factors"]])
+        return(converted_data[["conversion"]])
 
     }
 

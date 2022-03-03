@@ -4,18 +4,12 @@
 \alias{milk_amount_calculations}
 \title{Milk amount calculations}
 \usage{
-milk_amount_calculations(
-  data,
-  milk_units = milk_amount_units$unit,
-  milk_unit_conversions = milk_amount_units$conversion_factor
-)
+milk_amount_calculations(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{The dataset containing livestock loops for RHoMIS}
 
-\item{milk_units}{The units for milk amounts}
-
-\item{milk_unit_conversions}{The conversions for each of these units to litres per year}
+\item{unit_conv_tibble}{The units for milk amounts in a conversion tibble}
 }
 \value{
 

@@ -4,18 +4,12 @@
 \alias{eggs_amount_calculations}
 \title{EggsAmount Calculations}
 \usage{
-eggs_amount_calculations(
-  data,
-  units = eggs_amount_units$unit,
-  unit_conversions = eggs_amount_units$conversion_factor
-)
+eggs_amount_calculations(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{Data containing crop loop information}
 
-\item{units}{A vector of units, for which you have corresponding unit conversion}
-
-\item{unit_conversions}{A vector of conversion factors for these units}
+\item{unit_conv_table}{A tibble of units and conversion factor, and project IDs}
 }
 \value{
 

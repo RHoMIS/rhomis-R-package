@@ -5,20 +5,20 @@
 \title{Milk Price Time Units Conversion}
 \usage{
 milk_price_time_units_conversion(
+  id_rhomis_dataset,
   units_column,
   sold_amount_column,
-  units,
-  unit_conversions
+  unit_conv_tibble = NULL
 )
 }
 \arguments{
+\item{id_rhomis_dataset}{An id vector containing information on which rhomis}
+
 \item{units_column}{The columns containing the original units}
 
 \item{sold_amount_column}{The amounts of milk which was sold}
 
-\item{units}{A vector of units for which you have conversions}
-
-\item{unit_conversions}{Conversion factors for the units listed above}
+\item{unit_conv_tibble}{A table with all of the information to convert price time units}
 }
 \value{
 

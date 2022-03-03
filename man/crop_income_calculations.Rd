@@ -4,21 +4,14 @@
 \alias{crop_income_calculations}
 \title{Crop Income Calculations}
 \usage{
-crop_income_calculations(
-  data,
-  units = crop_price_units$unit,
-  unit_conversions = crop_price_units$conversion
-)
+crop_income_calculations(data, unit_conv_tibble = NULL)
 }
 \arguments{
 \item{data}{A RHoMIS dataset, including information on crop harvested,
 and crop sold}
 
-\item{units}{Units for crop income calculations which
+\item{unit_conv_tibble}{Units for crop income calculations which
 need to be converted}
-
-\item{unit_conversions}{Conversions for these crop income
-units}
 }
 \value{
 

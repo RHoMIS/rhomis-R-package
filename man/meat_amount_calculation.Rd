@@ -4,20 +4,12 @@
 \alias{meat_amount_calculation}
 \title{Meat amount calculations}
 \usage{
-meat_amount_calculation(
-  data,
-  animal_weights_names = livestock_weights$animal,
-  animal_weights_conversions = livestock_weights$weight_kg
-)
+meat_amount_calculation(data, unit_conv_tibble = NULL)
 }
 \arguments{
-\item{data}{RHoMIS data including information on livestock
-names, and the number of livestock killed for meat}
+\item{unit_conv_tibble}{A conversion table for animal names and their weights}
 
 \item{animal_weights_names}{The vector which contains the names of the animals}
-
-\item{animal_weights_conversions}{The column which contains the
-weights for converting the animals}
 }
 \value{
 
