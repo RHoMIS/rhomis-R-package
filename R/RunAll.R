@@ -353,7 +353,7 @@ replace_infinite <- function(column){
 #' @examples
 processData <- function(
         dataSource="csv",
-        outputType="csv",
+        outputType=c("csv", "mongodb"), # list of allowed values for outputType arguments, default is first element in vector (csv),
         coreOnly=T,
         surveyFile=NULL,
         moduleSaving=F,
@@ -370,6 +370,9 @@ processData <- function(
         draft=NULL){
 
 
+    # Check validity of OutputTypes and print error if unknown OutputType is supplied
+    outputType<- match.arg(outputType)
+
     # Print warnings as they occur.
     options(warn = 1)
 
@@ -381,7 +384,6 @@ processData <- function(
 
     # Start collecting.
     sink(warn_connection, type = "message")
-
 
 
     #---------------------------------------------------------------
@@ -433,10 +435,6 @@ processData <- function(
                 }
             }
 
-
-            if(outputType!="csv"&outputType!="mongodb"){
-                stop("Must specify whether to save the output locally or in a mongodb")
-            }
 
             #---------------------------------------------------------------
             # Loading Submission Data
