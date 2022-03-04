@@ -1,5 +1,5 @@
-library(rhomis)
-
+path_to_package = "/Users/sp20532/Documents/rhomis/rhomis-R-package/"
+devtools::load_all(path=path_to_package)
 
 
 processData(dataSource="csv",
