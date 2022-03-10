@@ -2,21 +2,23 @@ library(rhomis)
 
 
 
-processData(dataSource="csv",
-outputType="csv",
-coreOnly=T,
-surveyFile=NULL,
-moduleSaving=F,
-extractUnits=F,
-processDataSet=T,
-dataFilePath="inst/extdata/projects/UG_GEN_2021/raw_data.csv",
-central_url=NULL,
-central_email=NULL,
-central_password=NULL,
-project_name=NULL,
-form_name=NULL,
-form_version=NULL,
-database=NULL)
+processData(proj_id = "test_proj",
+            form_id = "test_form",
+            dataSource="csv",
+            outputType="csv",
+            coreOnly=T,
+            surveyFile=NULL,
+            moduleSaving=F,
+            extractUnits=F,
+            processDataSet=T,
+            dataFilePath="inst/extdata/projects/UG_GEN_2021/raw_data.csv",
+            central_url=NULL,
+            central_email=NULL,
+            central_password=NULL,
+            project_name=NULL,
+            form_name=NULL,
+            form_version=NULL,
+            database=NULL)
 
 setwd("../../../../")
 

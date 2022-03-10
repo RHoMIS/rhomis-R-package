@@ -3,6 +3,87 @@ library(dplyr)
 library(tibble)
 
 
+#' Extract values
+#'
+#' @param file_path The path to the raw-data rhomis file
+#' @param overwrite Whether
+#' @param country_column
+#' @param unique_id_col
+#' @param hh_id_col
+#' @param id_type
+#' @param proj_id
+#' @param form_id
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_values_local <- function(file_path=file_path,
+                                 country_column= "country",
+                                 unique_id_col="_uuid",
+                                 hh_id_col=NULL,
+                                 id_type="string",
+                                 proj_id="KE_ESA_2021",
+                                 form_id="ESSA"){
+
+    # Loading a rhomis dataset, and adding
+    # id values (using a hashing function, digest)
+    # to make sure that units, crop name conversions...
+    # are all linked to a specific project.
+    rhomis_data <- load_rhomis_csv(
+        file_path=file_path,
+        country_column= "country",
+        unique_id_col="_uuid",
+        hh_id_col=NULL,
+        id_type="string",
+        proj_id="KE_ESA_2021",
+        form_id="ESSA"
+    )
+
+    extract_project_values(rhomis_data)
+    new_values <- extract_values_by_project(rhomis_data)
+    new_values <- check_existing_conversions(list_of_df = new_values)
+
+    units_folder_dest <- "./inst/projects/KE_ESA_2021/original_units"
+    write_units_to_folder(list_of_df = new_values,
+                          folder=units_folder_dest)
+
+    new_units_dest <- "./inst/projects/KE_ESA_2021/converted_units"
+
+    if (dir.exists(new_units_dest)==F){
+        write_units_to_folder(list_of_df = new_values,
+                              folder=new_units_dest)
+    }
+    if (overwrite==T){
+        write_units_to_folder(list_of_df = new_values,
+                              folder=new_units_dest)
+    }
+
+
+
+}
+
+
+#' Extract Project values
+#'
+#' Extract all of the values from an individual data set
+#'
+#'
+#' @param rhomis_data A rhomis data set
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_project_values <- function(rhomis_data)
+{
+    new_values <- extract_values_by_project(rhomis_data)
+    new_values <- check_existing_conversions(list_of_df = new_values)
+
+    return(new_values)
+}
+
+
 #' Make new dataset
 #'
 #' @param rhomis_data A rhomis_dataset including IDs
