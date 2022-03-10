@@ -1,3 +1,7 @@
+#' These functions are helpful for managing users onf the RHoMIS 2.0 authentication server.
+#' Found here: https://github.com/l-gorman/rhomis-authenticator
+
+
 library(httr)
 library(jsonlite)
 library(tibble)

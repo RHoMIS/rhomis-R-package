@@ -1,9 +1,11 @@
-# RHoMIS R-package for data processing
+# RHoMIS R-package for Data Processing
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/l-gorman/rhomis-R-package/workflows/R-CMD-check/badge.svg)](https://github.com/l-gorman/rhomis-R-package/actions)
 <!-- badges: end -->
 
 ## Summary
+
+This R-package is designed to help users
 Initial package for RHoMIS 2.0. The package can:
 * Import data from ODK central
 * Clean raw data from ODK central
