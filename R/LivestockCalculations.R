@@ -1,6 +1,6 @@
-library(tibble)
-library(magrittr)
-library(dplyr)
+
+
+
 
 #' Calculate Livestock Price
 #'

@@ -1,5 +1,5 @@
-library(tibble)
-library(readr)
+
+
 
 
 
@@ -360,7 +360,7 @@ extract_values_by_project <- function(data){
         })
     })
 
-    units_by_project_merged_df <- bind_rows(units_by_project_merged)
+    units_by_project_merged_df <- dplyr::bind_rows(units_by_project_merged)
     final_units_list <- sapply(unique(units_by_project_merged_df$unit_type),function(unit_type){
         units_by_project_merged_df[units_by_project_merged_df$unit_type==unit_type,]
     }, simplify=F)
@@ -398,7 +398,7 @@ extract_calorie_values_by_project <- function(data){
         })
     })
 
-    units_by_project_merged_df <- bind_rows(units_by_project_merged)
+    units_by_project_merged_df <- dplyr::bind_rows(units_by_project_merged)
     final_units_list <- sapply(unique(units_by_project_merged_df$unit_type),function(unit_type){
         units_by_project_merged_df[units_by_project_merged_df$unit_type==unit_type,]
     }, simplify=F)

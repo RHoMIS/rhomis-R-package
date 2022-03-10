@@ -1,6 +1,6 @@
-library(httr)
-library(jsonlite)
-library(tibble)
+
+
+
 
 #' Register User
 #'
