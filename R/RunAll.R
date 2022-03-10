@@ -345,12 +345,16 @@ replace_infinite <- function(column){
 #' @param database The name of the database you would like to save results to
 #' @param draft Whether or not the ODK for you war working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
+#' @param proj_id An ID for your project
+#' @param form_id An ID for your form
 #'
 #' @return
 #' @export
 #'
 #' @examples
 processData <- function(
+        proj_id,
+        form_id,
         dataSource="csv",
         outputType="csv",
         coreOnly=T,
@@ -443,30 +447,21 @@ processData <- function(
 
             if(dataSource=="csv")
             {
-                rhomis_data <- readr::read_csv(dataFilePath, col_types = readr::cols(), na = c("n/a","-999","NA"))
-                colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data),
-                                                            repeat_columns = c("crop_repeat",
-                                                                               "livestock_repeat",
-                                                                               "offfarm_repeat",
-                                                                               "offfarm_income_repeat",
-                                                                               "hh_pop_repeat",
-                                                                               "hh_rep")) %>% tolower()
+
+                rhomis_data <- load_rhomis_csv(
+                    file_path=dataFilePath,
+                    country_column= "country",
+                    unique_id_col="_uuid",
+                    hh_id_col=NULL,
+                    id_type="string",
+                    proj_id=proj_id,
+                    form_id=form_id
+                )
 
 
+                indicator_data <- make_new_dataset(rhomis_data)
 
 
-                rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
-
-                rhomis_data <- sapply(rhomis_data, function(x){
-                    x[as.numeric(x)==-999]<-NA
-                    x
-                }, simplify = F) %>% tibble::as_tibble()
-
-
-
-                indicator_data <- tibble::as_tibble(list(
-                    source = rep(dataFilePath, nrow(rhomis_data))
-                ))
 
 
             }
@@ -606,8 +601,8 @@ processData <- function(
 
             if(extractUnits==T)
             {
-                units_and_conversions <- extract_units_data_frames(rhomis_data)
-                units_and_conversions <- check_existing_conversions(units_and_conversions)
+                units_and_conversions <- extract_values_by_project(rhomis_data)
+                units_and_conversions <- check_existing_conversions(list_of_df = units_and_conversions)
 
                 if(outputType=="csv"){
                     write_units_to_folder(units_and_conversions)
@@ -645,7 +640,8 @@ processData <- function(
                     #---------------------------------------------
                     # Loading all of the unit conversions locally
                     #---------------------------------------------
-                    load_local_units(file_names)
+                    load_units_csvs("./unit_conversions/", ids_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+
                 }
 
 
@@ -675,8 +671,9 @@ processData <- function(
                 if(length(crop_name_in_data)==0)
                 {
                     rhomis_data[crop_loops] <- switch_units(rhomis_data[crop_loops],
-                                                            units = crop_name_conversions$survey_value,
-                                                            conversion_factors = crop_name_conversions$conversion)
+                                                            unit_tibble = crop_name_conversions,
+                                                            id_vector = rhomis_data[["id_rhomis_dataset"]]
+                                                            )
                 }
 
                 number_livestock_loops <- find_number_of_loops(rhomis_data,"livestock_name")
@@ -688,8 +685,9 @@ processData <- function(
                 if(length(livestock_name_in_data)==0)
                 {
                     rhomis_data[livestock_loops] <- switch_units(rhomis_data[livestock_loops],
-                                                                 units = livestock_name_conversions$survey_value,
-                                                                 conversion_factors = livestock_name_conversions$conversion)
+                                                                 unit_tibble = livestock_name_conversions,
+                                                                 id_vector = rhomis_data[["id_rhomis_dataset"]]
+                                                                 )
                 }
 
                 # Make sure "other" units are considered
@@ -698,8 +696,8 @@ processData <- function(
                 if (exists("country_conversions")){
 
                     indicator_data$iso_country_code <- toupper(switch_units(data_to_convert = rhomis_data$country,
-                                                                            units =country_conversions$survey_value,
-                                                                            conversion_factors = country_conversions$conversion))
+                                                                            unit_tibble = country_conversions,
+                                                                            id_vector = rhomis_data[["id_rhomis_dataset"]]))
                     if (all(is.na(country_conversions$conversion)) | all(is.na(indicator_data$iso_country_code))){
                         warning(paste0("\nHave not provided the ISO country codes for the survey. \nCheck the country names, and check that they are converted",
                                        "\n---------------------------------------------"))
@@ -737,10 +735,8 @@ processData <- function(
                 ###############
 
                 rhomis_data <- crop_calculations_all(rhomis_data,
-                                                     crop_yield_units_all = crop_yield_unit_conversions$survey_value,
-                                                     crop_yield_unit_conversions_all = crop_yield_unit_conversions$conversion,
-                                                     crop_income_units_all = crop_price_unit_conversions$survey_value,
-                                                     crop_income_unit_conversions_all = crop_price_unit_conversions$conversion)
+                                                     crop_yield_units_conv_tibble = crop_yield_unit_conversions,
+                                                     crop_income_units_conv_tibble = crop_price_unit_conversions)
 
 
                 crop_columns <- c("crop_harvest_kg_per_year",
@@ -795,19 +791,12 @@ processData <- function(
                 ###############
 
                 rhomis_data <- livestock_calculations_all(rhomis_data,
-                                                          # Need to add livestock weights to the conversions sheets
-                                                          livestock_weights_names = livestock_weights$animal,
-                                                          livestock_weights_conversions = livestock_weights$weight_kg,
-                                                          eggs_amount_units_all = eggs_unit_conversion$survey_value,
-                                                          eggs_amount_unit_conversions_all = eggs_unit_conversion$conversion,
-                                                          eggs_price_time_units_all = eggs_price_unit_conversion$survey_value,
-                                                          eggs_price_time_unit_conversions_all = eggs_price_unit_conversion$conversion,
-                                                          honey_amount_units_all = honey_unit_conversion$survey_value,
-                                                          honey_amount_unit_conversions_all = honey_unit_conversion$conversion,
-                                                          milk_amount_units_all = milk_unit_conversion$survey_value,
-                                                          milk_amount_unit_conversions_all = milk_unit_conversion$conversion,
-                                                          milk_price_time_units_all = milk_price_unit_conversion$survey_value,
-                                                          milk_price_time_unit_conversions_all = milk_price_unit_conversion$conversion)
+                                                          livestock_weights_conv_tibble = make_per_project_conversion_tibble(rhomis_data[["id_rhomis_dataset"]],unit_conv_tibble =livestock_weights ),
+                                                          eggs_amount_unit_conv_tibble = eggs_unit_conversion,
+                                                          eggs_price_time_units_conv_tibble = eggs_price_unit_conversion,
+                                                          honey_amount_unit_conv_tibble = honey_unit_conversion,
+                                                          milk_amount_unit_conv_tibble = milk_unit_conversion,
+                                                          milk_price_time_unit_conv_tibble = milk_price_unit_conversion,)
 
 
                 livestock_loop_columns <- c(
@@ -933,7 +922,7 @@ processData <- function(
 
                 if (all(c("unitland","landcultivated","landowned")%in%colnames(rhomis_data)))
                 {
-                    indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, units = land_unit_conversion$survey_value,unit_conversions = land_unit_conversion$conversion))
+                    indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = land_unit_conversion))
                 }
 
                 ###############
