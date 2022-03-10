@@ -609,7 +609,9 @@ processData <- function(
                 units_and_conversions <- check_existing_conversions(units_and_conversions)
 
                 if(outputType=="csv"){
+
                     write_units_to_folder(units_and_conversions)
+
                 }
 
                 if(outputType=="mongodb"){
