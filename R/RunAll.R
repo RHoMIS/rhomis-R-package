@@ -324,8 +324,7 @@ replace_infinite <- function(column){
 #' If FALSE, you must either provide the survey xls file so that the modules used can be identified,
 #' or ensure that the project you are accessing can be found on ODK central.
 #' @param surveyFile The path to the surveyxls file. Only necessary if "coreOnly"=FALSE and dataSource="local".
-#' @param extractUnits Whether or not to only extract units (TRUE/FALSE)
-#' @param processDataSet Whether to process the whole dataset (TRUE/FALSE)
+#' @param extractUnitsOnly Whether or not to only extract units (TRUE/FALSE)
 #' @param moduleSaving Whether or not to use the form to identify the modules which
 #' were included in the survey (TRUE/FALSE)
 #' @param dataFilePath The file to the data (csv format).
@@ -355,13 +354,12 @@ replace_infinite <- function(column){
 processData <- function(
         proj_id,
         form_id,
-        dataSource="csv",
-        outputType="csv",
+        dataSource=c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
+        outputType=c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
         coreOnly=T,
         surveyFile=NULL,
         moduleSaving=F,
-        extractUnits=T,
-        processDataSet=F,
+        extractUnitsOnly=T,
         dataFilePath=NULL,
         central_url=NULL,
         central_email=NULL,
@@ -372,6 +370,10 @@ processData <- function(
         database=NULL,
         draft=NULL){
 
+
+    # Check validity of OutputTypes and print error if unknown OutputType is supplied
+    outputType<- match.arg(outputType)
+    dataSource<- match.arg(dataSource)
 
     # Print warnings as they occur.
     options(warn = 1)
@@ -386,7 +388,6 @@ processData <- function(
     sink(warn_connection, type = "message")
 
 
-
     #---------------------------------------------------------------
     # Ensuring the parameter calls are logically consistent
     #---------------------------------------------------------------
@@ -395,14 +396,6 @@ processData <- function(
 
 
 
-
-            if(extractUnits==T & processDataSet==T){
-                stop("Stated that you wanted to extract units and process the data in in the same step.\n
-                 This is not possible as survey units first need to be checked.\n
-                 Please work in the following order:\n
-                 1. Extract new units and verify them.\n
-                 3. Calculate indicators\n")
-            }
 
 
             if(dataSource!="csv"&dataSource!="central"){
@@ -436,10 +429,6 @@ processData <- function(
                 }
             }
 
-
-            if(outputType!="csv"&outputType!="mongodb"){
-                stop("Must specify whether to save the output locally or in a mongodb")
-            }
 
             #---------------------------------------------------------------
             # Loading Submission Data
@@ -599,13 +588,15 @@ processData <- function(
             # Extract and write units
             #---------------------------------------------------------------
 
-            if(extractUnits==T)
+            if(extractUnitsOnly==T)
             {
                 units_and_conversions <- extract_values_by_project(rhomis_data)
                 units_and_conversions <- check_existing_conversions(list_of_df = units_and_conversions)
 
                 if(outputType=="csv"){
+
                     write_units_to_folder(units_and_conversions)
+
                 }
 
                 if(outputType=="mongodb"){
@@ -624,7 +615,7 @@ processData <- function(
             #---------------------------------------------------------------
             # Swap "Other" with Standard values
             #---------------------------------------------------------------
-            if (processDataSet==T )
+            if (!extractUnitsOnly)
             {
                 #---------------------------------------------------------------
                 # Load Conversions

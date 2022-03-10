@@ -1,5 +1,5 @@
-library(rhomis)
-
+path_to_package = "/Users/sp20532/Documents/rhomis/rhomis-R-package/"
+devtools::load_all(path=path_to_package)
 
 
 processData(proj_id = "test_proj",
@@ -9,8 +9,7 @@ processData(proj_id = "test_proj",
             coreOnly=T,
             surveyFile=NULL,
             moduleSaving=F,
-            extractUnits=F,
-            processDataSet=T,
+            extractUnitsOnly=F,
             dataFilePath="inst/extdata/projects/UG_GEN_2021/raw_data.csv",
             central_url=NULL,
             central_email=NULL,
