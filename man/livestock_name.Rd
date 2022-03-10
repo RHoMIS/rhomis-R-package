@@ -5,7 +5,7 @@
 \alias{livestock_name}
 \title{Livestock Name}
 \format{
-An object of class \code{character} of length 12.
+An object of class \code{character} of length 13.
 }
 \usage{
 livestock_name

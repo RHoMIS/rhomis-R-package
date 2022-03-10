@@ -13,7 +13,8 @@ livestock_name <- c(
     "fish",
     "chicken",
     "duck",
-    "buffalo"
+    "buffalo",
+    "bees"
 
 )
 

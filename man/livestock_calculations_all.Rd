@@ -11,7 +11,8 @@ livestock_calculations_all(
   eggs_price_time_units_conv_tibble = NULL,
   honey_amount_unit_conv_tibble = NULL,
   milk_amount_unit_conv_tibble = NULL,
-  milk_price_time_unit_conv_tibble = NULL
+  milk_price_time_unit_conv_tibble = NULL,
+  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
 )
 }
 \arguments{

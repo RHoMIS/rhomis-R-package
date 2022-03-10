@@ -299,16 +299,7 @@ crop_sold_and_consumed_calculation <- function(data){
 #' @examples
 crop_income_calculations <- function(data, unit_conv_tibble=NULL){
 
-    if ("id_rhomis_dataset"%in% colnames(data)==F){
-        stop("Missing the id_rhomis_dataset column in RHoMIS data")
-    }
 
-    if (is.null(unit_conv_tibble)){
-        unit_conv_tibble <- make_per_project_conversion_tibble(
-            proj_id_vector = data[["id_rhomis_dataset"]],
-            unit_conv_tibble = crop_price_units
-        )
-    }
 
 
 
@@ -379,12 +370,16 @@ crop_income_calculations <- function(data, unit_conv_tibble=NULL){
 #'
 #' @param data RHoMIS data set conatining processed values for
 #' crop consumed, crop sold, and crop income
+#' @param gender_categories The categories you are interested in examining
 #'
 #' @return
 #' @export
 #'
 #' @examples
-crop_gender_calculations <- function(data){
+crop_gender_calculations <- function(data, gender_categories=c("female_youth",
+                                                                "female_adult",
+                                                                "male_youth",
+                                                                "male_adult")){
 
     crop_columns_in_data <- check_columns_in_data(data,
                                                   loop_columns = c("crop_consumed_kg_per_year",
@@ -406,7 +401,8 @@ crop_gender_calculations <- function(data){
     data<-insert_gender_columns_in_core_data(data=data,
                                              original_column="crop_consumed_kg_per_year",
                                              control_column="crop_consume_control",
-                                             loop_structure=T)
+                                             loop_structure=T,
+                                             gender_control_categories = gender_categories)
     }
 
     # crop sold calculations
@@ -420,7 +416,8 @@ crop_gender_calculations <- function(data){
     data<-insert_gender_columns_in_core_data(data,
                                              original_column="crop_sold_kg_per_year",
                                              control_column="crop_who_control_revenue",
-                                             loop_structure=T)
+                                             loop_structure=T,
+                                             gender_control_categories = gender_categories)
     }
 
     # crop income calculations
@@ -434,7 +431,8 @@ crop_gender_calculations <- function(data){
     data<-insert_gender_columns_in_core_data(data,
                                              original_column="crop_income_per_year",
                                              control_column="crop_who_control_revenue",
-                                             loop_structure=T)
+                                             loop_structure=T,
+                                             gender_control_categories = gender_categories)
     }
 
     return(data)
@@ -449,6 +447,8 @@ crop_gender_calculations <- function(data){
 #' @param data RHoMIS crop loop data
 #' @param crop_yield_units_conv_tibble Conversion tibble of crop yield units
 #' @param crop_income_units_conv_tibble Conversion tibble of crop income units
+#' @param gender_catgegories The categories you are interested in examining
+
 #'
 #' @return
 #' @export
@@ -456,7 +456,11 @@ crop_gender_calculations <- function(data){
 #' @examples
 crop_calculations_all <- function(data,
                                   crop_yield_units_conv_tibble=crop_yield_units,
-                                  crop_income_units_conv_tibble=crop_price_units){
+                                  crop_income_units_conv_tibble=crop_price_units,
+                                  gender_categories=c("female_youth",
+                                                      "female_adult",
+                                                      "male_youth",
+                                                      "male_adult")){
 
     # Calculating the amount of crops harvested in kg
     crop_columns_in_data <- check_columns_in_data(data,
@@ -492,7 +496,7 @@ crop_calculations_all <- function(data,
 
 
 
-    data <- crop_gender_calculations(data)
+    data <- crop_gender_calculations(data, gender_categories=gender_categories)
 
     return(data)
 }

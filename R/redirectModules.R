@@ -19,9 +19,9 @@ make_new_dataset <- function(rhomis_data){
         "id_form" %in% colnames(rhomis_data) |
         "id_proj" %in% colnames(rhomis_data)
     )
-    return(
-        rhomis_data[c("id_unique","id_hh","id_rhomis_dataset","id_form","id_proj")]
-    )
+        return(
+            rhomis_data[c("id_unique","id_hh","id_rhomis_dataset","id_form","id_proj")]
+        )
 }
 
 #' Calculate prices and indicator Local
@@ -35,40 +35,207 @@ make_new_dataset <- function(rhomis_data){
 #' @export
 #'
 #' @examples
-calculate_prices_and_indicator_local <- function(data,base_path="./", units_path="./converted_units/"){
+calculate_prices_and_indicator_local <- function(data,base_path="./", units_path="converted_units/",
+                                                 gender_categories=c("female_youth", "female_adult", "male_youth", "male_adult")){
 
-    load_units_csvs(units_path)
+    load_units_csvs(paste0(base_path,units_path), ids_rhomis_dataset = data[["id_rhomis_dataset"]])
 
-    results <- run_preliminary_calculations(data)
+    # load_calorie_conversions
+    results <- run_preliminary_calculations(data,gender_categories = gender_categories
+    )
+
+    # write_list_of_df_to_folder(list_of_df = results,folder = base_path)
+
 
     lapply(names(results), function(x){
         new_folder <- paste0(base_path,x)
         dir.create(new_folder, showWarnings = F)
-
         data_to_write <- results[[x]]
 
-        if ( any(class(data_to_write)=="tbl_df") | any(class(data_to_write)=="tbl") | any(class(data_to_write)=="data.frame")){
-            file_path <- paste0(new_folder,"/", x,".csv")
-            readr::write_csv(data_to_write,file = file_path)
+        if (x=="processed_data" | x=="indicator_data"){
+            path <- paste0(new_folder,"/",x,".csv")
+            readr::write_csv(data_to_write,path)
+            return()
         }
-        if (class(data_to_write)=="list"){
 
         write_list_of_df_to_folder(list_of_df = data_to_write,folder = new_folder)
-        }
     })
+
+
+    if ("processed_data" %in% names(results)){
+
+        calorie_conversions_dfs <- extract_calorie_values_by_project(results$processed_data)
+        calorie_conversions_dfs <- check_existing_calorie_conversions(calorie_conversions_dfs)
+
+        calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = data[["id_rhomis_dataset"]], unit_conv_tibble = list(
+            "staple_crop"=c("maize")
+        ))
+
+        original_calorie_values_folder <- paste0(base_path,"original_calorie_conversions")
+        write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs,folder = original_calorie_values_folder)
+
+        converted_calorie_conversions_folder <- paste0(base_path,"completed_calorie_conversions")
+        if (!dir.exists(converted_calorie_conversions_folder))
+        {
+            write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs,folder = converted_calorie_conversions_folder)
+        }
+
+
+
+    }
 
     converted_prices_folder <- paste0(base_path,"converted_prices")
     if (!dir.exists(converted_prices_folder))
     {
-    dir.create(converted_prices_folder, showWarnings = F)
-    data_to_write <- results[["prices"]]
-    write_list_of_df_to_folder(list_of_df = data_to_write,folder = converted_prices_folder)
+        dir.create(converted_prices_folder, showWarnings = F)
+        data_to_write <- results[["original_prices"]]
+        write_list_of_df_to_folder(list_of_df = data_to_write,folder = converted_prices_folder)
     }
+
+
+
+
+    return(results)
+
+}
+
+#' Calculate Values, Gender and Food Availability
+#'
+#' @param base_path Path to the project folder
+#' @param units_path Path to the folder of converted units
+#' @param processed_data_path Path to processed data folder
+#' @param indicator_path Path to indicator folder
+#' @param calories_path Path to calories folder
+#' @param prices_path Path to prices folder
+#' @param staple_crop The main staple crop consumed in the area
+#'
+#' @return
+#' @export
+#'
+#' @examples
+calculate_values_gender_and_fa_local <- function(base_path="./",
+                                                 processed_data_path="processed_data/",
+                                                 indicator_path="indicator_data/",
+                                                 units_path= "converted_units/",
+                                                 calories_path="completed_calorie_conversions/",
+                                                 prices_path="converted_prices/",
+                                                 staple_crop="maize",
+                                                 gender_categories=c("male_youth", "female_youth", "male_adult", "female_adult")){
+
+    # processed_data_path="processed_data/"
+    # indicator_path="indicator_data/"
+    # units_path= "converted_units/"
+    # calories_path="completed_calorie_conversions/"
+    # prices_path="converted_prices/"
+    # gender_categories=c("male_youth", "female_youth", "male_adult", "female_adult")
+
+
+    # Load unit conversions into the global environment
+
+    processed_data <- read_folder_of_csvs(folder = paste0(base_path,processed_data_path))[[1]]
+    indicator_data <- read_folder_of_csvs(folder = paste0(base_path,indicator_path))[[1]]
+    load_units_csvs(paste0(base_path,units_path), ids_rhomis_dataset = processed_data_path[["id_rhomis_dataset"]])
+
+    prices <- read_folder_of_csvs(folder = paste0(base_path,prices_path))
+    calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path,calories_path))
+
+    results <- value_gender_fa_calculations(processed_data,
+                                            indicator_data,
+                                            calorie_conversions,
+                                            prices)
+
+
+
+    lapply(names(results), function(x){
+
+        data_to_write <- results[[x]]
+
+        if (x=="processed_data" | x=="indicator_data"){
+            new_folder <- paste0(base_path,x)
+            dir.create(new_folder, showWarnings = F)
+
+            path <- paste0(new_folder,"/",x,".csv")
+            readr::write_csv(data_to_write,path)
+            return()
+        }
+
+        if (x=="extra_outputs"){
+            write_list_of_df_to_folder(list_of_df = data_to_write,folder = base_path)
+        }
+    })
 
 
     return(results)
 
 
+
+
+}
+
+
+
+#' Value, Gender, and Food Availability Calculations
+#'
+#' @param processed_data RHoMIS Processed Dataset
+#' @param crop_data A list of tibbles on crop data
+#' @param livestock_data A list of tibbles on livestock data
+#' @param prices A list of tibbles on mean prices
+#' @param off_farm_data Information on prices
+#'
+#' @return
+#' @export
+#'
+#' @examples
+value_gender_fa_calculations <- function(processed_data,
+                                         indicator_data,
+                                         calorie_conversions,
+                                         prices){
+
+    extra_outputs <- list()
+    value_calc_results <- value_calculations(processed_data,
+                                             indicator_data,
+                                             prices)
+
+    processed_data <- value_calc_results$processed_data
+    indicator_data <- value_calc_results$indicator_data
+    extra_outputs$consumption_lcu_values <- value_calc_results$consumption_lcu_calues
+
+
+
+
+    energy_calc_results <- calorie_calculations(processed_data,
+                                                indicator_data,
+                                                calorie_conversions
+    )
+
+    processed_data <- energy_calc_results$processed_data
+    indicator_data <- energy_calc_results$indicator_data
+    extra_outputs$consumption_calorie_values <- energy_calc_results$consumption_kcal_calues
+
+    if ("mean_crop_price_lcu_per_kg" %in% names(prices) & "staple_crop" %in% names(calorie_conversions) & "crop_calories" %in% names(calorie_conversions)){
+
+        indicator_data <- indicator_data %>% dplyr::left_join(calorie_conversions[["staple_crop"]],by="id_rhomis_dataset")
+
+        staple_crop_price <- switch_units(indicator_data$staple_crop,unit_tibble = prices[["mean_crop_price_lcu_per_kg"]],id_vector = indicator_data[["id_rhomis_dataset"]])
+        staple_crop_energy <- switch_units(indicator_data$staple_crop,unit_tibble = calorie_conversions[["crop_calories"]],id_vector = indicator_data[["id_rhomis_dataset"]])
+
+        staple_crop_kcal_per_lcu <- staple_crop_energy/staple_crop_price
+        indicator_data$staple_crop_kcal_per_lcu <- staple_crop_kcal_per_lcu
+    }
+
+    gender_calc_results <- gender_control_summary(processed_data = processed_data,
+                                                  indicator_data = indicator_data,
+                                                  gender_categories =gender_categories)
+    processed_data <- gender_calc_results$processed_data
+    indicator_data <- gender_calc_results$indicator_data
+    extra_outputs$gender_control <- gender_calc_results$gender_outputs
+
+    results <- list()
+    results$processed_data <- processed_data
+    results$indicator_data <- indicator_data
+    results$extra_outputs <- extra_outputs
+
+    return(results)
 
 }
 
@@ -80,7 +247,13 @@ calculate_prices_and_indicator_local <- function(data,base_path="./", units_path
 #' @export
 #'
 #' @examples
-run_preliminary_calculations <- function(rhomis_data){
+run_preliminary_calculations <- function(rhomis_data,
+                                         gender_categories=c(
+                                             "female_youth",
+                                             "female_adult",
+                                             "male_youth",
+                                             "male_adult"
+                                         )){
 
     results <- list()
 
@@ -136,6 +309,10 @@ run_preliminary_calculations <- function(rhomis_data){
             if (any(!is.na(indicator_data$iso_country_code)) & any(!is.na(indicator_data$year)))
             {
                 indicator_data<- convert_all_currencies(indicator_data,country_column="iso_country_code", year_column="year")
+                indicator_data <- dplyr::rename(indicator_data,currency_conversion_lcu_to_ppp = conversion_factor)
+                indicator_data <- dplyr::rename(indicator_data,currency_conversion_factor_year = conversion_year)
+
+
             }
 
         }
@@ -162,7 +339,8 @@ run_preliminary_calculations <- function(rhomis_data){
 
     rhomis_data <- crop_calculations_all(rhomis_data,
                                          crop_yield_units_conv_tibble = crop_yield_unit_conversions,
-                                         crop_income_units_conv_tibble = crop_price_unit_conversions)
+                                         crop_income_units_conv_tibble = crop_price_unit_conversions,
+                                         gender_categories = gender_categories)
 
 
     crop_columns <- c("crop_harvest_kg_per_year",
@@ -188,6 +366,9 @@ run_preliminary_calculations <- function(rhomis_data){
             crop_price <- crop_data[["crop_price"]]
             crop_price$id_rhomis_dataset <- rhomis_data[["id_rhomis_dataset"]]
             crop_price <- crop_price %>% dplyr::mutate_all(replace_infinite) %>% dplyr::group_by(id_rhomis_dataset )%>%  dplyr::summarise_all(mean, na.rm = TRUE)
+
+            crop_price <- crop_price %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
+
             prices$mean_crop_price_lcu_per_kg <- crop_price
         }
 
@@ -219,9 +400,10 @@ run_preliminary_calculations <- function(rhomis_data){
                                               eggs_price_time_units_conv_tibble = eggs_price_unit_conversion,
                                               honey_amount_unit_conv_tibble = honey_unit_conversion,
                                               milk_amount_unit_conv_tibble = milk_unit_conversion,
-                                              milk_price_time_unit_conv_tibble = milk_price_unit_conversion
+                                              milk_price_time_unit_conv_tibble = milk_price_unit_conversion,
+                                              gender_categories = gender_categories
                                               # Need to add livestock weights to the conversions sheets
-                                              )
+    )
 
 
     livestock_loop_columns <- c(
@@ -242,14 +424,20 @@ run_preliminary_calculations <- function(rhomis_data){
         "eggs_consumed_kg_per_year",
         "eggs_sold_kg_per_year",
         "eggs_income_per_year",
-        "eggs_price_per_kg"
+        "eggs_price_per_kg",
+        "bees_honey_kg_per_year",
+        "bees_honey_consumed_kg_per_year",
+        "bees_honey_sold_kg_per_year",
+        "bees_honey_sold_income",
+        "bees_honey_price_per_kg"
     )
 
     price_datasets <- c(
         "livestock_price_per_animal",
         "meat_price_per_kg",
         "milk_price_per_litre",
-        "eggs_price_per_kg"
+        "eggs_price_per_kg",
+        "bees_honey_price_per_kg"
     )
 
     missing_livestock_columns <-check_columns_in_data(rhomis_data,
@@ -271,6 +459,9 @@ run_preliminary_calculations <- function(rhomis_data){
                 price_df <- livestock_data[[price_data_set]]
                 price_df$id_rhomis_dataset <- rhomis_data[["id_rhomis_dataset"]]
                 mean_price_df <- price_df %>% dplyr::mutate_all(replace_infinite) %>% dplyr::group_by(id_rhomis_dataset )%>%  dplyr::summarise_all(mean, na.rm = TRUE)
+
+                mean_price_df <- mean_price_df %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
+
                 prices[[paste0("mean_",price_data_set)]] <- mean_price_df
             }
 
@@ -301,7 +492,7 @@ run_preliminary_calculations <- function(rhomis_data){
     }
     if(length(check_columns_in_data(rhomis_data,"hh_pop_rep_num"))==0)
     {
-        indicator_data$hh_size_MAE <- calculate_MAE(rhomis_data)
+        indicator_data$hh_size_mae <- calculate_MAE(rhomis_data)
     }
 
     if ("household_type"%in%colnames(rhomis_data)==T)
@@ -331,6 +522,10 @@ run_preliminary_calculations <- function(rhomis_data){
     if (all(c("unitland","landcultivated","landowned")%in%colnames(rhomis_data)))
     {
         indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = land_unit_conversion))
+        indicator_data <- dplyr::rename(indicator_data,land_cultivated_ha = land_cultivated)
+        indicator_data <- dplyr::rename(indicator_data,land_owned_ha = land_owned)
+
+
     }
 
     ###############
@@ -370,19 +565,19 @@ run_preliminary_calculations <- function(rhomis_data){
     missing_columns <- check_columns_in_data(rhomis_data,loop_columns = "crop_income_per_year",
                                              warning_message = "Could not calculate crop income")
     if(length(missing_columns)==0){
-        indicator_data$crop_income <- total_crop_income(rhomis_data)
+        indicator_data$crop_income_lcu_per_year <- total_crop_income(rhomis_data)
     }
 
-    indicator_data$livestock_income <- total_livestock_income(rhomis_data)
+    indicator_data$livestock_income_lcu_per_year <- total_livestock_income(rhomis_data)
 
 
-    if (!is.null(indicator_data$crop_income) & !is.null(indicator_data$livestock_income) & "offfarm_income_proportion" %in% colnames(rhomis_data)){
+    if (!is.null(indicator_data$crop_income_lcu_per_year) & !is.null(indicator_data$livestock_income_lcu_per_year) & "offfarm_income_proportion" %in% colnames(rhomis_data)){
         total_and_off_farm_income <- total_and_off_farm_incomes(rhomis_data,
-                                                                total_crop_income = indicator_data$crop_income,
-                                                                total_livestock_income = indicator_data$livestock_income
+                                                                total_crop_income = indicator_data$crop_income_lcu_per_year,
+                                                                total_livestock_income = indicator_data$livestock_income_lcu_per_year
         )
-        indicator_data$total_income <- total_and_off_farm_income$total_income
-        indicator_data$off_farm_income <- total_and_off_farm_income$off_farm_income
+        indicator_data$total_income_lcu_per_year <- total_and_off_farm_income$total_income
+        indicator_data$off_farm_income_lcu_per_year <- total_and_off_farm_income$off_farm_income
 
         rhomis_data <- gendered_off_farm_income_split(rhomis_data)
     }
@@ -424,3 +619,38 @@ run_preliminary_calculations <- function(rhomis_data){
 
     return(results)
 }
+
+
+
+
+
+
+
+
+
+#' Read Folder of CSVs
+#'
+#' A function
+#'
+#' @param folder The folder containing the tables to load
+#'
+#' @return
+#' @export
+#'
+#' @examples
+read_folder_of_csvs <- function(folder="./"){
+    tables <- grep(".csv", list.files(folder), value = T)
+    if (length(tables)==0){
+        warning(paste0("No csvs in folder ", folder))
+        return(list())
+    }
+
+    table_name <- gsub(".csv", "", tables, fixed=T)
+    results <- sapply(table_name, function(x) {
+        path <- paste0(folder,x,".csv")
+        readr::read_csv(path)
+    }, simplify = F)
+
+    return(results)
+}
+

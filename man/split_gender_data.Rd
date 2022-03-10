@@ -4,7 +4,10 @@
 \alias{split_gender_data}
 \title{Split Gender Data}
 \usage{
-split_gender_data(genderdf)
+split_gender_data(
+  genderdf,
+  categories = c("female_youth", "female_adult", "male_youth", "male_adult")
+)
 }
 \arguments{
 \item{genderdf}{A dataframe of gendered control produced by the "map_to_wide_format" (see example)}

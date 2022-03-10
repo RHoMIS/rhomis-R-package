@@ -107,10 +107,24 @@ total_crop_income <- function(data){
 
     crop_income_columns <- paste0("crop_income_per_year","_",c(1:number_of_loops))
 
+    crop_amount_columns <- paste0("crop_yield","_",c(1:number_of_loops))
+    crop_yield_units_columns <- paste0("crop_yield_units","_",c(1:number_of_loops))
+    crop_sold_units_columns <- paste0("crop_sold_price_quantityunits","_",c(1:number_of_loops))
+
+
+
+
     crop_income_data <- data[crop_income_columns]
 
+    na_rows <- rowSums(is.na(data[crop_amount_columns])) != number_of_loops &
+        (
+            rowSums(is.na(data[crop_yield_units_columns])) == number_of_loops |
+            rowSums(is.na(data[crop_sold_units_columns])) == number_of_loops
+        )
+
+
     crop_income_total <- rowSums(crop_income_data,na.rm = T)
-    crop_income_total[rowSums(!is.na(crop_income_data))==0] <- NA
+    crop_income_total[na_rows] <- NA
 
     return(crop_income_total)
 

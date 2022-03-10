@@ -259,38 +259,37 @@ extract_all_new_values <- function(data){
 #' Load Units CSVs
 #'
 #' @param folder The folder containing all of the unit conversions.
+#' @param id_rhomis_dataset A vector of the RHoMIS IDs
 #'
 #' @return
 #' @export
 #'
 #' @examples
-load_units_csvs <- function(folder){
+load_units_csvs <- function(folder, ids_rhomis_dataset){
     file_names <- list.files(folder)
     #---------------------------------------------
     # Loading all of the unit conversions locally
     #---------------------------------------------
-    load_local_units(folder,file_names)
+    load_local_units(base_folder = folder,file_names = file_names, id_rhomis_dataset = ids_rhomis_dataset)
 }
 
-#' Calculate prices and indicator local
+#' Load Calorie CSVs
 #'
-#' @param data A rhomis dataset, loaded with the function ()
-#' @param path_to_units
+#' @param folder The folder containing all of the calorie conversions.
+#' @param id_rhomis_dataset A vector of the RHoMIS IDs
 #'
 #' @return
 #' @export
 #'
 #' @examples
-calculate_prices_and_indicator_local<- function(data, path_to_units){
-
-    load_units_csvs(path_to_units)
-
-    run_all_calculations()
-
-
-
-
+load_calorie_csvs <- function(folder,ids_rhomis_dataset){
+    file_names <- list.files(folder)
+    #---------------------------------------------
+    # Loading all of the unit conversions locally
+    #---------------------------------------------
+    load_calorie_conversions(base_folder = folder,file_names = file_names, id_rhomis_dataset = ids_rhomis_dataset)
 }
+
 
 #' Replace Infinite
 #'

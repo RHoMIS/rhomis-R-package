@@ -27,9 +27,15 @@ testthat::test_that("Can calculate total livestock incomes", {
 
 testthat::test_that("Can calculate total crop incomes",{
     data <- tibble::as_tibble(list(crop_name_1=c("a","b","c","d"),
+                                   crop_yield_1=c(12,123,NA,789),
+                                   crop_yield_units_1=c(NA,"seraf",NA,"fweaf"),
+                                   crop_sold_price_quantityunits_1=c(NA,"few",NA,"dqwaed"),
                                    crop_income_per_year_1=c(NA,20,NA,60),
 
                                    crop_name_2=c("e","f","g","h"),
+                                   crop_yield_2=c(NA,NA,"gsrdg","gsrd"),
+                                   crop_yield_units_2=c(NA,NA,"serf","grwse"),
+                                   crop_sold_price_quantityunits_2=c(NA,NA,"gwresg","gwresg"),
                                    crop_income_per_year_2=c(NA,NA,40,40)))
 
     expected_result <- c(NA,20,40,100)

@@ -291,6 +291,47 @@ extract_new_core_units <- function(data)
 
 }
 
+
+#' Extract names of Values to Receive Calorie Conversions
+#'
+#' @param data The RHoMIS data set conta
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_calorie_values <- function(data)
+{
+    loop_values_to_extract <- c("crop_name",
+                                "livestock_name"
+                                )
+
+    # Return a named list when applying the function
+    final_result <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data,x), simplify = FALSE)
+
+    if ("crop_name" %in% names(final_result)){
+        final_result$crop_calories <- final_result[["crop_name"]]
+
+    }
+
+    if ("livestock_name" %in% names(final_result)){
+        final_result$milk_calories <- final_result[["livestock_name"]]
+
+        final_result$eggs_calories <- final_result[["livestock_name"]]
+        final_result$honey_calories <- final_result[["livestock_name"]]
+
+        final_result$meat_calories <- final_result[["livestock_name"]]
+    }
+
+    final_result <- final_result[names(final_result) %in% c("livestock_name", "crop_name")==F]
+
+
+    return(final_result)
+
+
+}
+
+
 #' Extract Values by Project
 #'
 #' A function to extract all of the units alongside their
@@ -309,6 +350,44 @@ extract_values_by_project <- function(data){
     }
     projects <- unique(data$id_rhomis_dataset)
     units_by_project_by_unit_type <- sapply(projects, function(x) extract_units_data_frames(data[data$id_rhomis_dataset==x,]), simplify = F)
+
+    units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project){
+        lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type){
+            conversion_table <- units_by_project_by_unit_type[[project]][[conversion_type]]
+            conversion_table$unit_type<- conversion_type
+            conversion_table$id_rhomis_dataset <- project
+            return(conversion_table)
+        })
+    })
+
+    units_by_project_merged_df <- bind_rows(units_by_project_merged)
+    final_units_list <- sapply(unique(units_by_project_merged_df$unit_type),function(unit_type){
+        units_by_project_merged_df[units_by_project_merged_df$unit_type==unit_type,]
+    }, simplify=F)
+
+    return(final_units_list)
+
+}
+
+
+#' Extract Calorie Values by Project
+#'
+#' A function to identify all of the crops and livestock
+#' for which calorie conversion values need to be included for
+#'
+#' @param data RHoMIS Dataset
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_calorie_values_by_project <- function(data){
+
+    if ("id_rhomis_dataset" %in% colnames(data)==F){
+        stop("Could not find the individual project ID generated for this project")
+    }
+    projects <- unique(data$id_rhomis_dataset)
+    units_by_project_by_unit_type <- sapply(projects, function(x) extract_calorie_conversion_data_frames(data[data$id_rhomis_dataset==x,]), simplify = F)
 
     units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project){
         lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type){
@@ -491,6 +570,23 @@ extract_units_data_frames <- function(data){
 
 }
 
+
+#' Extract Units to DataFrame
+#'
+#' @param data The core RHoMIS dataset which we are extracting units from
+#'
+#' @return A list of data frames
+#' @export
+#'
+#' @examples
+extract_calorie_conversion_data_frames <- function(data){
+
+    new_units <- extract_calorie_values(data)
+    new_units<- sapply(new_units, function(x) convert_new_values_to_tibble(x),simplify = FALSE)
+
+    return(new_units)
+
+}
 
 
 #' Convert New Values to Tibble

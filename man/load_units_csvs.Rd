@@ -4,10 +4,12 @@
 \alias{load_units_csvs}
 \title{Load Units CSVs}
 \usage{
-load_units_csvs(folder)
+load_units_csvs(folder, ids_rhomis_dataset)
 }
 \arguments{
 \item{folder}{The folder containing all of the unit conversions.}
+
+\item{id_rhomis_dataset}{A vector of the RHoMIS IDs}
 }
 \value{
 
