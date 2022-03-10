@@ -6,12 +6,16 @@ library(tibble)
 #' Extract values
 #'
 #' @param file_path The path to the raw-data rhomis file
-#' @param overwrite Whether
-#' @param country_column
-#' @param unique_id_col
-#' @param hh_id_col
-#' @param id_type
-#' @param proj_id
+#' @param overwrite Whether or not you would like to overwrite your
+#' converted units
+#' @param country_column The column name for the variable "country".
+#' @param unique_id_col The column name of the odk uuid, usually "_uuid"
+#' @param hh_id_col The column name containing household IDs.
+#' @param id_type The type of project and form IDs you would like to include.
+#' If you are reading in a dataset where column and form IDs are already included,
+#' then you can enter "col". If you would like to set the proj and form ID here,
+#' for example if you are working on a single project. Then select "string"
+#' @param proj_id The
 #' @param form_id
 #'
 #' @return
@@ -32,13 +36,12 @@ extract_values_local <- function(file_path=file_path,
     # are all linked to a specific project.
     rhomis_data <- load_rhomis_csv(
         file_path=file_path,
-        country_column= "country",
-        unique_id_col="_uuid",
-        hh_id_col=NULL,
-        id_type="string",
-        proj_id="KE_ESA_2021",
-        form_id="ESSA"
-    )
+        country_column=country_column,
+        unique_id_col=unique_id_col,
+        hh_id_col=hh_id_col,
+        id_type=id_type,
+        proj_id=proj_id,
+        form_id=form_id)
 
     extract_project_values(rhomis_data)
     new_values <- extract_values_by_project(rhomis_data)
