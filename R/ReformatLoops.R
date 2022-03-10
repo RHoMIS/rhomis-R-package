@@ -347,11 +347,12 @@ gender_control_props <- function(genderdf,numberControllingDF, category){
 #' wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
 #' gender_data <- wide_data$crop_control
 #' split_gender_data(gender_data)
-split_gender_data <- function(genderdf){
-    categories <- c("female_youth",
-                    "female_adult",
-                    "male_youth",
-                    "male_adult")
+split_gender_data <- function(genderdf,
+                              categories=c("female_youth",
+                                              "female_adult",
+                                              "male_youth",
+                                              "male_adult")){
+
 
     numberPeopleControlling <- genderdf %>% dplyr::mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
 
@@ -372,11 +373,15 @@ split_gender_data <- function(genderdf){
 #' @export
 #'
 #' @examples
-split_gender_columns <- function(column){
-    categories <- c("female_youth",
-                    "female_adult",
-                    "male_youth",
-                    "male_adult")
+split_gender_columns <- function(column,
+                                 categories=c("female_youth",
+                                              "female_adult",
+                                              "male_youth",
+                                              "male_adult")){
+    # categories <- c("male_adult",
+    #                 "female_adult",
+    #                 "male_youth",
+    #                 "female_youth")
     numberPeopleControlling <- proportion_control_per_person(column)
 
     controlling_df <- sapply(categories, function(x) check_val_in_list(column,category=x))
@@ -410,7 +415,11 @@ split_gender_columns <- function(column){
 insert_gender_columns_in_core_data <- function(data,
                                                original_column,
                                                control_column,
-                                               loop_structure=F){
+                                               loop_structure=F,
+                                               gender_control_categories=c("female_youth",
+                                                                           "male_youth",
+                                                                           "female_adult",
+                                                                           "male_adult")){
 
     if (loop_structure==T){
 
@@ -421,7 +430,7 @@ insert_gender_columns_in_core_data <- function(data,
 
         # data[[original_columns_all]] <- data[[original_columns_all]] %>% dplyr::mutate_all(as.numeric)
 
-        control_split <- lapply(c(1:number_of_loops), function(x) tibble::as_tibble(as.numeric(data[[original_columns_all[x]]])*split_gender_columns(data[[control_columns_all[x]]])))
+        control_split <- lapply(c(1:number_of_loops), function(x) tibble::as_tibble(as.numeric(data[[original_columns_all[x]]])*split_gender_columns(data[[control_columns_all[x]]], gender_control_categories)))
         names(control_split)<- original_columns_all
 
 

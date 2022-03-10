@@ -196,3 +196,39 @@
 #'  @source NA
 "fertiliser_units"
 
+#' Crop Calories
+#'
+#' A list of calorie conversions for common crops
+#'
+#' @source NA
+"crop_calories"
+
+#' Egg Calories
+#'
+#' A list of calorie conversion for eggs
+#'
+#' @source NA
+"eggs_calories"
+
+#' Honey Calories
+#'
+#' Conversion factor for calories from honey
+#'
+#' @source NA
+"honey_calories"
+
+#' Milk Calories
+#'
+#' Calorie conversion factors for milk
+#'
+#' @source NA
+"milk_calories"
+
+#' Meat Calories
+#'
+#' Calorie conversion factors for meat
+#'
+#' @source NA
+"meat_calories"
+
+

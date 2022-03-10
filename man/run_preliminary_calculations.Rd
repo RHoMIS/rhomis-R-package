@@ -4,7 +4,10 @@
 \alias{run_preliminary_calculations}
 \title{Run preliminary calculations}
 \usage{
-run_preliminary_calculations(rhomis_data)
+run_preliminary_calculations(
+  rhomis_data,
+  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
+)
 }
 \arguments{
 \item{rhomis_data}{A tibble of rhomis_data}

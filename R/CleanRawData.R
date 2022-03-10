@@ -68,10 +68,10 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector){
                 ))
 
 
-             converted_data <- dplyr::left_join(household_data_tibble,
-                                                unit_tibble,
-                                                by=c("id_rhomis_dataset"="id_rhomis_dataset", "survey_value"="survey_value"))
-             converted_data
+            converted_data <- dplyr::left_join(household_data_tibble,
+                                               unit_tibble,
+                                               by=c("id_rhomis_dataset"="id_rhomis_dataset", "survey_value"="survey_value"))
+            converted_data
             return(converted_data[["conversion"]])
         }) %>% dplyr::bind_cols()
 
@@ -90,8 +90,8 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector){
         )
 
         converted_data <- dplyr::left_join(household_data_tibble,
-                         unit_tibble,
-                         by=c("id_rhomis_dataset"="id_rhomis_dataset", "survey_value"="survey_value"))
+                                           unit_tibble,
+                                           by=c("id_rhomis_dataset"="id_rhomis_dataset", "survey_value"="survey_value"))
 
         return(converted_data[["conversion"]])
 
@@ -319,8 +319,8 @@ replace_units_with_other_all <- function(data){
         number_of_loops <- find_number_of_loops(data, x)
         if(number_of_loops>0)
         {
-        main_column <- paste0(x,"_",1:number_of_loops)
-        other_column <- paste0(looped_units[[x]],"_",1:number_of_loops)
+            main_column <- paste0(x,"_",1:number_of_loops)
+            other_column <- paste0(looped_units[[x]],"_",1:number_of_loops)
         }
         if(number_of_loops==0)
         {
@@ -328,7 +328,7 @@ replace_units_with_other_all <- function(data){
             other_column <- paste0(looped_units[[x]],"_",1)
         }
         setNames(other_column,main_column)
-        }, simplify=T)
+    }, simplify=T)
 
     looped_units_merged <- unlist(unname(looped_units_merged))
 
@@ -387,10 +387,28 @@ write_list_of_df_to_folder <- function(list_of_df, folder){
     folder_name <- paste0("./",folder)
     dir.create(folder_name, showWarnings = F)
 
+    # if (any(class(list_of_df)=="tbl_df") | any(class(list_of_df)=="tbl") | any(class(list_of_df)=="data.frame")){
+    #     file_path <- paste0(folder_name,"/",folder_name,".csv")
+    #     readr::write_csv(list_of_df, file_path)
+    #
+    #
+    # }
+
 
     sapply(names(list_of_df), function(x) {
         file_path <- paste0(folder_name,"/",x,".csv")
-        readr::write_csv(list_of_df[[x]], file_path)
+        data_to_write<-list_of_df[[x]]
+        if (any(class(data_to_write)=="tbl_df") | any(class(data_to_write)=="tbl") | any(class(data_to_write)=="data.frame")){
+            readr::write_csv(data_to_write, file_path)
+            return()
+        }
+
+        if (class(data_to_write)=="list"){
+            new_folder  <- paste0(folder_name,"/",x)
+            write_list_of_df_to_folder(data_to_write, new_folder)
+            return()
+        }
+        return()
     })
 
 

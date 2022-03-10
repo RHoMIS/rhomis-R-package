@@ -195,15 +195,15 @@ proportions_calculation <- function(data, use,use_column, prop_column, loop_numb
         single_uses <- use_data
     }
 
-single_uses <- sapply(single_uses,function(x)length(x))
-single_uses <- single_uses==1 & !is.na(use_data) & grepl(use,use_data)
+    single_uses <- sapply(single_uses,function(x)length(x))
+    single_uses <- single_uses==1 & !is.na(use_data) & grepl(use,use_data)
 
-id_col <- rep("x", nrow(data))
-unit_conv_tibble <- make_per_project_conversion_tibble(proj_id_vector = id_col,unit_conv_tibble = proportion_conversions)
-proportions_data <- switch_units(proportions_data, unit_tibble = unit_conv_tibble,id_vector = id_col)
-proportions_data[single_uses]<-1
+    id_col <- rep("x", nrow(data))
+    unit_conv_tibble <- make_per_project_conversion_tibble(proj_id_vector = id_col,unit_conv_tibble = proportion_conversions)
+    proportions_data <- switch_units(proportions_data, unit_tibble = unit_conv_tibble,id_vector = id_col)
+    proportions_data[single_uses]<-1
 
-return(proportions_data)
+    return(proportions_data)
 
 }
 

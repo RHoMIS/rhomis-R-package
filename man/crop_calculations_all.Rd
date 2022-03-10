@@ -7,7 +7,8 @@
 crop_calculations_all(
   data,
   crop_yield_units_conv_tibble = crop_yield_units,
-  crop_income_units_conv_tibble = crop_price_units
+  crop_income_units_conv_tibble = crop_price_units,
+  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ crop_calculations_all(
 \item{crop_yield_units_conv_tibble}{Conversion tibble of crop yield units}
 
 \item{crop_income_units_conv_tibble}{Conversion tibble of crop income units}
+
+\item{gender_catgegories}{The categories you are interested in examining}
 }
 \value{
 

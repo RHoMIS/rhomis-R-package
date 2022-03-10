@@ -1202,12 +1202,17 @@ honey_amount_sold_and_consumed_calculations <- function(data){
 #'
 #' @param data RHoMIS data including information on number
 #' of livestock sold and who sells this livestock
+#' @param gender_catgegories The categories you are interested in examining
 #'
 #' @return
 #' @export
 #'
 #' @examples
-gender_split_livestock <- function(data){
+gender_split_livestock <- function(data,
+                                   gender_categories=c("female_youth",
+                                                       "female_adult",
+                                                       "male_youth",
+                                                       "male_adult")){
     # Gender split whole livestock
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1405,7 +1410,11 @@ livestock_calculations_all <- function(data,
                                        eggs_price_time_units_conv_tibble=NULL,
                                        honey_amount_unit_conv_tibble=NULL,
                                        milk_amount_unit_conv_tibble=NULL,
-                                       milk_price_time_unit_conv_tibble=NULL){
+                                       milk_price_time_unit_conv_tibble=NULL,
+                                       gender_categories=c("female_youth",
+                                                           "female_adult",
+                                                           "male_youth",
+                                                           "male_adult")){
 
     if ("id_rhomis_dataset"%in% colnames(data)==F){
         stop("Missing the id_rhomis_dataset column in RHoMIS data")
@@ -1582,10 +1591,62 @@ livestock_calculations_all <- function(data,
 
     # Honey sold and consumed
     data <- honey_amount_sold_and_consumed_calculations(data)
-    data <- gender_split_livestock(data)
+    data <- honey_income_calculations(data)
+
+
+    data <- gender_split_livestock(data,
+                                   gender_categories = gender_categories)
 
     return(data)
 }
+
+
+#' Calculate the prices for honey
+#'
+#' @param data RHoMIS dataset.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+honey_income_calculations <- function(data){
+
+    missing_columns <- check_columns_in_data(data, loop_columns = c(
+        "bees_honey_sold_income",
+        "bees_honey_sold_kg_per_year",
+        "livestock_name"),
+        warning_message = "Could not calculate honey prices"
+    )
+
+    if (length(missing_columns)==0){
+
+        number_of_loops <- find_number_of_loops(data, name_column="bees_honey_sold_kg_per_year")
+        sold_columns <- paste0("bees_honey_sold_kg_per_year","_", c(1:number_of_loops))
+        income_columns <- paste0("bees_honey_sold_income","_", c(1:number_of_loops))
+        price_columns <- paste0("bees_honey_price_per_kg","_",c(1:number_of_loops))
+
+        sold_data <- data[sold_columns]
+        sold_data <- sold_data %>% dplyr::mutate_all(as.numeric)
+        income_data <- data[income_columns]
+        income_data <- income_data %>% dplyr::mutate_all(as.numeric)
+
+
+        bees_honey_prices <- income_data/sold_data
+        colnames(bees_honey_prices) <-price_columns
+
+        data <- add_column_after_specific_column(data,
+                                                 new_data = bees_honey_prices,
+                                                 new_column_name = "bees_honey_price_per_kg",
+                                                 old_column_name = "bees_honey_sold_income",
+                                                 loop_structure = T)
+
+
+    }
+
+    return(data)
+
+}
+
 
 
 

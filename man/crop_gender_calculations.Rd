@@ -4,11 +4,16 @@
 \alias{crop_gender_calculations}
 \title{Crop Gender Calculations}
 \usage{
-crop_gender_calculations(data)
+crop_gender_calculations(
+  data,
+  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
+)
 }
 \arguments{
 \item{data}{RHoMIS data set conatining processed values for
 crop consumed, crop sold, and crop income}
+
+\item{gender_categories}{The categories you are interested in examining}
 }
 \value{
 
