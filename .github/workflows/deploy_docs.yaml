@@ -30,14 +30,14 @@ jobs:
     - uses: r-lib/actions/setup-r@v1
     - uses: r-lib/actions/setup-pandoc@v1
     - name: Install rmarkdown
-      run: Rscript -e 'install.packages(c("rmarkdown","bookdown"))'
+      run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "bslib","downlit"))'
 
     - name: Render Book
       run: Rscript -e 'bookdown::render_book("./book")'
     - uses: actions/upload-artifact@v1
       with:
         name: _book
-        path: ./book/_book/
+        path: book/_book/
 
   deploy-book:
     name: Deploy-Book
@@ -52,7 +52,7 @@ jobs:
          # Artifact name
           name: _book # optional
          # Destination path
-          path: ./book/_book/ # optional
+          path: _book/ # optional
       - name: Deploy to GitHub Pages
         uses: Cecilapp/GitHub-Pages-deploy@master
         env:
