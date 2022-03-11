@@ -16,12 +16,10 @@ load_data_odk <- function(
 #' @param data The rhomis data set as a tibble
 #' @param country_column The name of the column containing the country string, as collected in the survey
 #' @param id_type The type of ID you would like to enter for projects and forms. If you select "string", then fill in the proj_id and form_id arguments, with the project id and form id you would like to use. If selecting "column", enter the name of the column (proj_id_col) containing the project ID you would like to use, and the name of the column (form_id_col) containing the form ids you would like to use.
-#' @param proj_id The name or ID of the project (string), see id_type varaible
-#' @param form_id The name or ID of the form (string), see id_type variable
-#' @param proj_id_col The name of the column containing the project id, see id_type variable
-#' @param form_id_col The name of the column containing the form id, see id_type variable
+#' @param proj_id Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)
+#' @param form_id Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)
 #' @param unique_id_col The name of the column containing unique id record. This is produced by the server accepting ODK records
-#' @param hh_id_col The household ID
+#' @param hh_id_col The household ID column
 #'
 #' @return
 #' @export
@@ -31,142 +29,91 @@ make_id_columns <- function(data,
                             country_column= "country",
                             unique_id_col="_uuid",
                             hh_id_col=NULL,
-                            id_type="string",
-                            proj_id=NULL,
-                            form_id=NULL,
-                            proj_id_col=NULL,
-                            form_id_col=NULL){
+                            id_type=c("string","column"),  # list of allowed values for argument, default is first element in vector
+                            proj_id,
+                            form_id){
 
 
-    if (country_column %in% colnames(data)==FALSE){
-        stop('The country_column you specified does not exist in the data set you provided')
-    }
 
-    if(!is.null(hh_id_col)){
-        if(hh_id_col %in% colnames(data)==FALSE){
-            stop('The hh_id column provided does not exist in the dataset')
+    #' Check validity of argument and print error if unknown type is supplied
+    id_type <- match.arg(id_type)
+
+    #' Check whether id columns in list below exist in loaded rhomis data
+    id_columns <- c(country_column, hh_id_col, unique_id_col)
+
+    #' loop over column names
+    for (cname in id_columns){
+        #' if column is not found in dataset throw an error
+        if ( !(cname %in% colnames(data)) ){
+            stop(paste('Expected column',cname,'does not exist in the input dataset.'))
         }
     }
 
-    if (unique_id_col %in% colnames(data)==FALSE){
-        stop('The unique_id_col specified does not exist in the dataset provided.')
-    }
-
+    #' make sure that the unique_id_col does indeed contain unique values
     if (any(duplicated(data[unique_id_col]))){
         stop('The unique_id_col you provided exists in the data, but contains duplicate entries')
     }
-    if (id_type !="string" & id_type != "column"){
-        stop('You must either specify id_type="column" or id_type="column"')
-    }
 
-    if (is.null(proj_id) & is.null(form_id) & is.null(proj_id_col) & is.null(form_id_col)){
-        stop(" Did not provide arguments for any of the following: proj_id, form_id, proj_id_col, form_id_col. See '?make_id_columns()' for details")
-    }
-
+    #' if form and proj ids are provided as strings, create new columns filled with these string values
     if (id_type=="string"){
-        if (is.null(proj_id) | is.null(form_id)){
-            stop("Specified string ID, but did not provide 'proj_id' and 'form_id' arguments")
+
+        data$id_proj <- rep(proj_id, nrow(data))
+        data$id_form <- rep(form_id, nrow(data))
+
+
+    } else {
+
+        #' loop over proj and form id arguments
+        for (cname in c(proj_id, form_id)){
+
+            #' confirm that these columns exist in the dataset, otherwise bail and print error
+            if ( !(cname %in% colnames(data)) ){
+                stop(paste0("Expected id column",cname,"does not exist in the dataset provided"))
+            }
         }
 
-        if (!is.null(proj_id_col) | !is.null(form_id_col)){
-            stop("Specified string ID, but did provided 'proj_id_coll' and 'form_id_col' arguments")
-        }
-
-
-        proj_id_vector <- rep(proj_id, nrow(data))
-        form_id_vector <- rep(form_id, nrow(data))
-        proj_form_id_col <- paste0(proj_id_vector, form_id_vector,data[[country_column]])
-        proj_form_id_col <- unname(sapply(proj_form_id_col, function(x) digest::digest(x)))
-
-        if (!is.null(hh_id_col))
-        {
-            household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
-        }
-
-        if (is.null(hh_id_col))
-        {
-            household_id <- paste0(proj_id_vector, form_id_vector, c(1:nrow(data)))
-            household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
-        }
-
-        data$id_proj <- proj_id_vector
-        data$id_form <- form_id_vector
-        data$id_rhomis_dataset <- proj_form_id_col
-        data$id_hh <- household_id
-        data$id_unique <- data[[unique_id_col]]
-
-        data <- data %>% dplyr::relocate(id_proj)
-        data <- data %>% dplyr::relocate(id_form)
-        data <- data %>% dplyr::relocate(id_rhomis_dataset)
-        data <- data %>% dplyr::relocate(id_hh)
-        data <- data %>% dplyr::relocate(id_unique)
-
-        # data <- dplyr::bind_cols("id_proj"=proj_id_vector, data)
-        # data <- dplyr::bind_cols("id_form"=form_id_vector, data)
-        # data <- dplyr::bind_cols("id_rhomis_dataset"=proj_form_id_col, data)
-        # data <- dplyr::bind_cols("id_hh"=household_id, data)
-        # data <- dplyr::bind_cols("id_unique"=data[[unique_id_col]], data)
-
-
-        return (data)
+        #' copy the contents of these columns into id_proj and id_form columns
+        data$id_proj <- data[[proj_id_col]]
+        data$id_form <- data[[form_id_col]]
     }
 
-    if (id_type == "column"){
+    #' create a unique project, form, country, ID column
+    proj_form_id_col <- paste0(data[["id_proj"]],data[["id_form"]],data[[country_column]])
+    proj_form_id_col <- unname(sapply(proj_form_id_col, function(x) digest::digest(x)))
 
-        if (is.null(proj_id_col) | is.null(form_id_col)){
-            stop("Specified column ID, but did not provide 'proj_id_col' and 'form_id_col' arguments")
-        }
+    #' add new column to dataset
+    data$id_rhomis_dataset <- proj_form_id_col
 
-        if (!is.null(proj_id) | !is.null(form_id)){
-            stop("Specified column ID, but did provided 'proj_id' and 'form_id' arguments")
-        }
+    #' create unique household id
+    if (is.null(hh_id_col))
+    {
+        household_id <- paste0(data[["id_proj"]], data[["id_form"]], c(1:nrow(data)))
+        household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
 
-        if (proj_id_col %in% colnames(data)==FALSE){
-            stop("The proj_id_col specified does not exist in the dataset provided")
-        }
-        if (form_id_col %in% colnames(data)==FALSE){
-            stop("The form_id_col specified does not exist in the dataset provided")
-        }
+    } else {
 
-        proj_id_vector <- data[[proj_id_col]]
-        form_id_vector <- data[[form_id_col]]
-        proj_form_id_col <- paste0(proj_id_vector, form_id_vector,data[[country_column]])
-        proj_form_id_col <- unname(sapply(proj_form_id_col, function(x) digest::digest(x)))
-
-        if (!is.null(hh_id_col))
-        {
-            household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
-        }
-
-        if (is.null(hh_id_col))
-        {
-            household_id <- paste0(proj_id_vector, form_id_vector, c(1:nrow(data)))
-            household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
-        }
-
-        data$id_proj <- proj_id_vector
-        data$id_form <- form_id_vector
-        data$id_rhomis_dataset <- proj_form_id_col
-        data$id_hh <- household_id
-        data$id_unique <- data[[unique_id_col]]
-
-        data <- data %>% dplyr::relocate(id_proj)
-        data <- data %>% dplyr::relocate(id_form)
-        data <- data %>% dplyr::relocate(id_rhomis_dataset)
-        data <- data %>% dplyr::relocate(id_hh)
-        data <- data %>% dplyr::relocate(id_unique)
-
-
-        # data <- dplyr::bind_cols("id_proj"=proj_id_vector, data)
-        # data <- dplyr::bind_cols("id_form"=form_id_vector, data)
-        # data <- dplyr::bind_cols("id_rhomis_dataset"=proj_form_id_col, data)
-        # data <- dplyr::bind_cols("id_hh"=household_id, data)
-        # data <- dplyr::bind_cols("id_unique"=data[[unique_id_col]], data)
-
-        return (data)
+        household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
     }
+
+    #' add household and unique id columns to dataset
+    data$id_hh <- household_id
+    data$id_unique <- data[[unique_id_col]]
+
+    #' shift column ordering so that id columns are the left-most columns
+    for (i in c("id_proj", "id_form", "id_rhomis_dataset", "id_hh", "id_unique")){
+        data <- data %>% dplyr::relocate(i)
+    }
+
+    return (data)
+
 
 }
+
+make_string_id_columns <- function(){
+
+
+}
+
 
 #' Load RHoMIS CSV
 #'
@@ -177,10 +124,9 @@ make_id_columns <- function(data,
 #' @param file_path The filepath of the RHoMIS csv
 #' @param country_column The name of the column containing the country
 #' @param id_type Indicator of whether you are providing a single ID
-#' @param proj_id A single string to be used as the project ID for all households
-#' @param form_id A single string to be used as the form ID for all households
-#' @param proj_id_col The name of the column containing the project IDs
-#' @param form_id_col The name of the column containing the form IDs
+#' @param proj_id Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)
+#' @param form_id Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)
+#' @param hh_id_col The household ID column
 #' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
 #'
 #' @return A tibble of RHoMIS data
@@ -192,11 +138,9 @@ load_rhomis_csv <- function(file_path,
                             country_column= "country",
                             unique_id_col="_uuid",
                             hh_id_col=NULL,
-                            id_type="string",
+                            id_type=c("string","column"),  # list of allowed values for argument, default is first element in vector
                             proj_id=NULL,
                             form_id=NULL,
-                            proj_id_col=NULL,
-                            form_id_col=NULL,
                             overwrite=FALSE) {
 
 
@@ -217,9 +161,7 @@ load_rhomis_csv <- function(file_path,
         hh_id_col=hh_id_col,
         id_type=id_type,
         proj_id=proj_id,
-        form_id=form_id,
-        proj_id_col=proj_id_col ,
-        form_id_col=form_id_col)
+        form_id=form_id)
 
     return(rhomis_data)
 
