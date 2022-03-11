@@ -19,7 +19,7 @@ name: Deploy Bookdown docs
 on:
   push:
     branches:
-      - dev
+      - bookdown-docs
 
 jobs:
   build-book:
