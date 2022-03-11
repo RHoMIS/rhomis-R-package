@@ -42,6 +42,7 @@ jobs:
   deploy-book:
     name: Deploy-Book
     runs-on: ubuntu-20.04
+    needs: build-book
     steps:
       - name: Checkout
         uses: actions/checkout@master
