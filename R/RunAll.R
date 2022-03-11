@@ -200,10 +200,16 @@ load_rhomis_csv <- function(file_path,
                             overwrite=FALSE) {
 
 
+    # read in the input csv file
     rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a","-999","NA"))
+
+    # simplify column names to more readable format
     colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
 
+    # ensure all data entries are lower case for consistency / easier data analysis
     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
+    # temp manual intervention to account for non-standard/missing column fields
     rhomis_data <- make_id_columns(
         data=rhomis_data,
         country_column,
