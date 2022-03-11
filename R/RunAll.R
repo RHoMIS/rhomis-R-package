@@ -189,6 +189,9 @@ make_id_columns <- function(data,
 #' @param proj_id_col The name of the column containing the project IDs
 #' @param form_id_col The name of the column containing the form IDs
 #' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
+#' @param unique_id_col
+#' @param hh_id_col
+#' @param repeat_column_names The types of repeat column name
 #'
 #' @return A tibble of RHoMIS data
 #' @export
@@ -204,17 +207,18 @@ load_rhomis_csv <- function(file_path,
                             form_id=NULL,
                             proj_id_col=NULL,
                             form_id_col=NULL,
-                            overwrite=FALSE) {
+                            overwrite=FALSE,
+                            repeat_column_names=c("crop_repeat",
+                                                  "livestock_repeat",
+                                                  "offfarm_repeat",
+                                                  "offfarm_income_repeat",
+                                                  "hh_pop_repeat",
+                                                  "hh_rep")) {
 
 
     rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a","-999","NA"))
     colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data),
-                                                repeat_columns = c("crop_repeat",
-                                                                   "livestock_repeat",
-                                                                   "offfarm_repeat",
-                                                                   "offfarm_income_repeat",
-                                                                   "hh_pop_repeat",
-                                                                   "hh_rep")) %>% tolower()
+                                                repeat_columns = repeat_column_names) %>% tolower()
 
     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
     rhomis_data <- make_id_columns(

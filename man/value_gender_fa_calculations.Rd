@@ -8,19 +8,20 @@ value_gender_fa_calculations(
   processed_data,
   indicator_data,
   calorie_conversions,
-  prices
+  prices,
+  gender_categories
 )
 }
 \arguments{
 \item{processed_data}{RHoMIS Processed Dataset}
 
+\item{indicator_data}{RHoMIS Indicator Data set}
+
+\item{calorie_conversions}{Calorie conversions list}
+
 \item{prices}{A list of tibbles on mean prices}
 
-\item{crop_data}{A list of tibbles on crop data}
-
-\item{livestock_data}{A list of tibbles on livestock data}
-
-\item{off_farm_data}{Information on prices}
+\item{gender_categories}{Gender categories to convert}
 }
 \value{
 

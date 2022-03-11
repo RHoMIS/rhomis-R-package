@@ -5,13 +5,14 @@
 \title{Process RHoMIS data}
 \usage{
 processData(
-  dataSource = "csv",
-  outputType = "csv",
+  proj_id,
+  form_id,
+  dataSource = c("csv", "mongodb"),
+  outputType = c("csv", "mongodb"),
   coreOnly = T,
   surveyFile = NULL,
   moduleSaving = F,
-  extractUnits = T,
-  processDataSet = F,
+  extractUnitsOnly = T,
   dataFilePath = NULL,
   central_url = NULL,
   central_email = NULL,
@@ -24,6 +25,10 @@ processData(
 )
 }
 \arguments{
+\item{proj_id}{An ID for your project}
+
+\item{form_id}{An ID for your form}
+
 \item{dataSource}{The type of RHoMIS data being fed into the
 calculations, whether a local csv file or data from ODK central.
 Options "csv" or "central".}
@@ -40,9 +45,7 @@ or ensure that the project you are accessing can be found on ODK central.}
 \item{moduleSaving}{Whether or not to use the form to identify the modules which
 were included in the survey (TRUE/FALSE)}
 
-\item{extractUnits}{Whether or not to only extract units (TRUE/FALSE)}
-
-\item{processDataSet}{Whether to process the whole dataset (TRUE/FALSE)}
+\item{extractUnitsOnly}{Whether or not to only extract units (TRUE/FALSE)}
 
 \item{dataFilePath}{The file to the data (csv format).
 ONLY RELEVANT IF "dataSource" WAS "local".}

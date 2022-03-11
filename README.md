@@ -5,7 +5,8 @@
 
 ## Summary
 
-This R-package is designed to help users
+This R-package is designed to help users process RHoMIS datasets.
+It is also being used to process data on the RHoMIS 2.0 [server](https://github.com/l-gorman/rhomis-api), using the scripts found [here](https://github.com/l-gorman/rhomis-)
 Initial package for RHoMIS 2.0. The package can:
 * Import data from ODK central
 * Clean raw data from ODK central

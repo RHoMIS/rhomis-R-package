@@ -265,7 +265,13 @@ modify_all_loop_column_names <- function(column_names, repeat_columns){
 #' # "person_name_5",
 #' # "crop_name")
 #'
-clean_column_names <- function(column_names, repeat_columns){
+clean_column_names <- function(column_names, repeat_columns=c("crop_repeat",
+                                                              "livestock_repeat",
+                                                              "offfarm_repeat",
+                                                              "offfarm_income_repeat",
+                                                              "hh_pop_repeat",
+                                                              "hh_rep"
+                                                              )){
 
     if (length(grep("\\.",column_names))> length(column_names)/2)
     {

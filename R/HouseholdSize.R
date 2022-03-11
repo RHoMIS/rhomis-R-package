@@ -1,15 +1,24 @@
 library(tibble)
 
 
+#' Get household Size Conversions
+#'
+#' @return
+#' @export
+#'
+#' @examples
 get_household_size_conversion <- function(){
     MAE_coeff <- tibble::as_tibble(list(children_under_4=0.5,
-                                children_4to10=0.75,
-                                males11to24=0.85,
-                                females11to24=0.75,
-                                males25to50=1,
-                                female_25_to_50=0.86,
-                                male_50_plus=0.73,
-                                female_50_plus=0.6))
+                                        children_4to10=0.75,
+                                        males11to24=0.85,
+                                        females11to24=0.75,
+                                        males25to50=1,
+                                        females25to50=0.86,
+                                        female_25_to_50=0.86,
+                                        male_50_plus=0.73,
+                                        malesover50=0.73,
+                                        female_50_plus=0.6,
+                                        femalesover50=0.6))
     return(MAE_coeff)
 }
 
@@ -92,6 +101,8 @@ household_roster_to_wide <- function(data){
 
 }
 
+
+
 #' Calculate MAE
 #'
 #' A function to calculate the male adult equivalent of household size
@@ -110,14 +121,21 @@ calculate_MAE <- function(data){
         data <- household_roster_to_wide(data)
     }
 
+
     conversion_factors <- get_household_size_conversion()
 
-    MAE_frame <- sapply(names(conversion_factors), function(x) as.numeric(conversion_factors[1,x])*data[x])
+    MAE_frame <- sapply(names(conversion_factors), function(x) {
+        if (x %in% colnames(data)){
+            return(as.numeric(conversion_factors[1,x])*data[x])
+        }else{
+            return(rep(0, nrow(data)))
+        }
+
+    }, simplify = F) %>% dplyr::bind_cols()
     MAE_frame <- tibble::as_tibble(MAE_frame)
     MAE_frame <- rowSums(MAE_frame,na.rm=T)
 
     return(MAE_frame)
-
 }
 
 
@@ -133,12 +151,18 @@ calculate_MAE <- function(data){
 #'
 #' @examples
 calculate_household_size_members <- function(data){
+    conversion_factors <- get_household_size_conversion()
     if (find_number_of_loops(data,name_column = "hh_pop_rep_num")>1)
     {
-        data <- household_roster_to_wide(data)
+        household_size_data <- household_roster_to_wide(data)
+    }
+    if (any( colnames(data)%in%names(conversion_factors))){
+        household_size_data <- data[colnames(data)%in%names(conversion_factors)]
     }
 
-    household_size <- rowSums(data,na.rm=T)
+
+
+    household_size <- rowSums(household_size_data,na.rm=T)
 
     return(household_size)
 

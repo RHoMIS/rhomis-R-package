@@ -169,6 +169,7 @@ gender_control_summary <- function(processed_data,
             {
                 rowSums(gender_control_df, na.rm=T)
             }
+
         },simplify = F) %>% dplyr::bind_cols() %>% rowSums(na.rm=T)
     }, simplify = F) %>% dplyr::bind_cols()
     total_gender_incomes$farm_income <- income_by_gender
@@ -181,6 +182,7 @@ gender_control_summary <- function(processed_data,
             {
                 rowSums(gender_control_df, na.rm=T)
             }
+
         },simplify = F) %>% dplyr::bind_cols() %>% rowSums(na.rm=T)
     }, simplify = F) %>% dplyr::bind_cols()
     total_gender_incomes$value_consumed <- value_consumed_by_gender
@@ -220,8 +222,8 @@ gender_control_summary <- function(processed_data,
     }, simplify = F) %>% dplyr::bind_cols()
 
     gender_control_scores <- (total_gender_value_controls/rowSums(total_gender_value_controls,na.rm =T )) %>% tibble::as_tibble()
-    colnames(gender_control_scores) <- paste0("proportion_of_value_controlled_",gender_control_scores)
-    indicator <- dplyr::bind_cols(indicator_data,gender_control_scores)
+    colnames(gender_control_scores) <- paste0("proportion_of_value_controlled_",colnames(gender_control_scores))
+    indicator_data <- dplyr::bind_cols(indicator_data,gender_control_scores)
 
     result <- list()
     result$indicator_data <- indicator_data

@@ -39,21 +39,21 @@ total_livestock_income <- function(data){
 
     if (all(milk_income_columns %in% colnames(data)))
     {
-    milk_income_data <- data[milk_income_columns]  %>% dplyr::mutate_all(as.numeric)
+        milk_income_data <- data[milk_income_columns]  %>% dplyr::mutate_all(as.numeric)
     }else{
         milk_income_data <- tibble::as_tibble(list("milk_income"=rep(NA, nrow(data))))
     }
 
     if (all(eggs_income_columns %in% colnames(data)))
     {
-    eggs_income_data <- data[eggs_income_columns]  %>% dplyr::mutate_all(as.numeric)
+        eggs_income_data <- data[eggs_income_columns]  %>% dplyr::mutate_all(as.numeric)
     }else{
         eggs_income_data <- tibble::as_tibble(list("egg_income"=rep(NA, nrow(data))))
     }
 
     if (all(honey_income_columns %in% colnames(data)))
     {
-    honey_income_data <- data[honey_income_columns]  %>% dplyr::mutate_all(as.numeric)
+        honey_income_data <- data[honey_income_columns]  %>% dplyr::mutate_all(as.numeric)
     }else{
         honey_income_data <- tibble::as_tibble(list("honey_income"=rep(NA, nrow(data))))
     }
@@ -119,7 +119,7 @@ total_crop_income <- function(data){
     na_rows <- rowSums(is.na(data[crop_amount_columns])) != number_of_loops &
         (
             rowSums(is.na(data[crop_yield_units_columns])) == number_of_loops |
-            rowSums(is.na(data[crop_sold_units_columns])) == number_of_loops
+                rowSums(is.na(data[crop_sold_units_columns])) == number_of_loops
         )
 
 
@@ -192,8 +192,10 @@ total_and_off_farm_incomes <- function(data, total_crop_income,total_livestock_i
 #' @export
 #'
 #' @examples
-gendered_off_farm_income_indicator <- function(data){
-
+gendered_off_farm_income_indicator <- function(data,gender_categories = c("male_adult",
+                                                                         "female_adult",
+                                                                         "female_youth",
+                                                                         "male_youth")){
 
 
     number_of_loops <- find_number_of_loops(data,"offfarm_income_name")
@@ -212,7 +214,7 @@ gendered_off_farm_income_indicator <- function(data){
     gender_control_data <- insert_gender_columns_in_core_data(data=gender_control_data,
                                                               original_column = "off_farm_source_prop",
                                                               control_column = "offfarm_who_control_revenue",
-                                                              loop_structure = T)
+                                                              loop_structure = T,gender_control_categories = gender_categories)
 
     male_youth_control <- gender_control_data[grep("^male_youth*",colnames(gender_control_data))]
     male_youth_control_total <- rowSums(male_youth_control,na.rm=T)
@@ -245,12 +247,13 @@ gendered_off_farm_income_indicator <- function(data){
 #' sources of off-farm income
 #'
 #' @param data RHoMIS data including off-farm income loops
+#' @param gender_categories Categories of gender we are interested in
 #'
 #' @return
 #' @export
 #'
 #' @examples
-gendered_off_farm_income_split <- function(data){
+gendered_off_farm_income_split <- function(data, gender_categories){
 
     number_of_loops <- find_number_of_loops(data,"offfarm_income_name")
 
@@ -261,45 +264,54 @@ gendered_off_farm_income_split <- function(data){
     # Finding out how many off-farm activities they engage in
     missing_columns <- check_columns_in_data(data,loop_columns = c("offfarm_income_name","offfarm_who_control_revenue"),
 
-                                             warning_message = "Could not calculate crop income")
+                                             warning_message = "Could not calculate off-farm income income")
     if (length(missing_columns)==0)
     {
-    off_farm_income_data  <- tibble::as_tibble(!is.na(data[offfarm_name_columns])) %>% dplyr::mutate_all(as.numeric)
-    off_farm_income_data[off_farm_income_data==0]<-NA
-    colnames(off_farm_income_data) <- paste0("off_farm_source_prop","_",c(1:number_of_loops))
+        off_farm_income_data  <- tibble::as_tibble(!is.na(data[offfarm_name_columns])) %>% dplyr::mutate_all(as.numeric)
+        off_farm_income_data[off_farm_income_data==0]<-NA
+        off_farm_income_data_columns <- paste0("off_farm_source_prop","_",c(1:number_of_loops))
+        colnames(off_farm_income_data) <- off_farm_income_data_columns
 
-    gender_control_data <- data[gender_control_columns]
-    gender_control_data <- tibble::as_tibble(cbind(off_farm_income_data,gender_control_data))
-    gender_control_data <- insert_gender_columns_in_core_data(data=gender_control_data,
-                                                              original_column = "off_farm_source_prop",
-                                                              control_column = "offfarm_who_control_revenue",
-                                                              loop_structure = T)
-    gender_control_data <- gender_control_data[grepl("male",colnames(gender_control_data))]
+        gender_control_data <- data[gender_control_columns]
+        gender_control_data <- tibble::as_tibble(cbind(off_farm_income_data,gender_control_data))
+        gender_control_data <- insert_gender_columns_in_core_data(data=gender_control_data,
+                                                                  original_column = "off_farm_source_prop",
+                                                                  control_column = "offfarm_who_control_revenue",
+                                                                  loop_structure = T,
+                                                                  gender_control_categories = gender_categories
+        )
+        columns_to_exclude <- unlist(c(offfarm_name_columns,gender_control_columns,off_farm_income_data_columns))
+        gender_control_data <- gender_control_data[colnames(gender_control_data) %in%columns_to_exclude ==F]
+
+        # gender_control_data <- gender_control_data[grepl("male",colnames(gender_control_data))]
+        for (gender_cat in gender_categories){
+            data <- add_column_after_specific_column(data,
+                                                     new_data = gender_control_data,
+                                                     new_column_name = paste0(gender_cat,"_off_farm_source_prop"),
+                                                     old_column_name = "offfarm_who_control_revenue",
+                                                     loop_structure = T)
+
+        }
 
 
-    data <- add_column_after_specific_column(data,
-                                             new_data = gender_control_data,
-                                             new_column_name = "female_youth_off_farm_source_prop",
-                                             old_column_name = "offfarm_who_control_revenue",
-                                             loop_structure = T)
 
-    data <- add_column_after_specific_column(data,
-                                             new_data = gender_control_data,
-                                             new_column_name = "male_youth_off_farm_source_prop",
-                                             old_column_name = "female_youth_off_farm_source_prop",
-                                             loop_structure = T)
-
-    data <- add_column_after_specific_column(data,
-                                             new_data = gender_control_data,
-                                             new_column_name = "female_adult_off_farm_source_prop",
-                                             old_column_name = "male_youth_off_farm_source_prop",
-                                             loop_structure = T)
-
-    data <- add_column_after_specific_column(data,
-                                             new_data = gender_control_data,
-                                             new_column_name = "male_adult_off_farm_source_prop",
-                                             old_column_name = "female_adult_off_farm_source_prop",
-                                             loop_structure = T)
+        # data <- add_column_after_specific_column(data,
+        #                                          new_data = gender_control_data,
+        #                                          new_column_name = "male_youth_off_farm_source_prop",
+        #                                          old_column_name = "female_youth_off_farm_source_prop",
+        #                                          loop_structure = T)
+        #
+        # data <- add_column_after_specific_column(data,
+        #                                          new_data = gender_control_data,
+        #                                          new_column_name = "female_adult_off_farm_source_prop",
+        #                                          old_column_name = "male_youth_off_farm_source_prop",
+        #                                          loop_structure = T)
+        #
+        # data <- add_column_after_specific_column(data,
+        #                                          new_data = gender_control_data,
+        #                                          new_column_name = "male_adult_off_farm_source_prop",
+        #                                          old_column_name = "female_adult_off_farm_source_prop",
+        #                                          loop_structure = T)
     }
 
     return(data)

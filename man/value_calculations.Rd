@@ -4,10 +4,10 @@
 \alias{value_calculations}
 \title{Value Calculations}
 \usage{
-value_calculations(processed_data, indicator_data, prices)
+value_calculations(processed_data, indicator_data, prices, gender_categories)
 }
 \arguments{
-\item{mean_prices}{}
+\item{indicator_data}{}
 }
 \value{
 

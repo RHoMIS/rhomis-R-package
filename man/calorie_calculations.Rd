@@ -2,7 +2,9 @@
 % Please edit documentation in R/CalorieCalculations.R
 \name{calorie_calculations}
 \alias{calorie_calculations}
-\title{Value Calculations}
+\title{These functions are designed to help a user calculate
+the calories from farm products which are consumed
+Calorie Calculations}
 \usage{
 calorie_calculations(processed_data, indicator_data, calorie_conversions)
 }
@@ -13,5 +15,6 @@ calorie_calculations(processed_data, indicator_data, calorie_conversions)
 
 }
 \description{
-Value Calculations
+Conducting the calorie calculations
+for a whole project
 }

@@ -4,10 +4,12 @@
 \alias{gendered_off_farm_income_split}
 \title{Gendered Off-Farm Income Split}
 \usage{
-gendered_off_farm_income_split(data)
+gendered_off_farm_income_split(data, gender_categories)
 }
 \arguments{
 \item{data}{RHoMIS data including off-farm income loops}
+
+\item{gender_categories}{Categories of gender we are interested in}
 }
 \value{
 

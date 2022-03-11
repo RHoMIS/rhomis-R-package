@@ -79,8 +79,9 @@ value_or_calorie_calculations_item_consumed <- function(
 #' Value Calculations
 #'
 #' @param processed_data
+#' @param prices
+#' @param gender_categories
 #' @param indicator_data
-#' @param mean_prices
 #'
 #' @return
 #' @export
@@ -88,7 +89,8 @@ value_or_calorie_calculations_item_consumed <- function(
 #' @examples
 value_calculations <- function(processed_data,
                                indicator_data,
-                               prices
+                               prices,
+                               gender_categories
                                ){
 
     extra_outputs <- list()
@@ -113,7 +115,7 @@ value_calculations <- function(processed_data,
         processed_data <- insert_gender_columns_in_core_data(data=processed_data,
                                                    original_column = "value_crop_consumed_lcu",
                                                    control_column = "crop_consume_control",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
         }
 
         extra_outputs$value_crop_consumed_lcu <- map_to_wide_format(data = processed_data,name_column = "crop_name", column_prefixes = "value_crop_consumed_lcu",
@@ -146,7 +148,7 @@ value_calculations <- function(processed_data,
             processed_data <- insert_gender_columns_in_core_data(data=processed_data,
                                                                  original_column = "value_meat_consumed_lcu",
                                                                  control_column = "livestock_meat_who_control_eating",
-                                                                 loop_structure=T)
+                                                                 loop_structure=T,gender_control_categories = gender_categories)
         }
 
         extra_outputs$value_meat_consumed_lcu <- map_to_wide_format(data = processed_data,name_column = "livestock_name", column_prefixes = "value_meat_consumed_lcu",
@@ -179,7 +181,7 @@ value_calculations <- function(processed_data,
             processed_data <- insert_gender_columns_in_core_data(data=processed_data,
                                                                  original_column = "value_eggs_consumed_lcu",
                                                                  control_column = "eggs_who_control_eating",
-                                                                 loop_structure=T)
+                                                                 loop_structure=T,gender_control_categories = gender_categories)
         }
 
         extra_outputs$value_eggs_consumed_lcu <- map_to_wide_format(data = processed_data,name_column = "livestock_name", column_prefixes = "value_eggs_consumed_lcu",
@@ -214,7 +216,7 @@ value_calculations <- function(processed_data,
             processed_data <- insert_gender_columns_in_core_data(data=processed_data,
                                                                  original_column = "value_milk_consumed_lcu",
                                                                  control_column = "milk_who_control_eating",
-                                                                 loop_structure=T)
+                                                                 loop_structure=T,gender_control_categories = gender_categories)
         }
 
 
@@ -248,7 +250,7 @@ value_calculations <- function(processed_data,
             processed_data <- insert_gender_columns_in_core_data(data=processed_data,
                                                                  original_column = "value_bees_honey_consumed_lcu",
                                                                  control_column = "bees_who_control_eating",
-                                                                 loop_structure=T)
+                                                                 loop_structure=T,gender_control_categories = gender_categories)
         }
 
         extra_outputs$value_bees_honey_consumed_lcu <- map_to_wide_format(data = processed_data,name_column = "livestock_name", column_prefixes = "value_bees_honey_consumed_lcu",
