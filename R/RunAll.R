@@ -203,8 +203,6 @@ load_rhomis_csv <- function(file_path,
     rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a","-999","NA"))
     colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
 
-    print(colnames(rhomis_data))
-
     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
     rhomis_data <- make_id_columns(
         data=rhomis_data,
@@ -216,12 +214,6 @@ load_rhomis_csv <- function(file_path,
         form_id=form_id,
         proj_id_col=proj_id_col ,
         form_id_col=form_id_col)
-
-
-    rhomis_data <- sapply(rhomis_data, function(x){
-        x[as.numeric(x)==-999]<-NA
-        x
-    }, simplify = F) %>% tibble::as_tibble()
 
     return(rhomis_data)
 
