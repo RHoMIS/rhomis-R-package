@@ -201,13 +201,7 @@ load_rhomis_csv <- function(file_path,
 
 
     rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a","-999","NA"))
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data),
-                                                repeat_columns = c("crop_repeat",
-                                                                   "livestock_repeat",
-                                                                   "offfarm_repeat",
-                                                                   "offfarm_income_repeat",
-                                                                   "hh_pop_repeat",
-                                                                   "hh_rep")) %>% tolower()
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns) %>% tolower()
 
     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
     rhomis_data <- make_id_columns(
@@ -481,13 +475,7 @@ processData <- function(
 
 
 
-                colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data),
-                                                            repeat_columns = c("crop_repeat",
-                                                                               "livestock_repeat",
-                                                                               "offfarm_repeat",
-                                                                               "offfarm_income_repeat",
-                                                                               "hh_pop_repeat",
-                                                                               "hh_rep")) %>% tolower()
+                colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns) %>% tolower()
                 rhomis_data <- rhomis_data %>%
                     remove_extra_central_columns()
 
