@@ -39,23 +39,27 @@ jobs:
         name: _book
         path: book/_book/
 
-  deploy-book:
-    name: Deploy-Book
-    runs-on: ubuntu-20.04
-    needs: build-book
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-      - name: Download artifact
-        uses: actions/download-artifact@v1.0.0
-        with:
-         # Artifact name
-          name: _book # optional
-         # Destination path
-          path: _book/ # optional
-      - name: Deploy to GitHub Pages
-        uses: Cecilapp/GitHub-Pages-deploy@master
-        env:
-            EMAIL: ${{ secrets.GITHUBEMAIL }}               # must be a verified email
-            GH_TOKEN: ${{ secrets.PUBLISHBOOKDOWN }} # https://github.com/settings/tokens
-            BUILD_DIR: _book/                     # "_site/" by default
+
+    - name: Init new repo in build folder and commit generated files
+      run: |
+        cd book/_book
+        git init
+        git add -A
+        git config --local user.email "lgorman@turing.ac.uk"
+        git config --local user.name "l-gorman"
+        git commit -m 'deploy'
+
+    - name: Force push to destination branch
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        # Token for the repo
+        # Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.PUBLISHBOOKDOWN }}
+        # Destination branch to push changes
+        branch: gh-pages
+        # Force the changes through
+        force: true
+        # Change to the build directory before pushing
+        directory: ./build
+        repository: "l-gorman/rhomis-R-package"
+
