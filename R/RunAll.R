@@ -201,7 +201,9 @@ load_rhomis_csv <- function(file_path,
 
 
     rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a","-999","NA"))
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns) %>% tolower()
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
+
+    print(colnames(rhomis_data))
 
     rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
     rhomis_data <- make_id_columns(
@@ -359,8 +361,8 @@ processData <- function(
 
 
     # Check validity of OutputTypes and print error if unknown OutputType is supplied
-    outputType<- match.arg(outputType)
-    dataSource<- match.arg(dataSource)
+    outputType <- match.arg(outputType)
+    dataSource <- match.arg(dataSource)
 
     # Print warnings as they occur.
     options(warn = 1)
@@ -475,7 +477,7 @@ processData <- function(
 
 
 
-                colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns) %>% tolower()
+                colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
                 rhomis_data <- rhomis_data %>%
                     remove_extra_central_columns()
 
