@@ -1,0 +1,3 @@
+# Getting started
+
+Here is the getting started component of the package
