@@ -341,7 +341,7 @@ replace_infinite <- function(column){
 processData <- function(
         proj_id,
         form_id,
-        dataSource=c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
+        dataSource=c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
         outputType=c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
         coreOnly=T,
         surveyFile=NULL,
@@ -382,12 +382,6 @@ processData <- function(
         expr ={
 
 
-
-
-
-            if(dataSource!="csv"&dataSource!="central"){
-                stop("Raw must come from ODK central or a local source (csv)")
-            }
             if(dataSource=="csv"){
                 if(is.null(dataFilePath)){
                     stop('You specified the data was coming from a local csv but have not specified a "dataFilePath"')
