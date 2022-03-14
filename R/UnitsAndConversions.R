@@ -799,229 +799,52 @@ write_units_to_folder <- function(list_of_df,
 #' @export
 #'
 #' @examples
-load_local_units <- function(base_folder ,file_names, id_rhomis_dataset){
+load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
+
+    #' loop over the possible list of unit conversion csv file names
+    for (unit_file in names(pkg.env$local_units_file_list)){
+
+        #' check that this list of files exists in the base_folder
+        if (unit_file %in% file_names){
+
+            conversions <- readr::read_csv(paste0(base_folder, unit_file), col_types = readr::cols())
 
 
-    if ("country.csv" %in% file_names){
-        country_conversions <- readr::read_csv(paste0(base_folder,"country.csv"), col_types = readr::cols())
-        assign("country_conversions", country_conversions, envir = .GlobalEnv)
-    }
-    if ("country.csv" %in% file_names==F){
-        warning('Tried to find country name conversions, but could not find file in "./unit_conversions" folder')
-        country_conversions  <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = country
-        )
 
-        assign("country_conversions", country_conversions, envir = .GlobalEnv)
-    }
+        } else {
 
+            #' print a warning if the file isn't where it should be
+            warning(paste0('Could not locate  ',unit_file ,' in ',base_folder))
 
-    if ("crop_name.csv" %in% file_names){
-        crop_name_conversions <- readr::read_csv(paste0(base_folder,"crop_name.csv"), col_types = readr::cols())
-        assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
+            #' need a catch for these two files, because of the extra step in creating a dummy table
+            if (unit_file %in% c("crop_name.csv","livestock_name.csv")){
 
-    }
-    if ("crop_name.csv" %in% file_names==F){
-        warning('Tried to find crop name conversions, but could not find file in "./unit_conversions" folder')
-        crop_name_conversions <- tibble::as_tibble(list("survey_value"=crop_name, "conversion"=crop_name))
-        crop_name_conversions <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = crop_name_conversions
-        )
+                #' evaluate the string denoting the variable name to be used
+                var <- eval( parse( text = pkg.env$local_units_file_tibble_list[[unit_file]]) )
 
+                #' make dummy tibble
+                conversions <- tibble::as_tibble(list("survey_value"=var, "conversion"=var ))
 
-        assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
+            } else {
 
-    }
+                #' make dummy tibble
+                conversions  <- make_per_project_conversion_tibble(
+                    proj_id_vector = id_rhomis_dataset,
+                    unit_conv_tibble = eval( parse( text = pkg.env$local_units_file_tibble_list[[unit_file]]) )
+                )
+            }
+        }
 
-
-    if ("livestock_name.csv" %in% file_names){
-        livestock_name_conversions <- readr::read_csv(paste0(base_folder,"livestock_name.csv"), col_types = readr::cols())
-        assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
+        #' assign conversion to global env
+        assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = .GlobalEnv)
 
     }
-    if ("livestock_name.csv" %in% file_names==F){
-        warning('Tried to find livestock name conversions, but could not find file in "./unit_conversions" folder')
-        livestock_name_conversions <- tibble::as_tibble(list("survey_value"=livestock_name, "conversion"=livestock_name))
-        livestock_name_conversions <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = livestock_name_conversions
-        )
 
-        assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
-    }
-
-
-    if ("crop_yield_units.csv" %in% file_names){
-        crop_yield_unit_conversions <- readr::read_csv(paste0(base_folder,"crop_yield_units.csv"), col_types = readr::cols())
-        assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
-
-    }
-    if ("crop_yield_units.csv" %in% file_names==F){
-        warning('Tried to find crop yield unit conversions, but could not find file in "./unit_conversions" folder')
-
-
-        crop_yield_unit_conversions <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = crop_yield_units
-        )
-
-        assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
-    }
-
-
-
-    if ("crop_sold_price_quantityunits.csv" %in% file_names){
-        crop_price_unit_conversions <- readr::read_csv(paste0(base_folder,"crop_sold_price_quantityunits.csv"), col_types = readr::cols())
-        assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
-
-    }
-    if ("crop_sold_price_quantityunits.csv" %in% file_names==F){
-        warning('Tried to find crop price unit conversions, but could not find file in "./unit_conversions" folder')
-
-
-        crop_price_unit_conversions <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = crop_price_units
-        )
-
-        assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
-    }
-
-
-
-    if ("unitland.csv" %in% file_names){
-        land_unit_conversion <- readr::read_csv(paste0(base_folder,"unitland.csv"), col_types = readr::cols())
-        assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("unitland.csv" %in% file_names==F){
-        warning('Tried to find land unit conversions, but could not find file in "./unit_conversions" folder')
-
-
-        land_unit_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = land_area_units
-        )
-
-        assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-
-
-    if ("milk_units.csv" %in% file_names){
-        milk_unit_conversion <- readr::read_csv(paste0(base_folder,"milk_units.csv"), col_types = readr::cols())
-        assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("milk_units.csv" %in% file_names==F){
-        warning('Tried to find land unit conversions, but could not find file in "./unit_conversions" folder')
-
-        milk_unit_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = milk_amount_units
-        )
-
-        assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-    if ("milk_sold_price_timeunits.csv" %in% file_names){
-        milk_price_unit_conversion <- readr::read_csv(paste0(base_folder,"milk_sold_price_timeunits.csv"), col_types = readr::cols())
-        assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("milk_sold_price_timeunits.csv" %in% file_names==F){
-        warning('Tried to find milk price conversion, but could not find file in "./unit_conversions" folder')
-
-        milk_price_unit_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = milk_price_time_units
-        )
-
-        assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-    if ("bees_honey_production_units.csv" %in% file_names){
-        honey_unit_conversion <- readr::read_csv(paste0(base_folder,"bees_honey_production_units.csv"), col_types = readr::cols())
-        assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("bees_honey_production_units.csv" %in% file_names==F){
-        warning('Tried to find honey amount conversion, but could not find file in "./unit_conversions" folder')
-
-        honey_unit_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = honey_amount_units
-        )
-
-        assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-    if ("eggs_units.csv" %in% file_names){
-        eggs_unit_conversion <- readr::read_csv(paste0(base_folder,"eggs_units.csv"), col_types = readr::cols())
-        assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("eggs_units.csv" %in% file_names==F){
-        warning('Tried to find eggs amount conversion, but could not find file in "./unit_conversions" folder')
-
-
-        eggs_unit_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = eggs_amount_units
-        )
-
-        assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-    if ("eggs_sold_price_timeunits.csv" %in% file_names){
-        eggs_price_unit_conversion <- readr::read_csv(paste0(base_folder,"eggs_sold_price_timeunits.csv"), col_types = readr::cols())
-        assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("eggs_sold_price_timeunits.csv" %in% file_names==F){
-        warning('Tried to find eggs price conversion, but could not find file in "./unit_conversions" folder')
-
-        eggs_price_unit_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = eggs_price_time_units
-        )
-
-        assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-    if ("fertiliser_units.csv" %in% file_names){
-        fertiliser_unit_conversion <- readr::read_csv(paste0(base_folder,"fertiliser_units.csv"), col_types = readr::cols())
-        assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("fertiliser_units.csv" %in% file_names==F){
-        warning('Tried to find fertiliser amount conversion, but could not find file in "./unit_conversions" folder')
-
-        fertiliser_unit_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = fertiliser_units
-        )
-
-        assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-
+    return()
 }
+
+
+
 
 
 #' Load Calorie Conversions
