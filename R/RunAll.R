@@ -73,8 +73,8 @@ make_id_columns <- function(data,
         }
 
         #' copy the contents of these columns into id_proj and id_form columns
-        data$id_proj <- data[[proj_id_col]]
-        data$id_form <- data[[form_id_col]]
+        data$id_proj <- data[[proj_id]]
+        data$id_form <- data[[form_id]]
     }
 
     #' create a unique project, form, country, ID column
