@@ -128,6 +128,9 @@ make_string_id_columns <- function(){
 #' @param form_id Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)
 #' @param hh_id_col The household ID column
 #' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
+#' @param unique_id_col
+#' @param hh_id_col
+#' @param repeat_column_names The types of repeat column name
 #'
 #' @return A tibble of RHoMIS data
 #' @export

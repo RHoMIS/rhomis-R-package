@@ -1224,7 +1224,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "livestock_sale_income",
                                                    control_column = "livestock_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T, gender_control_categories = gender_categories)
     }
 
     # Gender split meat
@@ -1237,7 +1237,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "meat_sold_income",
                                                    control_column = "livestock_meat_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1249,7 +1249,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "meat_sold_kg_per_year",
                                                    control_column = "livestock_meat_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T, gender_control_categories = gender_categories)
     }
 
 
@@ -1262,7 +1262,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "meat_consumed_kg_per_year",
                                                    control_column = "livestock_meat_who_control_eating",
-                                                   loop_structure=T)
+                                                   loop_structure=T, gender_control_categories = gender_categories)
     }
 
     # Gender split milk
@@ -1277,7 +1277,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "milk_sold_litres_per_year",
                                                    control_column = "milk_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
 
@@ -1290,7 +1290,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "milk_sold_income_per_year",
                                                    control_column = "milk_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1302,7 +1302,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "milk_consumed_litres_per_year",
                                                    control_column = "milk_who_control_eating",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
     # Eggs gender split
@@ -1315,7 +1315,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "eggs_sold_kg_per_year",
                                                    control_column = "eggs_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
 
@@ -1328,7 +1328,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "eggs_income_per_year",
                                                    control_column = "eggs_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
 
@@ -1341,7 +1341,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "eggs_consumed_kg_per_year",
                                                    control_column = "eggs_who_control_eating",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
     # Honey Gender split
@@ -1355,7 +1355,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "bees_honey_sold_kg_per_year",
                                                    control_column = "bees_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1367,7 +1367,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "bees_honey_sold_income",
                                                    control_column = "bees_who_sells",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1379,7 +1379,7 @@ gender_split_livestock <- function(data,
         data <- insert_gender_columns_in_core_data(data=data,
                                                    original_column = "bees_honey_consumed_kg_per_year",
                                                    control_column = "bees_who_control_eating",
-                                                   loop_structure=T)
+                                                   loop_structure=T,gender_control_categories = gender_categories)
     }
 
 

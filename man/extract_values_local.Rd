@@ -5,21 +5,40 @@
 \title{Extract values}
 \usage{
 extract_values_local(
-  file_path = file_path,
   country_column = "country",
   unique_id_col = "_uuid",
   hh_id_col = NULL,
   id_type = "string",
-  proj_id = "KE_ESA_2021",
-  form_id = "ESSA"
+  proj_id = NULL,
+  form_id = NULL,
+  proj_id_col = NULL,
+  form_id_col = NULL,
+  overwrite = FALSE,
+  repeat_column_names = c("crop_repeat", "livestock_repeat", "offfarm_repeat",
+    "offfarm_income_repeat", "hh_pop_repeat", "hh_rep")
 )
 }
 \arguments{
 \item{file_path}{The path to the raw-data rhomis file}
 
-\item{form_id}{}
+\item{country_column}{The column name for the variable "country".}
 
-\item{overwrite}{Whether}
+\item{unique_id_col}{The column name of the odk uuid, usually "_uuid"}
+
+\item{hh_id_col}{The column name containing household IDs.}
+
+\item{id_type}{Indicator of whether you are providing a single ID}
+
+\item{proj_id}{A single string to be used as the project ID for all households}
+
+\item{form_id}{A single string to be used as the form ID for all households}
+
+\item{proj_id_col}{The name of the column containing the project IDs}
+
+\item{form_id_col}{The name of the column containing the form IDs}
+
+\item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
+
 }
 \value{
 

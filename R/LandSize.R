@@ -27,18 +27,35 @@ land_size_calculation <- function(data,
         )
     }
 
+    land_df <- tibble::as_tibble(list(land_cultivated=rep(NA, nrow(data)),
+                                      land_owned=rep(NA, nrow(data))))
 
-    converted_units <- switch_units(data["unitland"],
-                                    unit_tibble = unit_conv_tibble,
-                                    id_vector = data[["id_rhomis_dataset"]])
+    missing_unit_land <- check_columns_in_data(data,individual_columns = "unitland")
+    if (length(missing_unit_land)==0){
+        converted_units <- switch_units(data["unitland"],
+                                        unit_tibble = unit_conv_tibble,
+                                        id_vector = data[["id_rhomis_dataset"]])
 
-    data[c("landcultivated", "landowned")] <- data[c("landcultivated", "landowned")] %>% dplyr::mutate_all(as.numeric)
+        missing_land_cultivated <- check_columns_in_data(data,individual_columns = "landcultivated")
+        if (length(missing_land_cultivated)==0){
+            data[c("landcultivated")] <- data[c("landcultivated")] %>% dplyr::mutate_all(as.numeric)
+            land_cultivated <- data["landcultivated"]*converted_units
+            land_df$land_cultivated <- land_cultivated[[1]]
 
-    land_cultivated <- data["landcultivated"]*converted_units
-    land_owned <- data["landowned"]*converted_units
+        }
 
-    land_df <- tibble::as_tibble(list(land_cultivated=land_cultivated[[1]],
-                                      land_owned=land_owned[[1]]))
+        missing_land_owned <- check_columns_in_data(data,individual_columns = "landowned")
+        if (length(missing_land_owned)==0){
+            data[c( "landowned")] <- data[c("landowned")] %>% dplyr::mutate_all(as.numeric)
+            land_owned <- data["landowned"]*converted_units
+            land_df$land_owned <- land_owned[[1]]
+
+
+        }
+
+    }
+
+
 
 
     return(land_df)

@@ -14,7 +14,9 @@ load_rhomis_csv(
   form_id = NULL,
   proj_id_col = NULL,
   form_id_col = NULL,
-  overwrite = FALSE
+  overwrite = FALSE,
+  repeat_column_names = c("crop_repeat", "livestock_repeat", "offfarm_repeat",
+    "offfarm_income_repeat", "hh_pop_repeat", "hh_rep")
 )
 }
 \arguments{
@@ -33,6 +35,8 @@ load_rhomis_csv(
 \item{form_id_col}{The name of the column containing the form IDs}
 
 \item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
+
+\item{repeat_column_names}{The types of repeat column name}
 }
 \value{
 A tibble of RHoMIS data

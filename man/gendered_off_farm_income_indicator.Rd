@@ -4,7 +4,10 @@
 \alias{gendered_off_farm_income_indicator}
 \title{Gendered Off-Farm Incomes Indicator}
 \usage{
-gendered_off_farm_income_indicator(data)
+gendered_off_farm_income_indicator(
+  data,
+  gender_categories = c("male_adult", "female_adult", "female_youth", "male_youth")
+)
 }
 \arguments{
 \item{data}{RHoMIS data including off-farm income loops}

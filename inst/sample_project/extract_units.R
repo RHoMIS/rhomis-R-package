@@ -20,8 +20,8 @@ path <-"raw-data/Raw_Data.csv"
 # form_version=NULL
 # database=NULL
 
-processData(proj_id="ESSA",
-            form_id="ESA_2021",
+processData(proj_id = "test_project",
+            form_id = "test_form",
             dataSource="csv",
             outputType="csv",
             coreOnly=T,

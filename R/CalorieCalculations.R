@@ -1,9 +1,10 @@
+#' These functions are designed to help a user calculate
+#' the calories from farm products which are consumed
 
-
-
-
-
-#' Value Calculations
+#' Calorie Calculations
+#'
+#' Conducting the calorie calculations
+#' for a whole project
 #'
 #' @param processed_data
 #' @param indicator_data

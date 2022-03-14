@@ -349,9 +349,9 @@ gender_control_props <- function(genderdf,numberControllingDF, category){
 #' split_gender_data(gender_data)
 split_gender_data <- function(genderdf,
                               categories=c("female_youth",
-                                              "female_adult",
-                                              "male_youth",
-                                              "male_adult")){
+                                           "female_adult",
+                                           "male_youth",
+                                           "male_adult")){
 
 
     numberPeopleControlling <- genderdf %>% dplyr::mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
@@ -416,10 +416,11 @@ insert_gender_columns_in_core_data <- function(data,
                                                original_column,
                                                control_column,
                                                loop_structure=F,
-                                               gender_control_categories=c("female_youth",
-                                                                           "male_youth",
+                                               gender_control_categories=c("male_adult",
                                                                            "female_adult",
-                                                                           "male_adult")){
+                                                                           "male_youth",
+                                                                           "female_youth"
+                                                                           )){
 
     if (loop_structure==T){
 
@@ -436,26 +437,16 @@ insert_gender_columns_in_core_data <- function(data,
 
         control_split <- collapse_list_of_tibbles(control_split)
 
-        data <- add_column_after_specific_column(data=data,
-                                                 new_data=control_split,
-                                                 new_column_name=paste0("female_youth_",original_column),
-                                                 old_column_name=control_column,
-                                                 loop_structure=T)
-        data <- add_column_after_specific_column(data=data,
-                                                 new_data=control_split,
-                                                 new_column_name=paste0("male_youth_",original_column),
-                                                 old_column_name=paste0("female_youth_",original_column),
-                                                 loop_structure=T)
-        data <- add_column_after_specific_column(data=data,
-                                                 new_data=control_split,
-                                                 new_column_name=paste0("female_adult_",original_column),
-                                                 old_column_name=paste0("male_youth_",original_column),
-                                                 loop_structure=T)
-        data <- add_column_after_specific_column(data=data,
-                                                 new_data=control_split,
-                                                 new_column_name=paste0("male_adult_",original_column),
-                                                 old_column_name=paste0("female_adult_",original_column),
-                                                 loop_structure=T)
+        for (gender_cat in gender_control_categories){
+            data <- add_column_after_specific_column(data=data,
+                                                     new_data=control_split,
+                                                     new_column_name=paste0(gender_cat,"_",original_column),
+                                                     old_column_name=control_column,
+                                                     loop_structure=T)
+
+
+        }
+
         return(data)
     }
 

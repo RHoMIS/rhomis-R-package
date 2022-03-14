@@ -63,9 +63,14 @@ testthat::test_that("Can map household roster into traditional category format",
                                       males11to24 = c(0, 1, 0, 0),
                                       females11to24 = c(0, 1, 0, 0),
                                       males25to50 = c(2, 0, 1, 0),
+                                      females25to50 = c(0, 0, 0, 0),
                                       female_25_to_50 = c(1, 1, 0, 0),
                                       male_50_plus = c(0, 0, 0, 1),
-                                      female_50_plus = c(0, 0, 0, 0)),
+                                      malesover50 = c(0, 0, 0, 0),
+
+                                      female_50_plus = c(0, 0, 0, 0),
+                                      femalesover50 = c(0, 0, 0, 0)
+    ),
                                  row.names = c(NA, -4L), class = c("tbl_df", "tbl", "data.frame"))
 
     actual_result <- household_roster_to_wide(data)

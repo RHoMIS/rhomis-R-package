@@ -6,25 +6,42 @@
 #' Extract values
 #'
 #' @param file_path The path to the raw-data rhomis file
-#' @param overwrite Whether
-#' @param country_column
-#' @param unique_id_col
-#' @param hh_id_col
-#' @param id_type
-#' @param proj_id
-#' @param form_id
+#' @param overwrite Whether or not you would like to overwrite your
+#' converted units
+#' @param country_column The column name for the variable "country".
+#' @param unique_id_col The column name of the odk uuid, usually "_uuid"
+#' @param hh_id_col The column name containing household IDs.
+#' @param id_type Indicator of whether you are providing a single ID
+#' @param proj_id A single string to be used as the project ID for all households
+#' @param form_id A single string to be used as the form ID for all households
+#' @param proj_id_col The name of the column containing the project IDs
+#' @param form_id_col The name of the column containing the form IDs
+#' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
+#'
 #'
 #' @return
 #' @export
 #'
 #' @examples
-extract_values_local <- function(file_path=file_path,
-                                 country_column= "country",
-                                 unique_id_col="_uuid",
-                                 hh_id_col=NULL,
-                                 id_type="string",
-                                 proj_id="KE_ESA_2021",
-                                 form_id="ESSA"){
+extract_values_local <- function(
+        base_folder="./",
+        file_path="./raw-data/raw-data.csv",
+        country_column= "country",
+        unique_id_col="_uuid",
+        hh_id_col=NULL,
+        id_type="string",
+        proj_id=NULL,
+        form_id=NULL,
+        proj_id_col=NULL,
+        form_id_col=NULL,
+        overwrite=FALSE,
+        repeat_column_names=c("crop_repeat",
+                              "livestock_repeat",
+                              "offfarm_repeat",
+                              "offfarm_income_repeat",
+                              "hh_pop_repeat",
+                              "hh_rep")
+        ){
 
     # Loading a rhomis dataset, and adding
     # id values (using a hashing function, digest)
@@ -32,23 +49,23 @@ extract_values_local <- function(file_path=file_path,
     # are all linked to a specific project.
     rhomis_data <- load_rhomis_csv(
         file_path=file_path,
-        country_column= "country",
-        unique_id_col="_uuid",
-        hh_id_col=NULL,
-        id_type="string",
-        proj_id="KE_ESA_2021",
-        form_id="ESSA"
-    )
+        country_column=country_column,
+        unique_id_col=unique_id_col,
+        hh_id_col=hh_id_col,
+        id_type=id_type,
+        proj_id=proj_id,
+        form_id=form_id,
+        repeat_column_names=repeat_column_names)
 
     extract_project_values(rhomis_data)
     new_values <- extract_values_by_project(rhomis_data)
     new_values <- check_existing_conversions(list_of_df = new_values)
 
-    units_folder_dest <- "./inst/projects/KE_ESA_2021/original_units"
+    units_folder_dest <- paste0(base_path,"/original_units")
     write_units_to_folder(list_of_df = new_values,
                           folder=units_folder_dest)
 
-    new_units_dest <- "./inst/projects/KE_ESA_2021/converted_units"
+    new_units_dest <- paste0(base_path,"/converted_units")
 
     if (dir.exists(new_units_dest)==F){
         write_units_to_folder(list_of_df = new_values,
@@ -58,9 +75,6 @@ extract_values_local <- function(file_path=file_path,
         write_units_to_folder(list_of_df = new_values,
                               folder=new_units_dest)
     }
-
-
-
 }
 
 
@@ -215,15 +229,17 @@ calculate_values_gender_and_fa_local <- function(base_path="./",
 
     processed_data <- read_folder_of_csvs(folder = paste0(base_path,processed_data_path))[[1]]
     indicator_data <- read_folder_of_csvs(folder = paste0(base_path,indicator_path))[[1]]
-    load_units_csvs(paste0(base_path,units_path), ids_rhomis_dataset = processed_data_path[["id_rhomis_dataset"]])
+    load_units_csvs(paste0(base_path,units_path), ids_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
     prices <- read_folder_of_csvs(folder = paste0(base_path,prices_path))
     calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path,calories_path))
 
-    results <- value_gender_fa_calculations(processed_data,
-                                            indicator_data,
-                                            calorie_conversions,
-                                            prices)
+    results <- value_gender_fa_calculations(processed_data = processed_data,
+                                            indicator_data = indicator_data,
+                                            calorie_conversions = calorie_conversions,
+                                            prices = prices,
+                                            gender_categories = gender_categories
+                                            )
 
 
 
@@ -258,10 +274,10 @@ calculate_values_gender_and_fa_local <- function(base_path="./",
 #' Value, Gender, and Food Availability Calculations
 #'
 #' @param processed_data RHoMIS Processed Dataset
-#' @param crop_data A list of tibbles on crop data
-#' @param livestock_data A list of tibbles on livestock data
+#' @param indicator_data RHoMIS Indicator Data set
+#' @param calorie_conversions Calorie conversions list
+#' @param gender_categories Gender categories to convert
 #' @param prices A list of tibbles on mean prices
-#' @param off_farm_data Information on prices
 #'
 #' @return
 #' @export
@@ -270,12 +286,14 @@ calculate_values_gender_and_fa_local <- function(base_path="./",
 value_gender_fa_calculations <- function(processed_data,
                                          indicator_data,
                                          calorie_conversions,
-                                         prices){
+                                         prices,
+                                         gender_categories){
 
     extra_outputs <- list()
     value_calc_results <- value_calculations(processed_data,
                                              indicator_data,
-                                             prices)
+                                             prices,
+                                             gender_categories)
 
     processed_data <- value_calc_results$processed_data
     indicator_data <- value_calc_results$indicator_data
@@ -566,15 +584,19 @@ run_preliminary_calculations <- function(rhomis_data,
     ###############
     # Demographics
     ###############
-
-    if(length(check_columns_in_data(rhomis_data,"hh_pop_rep_num"))==0)
+    household_size_conversions <- get_household_size_conversion()
+    if(length(check_columns_in_data(rhomis_data,"hh_pop_rep_num"))==0|
+       any(names(household_size_conversions) %in% colnames(rhomis_data)))
     {
         indicator_data$hh_size_members <- calculate_household_size_members(rhomis_data)
     }
-    if(length(check_columns_in_data(rhomis_data,"hh_pop_rep_num"))==0)
+    if(length(check_columns_in_data(rhomis_data,"hh_pop_rep_num"))==0|
+       any(names(household_size_conversions) %in% colnames(rhomis_data)))
     {
         indicator_data$hh_size_mae <- calculate_MAE(rhomis_data)
     }
+
+
 
     if ("household_type"%in%colnames(rhomis_data)==T)
     {
@@ -600,14 +622,12 @@ run_preliminary_calculations <- function(rhomis_data,
     # Land use
     ###############
 
-    if (all(c("unitland","landcultivated","landowned")%in%colnames(rhomis_data)))
-    {
+
         indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = land_unit_conversion))
         indicator_data <- dplyr::rename(indicator_data,land_cultivated_ha = land_cultivated)
         indicator_data <- dplyr::rename(indicator_data,land_owned_ha = land_owned)
 
 
-    }
 
     ###############
     # Food security
@@ -660,7 +680,7 @@ run_preliminary_calculations <- function(rhomis_data,
         indicator_data$total_income_lcu_per_year <- total_and_off_farm_income$total_income
         indicator_data$off_farm_income_lcu_per_year <- total_and_off_farm_income$off_farm_income
 
-        rhomis_data <- gendered_off_farm_income_split(rhomis_data)
+        rhomis_data <- gendered_off_farm_income_split(rhomis_data, gender_categories = gender_categories)
     }
 
     # Off farm incomes
