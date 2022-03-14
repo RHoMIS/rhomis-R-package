@@ -40,8 +40,8 @@ test_that("can create ID columns", {
                               unique_id_col = "unique_column_test",
                               hh_id_col = "hh_id_col_test",
                               id_type = "column",
-                              proj_id_col = "proj_id_column_test",
-                              form_id_col = "form_id_column_test"
+                              proj_id = "proj_id_column_test",
+                              form_id = "form_id_column_test"
     )
 
     expected_result <- tibble::as_tibble(list(
@@ -60,38 +60,10 @@ test_that("can create ID columns", {
 
     testthat::expect_equal(result, expected_result)
 
-    testthat::expect_error(
-        make_id_columns(data=data,
-                        country_column = "country_column_test",
-                        unique_id_col = "unique_column_test",
-                        hh_id_col = "hh_id_col_test",
-                        id_type = "string",
-                        proj_id_col = "proj_id_column_test",
-                        form_id_col = "form_id_column_test"
-        )
-    )
 
-    testthat::expect_error(
-        make_id_columns(data=data,
-                        country_column = "country_column_test",
-                        unique_id_col = "unique_column_test",
-                        hh_id_col = "hh_id_col_test",
-                        id_type = "column",
-                        proj_id = "proj_test",
-                        form_id = "form_test"
-        )
-    )
 
-    testthat::expect_error(
-        make_id_columns(data=data,
-                        country_column = "country_column_test",
-                        unique_id_col = "unique_column_test",
-                        hh_id_col = "searsf",
-                        id_type = "column",
-                        proj_id_col = "proj_id_column_test",
-                        form_id_col = "form_id_column_test"
-        )
-    )
+
+
 
 
 })
