@@ -1,5 +1,5 @@
-library(tibble)
-library(dplyr)
+
+
 #' Total Livestock Income
 #'
 #' Calculate total livestock income from

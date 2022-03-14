@@ -2,10 +2,6 @@
 #' Found here: https://github.com/l-gorman/rhomis-authenticator
 
 
-library(httr)
-library(jsonlite)
-library(tibble)
-
 #' Register User
 #'
 #' Register a user on the RHoMIS 2.0
@@ -128,3 +124,4 @@ login <- function(url, email, password){
 delete_user <- function(url, email, password){
 
 }
+
