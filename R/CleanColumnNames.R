@@ -273,26 +273,30 @@ clean_column_names <- function(column_names, repeat_columns=c("crop_repeat",
                                                               "hh_rep"
                                                               )){
 
-    if (length(grep("\\.",column_names))> length(column_names)/2)
-    {
-        seperator <- "."
+    #' list of possible separators for columns in the raw rhomis survey data
+    separator_list <- c("\\.","/","-")
+
+    #' loop over the list of separators to identify the one that applies in this case
+    for (sep in separator_list) {
+
+        #' check whether the current sep exists in a majority of column name fields
+        if (length(grep(sep,column_names))> length(column_names)/2)
+        {
+            #' remove the leading "\\" (needed for "." special char when using grep)
+            separator <- gsub("\\\\","",sep)
+
+            #' loop over the columns and modify them
+            column_names <- modify_all_loop_column_names(column_names, repeat_columns)
+            column_names <- shorten_multiple_column_names(column_names,separator)
+
+            #' no need to continue loop if relevant sep has been identified
+            break
+        }
+
     }
 
-    if (length(grep("/",column_names))> length(column_names)/2)
-    {
-        seperator <- "/"
-    }
-
-    if (length(grep("-",column_names))> length(column_names)/2)
-    {
-        seperator <- "-"
-    }
-
-    if(exists("seperator"))
-    {
-    column_names <- modify_all_loop_column_names(column_names, repeat_columns)
-    column_names <- shorten_multiple_column_names(column_names,seperator)
-    }
+    #' make sure column names are all lower case
+    column_names <- tolower(column_names)
 
     return(column_names)
 }

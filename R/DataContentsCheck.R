@@ -1,4 +1,4 @@
-library(tibble)
+
 #' Check columns in data
 #'
 #' For many of the functions to work, we need to ensure that

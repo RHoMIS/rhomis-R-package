@@ -5,8 +5,6 @@
 \title{Extract values}
 \usage{
 extract_values_local(
-  base_folder = "./",
-  file_path = "./raw-data/raw-data.csv",
   country_column = "country",
   unique_id_col = "_uuid",
   hh_id_col = NULL,
@@ -40,6 +38,7 @@ extract_values_local(
 \item{form_id_col}{The name of the column containing the form IDs}
 
 \item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
+
 }
 \value{
 
