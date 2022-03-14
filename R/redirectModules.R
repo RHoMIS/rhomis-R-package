@@ -31,7 +31,7 @@ extract_values_local <- function(
         id_type="string",
         proj_id=NULL,
         form_id=NULL,
-        overwrite=FALSE)
+        overwrite=FALSE
         ){
 
     # Loading a rhomis dataset, and adding
