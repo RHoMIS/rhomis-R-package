@@ -11,11 +11,10 @@
 #' @param country_column The column name for the variable "country".
 #' @param unique_id_col The column name of the odk uuid, usually "_uuid"
 #' @param hh_id_col The column name containing household IDs.
+#' @param id_type The type of ID you would like to enter for projects and forms. If you select "string", then fill in the proj_id and form_id arguments, with the project id and form id you would like to use. If selecting "column", enter the name of the column (proj_id_col) containing the project ID you would like to use, and the name of the column (form_id_col) containing the form ids you would like to use.
 #' @param id_type Indicator of whether you are providing a single ID
-#' @param proj_id A single string to be used as the project ID for all households
-#' @param form_id A single string to be used as the form ID for all households
-#' @param proj_id_col The name of the column containing the project IDs
-#' @param form_id_col The name of the column containing the form IDs
+#' @param proj_id Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)
+#' @param form_id Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)
 #' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
 #'
 #'
@@ -32,15 +31,7 @@ extract_values_local <- function(
         id_type="string",
         proj_id=NULL,
         form_id=NULL,
-        proj_id_col=NULL,
-        form_id_col=NULL,
-        overwrite=FALSE,
-        repeat_column_names=c("crop_repeat",
-                              "livestock_repeat",
-                              "offfarm_repeat",
-                              "offfarm_income_repeat",
-                              "hh_pop_repeat",
-                              "hh_rep")
+        overwrite=FALSE)
         ){
 
     # Loading a rhomis dataset, and adding
@@ -54,8 +45,7 @@ extract_values_local <- function(
         hh_id_col=hh_id_col,
         id_type=id_type,
         proj_id=proj_id,
-        form_id=form_id,
-        repeat_column_names=repeat_column_names)
+        form_id=form_id)
 
     extract_project_values(rhomis_data)
     new_values <- extract_values_by_project(rhomis_data)
