@@ -875,10 +875,7 @@ processData <- function(
             indicator_data$total_income <- total_and_off_farm_income$total_income
             indicator_data$off_farm_income <- total_and_off_farm_income$off_farm_income
 
-            rhomis_data <- gendered_off_farm_income_split(rhomis_data,gender_categories = c("female_adult",
-                                                                                            "male_adult",
-                                                                                            "female_youth",
-                                                                                            "male_youth"))
+            rhomis_data <- gendered_off_farm_income_split(rhomis_data,gender_categories = pkg.env$gender_categories)
         }
 
         # Off farm incomes

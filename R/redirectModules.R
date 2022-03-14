@@ -121,7 +121,7 @@ make_new_dataset <- function(rhomis_data){
 #'
 #' @examples
 calculate_prices_and_indicator_local <- function(data,base_path="./", units_path="converted_units/",
-                                                 gender_categories=c("female_youth", "female_adult", "male_youth", "male_adult")){
+                                                 gender_categories=pkg.env$gender_categories){
 
     load_units_csvs(paste0(base_path,units_path), ids_rhomis_dataset = data[["id_rhomis_dataset"]])
 
@@ -205,7 +205,7 @@ calculate_values_gender_and_fa_local <- function(base_path="./",
                                                  calories_path="completed_calorie_conversions/",
                                                  prices_path="converted_prices/",
                                                  staple_crop="maize",
-                                                 gender_categories=c("male_youth", "female_youth", "male_adult", "female_adult")){
+                                                 gender_categories=pkg.env$gender_categories){
 
     # processed_data_path="processed_data/"
     # indicator_path="indicator_data/"
@@ -337,12 +337,7 @@ value_gender_fa_calculations <- function(processed_data,
 #'
 #' @examples
 run_preliminary_calculations <- function(rhomis_data,
-                                         gender_categories=c(
-                                             "female_youth",
-                                             "female_adult",
-                                             "male_youth",
-                                             "male_adult"
-                                         )){
+                                         gender_categories=pkg.env$gender_categories){
 
     results <- list()
 

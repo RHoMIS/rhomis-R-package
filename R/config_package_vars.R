@@ -14,3 +14,17 @@ set_repeat_column_names <- function(){
 
     return()
 }
+
+set_gender_categories <- function(){
+
+    assign("gender_categories",
+           c("male_youth",
+             "female_youth",
+             "male_adult",
+             "female_adult"
+             ),
+           envir = pkg.env)
+
+    return()
+
+}

@@ -376,10 +376,7 @@ crop_income_calculations <- function(data, unit_conv_tibble=NULL){
 #' @export
 #'
 #' @examples
-crop_gender_calculations <- function(data, gender_categories=c("female_youth",
-                                                                "female_adult",
-                                                                "male_youth",
-                                                                "male_adult")){
+crop_gender_calculations <- function(data, gender_categories=pkg.env$gender_categories){
 
     crop_columns_in_data <- check_columns_in_data(data,
                                                   loop_columns = c("crop_consumed_kg_per_year",
@@ -457,10 +454,7 @@ crop_gender_calculations <- function(data, gender_categories=c("female_youth",
 crop_calculations_all <- function(data,
                                   crop_yield_units_conv_tibble=crop_yield_units,
                                   crop_income_units_conv_tibble=crop_price_units,
-                                  gender_categories=c("female_youth",
-                                                      "female_adult",
-                                                      "male_youth",
-                                                      "male_adult")){
+                                  gender_categories=pkg.env$gender_categories){
 
     # Calculating the amount of crops harvested in kg
     crop_columns_in_data <- check_columns_in_data(data,
