@@ -809,8 +809,6 @@ load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
 
             conversions <- readr::read_csv(paste0(base_folder, unit_file), col_types = readr::cols())
 
-
-
         } else {
 
             #' print a warning if the file isn't where it should be
@@ -824,6 +822,10 @@ load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
 
                 #' make dummy tibble
                 conversions <- tibble::as_tibble(list("survey_value"=var, "conversion"=var ))
+                conversions  <- make_per_project_conversion_tibble(
+                    proj_id_vector = id_rhomis_dataset,
+                    unit_conv_tibble = conversions)
+
 
             } else {
 
