@@ -1,5 +1,50 @@
 
 
+extract_values_central <- function(
+        central_email,
+        central_password,
+        project_name,
+        form_name,
+        form_version,
+        database,
+        draft,
+        country_column= "country",
+        unique_id_col="_uuid",
+        hh_id_col=NULL
+){
+
+    # Loading a rhomis dataset, and adding
+    # id values (using a hashing function, digest)
+    # to make sure that units, crop name conversions...
+    # are all linked to a specific project.
+    rhomis_data <- load_rhomis_csv(
+        file_path=file_path,
+        country_column=country_column,
+        unique_id_col=unique_id_col,
+        hh_id_col=hh_id_col,
+        id_type=id_type,
+        proj_id=proj_id,
+        form_id=form_id)
+
+    extract_project_values(rhomis_data)
+    new_values <- extract_values_by_project(rhomis_data)
+    new_values <- check_existing_conversions(list_of_df = new_values)
+
+    units_folder_dest <- paste0(base_path,"/original_units")
+    write_units_to_folder(list_of_df = new_values,
+                          folder=units_folder_dest)
+
+    new_units_dest <- paste0(base_path,"/converted_units")
+
+    if (dir.exists(new_units_dest)==F){
+        write_units_to_folder(list_of_df = new_values,
+                              folder=new_units_dest)
+    }
+    if (overwrite==T){
+        write_units_to_folder(list_of_df = new_values,
+                              folder=new_units_dest)
+    }
+}
 
 
 

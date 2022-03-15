@@ -69,3 +69,9 @@ test_that("can create ID columns", {
 })
 
 
+testthat::test_that("Can process a whole CSV dataset",{
+
+    test_data <- readr::read_csv("https://raw.githubusercontent.com/l-gorman/rhomis-R-package/dev/inst/sample_project/raw-data/raw-data.csv")
+})
+
+

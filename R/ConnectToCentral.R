@@ -499,17 +499,22 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #' @param formID The ID of the form containing the submissions you are looking at.
 #' To get the list of forms see the "get_forms" function.
 #' @param draft Whether or not the form is a draft or whether it is finalized
+#' @param file_destination The location to store temporary files
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_submission_data <- function(central_url, central_email, central_password, projectID, formID, draft){
+get_submission_data <- function(central_url, central_email, central_password, projectID, formID, draft, file_destination=NULL){
 
 
 
     email_token <- get_email_token(central_url,central_email,central_password)
-    file_destination <- tempfile(fileext=".zip")
+    if (is.null(file_destination))
+    {
+        file_destination <- tempfile(fileext=".zip")
+    }
+
 
     if (draft==T){
         url <- paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/draft/submissions.csv.zip?attachments=false")

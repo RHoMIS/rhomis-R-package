@@ -211,16 +211,16 @@ replace_infinite <- function(column){
 #'
 #' A main function that can be used to process rhomis
 #' data. Whether the dataset comes from a local csv
-#' or from ODK central
+#' or from ODK central.
+#'
+#' RHoMIS datasets go through 4 stages of processing:
+#'
+#' 1. Initial Cleaning: Clean column names, set values to lo
 #'
 #' @param dataSource The type of RHoMIS data being fed into the
 #' calculations, whether a local csv file or data from ODK central.
 #' Options "csv" or "central".
 #' @param outputType  The type of output to produce (options are "csv" or "mongodb")
-#' @param coreOnly Indicating whether to only analyze the RHoMIS core information (TRUE/FALSE)
-#' If TRUE, extra variables will be saved but they will not be processed into indicators.
-#' If FALSE, you must either provide the survey xls file so that the modules used can be identified,
-#' or ensure that the project you are accessing can be found on ODK central.
 #' @param surveyFile The path to the surveyxls file. Only necessary if "coreOnly"=FALSE and dataSource="local".
 #' @param extractUnitsOnly Whether or not to only extract units (TRUE/FALSE)
 #' @param moduleSaving Whether or not to use the form to identify the modules which
@@ -250,15 +250,23 @@ replace_infinite <- function(column){
 #'
 #' @examples
 processData <- function(
-        proj_id,
-        form_id,
+
+        # Arguments to indicate the stage of analysis
+        initialCleaningOnly=T,
+        extractUnitsOnly=T,
+        calculateInitialIndicatorsOnly=T,
+
+        # Arguments to indicate the type of processing being done (local or on server)
         dataSource=c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
         outputType=c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
-        coreOnly=T,
-        surveyFile=NULL,
-        moduleSaving=F,
-        extractUnitsOnly=T,
+
+        # Arguments used for processing local data sets
         dataFilePath=NULL,
+        proj_id,
+        form_id,
+        surveyFile=NULL,
+
+        # Arguments for if processing from ODK central
         central_url=NULL,
         central_email=NULL,
         central_password=NULL,
@@ -267,19 +275,19 @@ processData <- function(
         form_version=NULL,
         database=NULL,
         draft=NULL
+
         ){
 
 
+    #-------------------------------------
+
+    #------------------------------------
     # Check validity of OutputTypes and print error if unknown OutputType is supplied
     outputType <- match.arg(outputType)
     dataSource <- match.arg(dataSource)
 
-
-
-
-    if(dataSource!="csv"&dataSource!="central"){
-        stop("Raw must come from ODK central or a local source (csv)")
-    }
+    # If the user specified a csv, then they must provide a file path
+    # for the dataset they are loading
     if(dataSource=="csv"){
         if(is.null(dataFilePath)){
             stop('You specified the data was coming from a local csv but have not specified a "dataFilePath"')
@@ -287,13 +295,6 @@ processData <- function(
     }
     # Checking if the right arguments are supplied to obtain data from ODK central
     if(dataSource=="central"){
-        # central_url <- "abc"
-        # central_email <- "def"
-        # central_password <- NULL
-        # project_name <- NULL
-        # form_name <- "name"
-        # form_version <- "version"
-        # dbURL <- "abc"
         items_to_test <- list("central_email",
                               "central_password",
                               "project_name",
@@ -315,7 +316,6 @@ processData <- function(
 
     if(dataSource=="csv")
     {
-
         rhomis_data <- load_rhomis_csv(
             file_path=dataFilePath,
             country_column= "country",
@@ -329,10 +329,6 @@ processData <- function(
 
 
         indicator_data <- make_new_dataset(rhomis_data)
-
-
-
-
     }
 
     if(dataSource=="central")
