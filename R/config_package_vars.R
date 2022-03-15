@@ -18,10 +18,10 @@ set_repeat_column_names <- function(){
 set_gender_categories <- function(){
 
     assign("gender_categories",
-           c("male_youth",
-             "female_youth",
-             "male_adult",
-             "female_adult"
+           c("female_youth",
+             "female_adult",
+             "male_youth",
+             "male_adult"
              ),
            envir = pkg.env)
 
