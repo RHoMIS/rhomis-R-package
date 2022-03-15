@@ -4,12 +4,10 @@
 \alias{load_calorie_conversions}
 \title{Load Calorie Conversions}
 \usage{
-load_calorie_conversions(base_folder, file_names, id_rhomis_dataset)
+load_calorie_conversions(base_folder, id_rhomis_dataset)
 }
 \arguments{
 \item{base_folder}{The path to the folder containing the units to load}
-
-\item{file_names}{A list of file names to load}
 
 \item{id_rhomis_dataset}{A vector including the ID of the RHoMIS datasets being processed}
 }

@@ -12,7 +12,7 @@ livestock_calculations_all(
   honey_amount_unit_conv_tibble = NULL,
   milk_amount_unit_conv_tibble = NULL,
   milk_price_time_unit_conv_tibble = NULL,
-  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{

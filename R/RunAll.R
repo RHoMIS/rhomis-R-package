@@ -15,7 +15,7 @@ load_data_odk <- function(
 #'
 #' @param data The rhomis data set as a tibble
 #' @param country_column The name of the column containing the country string, as collected in the survey
-#' @param id_type The type of ID you would like to enter for projects and forms. If you select "string", then fill in the proj_id and form_id arguments, with the project id and form id you would like to use. If selecting "column", enter the name of the column (proj_id_col) containing the project ID you would like to use, and the name of the column (form_id_col) containing the form ids you would like to use.
+#' @param id_type The type of ID you would like to enter for projects and forms. If you select "string", then fill in the proj_id and form_id arguments, with the project id and form id you would like to use. If selecting "column", enter the name of the column (proj_id) containing the project ID you would like to use, and the name of the column (form_id) containing the form ids you would like to use.
 #' @param proj_id Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)
 #' @param form_id Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)
 #' @param unique_id_col The name of the column containing unique id record. This is produced by the server accepting ODK records
@@ -186,40 +186,6 @@ extract_all_new_values <- function(data){
     units_and_conversions <- check_existing_conversions(units_and_conversions)
 
     return(units_and_conversions)
-}
-
-#' Load Units CSVs
-#'
-#' @param folder The folder containing all of the unit conversions.
-#' @param id_rhomis_dataset A vector of the RHoMIS IDs
-#'
-#' @return
-#' @export
-#'
-#' @examples
-load_units_csvs <- function(folder, ids_rhomis_dataset){
-    file_names <- list.files(folder)
-    #---------------------------------------------
-    # Loading all of the unit conversions locally
-    #---------------------------------------------
-    load_local_units(base_folder = folder,file_names = file_names, id_rhomis_dataset = ids_rhomis_dataset)
-}
-
-#' Load Calorie CSVs
-#'
-#' @param folder The folder containing all of the calorie conversions.
-#' @param id_rhomis_dataset A vector of the RHoMIS IDs
-#'
-#' @return
-#' @export
-#'
-#' @examples
-load_calorie_csvs <- function(folder,ids_rhomis_dataset){
-    file_names <- list.files(folder)
-    #---------------------------------------------
-    # Loading all of the unit conversions locally
-    #---------------------------------------------
-    load_calorie_conversions(base_folder = folder,file_names = file_names, id_rhomis_dataset = ids_rhomis_dataset)
 }
 
 
@@ -539,7 +505,7 @@ processData <- function(
             #---------------------------------------------
             # Loading all of the unit conversions locally
             #---------------------------------------------
-            load_units_csvs("./unit_conversions/", ids_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+            load_local_units("./unit_conversions/", id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
         }
 
@@ -875,10 +841,7 @@ processData <- function(
             indicator_data$total_income <- total_and_off_farm_income$total_income
             indicator_data$off_farm_income <- total_and_off_farm_income$off_farm_income
 
-            rhomis_data <- gendered_off_farm_income_split(rhomis_data,gender_categories = c("female_adult",
-                                                                                            "male_adult",
-                                                                                            "female_youth",
-                                                                                            "male_youth"))
+            rhomis_data <- gendered_off_farm_income_split(rhomis_data,gender_categories = pkg.env$gender_categories)
         }
 
         # Off farm incomes

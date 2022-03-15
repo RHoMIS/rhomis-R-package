@@ -5,17 +5,15 @@
 \title{Extract values}
 \usage{
 extract_values_local(
+  base_folder = "./",
+  file_path = "./raw-data/raw-data.csv",
   country_column = "country",
   unique_id_col = "_uuid",
   hh_id_col = NULL,
   id_type = "string",
   proj_id = NULL,
   form_id = NULL,
-  proj_id_col = NULL,
-  form_id_col = NULL,
-  overwrite = FALSE,
-  repeat_column_names = c("crop_repeat", "livestock_repeat", "offfarm_repeat",
-    "offfarm_income_repeat", "hh_pop_repeat", "hh_rep")
+  overwrite = FALSE
 )
 }
 \arguments{
@@ -29,16 +27,11 @@ extract_values_local(
 
 \item{id_type}{Indicator of whether you are providing a single ID}
 
-\item{proj_id}{A single string to be used as the project ID for all households}
+\item{proj_id}{Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)}
 
-\item{form_id}{A single string to be used as the form ID for all households}
-
-\item{proj_id_col}{The name of the column containing the project IDs}
-
-\item{form_id_col}{The name of the column containing the form IDs}
+\item{form_id}{Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)}
 
 \item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
-
 }
 \value{
 

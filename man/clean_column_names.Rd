@@ -44,4 +44,11 @@ column_names <- c("xxx/crop_repeat[1]/crop_name",
 # "person_name_5",
 # "crop_name")
 
+list of possible separators for columns in the raw rhomis survey data
+loop over the list of separators to identify the one that applies in this case
+check whether the current sep exists in a majority of column name fields
+remove the leading "\\\\" (needed for "." special char when using grep)
+loop over the columns and modify them
+no need to continue loop if relevant sep has been identified
+make sure column names are all lower case
 }

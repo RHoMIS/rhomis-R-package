@@ -4,10 +4,7 @@
 \alias{crop_gender_calculations}
 \title{Crop Gender Calculations}
 \usage{
-crop_gender_calculations(
-  data,
-  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
-)
+crop_gender_calculations(data, gender_categories = pkg.env$gender_categories)
 }
 \arguments{
 \item{data}{RHoMIS data set conatining processed values for

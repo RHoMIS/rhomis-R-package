@@ -8,7 +8,7 @@ calculate_prices_and_indicator_local(
   data,
   base_path = "./",
   units_path = "converted_units/",
-  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{

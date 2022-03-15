@@ -6,7 +6,7 @@
 \usage{
 run_preliminary_calculations(
   rhomis_data,
-  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{

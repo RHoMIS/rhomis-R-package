@@ -12,7 +12,7 @@ calculate_values_gender_and_fa_local(
   calories_path = "completed_calorie_conversions/",
   prices_path = "converted_prices/",
   staple_crop = "maize",
-  gender_categories = c("male_youth", "female_youth", "male_adult", "female_adult")
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{
