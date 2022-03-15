@@ -1,9 +1,9 @@
-library(tibble)
-library(dplyr)
-library(magrittr)
-library(tidyr)
-library(stringr)
-library(purrr)
+
+
+
+
+
+
 #' Find number of loops
 #'
 #' The RHoMIS data is arranged in a looping structure.
@@ -348,16 +348,13 @@ gender_control_props <- function(genderdf,numberControllingDF, category){
 #' gender_data <- wide_data$crop_control
 #' split_gender_data(gender_data)
 split_gender_data <- function(genderdf,
-                              categories=c("female_youth",
-                                           "female_adult",
-                                           "male_youth",
-                                           "male_adult")){
+                              gender_categories=pkg.env$gender_categories){
 
 
     numberPeopleControlling <- genderdf %>% dplyr::mutate(across(.cols=everything(),~proportion_control_per_person(.x)))
 
-    genderControlDFs <- lapply(categories, function(x) gender_control_props(genderdf=genderdf,numberControllingDF=numberPeopleControlling, category=x))
-    names(genderControlDFs)<-categories
+    genderControlDFs <- lapply(gender_categories, function(x) gender_control_props(genderdf=genderdf,numberControllingDF=numberPeopleControlling, category=x))
+    names(genderControlDFs)<-gender_categories
     return(genderControlDFs)
 }
 
@@ -374,17 +371,11 @@ split_gender_data <- function(genderdf,
 #'
 #' @examples
 split_gender_columns <- function(column,
-                                 categories=c("female_youth",
-                                              "female_adult",
-                                              "male_youth",
-                                              "male_adult")){
-    # categories <- c("male_adult",
-    #                 "female_adult",
-    #                 "male_youth",
-    #                 "female_youth")
+                              gender_categories=pkg.env$gender_categories){
+
     numberPeopleControlling <- proportion_control_per_person(column)
 
-    controlling_df <- sapply(categories, function(x) check_val_in_list(column,category=x))
+    controlling_df <- sapply(gender_categories, function(x) check_val_in_list(column,category=x))
 
     prop_controlled <- tibble::as_tibble(controlling_df*numberPeopleControlling)
 
@@ -416,11 +407,7 @@ insert_gender_columns_in_core_data <- function(data,
                                                original_column,
                                                control_column,
                                                loop_structure=F,
-                                               gender_control_categories=c("male_adult",
-                                                                           "female_adult",
-                                                                           "male_youth",
-                                                                           "female_youth"
-                                                                           )){
+                                               gender_control_categories=pkg.env$gender_categories){
 
     if (loop_structure==T){
 

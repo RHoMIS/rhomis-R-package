@@ -7,7 +7,7 @@
 processData(
   proj_id,
   form_id,
-  dataSource = c("csv", "mongodb"),
+  dataSource = c("csv", "central"),
   outputType = c("csv", "mongodb"),
   coreOnly = T,
   surveyFile = NULL,

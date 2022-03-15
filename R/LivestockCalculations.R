@@ -1,6 +1,6 @@
-library(tibble)
-library(magrittr)
-library(dplyr)
+
+
+
 
 #' Calculate Livestock Price
 #'
@@ -1209,10 +1209,7 @@ honey_amount_sold_and_consumed_calculations <- function(data){
 #'
 #' @examples
 gender_split_livestock <- function(data,
-                                   gender_categories=c("female_youth",
-                                                       "female_adult",
-                                                       "male_youth",
-                                                       "male_adult")){
+                                   gender_categories=pkg.env$gender_categories){
     # Gender split whole livestock
 
     missing_columns <- check_columns_in_data(data, loop_columns = c(
@@ -1411,10 +1408,7 @@ livestock_calculations_all <- function(data,
                                        honey_amount_unit_conv_tibble=NULL,
                                        milk_amount_unit_conv_tibble=NULL,
                                        milk_price_time_unit_conv_tibble=NULL,
-                                       gender_categories=c("female_youth",
-                                                           "female_adult",
-                                                           "male_youth",
-                                                           "male_adult")){
+                                       gender_categories=pkg.env$gender_categories){
 
     if ("id_rhomis_dataset"%in% colnames(data)==F){
         stop("Missing the id_rhomis_dataset column in RHoMIS data")

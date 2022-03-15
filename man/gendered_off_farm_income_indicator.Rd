@@ -6,7 +6,7 @@
 \usage{
 gendered_off_farm_income_indicator(
   data,
-  gender_categories = c("male_adult", "female_adult", "female_youth", "male_youth")
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{

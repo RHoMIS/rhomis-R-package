@@ -70,11 +70,7 @@ widen_gender_columns <- function(processed_data,
 #' @examples
 gender_control_summary <- function(processed_data,
                                indicator_data,
-                               gender_categories= c(
-                                   "male_youth",
-                                   "female_youth",
-                                   "male_adult",
-                                   "female_adult")
+                               gender_categories=pkg.env$gender_categories
 ){
 
     extra_outputs <- list()

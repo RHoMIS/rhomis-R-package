@@ -4,12 +4,10 @@
 \alias{load_local_units}
 \title{Load local units}
 \usage{
-load_local_units(base_folder, file_names, id_rhomis_dataset)
+load_local_units(base_folder, id_rhomis_dataset)
 }
 \arguments{
 \item{base_folder}{The path to the folder containing the units to load}
-
-\item{file_names}{A list of file names to load}
 
 \item{id_rhomis_dataset}{A vector including the ID of the RHoMIS datasets being processed}
 }

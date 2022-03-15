@@ -1,6 +1,6 @@
-library(readr)
-library(dplyr)
-library(tibble)
+
+
+
 
 
 #' Extract values
@@ -11,11 +11,10 @@ library(tibble)
 #' @param country_column The column name for the variable "country".
 #' @param unique_id_col The column name of the odk uuid, usually "_uuid"
 #' @param hh_id_col The column name containing household IDs.
+#' @param id_type The type of ID you would like to enter for projects and forms. If you select "string", then fill in the proj_id and form_id arguments, with the project id and form id you would like to use. If selecting "column", enter the name of the column (proj_id_col) containing the project ID you would like to use, and the name of the column (form_id_col) containing the form ids you would like to use.
 #' @param id_type Indicator of whether you are providing a single ID
-#' @param proj_id A single string to be used as the project ID for all households
-#' @param form_id A single string to be used as the form ID for all households
-#' @param proj_id_col The name of the column containing the project IDs
-#' @param form_id_col The name of the column containing the form IDs
+#' @param proj_id Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)
+#' @param form_id Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)
 #' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
 #'
 #'
@@ -32,15 +31,7 @@ extract_values_local <- function(
         id_type="string",
         proj_id=NULL,
         form_id=NULL,
-        proj_id_col=NULL,
-        form_id_col=NULL,
-        overwrite=FALSE,
-        repeat_column_names=c("crop_repeat",
-                              "livestock_repeat",
-                              "offfarm_repeat",
-                              "offfarm_income_repeat",
-                              "hh_pop_repeat",
-                              "hh_rep")
+        overwrite=FALSE
         ){
 
     # Loading a rhomis dataset, and adding
@@ -54,8 +45,7 @@ extract_values_local <- function(
         hh_id_col=hh_id_col,
         id_type=id_type,
         proj_id=proj_id,
-        form_id=form_id,
-        repeat_column_names=repeat_column_names)
+        form_id=form_id)
 
     extract_project_values(rhomis_data)
     new_values <- extract_values_by_project(rhomis_data)
@@ -131,9 +121,9 @@ make_new_dataset <- function(rhomis_data){
 #'
 #' @examples
 calculate_prices_and_indicator_local <- function(data,base_path="./", units_path="converted_units/",
-                                                 gender_categories=c("female_youth", "female_adult", "male_youth", "male_adult")){
+                                                 gender_categories=pkg.env$gender_categories){
 
-    load_units_csvs(paste0(base_path,units_path), ids_rhomis_dataset = data[["id_rhomis_dataset"]])
+    load_local_units(paste0(base_path,units_path), ids_rhomis_dataset = data[["id_rhomis_dataset"]])
 
     # load_calorie_conversions
     results <- run_preliminary_calculations(data,gender_categories = gender_categories
@@ -159,8 +149,7 @@ calculate_prices_and_indicator_local <- function(data,base_path="./", units_path
 
     if ("processed_data" %in% names(results)){
 
-        calorie_conversions_dfs <- extract_calorie_values_by_project(results$processed_data)
-        calorie_conversions_dfs <- check_existing_calorie_conversions(calorie_conversions_dfs)
+        calorie_conversions_dfs <- check_existing_calorie_conversions(results$processed_data)
 
         calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = data[["id_rhomis_dataset"]], unit_conv_tibble = list(
             "staple_crop"=c("maize")
@@ -215,7 +204,7 @@ calculate_values_gender_and_fa_local <- function(base_path="./",
                                                  calories_path="completed_calorie_conversions/",
                                                  prices_path="converted_prices/",
                                                  staple_crop="maize",
-                                                 gender_categories=c("male_youth", "female_youth", "male_adult", "female_adult")){
+                                                 gender_categories=pkg.env$gender_categories){
 
     # processed_data_path="processed_data/"
     # indicator_path="indicator_data/"
@@ -229,7 +218,7 @@ calculate_values_gender_and_fa_local <- function(base_path="./",
 
     processed_data <- read_folder_of_csvs(folder = paste0(base_path,processed_data_path))[[1]]
     indicator_data <- read_folder_of_csvs(folder = paste0(base_path,indicator_path))[[1]]
-    load_units_csvs(paste0(base_path,units_path), ids_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
+    load_local_units(paste0(base_path,units_path), ids_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
     prices <- read_folder_of_csvs(folder = paste0(base_path,prices_path))
     calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path,calories_path))
@@ -347,12 +336,7 @@ value_gender_fa_calculations <- function(processed_data,
 #'
 #' @examples
 run_preliminary_calculations <- function(rhomis_data,
-                                         gender_categories=c(
-                                             "female_youth",
-                                             "female_adult",
-                                             "male_youth",
-                                             "male_adult"
-                                         )){
+                                         gender_categories=pkg.env$gender_categories){
 
     results <- list()
 
