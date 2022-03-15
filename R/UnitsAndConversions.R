@@ -140,242 +140,49 @@ save_initial_units <- function(database="rhomis",  url="mongodb://localhost",
 #' @export
 #'
 #' @examples
-load_all_db_units <- function(unit_list,database="rhomis", projectID="core_units", formID="core_units"){
+load_all_db_units <- function(unit_list, database="rhomis", projectID="core_units", formID="core_units"){
 
 
 
-    if ("country" %in% unit_list){
-        country_conversions <- extract_units_from_db(database,
-                              url="mongodb://localhost",
-                              projectID=projectID,
-                              formID=formID,
-                              conversion_type="country",
-                              collection="units_and_conversions")
-        assign("country_conversions", country_conversions, envir = .GlobalEnv)
-    }
-    if ("country" %in% unit_list==F){
-        warning('Tried to find country name conversions, but could not find records in projectData collection')
-        country_conversions <- country
-        assign("country_conversions", country_conversions, envir = .GlobalEnv)
-    }
+    #' loop over the possible list of unit conversion csv file names
+    for (unit_name in names(pkg.env$local_units_file_list)){
+
+        if (unit_name %in% unit_list){
+            country_conversions <- extract_units_from_db(database,
+                                                         url="mongodb://localhost",
+                                                         projectID=projectID,
+                                                         formID=formID,
+                                                         conversion_type=unit_name,
+                                                         collection="units_and_conversions")
+
+        } else {
+
+            warning(paste('Tried to find ',unit_name,' conversions, but could not find records in projectData collection'))
+
+            if (unit_name %in% c("crop_name","livestock_name")){
+                #' evaluate the string denoting the variable name to be used
+                var <- eval( parse( text = unit_file) )
+
+                #' make dummy tibble
+                conversions <- tibble::as_tibble(list("survey_value"=var, "conversion"=var ))
+
+            } else {
+
+                conversions <- eval( parse( text = pkg.env$local_units_file_tibble_list[[unit_file]] ) )
+
+                if ( !(unit_name=="country") ) {
+                    colnames(conversions) <- c("survey_value", "conversion")
+                }
+            }
+        }
 
 
-    if ("crop_name" %in% unit_list){
-        crop_name_conversions <- extract_units_from_db(database,
-                                                            url="mongodb://localhost",
-                                                            projectID=projectID,
-                                                            formID=formID,
-                                                            conversion_type="crop_name",
-                                                            collection="units_and_conversions")
-        assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
-
-    }
-    if ("crop_name" %in% unit_list==F){
-        warning('Tried to find crop name conversions, but could not find records in projectData collection')
-        crop_name_conversions <- tibble::as_tibble(list("survey_value"=crop_name, "conversion"=crop_name))
-        assign("crop_name_conversions", crop_name_conversions, envir = .GlobalEnv)
-
-    }
-
-
-    if ("livestock_name" %in% unit_list){
-        livestock_name_conversions <- extract_units_from_db(database,
-                                                     url="mongodb://localhost",
-                                                     projectID=projectID,
-                                                     formID=formID,
-                                                     conversion_type="livestock_name",
-                                                     collection="units_and_conversions")
-        assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
+        assign(pkg.env$local_units_file_list[[unit_name]], conversions, envir = .GlobalEnv)
 
     }
-    if ("livestock_name" %in% unit_list==F){
-        warning('Tried to find livestock name conversions, but could not find records in projectData collection')
-        livestock_name_conversions <- tibble::as_tibble(list("survey_value"=livestock_name, "conversion"=livestock_name))
-        assign("livestock_name_conversions", livestock_name_conversions, envir = .GlobalEnv)
-    }
 
 
-    if ("crop_yield_units" %in% unit_list){
-        crop_yield_unit_conversions <- extract_units_from_db(database,
-                                                       url="mongodb://localhost",
-                                                       projectID=projectID,
-                                                       formID=formID,
-                                                       conversion_type="crop_yield_units",
-                                                       collection="units_and_conversions")
-        assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
-
-    }
-    if ("crop_yield_units" %in% unit_list==F){
-        warning('Tried to find crop yield unit conversions, but could not find records in projectData collection')
-        crop_yield_unit_conversions <- crop_yield_units
-        colnames(crop_yield_unit_conversions) <- c("survey_value", "conversion")
-
-        assign("crop_yield_unit_conversions", crop_yield_unit_conversions, envir = .GlobalEnv)
-    }
-
-
-
-    if ("crop_sold_price_quantityunits" %in% unit_list){
-        crop_price_unit_conversions <- extract_units_from_db(database,
-                                                             url="mongodb://localhost",
-                                                             projectID=projectID,
-                                                             formID=formID,
-                                                             conversion_type="crop_sold_price_quantityunits",
-                                                             collection="units_and_conversions")
-        assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
-
-    }
-    if ("crop_sold_price_quantityunits" %in% unit_list==F){
-        warning('Tried to find crop price unit conversions, but could not find records in projectData collection')
-        crop_price_unit_conversions <- crop_price_units
-        colnames(crop_price_unit_conversions) <- c("survey_value", "conversion")
-
-        assign("crop_price_unit_conversions", crop_price_unit_conversions, envir = .GlobalEnv)
-    }
-
-
-
-    if ("unitland" %in% unit_list){
-        land_unit_conversion <- extract_units_from_db(database,
-                                                      url="mongodb://localhost",
-                                                      projectID=projectID,
-                                                      formID=formID,
-                                                      conversion_type="unitland",
-                                                      collection="units_and_conversions")
-
-        assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("unitland" %in% unit_list==F){
-        warning('Tried to find land unit conversions, but could not find records in projectData collection')
-        land_unit_conversion <- land_area_units
-        colnames(land_unit_conversion) <- c("survey_value", "conversion")
-
-        assign("land_unit_conversion", land_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-
-
-    if ("milk_units" %in% unit_list){
-        milk_unit_conversion <- extract_units_from_db(database,
-                                                      url="mongodb://localhost",
-                                                      projectID=projectID,
-                                                      formID=formID,
-                                                      conversion_type="milk_units",
-                                                      collection="units_and_conversions")
-        assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("milk_units" %in% unit_list==F){
-        warning('Tried to find land unit conversions, but could not find records in projectData collection')
-        milk_unit_conversion <- milk_amount_units
-        colnames(milk_unit_conversion) <- c("survey_value", "conversion")
-
-        assign("milk_unit_conversion", milk_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-    if ("milk_sold_price_timeunits" %in% unit_list){
-        milk_price_unit_conversion <- extract_units_from_db(database,
-                                                            url="mongodb://localhost",
-                                                            projectID=projectID,
-                                                            formID=formID,
-                                                            conversion_type="milk_sold_price_timeunits",
-                                                            collection="units_and_conversions")
-        assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("milk_sold_price_timeunits" %in% unit_list==F){
-        warning('Tried to find milk price conversion, but could not find records in projectData collection')
-        milk_price_unit_conversion <- milk_price_time_units
-        colnames(milk_price_unit_conversion) <- c("survey_value", "conversion")
-
-        assign("milk_price_unit_conversion", milk_price_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-    if ("bees_honey_production_units" %in% unit_list){
-        honey_unit_conversion <-  extract_units_from_db(database,
-                                                        url="mongodb://localhost",
-                                                        projectID=projectID,
-                                                        formID=formID,
-                                                        conversion_type="bees_honey_production_units",
-                                                        collection="units_and_conversions")
-        assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("bees_honey_production_units" %in% unit_list==F){
-        warning('Tried to find honey amount conversion, but could not find records in projectData collection')
-        honey_unit_conversion <- honey_amount_units
-        colnames(honey_unit_conversion) <- c("survey_value", "conversion")
-
-        assign("honey_unit_conversion", honey_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-    if ("eggs_units" %in% unit_list){
-        eggs_unit_conversion <- extract_units_from_db(database,
-                                                      url="mongodb://localhost",
-                                                      projectID=projectID,
-                                                      formID=formID,
-                                                      conversion_type="eggs_units",
-                                                      collection="units_and_conversions")
-        assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("eggs_units" %in% unit_list==F){
-        warning('Tried to find eggs amount conversion, but could not find records in projectData collection')
-        eggs_unit_conversion <- eggs_amount_units
-        colnames(eggs_unit_conversion) <- c("survey_value", "conversion")
-
-        assign("eggs_unit_conversion", eggs_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-    if ("eggs_sold_price_timeunits" %in% unit_list){
-        eggs_price_unit_conversion <- extract_units_from_db(database,
-                                                            url="mongodb://localhost",
-                                                            projectID=projectID,
-                                                            formID=formID,
-                                                            conversion_type="eggs_sold_price_timeunits",
-                                                            collection="units_and_conversions")
-        assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("eggs_sold_price_timeunits" %in% unit_list==F){
-        warning('Tried to find eggs price conversion, but could not find records in projectData collection')
-        eggs_price_unit_conversion <- eggs_price_time_units
-        colnames(eggs_price_unit_conversion) <- c("survey_value", "conversion")
-
-        assign("eggs_price_unit_conversion", eggs_price_unit_conversion, envir = .GlobalEnv)
-    }
-
-
-
-
-    if ("fertiliser_units" %in% unit_list){
-        fertiliser_unit_conversion <- extract_units_from_db(database,
-                                                            url="mongodb://localhost",
-                                                            projectID=projectID,
-                                                            formID=formID,
-                                                            conversion_type="fertiliser_units",
-                                                            collection="units_and_conversions")
-        assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
-
-    }
-    if ("fertiliser_units" %in% unit_list==F){
-        warning('Tried to find fertiliser amount conversion, but could not find records in projectData collection')
-        fertiliser_unit_conversion <- fertiliser_units
-        colnames(fertiliser_unit_conversion) <- c("survey_value", "conversion")
-
-        assign("fertiliser_unit_conversion", fertiliser_unit_conversion, envir = .GlobalEnv)
-    }
-
+        return()
 }
 
 #' Extract Units from database
@@ -805,9 +612,9 @@ load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
     for (unit_file in names(pkg.env$local_units_file_list)){
 
         #' check that this list of files exists in the base_folder
-        if (unit_file %in% file_names){
+        if (paste0(unit_file,".csv") %in% file_names){
 
-            conversions <- readr::read_csv(paste0(base_folder, unit_file), col_types = readr::cols())
+            conversions <- readr::read_csv(paste0(base_folder, unit_file, ".csv"), col_types = readr::cols())
 
         } else {
 
@@ -815,7 +622,7 @@ load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
             warning(paste0('Could not locate  ',unit_file ,' in ',base_folder))
 
             #' need a catch for these two files, because of the extra step in creating a dummy table
-            if (unit_file %in% c("crop_name.csv","livestock_name.csv")){
+            if (unit_file %in% c("crop_name","livestock_name")){
 
                 #' evaluate the string denoting the variable name to be used
                 var <- eval( parse( text = pkg.env$local_units_file_tibble_list[[unit_file]]) )
