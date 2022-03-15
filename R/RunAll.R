@@ -188,40 +188,6 @@ extract_all_new_values <- function(data){
     return(units_and_conversions)
 }
 
-#' Load Units CSVs
-#'
-#' @param folder The folder containing all of the unit conversions.
-#' @param id_rhomis_dataset A vector of the RHoMIS IDs
-#'
-#' @return
-#' @export
-#'
-#' @examples
-load_units_csvs <- function(folder, ids_rhomis_dataset){
-    file_names <- list.files(folder)
-    #---------------------------------------------
-    # Loading all of the unit conversions locally
-    #---------------------------------------------
-    load_local_units(base_folder = folder,file_names = file_names, id_rhomis_dataset = ids_rhomis_dataset)
-}
-
-#' Load Calorie CSVs
-#'
-#' @param folder The folder containing all of the calorie conversions.
-#' @param id_rhomis_dataset A vector of the RHoMIS IDs
-#'
-#' @return
-#' @export
-#'
-#' @examples
-load_calorie_csvs <- function(folder,ids_rhomis_dataset){
-    file_names <- list.files(folder)
-    #---------------------------------------------
-    # Loading all of the unit conversions locally
-    #---------------------------------------------
-    load_calorie_conversions(base_folder = folder,file_names = file_names, id_rhomis_dataset = ids_rhomis_dataset)
-}
-
 
 #' Replace Infinite
 #'
@@ -539,7 +505,7 @@ processData <- function(
             #---------------------------------------------
             # Loading all of the unit conversions locally
             #---------------------------------------------
-            load_units_csvs("./unit_conversions/", ids_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+            load_local_units("./unit_conversions/", id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
         }
 

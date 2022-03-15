@@ -598,7 +598,6 @@ write_units_to_folder <- function(list_of_df,
 #' Load units for a particular project from csv and
 #' load them into the global environment
 #'
-#' @param file_names A list of file names to load
 #' @param id_rhomis_dataset A vector including the ID of the RHoMIS datasets being processed
 #' @param base_folder The path to the folder containing the units to load
 #'
@@ -606,7 +605,10 @@ write_units_to_folder <- function(list_of_df,
 #' @export
 #'
 #' @examples
-load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
+load_local_units <- function(base_folder, id_rhomis_dataset){
+
+    #' get list of files stored in base_folder
+    file_names <- list.files(base_folder)
 
     #' loop over the possible list of unit conversion csv file names
     for (unit_file in names(pkg.env$local_units_file_list)){
@@ -661,7 +663,6 @@ load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
 #' Load units for a particular project from csv and
 #' load them into the global environment
 #'
-#' @param file_names A list of file names to load
 #' @param id_rhomis_dataset A vector including the ID of the RHoMIS datasets being processed
 #' @param base_folder The path to the folder containing the units to load
 #'
@@ -669,93 +670,40 @@ load_local_units <- function(base_folder, file_names, id_rhomis_dataset){
 #' @export
 #'
 #' @examples
-load_calorie_conversions <- function(base_folder ,file_names, id_rhomis_dataset){
+load_calorie_conversions <- function(base_folder, id_rhomis_dataset){
 
-    if ("crop_calories.csv" %in% file_names){
-        crop_calorie_conversion <- readr::read_csv(paste0(base_folder,"crop_calories.csv"), col_types = readr::cols())
-        assign("crop_calorie_conversion", crop_calorie_conversion, envir = .GlobalEnv)
+    #' get list of files stored in base_folder
+    file_names <- list.files(base_folder)
 
-    }
-    if ("crop_calories.csv" %in% file_names==F){
-        warning(paste0('Tried to find crop calorie conversions, but could not find file here: ', paste0(base_folder,"crop_calories.csv")))
+    for (produce in produce_group_list){
 
-        crop_calorie_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = crop_calories
-        )
+        #' create file name string to search base_folder file list
+        csv_filename = paste0(produce,"_calories.csv")
 
-        assign("crop_calorie_conversion", crop_calorie_conversion, envir = .GlobalEnv)
-    }
+        #' check if the file exists in list from folder
+        if (csv_filename %in% file_names){
 
+            #' load the conversion csv file
+            calorie_conversion <- readr::read_csv(paste0(base_folder,csv_filename), col_types = readr::cols())
 
-    if ("eggs_calories.csv" %in% file_names){
-        eggs_calorie_conversion <- readr::read_csv(paste0(base_folder,"eggs_calories.csv"), col_types = readr::cols())
-        assign("eggs_calorie_conversion", eggs_calorie_conversion, envir = .GlobalEnv)
+        } else {
 
-    }
-    if ("eggs_calories.csv" %in% file_names==F){
-        warning(paste0('Tried to find crop calorie conversions, but could not find file here: ', paste0(base_folder,"eggs_calories.csv")))
+            #' print a warning if the file isn't where expected
+            warning(paste0('Could not locate  ',cvs_filename ,' in ',base_folder))
 
-        eggs_calorie_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = eggs_calories
-        )
+            #' create conversion tibble
+            calorie_conversion <- make_per_project_conversion_tibble(
+                proj_id_vector = id_rhomis_dataset,
+                unit_conv_tibble = eval( parse( text = paste0(produce,"_calories") ) )
+            )
 
-        assign("eggs_calorie_conversion", eggs_calorie_conversion, envir = .GlobalEnv)
+        }
+
+        #' assign to the global environment
+        assign(paste0(produce,"_calorie_conversion"), calorie_conversion, envir = .GlobalEnv)
     }
 
-    if ("honey_calories.csv" %in% file_names){
-        eggs_calorie_conversion <- readr::read_csv(paste0(base_folder,"honey_calories.csv"), col_types = readr::cols())
-        assign("eggs_calorie_conversion", eggs_calorie_conversion, envir = .GlobalEnv)
-
-    }
-    if ("honey_calories.csv" %in% file_names==F){
-        warning(paste0('Tried to find crop calorie conversions, but could not find file here: ', paste0(base_folder,"honey_calories.csv")))
-
-        honey_calorie_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = honey_calories
-        )
-
-        assign("honey_calorie_conversion", honey_calorie_conversion, envir = .GlobalEnv)
-    }
-
-
-    if ("meat_calories.csv" %in% file_names){
-        meat_calorie_conversion <- readr::read_csv(paste0(base_folder,"meat_calories.csv"), col_types = readr::cols())
-        assign("meat_calorie_conversion", meat_calorie_conversion, envir = .GlobalEnv)
-
-    }
-    if ("meat_calories.csv" %in% file_names==F){
-        warning(paste0('Tried to find crop calorie conversions, but could not find file here: ', paste0(base_folder,"meat_calories.csv")))
-
-        meat_calorie_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = meat_calories
-        )
-
-        assign("meat_calorie_conversion", meat_calorie_conversion, envir = .GlobalEnv)
-    }
-
-
-    if ("milk_calories.csv" %in% file_names){
-        milk_calorie_conversion <- readr::read_csv(paste0(base_folder,"milk_calories.csv"), col_types = readr::cols())
-        assign("milk_calorie_conversion", milk_calorie_conversion, envir = .GlobalEnv)
-
-    }
-    if ("milk_calories.csv" %in% file_names==F){
-        warning(paste0('Tried to find crop calorie conversions, but could not find file here: ', paste0(base_folder,"milk_calories.csv")))
-
-        milk_calorie_conversion <- make_per_project_conversion_tibble(
-            proj_id_vector = id_rhomis_dataset,
-            unit_conv_tibble = milk_calories
-        )
-
-        assign("milk_calorie_conversion", milk_calorie_conversion, envir = .GlobalEnv)
-    }
-
-
-
+    return()
 
 }
 

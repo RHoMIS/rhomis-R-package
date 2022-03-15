@@ -62,10 +62,21 @@ set_local_units_file_list <- function(){
          "fertiliser_units" = "fertiliser_units"),
     envir = pkg.env)
 
-
-
     return()
 
 }
 
 
+set_produce_list <- function(){
+
+
+    assign("produce_group_list",
+           c("crop",
+             "eggs",
+             "milk",
+             "honey",
+             "meat"),
+           envir = pkg.env)
+
+    return()
+}
