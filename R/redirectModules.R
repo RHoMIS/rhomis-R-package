@@ -149,8 +149,7 @@ calculate_prices_and_indicator_local <- function(data,base_path="./", units_path
 
     if ("processed_data" %in% names(results)){
 
-        calorie_conversions_dfs <- extract_calorie_values_by_project(results$processed_data)
-        calorie_conversions_dfs <- check_existing_calorie_conversions(calorie_conversions_dfs)
+        calorie_conversions_dfs <- check_existing_calorie_conversions(results$processed_data)
 
         calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = data[["id_rhomis_dataset"]], unit_conv_tibble = list(
             "staple_crop"=c("maize")

@@ -265,222 +265,32 @@ extract_units_from_db <- function(database="rhomis",
 #'
 #' @examples
 check_existing_conversions <- function(list_of_df){
+
     new_list <- sapply(names(list_of_df), function(x) {
 
-        if (x=="country" & "country" %in% names(list_of_df))
-        {
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["country"]],
-                                                             country,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
-        }
-        if (x=="crop_name")
-        {
-            crop_name_conv <- tibble::as_tibble(list(
-                "survey_value"=crop_name,
-                "conversion"=crop_name))
+        if (x %in% c("crop_name","livestock_name")){
 
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_name"]],
-                                                             crop_name_conv,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
+            conversion <- tibble::as_tibble(list(
+                                      "survey_value"=eval( parse( text = x ) ),
+                                      "conversion"=eval( parse( text = x ) )))
 
-        }
-        if (x=="livestock_name")
-        {
-            livestock_name_conv <- tibble::as_tibble(list(
-                "survey_value"=livestock_name,
-                "conversion"=livestock_name))
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["livestock_name"]],
-                                                             livestock_name_conv,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
-
-        }
-        if (x=="crop_yield_units")
-        {
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_yield_units"]],
-                                                             crop_yield_units,
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
+                                                             conversion,
                                                              by=("survey_value"="survey_value")) %>%
                 dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
 
-            return(df_with_existing_conversions)
+        } else {
 
-
-        }
-        if (x=="crop_sold_price_quantityunits")
-        {
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_sold_price_quantityunits"]],
-                                                             crop_price_units,
+            local_units_file_tibble_list
+            df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
+                                                             eval( parse( text = pkg.env$local_units_file_tibble_list[[x]] ) ),
                                                              by=("survey_value"="survey_value")) %>%
                 dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
                 dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-
-        }
-        if(x=="unitland")
-        {
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["unitland"]],
-                                                             land_area_units,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-        }
-        if (x=="milk_units")
-        {
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["milk_units"]],
-                                                             milk_amount_units,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-
-        }
-        if (x=="milk_sold_price_timeunits")
-        {
-
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["milk_sold_price_timeunits"]],
-                                                             milk_price_time_units,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-
-        }
-        if (x=="bees_honey_production_units")
-        {
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["bees_honey_production_units"]],
-                                                             honey_amount_units,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-
-        }
-        if (x=="eggs_units")
-        {
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["eggs_units"]],
-                                                             eggs_amount_units,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-
-        }
-        if (x=="eggs_sold_price_timeunits")
-        {
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["eggs_sold_price_timeunits"]],
-                                                             eggs_price_time_units,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-
-        }
-        if (x=="fertiliser_units")
-        {
-
-
-
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["fertiliser_units"]],
-                                                             fertiliser_units,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-
-            return(df_with_existing_conversions)
-
         }
 
-        if (x=="crop_calories")
-        {
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["crop_calories"]],
-                                                             crop_calories,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
-
-        }
-
-        if (x=="honey_calories")
-        {
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["honey_calories"]],
-                                                             honey_calories,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
-
-        }
-
-
-        if (x=="meat_calories")
-        {
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["meat_calories"]],
-                                                             meat_calories,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
-
-        }
-
-
-        if (x=="eggs_calories")
-        {
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["eggs_calories"]],
-                                                             eggs_calories,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
-
-        }
-
-        if (x=="milk_calories")
-        {
-            df_with_existing_conversions <- dplyr::left_join(list_of_df[["milk_calories"]],
-                                                             milk_calories,
-                                                             by=("survey_value"="survey_value")) %>%
-                dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
-                dplyr::rename("conversion"="conversion.y")
-            return(df_with_existing_conversions)
-
-        }
-
-
+        return(df_with_existing_conversions)
 
     }, simplify = F)
 
@@ -492,14 +302,16 @@ check_existing_conversions <- function(list_of_df){
 #'
 #' Go through the common conversions stored in the R-package
 #'
-#' @param list_of_df A list of dataframes, containing all
-#' of the units and conversions
+#' @param data RHoMIS Dataset
 #'
 #' @return
 #' @export
 #'
 #' @examples
-check_existing_calorie_conversions <- function(list_of_df){
+check_existing_calorie_conversions <- function(data){
+
+    #' get list of dataframes, containing all the calorie units and conversions
+    list_of_dfs <- extract_calorie_values_by_project(data)
 
     new_list <- sapply(names(list_of_df), function(x) {
 
