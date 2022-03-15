@@ -1,5 +1,5 @@
-library(tibble)
-library(dplyr)
+
+
 #' Total Livestock Income
 #'
 #' Calculate total livestock income from
@@ -192,10 +192,7 @@ total_and_off_farm_incomes <- function(data, total_crop_income,total_livestock_i
 #' @export
 #'
 #' @examples
-gendered_off_farm_income_indicator <- function(data,gender_categories = c("male_adult",
-                                                                         "female_adult",
-                                                                         "female_youth",
-                                                                         "male_youth")){
+gendered_off_farm_income_indicator <- function(data,gender_categories = pkg.env$gender_categories){
 
 
     number_of_loops <- find_number_of_loops(data,"offfarm_income_name")

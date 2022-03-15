@@ -1,0 +1,82 @@
+
+#' This function is run on load (see zzz.R) to set the default list of repeated columns when reading in a new rhomis dataset.
+set_repeat_column_names <- function(){
+
+    assign("repeat_columns",
+           c("crop_repeat",
+             "livestock_repeat",
+             "offfarm_repeat",
+             "offfarm_income_repeat",
+             "hh_pop_repeat",
+             "hh_rep"
+             ),
+           envir = pkg.env)
+
+    return()
+}
+
+set_gender_categories <- function(){
+
+    assign("gender_categories",
+           c("female_youth",
+             "female_adult",
+             "male_youth",
+             "male_adult"
+             ),
+           envir = pkg.env)
+
+    return()
+}
+
+
+set_local_units_file_list <- function(){
+
+    assign("local_units_file_list",
+    list("country" = "country_conversions",
+         "crop_name" = "crop_name_conversions",
+         "livestock_name" = "livestock_name_conversions",
+         "crop_yield_units" = "crop_yield_unit_conversions",
+         "crop_sold_price_quantityunits" = "crop_price_unit_conversions",
+         "unitland" = "land_unit_conversion",
+         "milk_units" = "milk_unit_conversion",
+         "milk_sold_price_timeunits" = "milk_price_unit_conversion",
+         "bees_honey_production_units" = "honey_unit_conversion",
+         "eggs_units" = "eggs_unit_conversion",
+         "eggs_sold_price_timeunits" = "eggs_price_unit_conversion",
+         "fertiliser_units" = "fertiliser_unit_conversion"),
+    envir = pkg.env)
+
+
+    assign("local_units_file_tibble_list",
+    list("country"          = "country",
+         "crop_name"        = "crop_name",
+         "livestock_name"   = "livestock_name",
+         "crop_yield_units" = "crop_yield_units",
+         "crop_sold_price_quantityunits" = "crop_price_units",
+         "unitland"         = "land_area_units",
+         "milk_units"       = "milk_amount_units",
+         "milk_sold_price_timeunits" = "milk_price_time_units",
+         "bees_honey_production_units" = "honey_amount_units",
+         "eggs_units" = "eggs_amount_units",
+         "eggs_sold_price_timeunits" = "eggs_price_time_units",
+         "fertiliser_units" = "fertiliser_units"),
+    envir = pkg.env)
+
+    return()
+
+}
+
+
+set_produce_list <- function(){
+
+
+    assign("produce_group_list",
+           c("crop",
+             "eggs",
+             "milk",
+             "honey",
+             "meat"),
+           envir = pkg.env)
+
+    return()
+}

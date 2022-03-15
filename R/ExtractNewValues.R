@@ -1,6 +1,3 @@
-library(tibble)
-library(readr)
-library(dplyr)
 
 
 #' Finding Unique Values
@@ -348,7 +345,11 @@ extract_values_by_project <- function(data){
     if ("id_rhomis_dataset" %in% colnames(data)==F){
         stop("Could not find the individual project ID generated for this project")
     }
+
+    # isolate list of unique project ids
     projects <- unique(data$id_rhomis_dataset)
+
+    # create a list of units dataframes, one per project id
     units_by_project_by_unit_type <- sapply(projects, function(x) extract_units_data_frames(data[data$id_rhomis_dataset==x,]), simplify = F)
 
     units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project){

@@ -9,8 +9,7 @@ insert_gender_columns_in_core_data(
   original_column,
   control_column,
   loop_structure = F,
-  gender_control_categories = c("male_adult", "female_adult", "male_youth",
-    "female_youth")
+  gender_control_categories = pkg.env$gender_categories
 )
 }
 \arguments{

@@ -56,10 +56,10 @@ testthat::test_that("Individual loop variables can be properly formatted",{
 
 
     expected_result <- tibble::as_tibble(list(banana=c("ex1", NA, NA, NA),
-                                      cassava=c("ex3", "ex2", NA, NA),
-                                      millet=c(NA, NA, NA, NA),
-                                      melon=c(NA, NA, "ex4", NA),
-                                      maize=c(NA, NA, NA, "ex5")))
+                                              cassava=c("ex3", "ex2", NA, NA),
+                                              millet=c(NA, NA, NA, NA),
+                                              melon=c(NA, NA, "ex4", NA),
+                                              maize=c(NA, NA, NA, "ex5")))
     expected_result<- expected_result %>% dplyr::mutate_all(as.character)
 
 
@@ -126,22 +126,22 @@ testthat::test_that("Test that we can convert multiple columns into the wide for
     actual_result <- map_to_wide_format(data, name_column, column_prefixes, types)
     # Expected result
     crop_variable <- tibble::as_tibble(list(banana=c("ex1",NA,NA,NA),
-                                    cassava=c("ex3","ex2",NA,NA),
-                                    millet=c(NA,NA,NA,NA),
-                                    melon=c(NA,NA,"ex4",NA),
-                                    maize=c(NA,NA,NA,"ex5")))
+                                            cassava=c("ex3","ex2",NA,NA),
+                                            millet=c(NA,NA,NA,NA),
+                                            melon=c(NA,NA,"ex4",NA),
+                                            maize=c(NA,NA,NA,"ex5")))
     crop_variable<- crop_variable %>% dplyr::mutate_all(as.character)
     crop_unit <- tibble::as_tibble(list(banana=c("unit1",NA,NA,NA),
-                                cassava=c(NA,"unit2",NA,NA),
-                                millet=c(NA,NA,NA,NA),
-                                melon=c(NA,NA,"unit4",NA),
-                                maize=c(NA,NA,NA,"unit5")))
+                                        cassava=c(NA,"unit2",NA,NA),
+                                        millet=c(NA,NA,NA,NA),
+                                        melon=c(NA,NA,"unit4",NA),
+                                        maize=c(NA,NA,NA,"unit5")))
     crop_unit<- crop_unit %>% dplyr::mutate_all(as.character)
     crop_price <- tibble::as_tibble(list(banana=c(NA,NA,NA,NA),
-                                 cassava=c(NA,NA,NA,NA),
-                                 millet=c(NA,NA,NA,NA),
-                                 melon=c(NA,NA,NA,NA),
-                                 maize=c(NA,NA,NA,NA)))
+                                         cassava=c(NA,NA,NA,NA),
+                                         millet=c(NA,NA,NA,NA),
+                                         melon=c(NA,NA,NA,NA),
+                                         maize=c(NA,NA,NA,NA)))
     crop_price<- crop_price %>% dplyr::mutate_all(as.character)
     expected_result <- list(crop_variable=crop_variable,
                             crop_unit=crop_unit,
@@ -186,20 +186,20 @@ testthat::test_that("Gender splitting of information works",{
                                          maize=c(NA,NA,NA,0)))
 
     female_adult <- tibble::as_tibble(list(banana=c(0.5,NA,NA,NA),
-                                   cassava=c(0,0,NA,NA),
-                                   millet=c(NA,NA,NA,0),
-                                   melon=c(NA,NA,0,NA),
-                                   maize=c(NA,NA,NA,1)))
+                                           cassava=c(0,0,NA,NA),
+                                           millet=c(NA,NA,NA,0),
+                                           melon=c(NA,NA,0,NA),
+                                           maize=c(NA,NA,NA,1)))
     male_youth <- tibble::as_tibble(list(banana=c(0,NA,NA,NA),
-                                 cassava=c(1,0,NA,NA),
-                                 millet=c(NA,NA,NA,0),
-                                 melon=c(NA,NA,0,NA),
-                                 maize=c(NA,NA,NA,0)))
+                                         cassava=c(1,0,NA,NA),
+                                         millet=c(NA,NA,NA,0),
+                                         melon=c(NA,NA,0,NA),
+                                         maize=c(NA,NA,NA,0)))
     male_adult <- tibble::as_tibble(list(banana=c(0.5,NA,NA,NA),
-                                 cassava=c(0,1,NA,NA),
-                                 millet=c(NA,NA,NA,0),
-                                 melon=c(NA,NA,0,NA),
-                                 maize=c(NA,NA,NA,0)))
+                                         cassava=c(0,1,NA,NA),
+                                         millet=c(NA,NA,NA,0),
+                                         melon=c(NA,NA,0,NA),
+                                         maize=c(NA,NA,NA,0)))
     expected_result <- list(female_youth=female_youth,
                             female_adult=female_adult,
                             male_youth=male_youth,
@@ -277,7 +277,7 @@ testthat::test_that("Gender split for individual column works",{
     expect_equal(actual_result,expected_result)
 
 
-    })
+})
 
 
 testthat::test_that("Can reformat ODK central loops into RHoMIS format",{
@@ -434,15 +434,15 @@ testthat::test_that("Gendered split of cropping information", {
                                       crop_income_per_year_1 = c(NA, 2000, 8000),
                                       crop_price_1 = c(NA, 10, 8),
                                       crop_who_control_revenue_1=c(NA,"female_adult male_adult","female_youth male_youth"),
-                                      female_youth_crop_sold_kg_per_year_1=c(NA,0,500),
+                                      male_adult_crop_sold_kg_per_year_1=c(NA,100,0),
                                       male_youth_crop_sold_kg_per_year_1=c(NA,0,500),
                                       female_adult_crop_sold_kg_per_year_1=c(NA,100,0),
-                                      male_adult_crop_sold_kg_per_year_1=c(NA,100,0),
+                                      female_youth_crop_sold_kg_per_year_1=c(NA,0,500),
                                       crop_consume_control_1=c("male_adult female_youth female_adult","female_adult","female_youth"),
-                                      female_youth_crop_consumed_kg_per_year_1=c(16.66667,0,5000),
+                                      male_adult_crop_consumed_kg_per_year_1=c(16.66667,0,0),
                                       male_youth_crop_consumed_kg_per_year_1=c(0,0,0),
                                       female_adult_crop_consumed_kg_per_year_1=c(16.66667,1400,0),
-                                      male_adult_crop_consumed_kg_per_year_1=c(16.66667,0,0),
+                                      female_youth_crop_consumed_kg_per_year_1=c(16.66667,0,5000),
 
 
                                       crop_name_2 = c("wheat", "maize", "millet"),
@@ -462,15 +462,15 @@ testthat::test_that("Gendered split of cropping information", {
                                       crop_income_per_year_2 = c(800, NA, NA),
                                       crop_price_2 = c(666.666666666667, NA, NA),
                                       crop_who_control_revenue_2=c("male_adult female_adult",NA,NA),
-                                      female_youth_crop_sold_kg_per_year_2=c(0,NA,NA),
+                                      male_adult_crop_sold_kg_per_year_2=c(0.6,NA,NA),
                                       male_youth_crop_sold_kg_per_year_2=c(0,NA,NA),
                                       female_adult_crop_sold_kg_per_year_2=c(0.6,NA,NA),
-                                      male_adult_crop_sold_kg_per_year_2=c(0.6,NA,NA),
+                                      female_youth_crop_sold_kg_per_year_2=c(0,NA,NA),
                                       crop_consume_control_2=c("male_adult female_youth",NA,NA),
-                                      female_youth_crop_consumed_kg_per_year_2=c(4.2,NA,NA),
+                                      male_adult_crop_consumed_kg_per_year_2=c(4.2,NA,NA),
                                       male_youth_crop_consumed_kg_per_year_2=c(0,NA,NA),
                                       female_adult_crop_consumed_kg_per_year_2=c(0,NA,NA),
-                                      male_adult_crop_consumed_kg_per_year_2=c(4.2,NA,NA),
+                                      female_youth_crop_consumed_kg_per_year_2=c(4.2,NA,NA),
 
                                       crop_name_3 = c("rice", "other_vegetables", NA),
                                       crop_yield_3 = c(25, 100, NA),
@@ -489,15 +489,15 @@ testthat::test_that("Gendered split of cropping information", {
                                       crop_income_per_year_3 = c(800, NA, NA),
                                       crop_price_3 = c(32, NA, NA),
                                       crop_who_control_revenue_3=c("female_adult",NA,NA),
-                                      female_youth_crop_sold_kg_per_year_3=c(0,NA,NA),
+                                      male_adult_crop_sold_kg_per_year_3=c(0,NA,NA),
                                       male_youth_crop_sold_kg_per_year_3=c(0,NA,NA),
                                       female_adult_crop_sold_kg_per_year_3=c(25,NA,NA),
-                                      male_adult_crop_sold_kg_per_year_3=c(0,NA,NA),
+                                      female_youth_crop_sold_kg_per_year_3=c(0,NA,NA),
                                       crop_consume_control_3=c(NA,"male_adult",NA),
-                                      female_youth_crop_consumed_kg_per_year_3=c(NA,0,NA),
-                                      male_youth_crop_consumed_kg_per_year_3=c(NA,0,NA),
-                                      female_adult_crop_consumed_kg_per_year_3=c(NA,0,NA),
-                                      male_adult_crop_consumed_kg_per_year_3=c(NA,22500,NA)),
+                                      male_adult_crop_consumed_kg_per_year_3=c(NA,22500,NA),
+                                 male_youth_crop_consumed_kg_per_year_3=c(NA,0,NA),
+                                 female_adult_crop_consumed_kg_per_year_3=c(NA,0,NA),
+                                 female_youth_crop_consumed_kg_per_year_3=c(NA,0,NA)),
                                  row.names = c(NA, -3L),
                                  class = c("tbl_df", "tbl", "data.frame"))
 

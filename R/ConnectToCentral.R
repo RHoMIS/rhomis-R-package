@@ -1,11 +1,11 @@
-library(httr)
-library(tibble)
-library(tidyr)
-library(dplyr)
-library(readr)
-library(readxl)
-library(magrittr)
-library(uuid)
+
+
+
+
+
+
+
+
 
 #' Get Email Token
 #'
@@ -553,7 +553,7 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$offfarm_income_repeat)
 
 
-    colnames(main_data_set) <- tolower(clean_column_names(colnames(main_data_set), repeat_columns = c("")))
+    colnames(main_data_set) <- clean_column_names(colnames(main_data_set), repeat_columns = c(""))
 
     # Removing duplicate "deviceid" column
     if (sum(colnames(main_data_set) == "deviceid") > 1) {

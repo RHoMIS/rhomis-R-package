@@ -9,11 +9,9 @@ make_id_columns(
   country_column = "country",
   unique_id_col = "_uuid",
   hh_id_col = NULL,
-  id_type = "string",
-  proj_id = NULL,
-  form_id = NULL,
-  proj_id_col = NULL,
-  form_id_col = NULL
+  id_type = c("string", "column"),
+  proj_id,
+  form_id
 )
 }
 \arguments{
@@ -23,21 +21,33 @@ make_id_columns(
 
 \item{unique_id_col}{The name of the column containing unique id record. This is produced by the server accepting ODK records}
 
-\item{hh_id_col}{The household ID}
+\item{hh_id_col}{The household ID column}
 
-\item{id_type}{The type of ID you would like to enter for projects and forms. If you select "string", then fill in the proj_id and form_id arguments, with the project id and form id you would like to use. If selecting "column", enter the name of the column (proj_id_col) containing the project ID you would like to use, and the name of the column (form_id_col) containing the form ids you would like to use.}
+\item{id_type}{The type of ID you would like to enter for projects and forms. If you select "string", then fill in the proj_id and form_id arguments, with the project id and form id you would like to use. If selecting "column", enter the name of the column (proj_id) containing the project ID you would like to use, and the name of the column (form_id) containing the form ids you would like to use.}
 
-\item{proj_id}{The name or ID of the project (string), see id_type varaible}
+\item{proj_id}{Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)}
 
-\item{form_id}{The name or ID of the form (string), see id_type variable}
-
-\item{proj_id_col}{The name of the column containing the project id, see id_type variable}
-
-\item{form_id_col}{The name of the column containing the form id, see id_type variable}
+\item{form_id}{Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)}
 }
 \value{
 
 }
 \description{
 Make ID columns for form, project, and household
+}
+\examples{
+Check validity of argument and print error if unknown type is supplied
+Check whether id columns in list below exist in loaded rhomis data
+loop over column names
+if column is not found in dataset throw an error
+make sure that the unique_id_col does indeed contain unique values
+if form and proj ids are provided as strings, create new columns filled with these string values
+loop over proj and form id arguments
+confirm that these columns exist in the dataset, otherwise bail and print error
+copy the contents of these columns into id_proj and id_form columns
+create a unique project, form, country, ID column
+add new column to dataset
+create unique household id
+add household and unique id columns to dataset
+shift column ordering so that id columns are the left-most columns
 }

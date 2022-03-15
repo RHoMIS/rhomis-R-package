@@ -8,7 +8,7 @@ crop_calculations_all(
   data,
   crop_yield_units_conv_tibble = crop_yield_units,
   crop_income_units_conv_tibble = crop_price_units,
-  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{
