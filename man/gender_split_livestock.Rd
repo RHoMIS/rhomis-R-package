@@ -4,10 +4,7 @@
 \alias{gender_split_livestock}
 \title{Gender Split of Livestock Information}
 \usage{
-gender_split_livestock(
-  data,
-  gender_categories = c("female_youth", "female_adult", "male_youth", "male_adult")
-)
+gender_split_livestock(data, gender_categories = pkg.env$gender_categories)
 }
 \arguments{
 \item{data}{RHoMIS data including information on number

@@ -4,10 +4,7 @@
 \alias{split_gender_columns}
 \title{Split Gender columns}
 \usage{
-split_gender_columns(
-  column,
-  categories = c("female_youth", "female_adult", "male_youth", "male_adult")
-)
+split_gender_columns(column, gender_categories = pkg.env$gender_categories)
 }
 \arguments{
 \item{column}{The column that needs to be split}

@@ -26,3 +26,8 @@ load_all_db_units(
 \description{
 Load all units from a local MongoDB databases
 }
+\examples{
+loop over the possible list of unit conversion csv file names
+evaluate the string denoting the variable name to be used
+make dummy tibble
+}

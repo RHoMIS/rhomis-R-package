@@ -2,7 +2,9 @@
 % Please edit documentation in R/AuthenticateUser.R
 \name{register_user}
 \alias{register_user}
-\title{Register User}
+\title{These functions are helpful for managing users onf the RHoMIS 2.0 authentication server.
+Found here: https://github.com/l-gorman/rhomis-authenticator
+Register User}
 \usage{
 register_user(url, username, email, password)
 }
