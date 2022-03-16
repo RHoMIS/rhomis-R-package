@@ -80,3 +80,26 @@ set_produce_list <- function(){
 
     return()
 }
+
+set_identification_columns <- function(){
+
+    assign("identification_column_list",
+           list(
+               "country"="country", # The usual name of the "country" column
+               "uuid_local"="_uuid", # The usual column with unique ids for local datasets
+               "uuid_central"="KEY" # The usual column with unique ids for datasets obtained form ODK central
+
+           ),
+           envir = pkg.env)
+}
+
+
+set_local_processing_paths <- function(){
+    assign("local_processing_paths",
+           list(
+               "default_base_path"="./",
+               "original_units"="original_units",
+               "converted_units"="converted_units"
+           ),
+           envir = pkg.env)
+}

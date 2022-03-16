@@ -90,17 +90,7 @@ httptest::with_mock_api({
             )
 
            testthat::expect_equal(!is.null(data), T)
-
-
-
-
     })
-
-
-    # print(token)
-
-
-
 })
 
 

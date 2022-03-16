@@ -13,6 +13,58 @@ extract_values_central <- function(
         hh_id_col=NULL
 ){
 
+
+    # Getting project and formID
+    projectID <- get_project_id_from_name(
+        project_name,
+        central_url,
+        central_email,
+        central_password
+    )
+
+    # Finding form information from the API
+    formID <- get_xml_form_id_from_name(
+        form_name,
+        projectID,
+        central_url,
+        central_email,
+        central_password
+    )
+
+    # Getting the submission data from ODK central
+    rhomis_data <- get_submission_data(
+        central_url,
+        central_email,
+        central_password,
+        projectID,
+        formID,
+        draft
+    )
+
+
+
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
+    rhomis_data <- rhomis_data %>%
+        remove_extra_central_columns()
+
+
+
+    rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
+    rhomis_data <- sapply(rhomis_data, function(x){
+        x[as.numeric(x)==-999]<-NA
+        x
+    }, simplify = F) %>% tibble::as_tibble()
+
+
+    indicator_data <- tibble::as_tibble(list(
+        projectName = rep(project_name, nrow(rhomis_data)),
+        formName = rep(form_name, nrow(rhomis_data)),
+        formVersion = rep(form_version, nrow(rhomis_data))
+    ))
+
+
+
     # Loading a rhomis dataset, and adding
     # id values (using a hashing function, digest)
     # to make sure that units, crop name conversions...
@@ -70,14 +122,17 @@ extract_values_central <- function(
 extract_values_local <- function(
         base_folder="./",
         file_path="./raw-data/raw-data.csv",
-        country_column= "country",
-        unique_id_col="_uuid",
+        country_column=pkg.env$identification_column_list$country,
+        unique_id_col=pkg.env$identification_column_list$uuid_local,
         hh_id_col=NULL,
-        id_type="string",
-        proj_id=NULL,
-        form_id=NULL,
-        overwrite=FALSE
+        id_type=c("string","column"),
+        proj_id,
+        form_id,
+        overwrite=FALSE,
+        repeat_column_names=pkg.env$repeat_columns
         ){
+
+    id_type <- match.arg(id_type)
 
     # Loading a rhomis dataset, and adding
     # id values (using a hashing function, digest)
@@ -90,17 +145,18 @@ extract_values_local <- function(
         hh_id_col=hh_id_col,
         id_type=id_type,
         proj_id=proj_id,
-        form_id=form_id)
+        form_id=form_id,
+        repeat_columns=repeat_column_names)
 
     extract_project_values(rhomis_data)
     new_values <- extract_values_by_project(rhomis_data)
     new_values <- check_existing_conversions(list_of_df = new_values)
 
-    units_folder_dest <- paste0(base_path,"/original_units")
+    units_folder_dest <- paste0(base_path,"/",pkg.env$local_processing_paths$original_units)
     write_units_to_folder(list_of_df = new_values,
                           folder=units_folder_dest)
 
-    new_units_dest <- paste0(base_path,"/converted_units")
+    new_units_dest <- paste0(base_path,"/", pkg.env$local_processing_paths$converted_units)
 
     if (dir.exists(new_units_dest)==F){
         write_units_to_folder(list_of_df = new_values,
@@ -749,13 +805,6 @@ run_preliminary_calculations <- function(rhomis_data,
 
     return(results)
 }
-
-
-
-
-
-
-
 
 
 #' Read Folder of CSVs

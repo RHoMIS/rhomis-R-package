@@ -7,13 +7,14 @@
 extract_values_local(
   base_folder = "./",
   file_path = "./raw-data/raw-data.csv",
-  country_column = "country",
-  unique_id_col = "_uuid",
+  country_column = pkg.env$identification_column_list$country,
+  unique_id_col = pkg.env$identification_column_list$uuid_local,
   hh_id_col = NULL,
-  id_type = "string",
-  proj_id = NULL,
-  form_id = NULL,
-  overwrite = FALSE
+  id_type = c("string", "column"),
+  proj_id,
+  form_id,
+  overwrite = FALSE,
+  repeat_column_names = pkg.env$repeat_columns
 )
 }
 \arguments{

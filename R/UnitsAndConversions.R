@@ -282,7 +282,6 @@ check_existing_conversions <- function(list_of_df){
 
         } else {
 
-            local_units_file_tibble_list
             df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
                                                              eval( parse( text = pkg.env$local_units_file_tibble_list[[x]] ) ),
                                                              by=("survey_value"="survey_value")) %>%
@@ -313,9 +312,9 @@ check_existing_calorie_conversions <- function(data){
     #' get list of dataframes, containing all the calorie units and conversions
     list_of_dfs <- extract_calorie_values_by_project(data)
 
-    new_list <- sapply(names(list_of_df), function(x) {
+    new_list <- sapply(names(list_of_dfs), function(x) {
 
-        df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
+        df_with_existing_conversions <- dplyr::left_join(list_of_dfs[[x]],
                                                          eval( parse( text = x ) ),
                                                          by=("survey_value"="survey_value")) %>%
             dplyr::select("unit_type","id_rhomis_dataset","survey_value", "conversion.y") %>%
