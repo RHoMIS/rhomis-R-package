@@ -19,49 +19,42 @@ name: Deploy Bookdown docs
 on:
   push:
     branches:
-      - dev
-
-name: Render book
+      - bookdown-docs
 
 jobs:
-    bookdown:
-        name: Render-Book
-        runs-on: ubuntu-20.04
-        steps:
-        - uses: actions/checkout@v2
-        - uses: r-lib/actions/setup-r@v1
-        - uses: r-lib/actions/setup-pandoc@v1
-        - name: Install rmarkdown
-            run: Rscript -e 'install.packages(c("rmarkdown","bookdown"))'
+  build-book:
+    name: Render-Book
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v1
+    - uses: r-lib/actions/setup-pandoc@v1
+    - name: Install rmarkdown, bookdown, bslib, downlit, and xml2
+      run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "bslib","downlit", "xml2"))'
 
-        - name: Render Book
-            run: Rscript -e 'bookdown::render_book("./book")'
-        - uses: actions/upload-artifact@v1
-            with:
-            name: _book
-            path: ./book/_book/
+    - name: Render and build book
+      run: Rscript -e 'bookdown::render_book("./book")'
+   
+    - name: Init new repo in book/_book folder and commit generated files
+      run: |
+        cd book/_book
+        git init
+        git add -A
+        git config --local user.email "lgorman@turing.ac.uk"
+        git config --local user.name "l-gorman"
+        git commit -m 'deploy'
 
+    - name: Force push to destination branch
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        # Token for the repo
+        # Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.PUBLISHBOOKDOWN }}
+        # Destination branch to push changes
+        branch: gh-pages
+        # Force the changes through
+        force: true
+        # Change to the build directory before pushing
+        directory: ./book/_book
+        repository: "l-gorman/rhomis-R-package"
 
-    deploy:
-
-      - name: Init new repo in build folder and commit generated files
-        run: |
-          cd ./book/_book/
-          git init
-          git add -A
-          git config --local user.email "lgorman@turing.ac.uk"
-          git config --local user.name "l-gorman"
-          git commit -m 'deploy'
-
-      - name: Force push to destination branch
-        uses: ad-m/github-push-action@v0.5.0
-        with:
-          # Token for the repo
-          # Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
-          github_token: ${{ secrets.PUBLISHBOOKDOWN }}
-          # Destination branch to push changes
-          branch: gh-pages
-          # Force the changes through
-          force: true
-          # Change to the build directory before pushing
-          directory: ./book/_book/
