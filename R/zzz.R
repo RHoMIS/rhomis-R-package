@@ -8,6 +8,8 @@ pkg.env = new.env()
     set_produce_list()
     set_identification_columns()
 
+    set_prices_list()
+    set_calories_list()
 
 }
 

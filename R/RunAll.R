@@ -241,6 +241,7 @@ replace_infinite <- function(column){
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param form_version The version of the ODK-central form you are processing.
 #' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
 #' @param database The name of the database you would like to save results to
 #' @param draft Whether or not the ODK for you war working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
@@ -261,7 +262,7 @@ processData <- function(
     outputType=c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
 
     # Arguments used for processing local data sets
-    base_path="./",
+    base_path="./", # The path to the folder where outputs will be written
     dataFilePath=NULL,
     id_type=c("string", "column"),
     proj_id,
@@ -277,6 +278,7 @@ processData <- function(
     form_version=NULL,
     database=NULL,
     draft=NULL,
+    central_test_case=FALSE,
     repeat_columns=pkg.env$repeat_columns,
     gender_categories=pkg.env$gender_categories
 ){
@@ -346,32 +348,49 @@ processData <- function(
     #' clean the column names
     if(dataSource=="central")
     {
-        # Getting project and formID
-        projectID <- get_project_id_from_name(
-            project_name,
-            central_url,
-            central_email,
-            central_password
-        )
+        if (central_test_case==F){
+            # Getting project and formID
+            projectID <- get_project_id_from_name(
+                project_name,
+                central_url,
+                central_email,
+                central_password
+            )
 
-        # Finding form information from the API
-        formID <- get_xml_form_id_from_name(
-            form_name,
-            projectID,
-            central_url,
-            central_email,
-            central_password
-        )
+            # Finding form information from the API
+            formID <- get_xml_form_id_from_name(
+                form_name,
+                projectID,
+                central_url,
+                central_email,
+                central_password
+            )
 
-        # Getting the submission data from ODK central
-        rhomis_data <- get_submission_data(
-            central_url,
-            central_email,
-            central_password,
-            projectID,
-            formID,
-            draft
-        )
+
+            # Getting the submission data from ODK central
+            rhomis_data <- get_submission_data(
+                central_url,
+                central_email,
+                central_password,
+                projectID,
+                formID,
+                draft
+            )
+        }
+
+        if (central_test_case==T){
+
+            rhomis_data <- get_submission_data(
+                central_url,
+                central_email,
+                central_password,
+                projectID,
+                formID,
+                draft,
+                central_test_case=central_test_case
+            )
+
+        }
 
         # Cleaning the column names
         colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
@@ -383,8 +402,8 @@ processData <- function(
         rhomis_data <- make_id_columns(
             data=rhomis_data,
             country_column =pkg.env$identification_column_list$country,
-            unique_id_col=unique_id_col,
-            hh_id_col=hh_id_col,
+            unique_id_col="key",
+            hh_id_col=NULL,
             id_type=id_type,
             proj_id=project_name,
             form_id=form_name)
@@ -460,8 +479,9 @@ processData <- function(
         #---------------------------------------------------------------
         # Load Conversions
         #---------------------------------------------------------------
-        units_folder <- paste0(base_path,"converted_units/")
         if (outputType=="csv"){
+            units_folder <- paste0(base_path,"converted_units/")
+
             if (!dir.exists(units_folder))
             {
                 stop('Specified that the units were stored locally but the path "unit_conversions" does not exist')
@@ -517,11 +537,13 @@ processData <- function(
             #-------------------------------------------------------------
 
             lapply(names(results), function(x){
-                new_folder <- paste0(base_path,x)
-                dir.create(new_folder, showWarnings = F)
+
                 data_to_write <- results[[x]]
 
                 if (outputType=="csv"){
+                    new_folder <- paste0(base_path,x)
+                    dir.create(new_folder, showWarnings = F)
+
                     if (x=="processed_data" | x=="indicator_data"){
                         path <- paste0(new_folder,"/",x,".csv")
                         readr::write_csv(data_to_write,path)
@@ -541,6 +563,7 @@ processData <- function(
                             projectID = project_name,
                             formID = form_name
                         )
+                        return()
                     }
                     if (x=="indicator_data"){
 
@@ -552,17 +575,32 @@ processData <- function(
                             projectID = project_name,
                             formID = form_name
                         )
+                        return()
                     }
+
+                    if (x=="original_prices"){
+                        save_multiple_conversions(database = database,
+                                                  url = "mongodb://localhost",
+                                                  projectID = project_name,
+                                                  formID = form_name,
+                                                  conversion_data = data_to_write,
+                                                  conversion_types =  names(data_to_write)
+
+                        )
+                        return()
+                    }
+                    save_list_of_df_to_db(list_of_df = data_to_write,
+                                          projectID=project_name,
+                                          formID=form_name,
+                                          database=database,
+                                          url="mongodb://localhost"
+                    )
+                    return()
+
                 }
 
-                return()
 
-                save_list_of_df_to_db(list_of_df = data_to_write,
-                                      projectID=project_name,
-                                      formID=form_name,
-                                      database=database,
-                                      url="mongodb://localhost"
-                )
+
             })
 
 
@@ -575,38 +613,42 @@ processData <- function(
                     "staple_crop"=c("maize")
                 ))
 
-                original_calorie_values_folder <- paste0(base_path,"original_calorie_conversions")
 
                 if (outputType=="csv"){
+                    original_calorie_values_folder <- paste0(base_path,"original_calorie_conversions")
+
                     write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs,folder = original_calorie_values_folder)
                     converted_calorie_conversions_folder <- paste0(base_path,"completed_calorie_conversions")
                     if (!dir.exists(converted_calorie_conversions_folder))
                     {
                         write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs,folder = converted_calorie_conversions_folder)
                     }
+
+                    converted_prices_folder <- paste0(base_path,"converted_prices")
+                    if (!dir.exists(converted_prices_folder))
+                    {
+                        dir.create(converted_prices_folder, showWarnings = F)
+                        data_to_write <- results[["original_prices"]]
+                        write_list_of_df_to_folder(list_of_df = data_to_write,folder = converted_prices_folder)
+                    }
                 }
 
                 if (outputType=="mongodb"){
-                    save_list_of_df_to_db(list_of_df = calorie_conversions_dfs,
-                                          projectID=project_name,
-                                          formID=form_name,
-                                          database=database,
-                                          url="mongodb://localhost"
+                    save_multiple_conversions(database = database,
+                                              url = "mongodb://localhost",
+                                              projectID = project_name,
+                                              formID = form_name,
+                                              conversion_data = calorie_conversions_dfs,
+                                              conversion_types =  names(calorie_conversions_dfs)
+
                     )
+
+
                 }
             }
 
-            converted_prices_folder <- paste0(base_path,"converted_prices")
-            if (!dir.exists(converted_prices_folder))
-            {
-                dir.create(converted_prices_folder, showWarnings = F)
-                data_to_write <- results[["original_prices"]]
-                write_list_of_df_to_folder(list_of_df = data_to_write,folder = converted_prices_folder)
-            }
 
             return(results)
-
-
         }
         if (calculateFinalIndicatorsOnly==T){
 
@@ -621,6 +663,43 @@ processData <- function(
             }
             if (outputType=="mongodb"){
                 # Read in the mongodb values and check everything exists
+                processed_data <- read_in_db_dataset(collection = "data",
+                                                     database = database,
+                                                     project_name = project_name,
+                                                     form_name = form_name,
+                                                     data_set_name = "processedData" )
+
+                indicator_data <- read_in_db_dataset(collection = "data",
+                                                     database = database,
+                                                     project_name = project_name,
+                                                     form_name = form_name,
+                                                     data_set_name = "indicatorData" )
+
+                conversion_factors_list <- find_db_units(projectID=project_name,
+                                                                 formID=form_name,
+                                                                 url = "mongodb://localhost",
+                                                                 collection = "projectData",
+                                                                 database = database)
+
+                prices_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$price_conversion_list]
+                prices <- sapply(prices_conversion_list, function(price_conversion){
+                    extract_units_from_db(database,
+                                          url="mongodb://localhost",
+                                          projectID=project_name,
+                                          formID=form_name,
+                                          conversion_type=price_conversion,
+                                          collection="units_and_conversions")
+                },simplify = F)
+
+                calorie_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$calorie_conversion_list]
+                calorie_conversions <- sapply(calorie_conversion_list, function(calorie_conversion){
+                    extract_units_from_db(database,
+                                          url="mongodb://localhost",
+                                          projectID=project_name,
+                                          formID=form_name,
+                                          conversion_type=calorie_conversion,
+                                          collection="units_and_conversions")
+                },simplify = F)
             }
 
 
@@ -699,10 +778,6 @@ processData <- function(
             return(results)
 
         }
-
-
-
-
 
         return(rhomis_data)
 

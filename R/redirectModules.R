@@ -224,7 +224,7 @@ make_new_dataset <- function(rhomis_data){
 calculate_prices_and_indicator_local <- function(data,base_path="./", units_path="converted_units/",
                                                  gender_categories=pkg.env$gender_categories){
 
-    load_local_units(paste0(base_path,units_path), ids_rhomis_dataset = data[["id_rhomis_dataset"]])
+    load_local_units(paste0(base_path,units_path), id_rhomis_dataset = data[["id_rhomis_dataset"]])
 
     # load_calorie_conversions
     results <- run_preliminary_calculations(data,gender_categories = gender_categories
@@ -319,7 +319,7 @@ calculate_values_gender_and_fa_local <- function(base_path="./",
 
     processed_data <- read_folder_of_csvs(folder = paste0(base_path,processed_data_path))[[1]]
     indicator_data <- read_folder_of_csvs(folder = paste0(base_path,indicator_path))[[1]]
-    load_local_units(paste0(base_path,units_path), ids_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
+    load_local_units(paste0(base_path,units_path), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
     prices <- read_folder_of_csvs(folder = paste0(base_path,prices_path))
     calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path,calories_path))

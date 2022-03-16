@@ -103,3 +103,32 @@ set_local_processing_paths <- function(){
            ),
            envir = pkg.env)
 }
+
+
+set_prices_list <- function(){
+    assign("price_conversion_list",
+           c(
+               "mean_crop_price_lcu_per_kg",
+               "mean_livestock_price_per_animal",
+               "mean_meat_price_per_kg",
+               "mean_milk_price_per_litre",
+               "mean_eggs_price_per_kg",
+               "mean_bees_honey_price_per_kg"
+
+           ),
+           envir = pkg.env)
+
+}
+
+set_calories_list <- function(){
+    assign("calorie_conversion_list",
+           c(
+               'crop_calories',
+               'milk_calories',
+               'eggs_calories',
+               'honey_calories',
+               'meat_calories'
+           ),
+           envir = pkg.env)
+
+}

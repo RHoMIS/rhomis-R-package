@@ -500,34 +500,40 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #' To get the list of forms see the "get_forms" function.
 #' @param draft Whether or not the form is a draft or whether it is finalized
 #' @param file_destination The location to store temporary files
+#' @param central_test_case Whether or not you are running a test example to show how data downloads from ODK central work
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_submission_data <- function(central_url, central_email, central_password, projectID, formID, draft, file_destination=NULL){
+get_submission_data <- function(central_url, central_email, central_password, projectID, formID, draft, file_destination=NULL, central_test_case){
+
+    if (central_test_case==F){
+        email_token <- get_email_token(central_url,central_email,central_password)
+        if (is.null(file_destination))
+        {
+            file_destination <- tempfile(fileext=".zip")
+        }
 
 
+        if (draft==T){
+            url <- paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/draft/submissions.csv.zip?attachments=false")
+        }
 
-    email_token <- get_email_token(central_url,central_email,central_password)
-    if (is.null(file_destination))
-    {
+        if (draft==F){
+            url <- paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions.csv.zip?attachments=false")
+        }
+
+        central_response <- httr::GET(url = url,
+                                      encode = "json",
+                                      httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
+                                      httr::write_disk(file_destination, overwrite = TRUE))
+    }
+
+    if (central_test_case==T){
         file_destination <- tempfile(fileext=".zip")
+        central_response <- download.file(url = central_url, destfile = file_destination)
     }
-
-
-    if (draft==T){
-        url <- paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/draft/submissions.csv.zip?attachments=false")
-    }
-
-    if (draft==F){
-        url <- paste0(central_url, "/v1/projects/",projectID,"/forms/",formID,"/submissions.csv.zip?attachments=false")
-    }
-
-    central_response <- httr::GET(url = url,
-                                  encode = "json",
-                                  httr::add_headers("Authorization" = paste0("Bearer ",email_token)),
-                                  httr::write_disk(file_destination, overwrite = TRUE))
 
     files <- unzip(file_destination)
 

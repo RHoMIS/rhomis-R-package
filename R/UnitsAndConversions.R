@@ -148,7 +148,7 @@ load_all_db_units <- function(unit_list, database="rhomis", projectID="core_unit
     for (unit_name in names(pkg.env$local_units_file_list)){
 
         if (unit_name %in% unit_list){
-            country_conversions <- extract_units_from_db(database,
+            conversions <- extract_units_from_db(database,
                                                          url="mongodb://localhost",
                                                          projectID=projectID,
                                                          formID=formID,

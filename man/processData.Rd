@@ -15,6 +15,7 @@ processData(
   id_type = c("string", "column"),
   proj_id,
   form_id,
+  overwrite = F,
   central_url = NULL,
   central_email = NULL,
   central_password = NULL,
@@ -23,7 +24,9 @@ processData(
   form_version = NULL,
   database = NULL,
   draft = NULL,
-  repeat_columns = pkg.env$repeat_columns
+  central_test_case = FALSE,
+  repeat_columns = pkg.env$repeat_columns,
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{
@@ -48,6 +51,8 @@ ONLY RELEVANT IF "dataSource" WAS "local".}
 
 \item{form_id}{An ID for your form}
 
+\item{overwrite}{Whether or not to overwrite the converted values}
+
 \item{central_url}{The url of the ODK-central server you are using.
 ONLY RELEVANT IF "dataSource" WAS "central".}
 
@@ -70,6 +75,8 @@ ONLY RELEVANT IF "dataSource" WAS "central".}
 
 \item{draft}{Whether or not the ODK for you war working with is a draft
 or a final version. Only relevant if you are processing a project from ODK central}
+
+\item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
 
 \item{repeat_columns}{The columns which are looped in the datasets being processed}
 }
@@ -101,4 +108,21 @@ There are some extra central columns
 which are problematic, these need to be removed
 Make an empty indicator dataset with
 matching ID columns
+Run all of the preliminary calculations that can
+be done without price verification and without
+verification of calory values
+This function can be found in the
+R/redirectModules.R file.
+From this function we receive a list of
+data frames. These include processed_data,
+indicator_data, and extra_outputs
+If the desired output format is csv,
+Write the processed data, indicator
+data and extra outputs
+will be written to the relevant files
+
+
+NEED TO SIMPLIFY
+Below we write all of the data
+which is processed during the initial calculations
 }
