@@ -225,6 +225,7 @@ replace_infinite <- function(column){
 #' @param outputType  The type of output to produce (options are "csv" or "mongodb")
 #' @param dataFilePath The file to the data (csv format).
 #' ONLY RELEVANT IF "dataSource" WAS "local".
+#' @param overwrite Whether or not to overwrite the converted values
 #' @param id_type The type of ID you would like to use ("string" or "column")
 #' @param proj_id An ID for your project
 #' @param form_id An ID for your form
@@ -265,6 +266,7 @@ processData <- function(
     id_type=c("string", "column"),
     proj_id,
     form_id,
+    overwrite=F,
 
     # Arguments for if processing from ODK central
     central_url=NULL,
@@ -569,7 +571,7 @@ processData <- function(
             if ("processed_data" %in% names(results)){
 
                 calorie_conversions_dfs <- check_existing_calorie_conversions(results$processed_data)
-                calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = data[["id_rhomis_dataset"]], unit_conv_tibble = list(
+                calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = list(
                     "staple_crop"=c("maize")
                 ))
 
