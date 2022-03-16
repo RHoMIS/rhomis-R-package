@@ -506,7 +506,7 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #' @export
 #'
 #' @examples
-get_submission_data <- function(central_url, central_email, central_password, projectID, formID, draft, file_destination=NULL, central_test_case){
+get_submission_data <- function(central_url, central_email, central_password, projectID, formID, draft, file_destination=NULL, central_test_case=F){
 
     if (central_test_case==F){
         email_token <- get_email_token(central_url,central_email,central_password)

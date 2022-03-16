@@ -6,13 +6,13 @@
 testing_dir <- getwd()
 
 if (grepl("tests/testthat", testing_dir)){
-    test_file_origin <- "../../inst/sample_central_project/dec-demo.csv.zip"
+    test_file_origin <- "../../inst/sample_central_project/sample-central-data.csv.zip"
     test_file_destination <- "./test-central-url.com/v1/projects/test-project/forms/test-user/temp_submissions.zip"
 
 }
 
 if (grepl("tests/testthat", testing_dir)==F){
-    test_file_origin <- "./inst/sample_central_project/dec-demo.csv.zip"
+    test_file_origin <- "./inst/sample_central_project/sample-central-data.csv.zip"
     test_file_destination <- "./tests/testthat/test-central-url.com/v1/projects/test-project/forms/test-user/temp_submissions.zip"
 
 }
