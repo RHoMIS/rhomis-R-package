@@ -2,7 +2,7 @@
 % Please edit documentation in R/MongoDB.R
 \name{add_data_to_db}
 \alias{add_data_to_db}
-\title{Title}
+\title{Add data to db}
 \usage{
 add_data_to_db(
   data,
@@ -36,5 +36,5 @@ add_data_to_db(
 
 }
 \description{
-Title
+Add data to db
 }

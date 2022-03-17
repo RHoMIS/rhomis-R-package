@@ -10,7 +10,9 @@ get_submission_data(
   central_password,
   projectID,
   formID,
-  draft
+  draft,
+  file_destination = NULL,
+  central_test_case
 )
 }
 \arguments{
@@ -27,6 +29,10 @@ get_submission_data(
 To get the list of forms see the "get_forms" function.}
 
 \item{draft}{Whether or not the form is a draft or whether it is finalized}
+
+\item{file_destination}{The location to store temporary files}
+
+\item{central_test_case}{Whether or not you are running a test example to show how data downloads from ODK central work}
 }
 \value{
 

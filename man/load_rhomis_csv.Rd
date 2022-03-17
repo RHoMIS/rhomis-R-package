@@ -12,7 +12,8 @@ load_rhomis_csv(
   id_type = c("string", "column"),
   proj_id = NULL,
   form_id = NULL,
-  overwrite = FALSE
+  overwrite = FALSE,
+  repeat_columns = pkg.env$repeat_columns
 )
 }
 \arguments{

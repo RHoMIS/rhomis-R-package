@@ -5,15 +5,17 @@
 \title{Process RHoMIS data}
 \usage{
 processData(
-  proj_id,
-  form_id,
+  extractUnitsOnly = T,
+  calculateInitialIndicatorsOnly = F,
+  calculateFinalIndicatorsOnly = F,
   dataSource = c("csv", "central"),
   outputType = c("csv", "mongodb"),
-  coreOnly = T,
-  surveyFile = NULL,
-  moduleSaving = F,
-  extractUnitsOnly = T,
+  base_path = "./",
   dataFilePath = NULL,
+  id_type = c("string", "column"),
+  proj_id,
+  form_id,
+  overwrite = F,
   central_url = NULL,
   central_email = NULL,
   central_password = NULL,
@@ -21,13 +23,18 @@ processData(
   form_name = NULL,
   form_version = NULL,
   database = NULL,
-  draft = NULL
+  draft = NULL,
+  central_test_case = FALSE,
+  repeat_columns = pkg.env$repeat_columns,
+  gender_categories = pkg.env$gender_categories
 )
 }
 \arguments{
-\item{proj_id}{An ID for your project}
+\item{extractUnitsOnly}{Whether or not to only extract units (TRUE/FALSE)}
 
-\item{form_id}{An ID for your form}
+\item{calculateInitialIndicatorsOnly}{Whether or not to only calcu,ate initial indicators (TRUE/FALSE)}
+
+\item{calculateFinalIndicatorsOnly}{Whether or not to only calculate final indicators}
 
 \item{dataSource}{The type of RHoMIS data being fed into the
 calculations, whether a local csv file or data from ODK central.
@@ -35,20 +42,16 @@ Options "csv" or "central".}
 
 \item{outputType}{The type of output to produce (options are "csv" or "mongodb")}
 
-\item{coreOnly}{Indicating whether to only analyze the RHoMIS core information (TRUE/FALSE)
-If TRUE, extra variables will be saved but they will not be processed into indicators.
-If FALSE, you must either provide the survey xls file so that the modules used can be identified,
-or ensure that the project you are accessing can be found on ODK central.}
-
-\item{surveyFile}{The path to the surveyxls file. Only necessary if "coreOnly"=FALSE and dataSource="local".}
-
-\item{moduleSaving}{Whether or not to use the form to identify the modules which
-were included in the survey (TRUE/FALSE)}
-
-\item{extractUnitsOnly}{Whether or not to only extract units (TRUE/FALSE)}
-
 \item{dataFilePath}{The file to the data (csv format).
 ONLY RELEVANT IF "dataSource" WAS "local".}
+
+\item{id_type}{The type of ID you would like to use ("string" or "column")}
+
+\item{proj_id}{An ID for your project}
+
+\item{form_id}{An ID for your form}
+
+\item{overwrite}{Whether or not to overwrite the converted values}
 
 \item{central_url}{The url of the ODK-central server you are using.
 ONLY RELEVANT IF "dataSource" WAS "central".}
@@ -72,6 +75,10 @@ ONLY RELEVANT IF "dataSource" WAS "central".}
 
 \item{draft}{Whether or not the ODK for you war working with is a draft
 or a final version. Only relevant if you are processing a project from ODK central}
+
+\item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
+
+\item{repeat_columns}{The columns which are looped in the datasets being processed}
 }
 \value{
 
@@ -79,5 +86,43 @@ or a final version. Only relevant if you are processing a project from ODK centr
 \description{
 A main function that can be used to process rhomis
 data. Whether the dataset comes from a local csv
-or from ODK central
+or from ODK central.
+}
+\details{
+RHoMIS datasets go through 4 stages of processing:
+
+1. Initial Cleaning and Extracting Units
+2. Calculation of initial indicators
+3. Calculation of final indicators, including food availability, gender, and value of products consumed
+}
+\examples{
+If local csv specified, load the csv
+add some identification columns and
+clean the column names
+If central dataset specified,
+identify the relevant projects,
+and load the zip files.
+add some identification columns and
+clean the column names
+There are some extra central columns
+which are problematic, these need to be removed
+Make an empty indicator dataset with
+matching ID columns
+Run all of the preliminary calculations that can
+be done without price verification and without
+verification of calory values
+This function can be found in the
+R/redirectModules.R file.
+From this function we receive a list of
+data frames. These include processed_data,
+indicator_data, and extra_outputs
+If the desired output format is csv,
+Write the processed data, indicator
+data and extra outputs
+will be written to the relevant files
+
+
+NEED TO SIMPLIFY
+Below we write all of the data
+which is processed during the initial calculations
 }
