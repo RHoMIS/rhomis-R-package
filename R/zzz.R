@@ -6,6 +6,10 @@ pkg.env = new.env()
     set_gender_categories()
     set_local_units_file_list()
     set_produce_list()
+    set_identification_columns()
+
+    set_prices_list()
+    set_calories_list()
 
 }
 

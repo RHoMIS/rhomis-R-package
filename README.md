@@ -27,11 +27,12 @@ Ensure that you have devtools installed and loaded. To install the RHoMIS packag
 To get started, there is a sample script which shows how data is processed end-to-end in the `inst/scripts/rhomis_process_pipeline.R` file. I will be working vignettes to demonstrate how to use the package shortly.
 
 
-## Useful Commands when building the package
-* Install Package: `Ctrl + Shift + B`
-* Check Package:   `Ctrl + Shift + E`
-* Test Package:    `Ctrl + Shift + T`
+## Getting Started with Development
+
+The two major uses of this package are: developing RHoMIS datasets locally; developing RHoMIS datasets stored on an ODK central server. There are two pre-prepared examples for these major use cases.
+
+To process a sample dataset locally, see the example found in the `inst/sample_local_project/` directory. To process a dataset as if it were stored on an ODK central server, see the example found in the `inst/sample_central_project` directory. Both of these directories contain their own README to help get started.
 
 Run the command `devtools::test()` in the console to run all tests. `devtools::document()` to rebuild documentation. `devtools::check()` will run a CRAN check on the package, this is the same check that is implemented on `git push` and for any pull requests.
 
-An anonymised sample RHoMIS dataset (in its raw form) has been included in the folder `inst/extdata`. A sample script demonstrating how the package can be used has been included in the folder `inst/scripts`.
+
