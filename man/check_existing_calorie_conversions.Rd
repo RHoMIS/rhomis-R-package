@@ -4,15 +4,17 @@
 \alias{check_existing_calorie_conversions}
 \title{Check Existing Crop Calorie Conversion}
 \usage{
-check_existing_calorie_conversions(list_of_df)
+check_existing_calorie_conversions(data)
 }
 \arguments{
-\item{list_of_df}{A list of dataframes, containing all
-of the units and conversions}
+\item{data}{RHoMIS Dataset}
 }
 \value{
 
 }
 \description{
 Go through the common conversions stored in the R-package
+}
+\examples{
+get list of dataframes, containing all the calorie units and conversions
 }

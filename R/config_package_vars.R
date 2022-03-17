@@ -80,3 +80,55 @@ set_produce_list <- function(){
 
     return()
 }
+
+set_identification_columns <- function(){
+
+    assign("identification_column_list",
+           list(
+               "country"="country", # The usual name of the "country" column
+               "uuid_local"="_uuid", # The usual column with unique ids for local datasets
+               "uuid_central"="KEY" # The usual column with unique ids for datasets obtained form ODK central
+
+           ),
+           envir = pkg.env)
+}
+
+
+set_local_processing_paths <- function(){
+    assign("local_processing_paths",
+           list(
+               "default_base_path"="./",
+               "original_units"="original_units",
+               "converted_units"="converted_units"
+           ),
+           envir = pkg.env)
+}
+
+
+set_prices_list <- function(){
+    assign("price_conversion_list",
+           c(
+               "mean_crop_price_lcu_per_kg",
+               "mean_livestock_price_per_animal",
+               "mean_meat_price_per_kg",
+               "mean_milk_price_per_litre",
+               "mean_eggs_price_per_kg",
+               "mean_bees_honey_price_per_kg"
+
+           ),
+           envir = pkg.env)
+
+}
+
+set_calories_list <- function(){
+    assign("calorie_conversion_list",
+           c(
+               'crop_calories',
+               'milk_calories',
+               'eggs_calories',
+               'honey_calories',
+               'meat_calories'
+           ),
+           envir = pkg.env)
+
+}

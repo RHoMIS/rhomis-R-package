@@ -176,7 +176,7 @@ add_data_to_project_list <- function(data,collection,database="rhomis", url="mon
 }
 
 
-#' Title
+#' Add data to db
 #'
 #' @param data The tibble dataset that you would like to write
 #' @param collection The collection which you would like to add the data to
@@ -312,12 +312,32 @@ save_list_of_df_to_db <- function(list_of_df,
     data_set_names <- names(list_of_df)
 
     sapply(data_set_names, function(x){
-        save_data_set_to_db(data = list_of_df[[x]],
+    data_to_write <- list_of_df[[x]]
+        if (any(class(data_to_write)=="tbl_df") | any(class(data_to_write)=="tbl") | any(class(data_to_write)=="data.frame")){
+
+            save_data_set_to_db(data = data_to_write,
                             data_type = x,
                             database = database,
                             url = url,
                             projectID = projectID,
                             formID = formID)
+            return()
+
+        }
+        if (class(data_to_write)=="list"){
+            names(data_to_write) <- paste0(x,"_",names(data_to_write))
+
+            save_list_of_df_to_db(list_of_df = data_to_write,
+                                  projectID=projectID,
+                                  formID=formID,
+                                  database=database,
+                                  url=url
+            )
+            return()
+        }
+
+    return()
+
     })
 
 
@@ -347,6 +367,75 @@ clean_json_string <- function(json_string){
 
 
     return(json_string)
+}
+
+
+#' Read in DB Dataset
+#'
+#' A function for reading and unwinding
+#' data in the RHoMIS database.
+#'
+#' @param collection The collection containing the data needed
+#' @param database The name of the database
+#' @param project_name The name of the project which you are searching for
+#' @param form_name The name of the form you are searching for
+#' @param data_set_name The name of the dataset.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+read_in_db_dataset <- function(collection="data",
+                               database,
+                               project_name,
+                               form_name,
+                               data_set_name
+                               ){
+
+    connection <- connect_to_db(collection,database,url)
+
+
+
+    # Arguments to identify the relevant project
+    match_arguments <- jsonlite::toJSON(list('projectID'=project_name,
+                                            'formID'=form_name,
+                                            'dataType'=data_set_name), na = "null")
+    match_arguments <- gsub("[","",match_arguments, fixed=T)
+    match_arguments <- gsub("]","",match_arguments, fixed=T)
+    match_arguments <- paste0('{"$match":',match_arguments,'}')
+    match_arguments <- clean_json_string(match_arguments)
+
+    # Unwind the subarray into the value of interest
+    unwind_arguments <- paste0('{"$unwind": "$data"}')
+
+    # Manage the projection (which values are included or not)
+    project_arguments <- jsonlite::toJSON(list("_id"=0,
+                                               "formID"=0,
+                                               "projectID"=0,
+                                               "dataType"=0),
+                                          na = "null")
+    project_arguments <- gsub("[","",project_arguments, fixed=T)
+    project_arguments <- gsub("]","",project_arguments, fixed=T)
+    project_arguments <- paste0('{"$project":',project_arguments,'}')
+
+
+    # Unwind the subarray into the value of interest
+    unwind_data <- paste0('{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}')
+
+    # Group data
+
+    # e.g
+    # [{"$match":{"projectID":"core_unit","formID":"core_unit","conversionType":"ppi_score_card"}},{"$unwind": "$data"},{"$project":{"_id":0,"formID":0,"projectID":0,"conversionType":0}},{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}]
+    pipeline <- paste0('[',match_arguments,',',unwind_arguments,',',project_arguments,',',unwind_data,']')
+
+    # Conducting the final query and reshaping
+    result <- connection$aggregate(pipeline = pipeline)
+    result <- result$data
+    result <- tibble::as_tibble(result)
+
+    connection$disconnect()
+    return(result)
+
 }
 
 
