@@ -243,7 +243,7 @@ replace_infinite <- function(column){
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
 #' @param database The name of the database you would like to save results to
-#' @param draft Whether or not the ODK for you war working with is a draft
+#' @param isDraft Whether or not the ODK for you war working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
 #' @param repeat_columns The columns which are looped in the datasets being processed
 #'
@@ -277,7 +277,7 @@ processData <- function(
     form_name=NULL,
     form_version=NULL,
     database=NULL,
-    draft=NULL,
+    isDraft=NULL,
     central_test_case=FALSE,
     repeat_columns=pkg.env$repeat_columns,
     gender_categories=pkg.env$gender_categories
@@ -310,7 +310,7 @@ processData <- function(
                               "form_name",
                               "form_version",
                               "database",
-                              "draft")
+                              "isDraft")
         null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
         if(any(null_variables)){
             error_message <- paste(items_to_test[null_variables], collapse="\n")
@@ -374,7 +374,7 @@ processData <- function(
                 central_password,
                 projectID,
                 formID,
-                draft
+                isDraft
             )
         }
 
@@ -386,7 +386,7 @@ processData <- function(
                 central_password,
                 projectID,
                 formID,
-                draft,
+                isDraft,
                 central_test_case=central_test_case
             )
 
@@ -429,7 +429,7 @@ processData <- function(
     # Extract and write units
     #---------------------------------------------------------------
 
-    if(extractUnitsOnly==T)
+    if(extractUnitsOnly)
     {
 
         # Extract the new units, and replace them with units
@@ -468,14 +468,13 @@ processData <- function(
 
             )
         }
-    }
+    } else {
 
 
     #---------------------------------------------------------------
     # Swap "Other" with Standard values
     #---------------------------------------------------------------
-    if (!extractUnitsOnly)
-    {
+
         #---------------------------------------------------------------
         # Load Conversions
         #---------------------------------------------------------------
@@ -805,7 +804,7 @@ processData <- function(
 #' @param form_name The name of the form to generate data for
 #' @param number_of_responses The number of responses to generate
 #' @param form_version The version of the form to upload
-#' @param draft Whether or not the form is a draft or finalized
+#' @param isDraft Whether or not the form is a draft or finalized
 #'
 #' @return
 #' @export
@@ -818,7 +817,7 @@ generateData <- function(central_url,
                          form_name,
                          number_of_responses,
                          form_version,
-                         draft=T) {
+                         isDraft=T) {
 
 
     # Finding project information from the API
@@ -847,7 +846,7 @@ generateData <- function(central_url,
         formID = formID,
         # file_destination=form_destination,
         form_version = form_version,
-        draft=draft
+        isDraft=isDraft
     )
 
 
@@ -868,7 +867,7 @@ generateData <- function(central_url,
             central_password,
             projectID = projectID,
             formID = formID,
-            draft=draft
+            isDraft=isDraft
         )
     }
     # Delete the xls file
