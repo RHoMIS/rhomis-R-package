@@ -501,7 +501,6 @@ processData <- function(
                 stop('Specified that the units were stored locally but the path "unit_conversions" does not exist')
             }
 
-            file_names <- list.files("./unit_conversions")
             #---------------------------------------------
             # Loading all of the unit conversions locally
             #---------------------------------------------
