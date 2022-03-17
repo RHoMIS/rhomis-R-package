@@ -348,19 +348,8 @@ processData <- function(
             stop(paste0('You specified the data was coming from a ODK central. You need to define: \n',error_message))
         }
 
-        if (central_test_case){
+        if ( !(central_test_case) ){
 
-            rhomis_data <- get_submission_data(
-                central_url,
-                central_email,
-                central_password,
-                projectID,
-                formID,
-                isDraft,
-                central_test_case=central_test_case
-            )
-
-        } else {
 
             # Getting project and formID
             projectID <- get_project_id_from_name(
@@ -379,17 +368,18 @@ processData <- function(
                 central_password
             )
 
-
-            # Getting the submission data from ODK central
-            rhomis_data <- get_submission_data(
-                central_url,
-                central_email,
-                central_password,
-                projectID,
-                formID,
-                isDraft
-            )
         }
+
+
+        rhomis_data <- get_submission_data(
+            central_url,
+            central_email,
+            central_password,
+            projectID,
+            formID,
+            isDraft,
+            central_test_case=central_test_case
+        )
 
 
         # Cleaning the column names
