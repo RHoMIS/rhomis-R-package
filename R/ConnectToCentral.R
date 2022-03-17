@@ -505,7 +505,13 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #' @examples
 get_submission_data <- function(central_url, central_email, central_password, projectID, formID, isDraft, file_destination=NULL, central_test_case=F){
 
-    if (central_test_case==F){
+
+    if (central_test_case){
+        file_destination <- tempfile(fileext=".zip")
+        central_response <- download.file(url = central_url, destfile = file_destination)
+
+    } else {
+
         email_token <- get_email_token(central_url,central_email,central_password)
         if (is.null(file_destination))
         {
@@ -525,40 +531,40 @@ get_submission_data <- function(central_url, central_email, central_password, pr
                                       httr::write_disk(file_destination, overwrite = TRUE))
     }
 
-    if (central_test_case==T){
-        file_destination <- tempfile(fileext=".zip")
-        central_response <- download.file(url = central_url, destfile = file_destination)
+    #' check whether the zip file from ODK has been successfully written to disk
+    if ( !(file.exists(file_destination)) ){
+        stop("Error: cannot find temporary zip archive ",file_destination)
     }
 
+    #' unzip
     files <- unzip(file_destination)
 
+    #' extract a list of file names corresponding to core data (i.e. non-repeat-columns)
     core_data_file_name <- files[grepl("repeat",files)==F]
-    crop_repeat_file_name <- files[grepl("crop_repeat",files)==T]
-    livestock_repeat_file_name <- files[grepl("livestock_repeat",files)==T]
-    household_roster_repeat_file_name <- files[grepl("hh_pop_repeat",files)==T]
-    offfarm_income_repeat_file_name <- files[grepl("offfarm_income_repeat",files)==T]
+
+    #' read in the core data file list
+    main_data_set <- readr::read_csv(core_data_file_name, col_types = readr::cols())
+
+    #' loop over the repeat columns to download the data files individually
+    #' these files can be formatted in a non-standard way, hence they are downloaded separately and then combined with the core data
+    for (rep_col in pkg.env$repeat_columns){
+
+        #' get list of files matching string of repeat column name
+        fname <- files[grepl(rep_col, files)]
+
+        #' read in repeat files
+        repeat_df <- readr::read_csv(fname, col_types = readr::cols())
+
+        #' reformat the loop column names from the ODK files to match with rhomis dataset syntax and join with core data
+        main_data_set <- central_loops_to_rhomis_loops(main_data_set, repeat_df)
+
+        #' clean up the local file
+        unlink(fname)
+    }
 
 
-    #core_data <- suppressWarnings(readr::read_csv(files[1], col_types = cols()))
-    core <- readr::read_csv(core_data_file_name, col_types = readr::cols())
-    crop_repeat <- readr::read_csv(crop_repeat_file_name, col_types = readr::cols())
-    livestock_repeat <- readr::read_csv(livestock_repeat_file_name, col_types = readr::cols())
-    household_roster_repeat <- readr::read_csv(household_roster_repeat_file_name, col_types = readr::cols())
-    offfarm_income_repeat <- readr::read_csv(offfarm_income_repeat_file_name, col_types = readr::cols())
-
-    combined_data <- list("core"=core,
-                          "crop_repeat"=crop_repeat,
-                          "livestock_repeat"=livestock_repeat,
-                          "household_roster_repeat"=household_roster_repeat,
-                          "offfarm_income_repeat"=offfarm_income_repeat)
-
-    main_data_set <- combined_data$core
-    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$household_roster_repeat)
-    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$crop_repeat)
-    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$livestock_repeat)
-    main_data_set <- central_loops_to_rhomis_loops(main_data_set,combined_data$offfarm_income_repeat)
-
-
+    #' clean up column names in core, but no need to pass repeat column names here
+    #' (as they are reformated in central_loops_to_rhomis and require a different treatment when retrieved from ODK in this way)
     colnames(main_data_set) <- clean_column_names(colnames(main_data_set), repeat_columns = c(""))
 
     # Removing duplicate "deviceid" column
@@ -570,11 +576,6 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     }
 
     unlink(file_destination)
-    unlink(core_data_file_name)
-    unlink(crop_repeat_file_name)
-    unlink(livestock_repeat_file_name)
-    unlink(household_roster_repeat_file_name)
-    unlink(offfarm_income_repeat_file_name)
 
     return(main_data_set)
 

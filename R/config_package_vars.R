@@ -8,7 +8,6 @@ set_repeat_column_names <- function(){
              "offfarm_repeat",
              "offfarm_income_repeat",
              "hh_pop_repeat",
-             "hh_rep"
              ),
            envir = pkg.env)
 

@@ -243,7 +243,7 @@ replace_infinite <- function(column){
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
 #' @param database The name of the database you would like to save results to
-#' @param isDraft Whether or not the ODK for you war working with is a draft
+#' @param isDraft Whether or not the ODK form you are working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
 #' @param repeat_columns The columns which are looped in the datasets being processed
 #'
@@ -302,21 +302,6 @@ processData <- function(
         }
     }
 
-    # Checking if the right arguments are supplied to obtain data from ODK central
-    if(dataSource=="central"){
-        items_to_test <- list("central_email",
-                              "central_password",
-                              "project_name",
-                              "form_name",
-                              "form_version",
-                              "database",
-                              "isDraft")
-        null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
-        if(any(null_variables)){
-            error_message <- paste(items_to_test[null_variables], collapse="\n")
-            stop(paste0('You specified the data was coming from a ODK central. You need to define: \n',error_message))
-        }
-    }
 
 
     #---------------------------------------------------------------
@@ -348,7 +333,35 @@ processData <- function(
     #' clean the column names
     if(dataSource=="central")
     {
-        if (central_test_case==F){
+
+        # Checking if the right arguments are supplied to obtain data from ODK central
+        items_to_test <- list("central_email",
+                              "central_password",
+                              "project_name",
+                              "form_name",
+                              "form_version",
+                              "database",
+                              "isDraft")
+        null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
+        if(any(null_variables)){
+            error_message <- paste(items_to_test[null_variables], collapse="\n")
+            stop(paste0('You specified the data was coming from a ODK central. You need to define: \n',error_message))
+        }
+
+        if (central_test_case){
+
+            rhomis_data <- get_submission_data(
+                central_url,
+                central_email,
+                central_password,
+                projectID,
+                formID,
+                isDraft,
+                central_test_case=central_test_case
+            )
+
+        } else {
+
             # Getting project and formID
             projectID <- get_project_id_from_name(
                 project_name,
@@ -378,19 +391,6 @@ processData <- function(
             )
         }
 
-        if (central_test_case==T){
-
-            rhomis_data <- get_submission_data(
-                central_url,
-                central_email,
-                central_password,
-                projectID,
-                formID,
-                isDraft,
-                central_test_case=central_test_case
-            )
-
-        }
 
         # Cleaning the column names
         colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
