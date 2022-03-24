@@ -21,10 +21,11 @@ for example for a variable like "crop_name".
 }
 \examples{
 name_column <- "crop_name"
-data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
-                       crop_name_2=c("cassava",NA, "melon", "maize"),
-                       random_crop_name_2=c("blue", "green",  "red",NA),
-                       crop_name=c("orange", "purple", NA, "black")))
-find_number_of_loops(data,name_column)
-
+data <- tibble::as_tibble(list(
+  crop_name_1 = c("banana", "cassava", NA, "millet"),
+  crop_name_2 = c("cassava", NA, "melon", "maize"),
+  random_crop_name_2 = c("blue", "green", "red", NA),
+  crop_name = c("orange", "purple", NA, "black")
+))
+find_number_of_loops(data, name_column)
 }

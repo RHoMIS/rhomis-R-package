@@ -21,8 +21,8 @@ get_xls_form(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
-"get_projects" function}
+\item{projectID}{The ID of the project you are looking at. To get a
+list of project, see the}
 
 \item{formID}{The XML form ID from a specific project}
 

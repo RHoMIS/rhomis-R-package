@@ -19,7 +19,7 @@ This function is designed to be applied to each item (spicific row for specific 
 }
 \examples{
 
-column <- c("male_adult female_adult","male_adult",NA,"female_youth")
+column <- c("male_adult female_adult", "male_adult", NA, "female_youth")
 proportion_control_per_person(column)
 
 }

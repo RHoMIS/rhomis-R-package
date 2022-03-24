@@ -35,19 +35,3 @@ make_id_columns(
 \description{
 Make ID columns for form, project, and household
 }
-\examples{
-Check validity of argument and print error if unknown type is supplied
-Check whether id columns in list below exist in loaded rhomis data
-loop over column names
-if column is not found in dataset throw an error
-make sure that the unique_id_col does indeed contain unique values
-if form and proj ids are provided as strings, create new columns filled with these string values
-loop over proj and form id arguments
-confirm that these columns exist in the dataset, otherwise bail and print error
-copy the contents of these columns into id_proj and id_form columns
-create a unique project, form, country, ID column
-add new column to dataset
-create unique household id
-add household and unique id columns to dataset
-shift column ordering so that id columns are the left-most columns
-}

@@ -30,7 +30,8 @@ Imports:
     uuid,
     devtools,
     wbstats,
-    optparse
+    optparse,
+    digest
 Depends: 
     R (>= 3.3)
 Config/testthat/edition: 3

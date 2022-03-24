@@ -16,17 +16,18 @@
 #' @export
 #'
 #' @examples
-get_survey_builder_projects <- function(survey_builder_url, survey_builder_access_token){
+get_survey_builder_projects <- function(survey_builder_url, survey_builder_access_token) {
+  survey_builder_response <- httr::GET(
+    url = paste0(survey_builder_url, "/api/project"),
+    encode = "json",
+    httr::add_headers("Authorization" = paste0("Bearer ", survey_builder_access_token))
+  )
 
-    survey_builder_response <- httr::GET(url = paste0(survey_builder_url, "/api/project"),
-                                         encode = "json",
-                                         httr::add_headers("Authorization" = paste0("Bearer ",survey_builder_access_token)))
+  survey_projects <- httr::content(survey_builder_response)
 
-    survey_projects<-httr::content(survey_builder_response)
+  survey_projects <- central_results_to_df(survey_projects)
 
-    survey_projects<- central_results_to_df(survey_projects)
-
-    return(survey_projects)
+  return(survey_projects)
 }
 
 #' Get Individual Survey Builder Project
@@ -46,14 +47,16 @@ get_survey_builder_projects <- function(survey_builder_url, survey_builder_acces
 #' @export
 #'
 #' @examples
-get_individual_survey_builder_project <- function(survey_builder_url, survey_builder_access_token, projectID){
-    survey_builder_response <- httr::GET(url = paste0(survey_builder_url, "/api/project/",projectID),
-                                         encode = "json",
-                                         httr::add_headers("Authorization" = paste0("Bearer ",survey_builder_access_token)))
+get_individual_survey_builder_project <- function(survey_builder_url, survey_builder_access_token, projectID) {
+  survey_builder_response <- httr::GET(
+    url = paste0(survey_builder_url, "/api/project/", projectID),
+    encode = "json",
+    httr::add_headers("Authorization" = paste0("Bearer ", survey_builder_access_token))
+  )
 
-    survey_projects<-httr::content(survey_builder_response)
-    survey_projects[sapply(survey_projects, is.null)] <- NA
-    survey_projects<- tibble::as_tibble(survey_projects)
+  survey_projects <- httr::content(survey_builder_response)
+  survey_projects[sapply(survey_projects, is.null)] <- NA
+  survey_projects <- tibble::as_tibble(survey_projects)
 
-    return(survey_projects)
+  return(survey_projects)
 }

@@ -14,22 +14,23 @@
 #' @export
 #'
 #' @examples
-create_module <- function(module_name, module_type, processing_code, dependencies){
-    module_name <- tolower(module_name)
-#
-    result <- tibble::as_tibble(list(module_name=module_name,
-                        module_type=module_type,
-                        processing_code=processing_code,
-                        dependencies=dependencies))
+create_module <- function(module_name, module_type, processing_code, dependencies) {
+  module_name <- tolower(module_name)
+  #
+  result <- tibble::as_tibble(list(
+    module_name = module_name,
+    module_type = module_type,
+    processing_code = processing_code,
+    dependencies = dependencies
+  ))
 
-    return(result)
+  return(result)
+}
+
+merge_modules <- function(modules) {
 
 }
 
-merge_modules <- function(modules){
-
-}
-
-test_module <- function(module, module_test){
+test_module <- function(module, module_test) {
 
 }

@@ -26,6 +26,3 @@ select, with the option to specify "other" by
 free-text entry. This function allows you to bring
 the "other" category into the main column, facilitating analysis.
 }
-\examples{
-
-}

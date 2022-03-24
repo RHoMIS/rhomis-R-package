@@ -12,7 +12,7 @@ get_submission_data(
   formID,
   draft,
   file_destination = NULL,
-  central_test_case
+  central_test_case = F
 )
 }
 \arguments{
@@ -22,17 +22,20 @@ get_submission_data(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 
-\item{formID}{The ID of the form containing the submissions you are looking at.
+\item{formID}{The ID of the form containing the
+submissions you are looking at.
 To get the list of forms see the "get_forms" function.}
 
 \item{draft}{Whether or not the form is a draft or whether it is finalized}
 
 \item{file_destination}{The location to store temporary files}
 
-\item{central_test_case}{Whether or not you are running a test example to show how data downloads from ODK central work}
+\item{central_test_case}{Whether or not you are running a test
+example to show how data downloads from ODK central work}
 }
 \value{
 

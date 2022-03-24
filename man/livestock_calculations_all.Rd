@@ -29,6 +29,8 @@ livestock_calculations_all(
 \item{milk_amount_unit_conv_tibble}{Conversion tibble of milk amounts}
 
 \item{milk_price_time_unit_conv_tibble}{Conversion tibble of milk prices}
+
+\item{gender_categories}{The gender control catgeories included in the survey}
 }
 \value{
 

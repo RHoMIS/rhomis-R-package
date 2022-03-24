@@ -7,7 +7,8 @@
 widen_individual_result(individual_central_item, column_headers)
 }
 \arguments{
-\item{individual_central_item}{The individual list item subsetted from a central query}
+\item{individual_central_item}{The individual list item subsetted
+from a central query}
 
 \item{column_headers}{The desired headers for the new table}
 }
@@ -18,10 +19,12 @@ widen_individual_result(individual_central_item, column_headers)
 Widening a single central result into a simple tibble
 }
 \examples{
-central_results <- list(list("id"=1,"name"="name1","email"="email1"),
-                       list("id"=2,"name"="name2","email"="email2"),
-                       list("id"=3,"name"="name3","email"="email3"))
+central_results <- list(
+  list("id" = 1, "name" = "name1", "email" = "email1"),
+  list("id" = 2, "name" = "name2", "email" = "email2"),
+  list("id" = 3, "name" = "name3", "email" = "email3")
+)
 column_headers <- unique(names(unlist(central_results)))
 individual_central_result <- central_results[2]
-widen_individual_result(individual_central_result,column_headers)
+widen_individual_result(individual_central_result, column_headers)
 }

@@ -27,12 +27,13 @@ Write the specific tibble to a csv.
 
 # Please make sure the correct folder exists for you
 specific_value <- "egg_units"
-new_values <- list(egg_units = c("egg1","egg2","egg3" ),
-                   other_units = c("other1","other2","other3" ))
-list_of_tibbles <- sapply(new_values, function(x) convert_new_values_to_tibble(x),simplify = FALSE)
+new_values <- list(
+  egg_units = c("egg1", "egg2", "egg3"),
+  other_units = c("other1", "other2", "other3")
+)
+list_of_tibbles <- sapply(new_values, function(x) convert_new_values_to_tibble(x), simplify = FALSE)
 folder <- "data/test_outputs/write_new_values_to_file"
 
 
-#write_new_values_to_file(specific_value,list_of_tibbles,folder)
-
+# write_new_values_to_file(specific_value,list_of_tibbles,folder)
 }

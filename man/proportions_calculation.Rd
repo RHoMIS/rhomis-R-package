@@ -17,8 +17,6 @@ This could include "eat", "sell", "feed_livestock"}
 \item{prop_column}{The column containing the proportions for this use}
 
 \item{loop_number}{The number of the loop which is being processed}
-
-\item{id_column}{The id column}
 }
 \value{
 

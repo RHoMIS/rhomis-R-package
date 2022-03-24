@@ -2,10 +2,14 @@
 % Please edit documentation in R/config_package_vars.R
 \name{set_repeat_column_names}
 \alias{set_repeat_column_names}
-\title{This function is run on load (see zzz.R) to set the default list of repeated columns when reading in a new rhomis dataset.}
+\title{This function is run on load (see zzz.R)
+to set the default list of repeated columns
+when reading in a new rhomis dataset.}
 \usage{
 set_repeat_column_names()
 }
 \description{
-This function is run on load (see zzz.R) to set the default list of repeated columns when reading in a new rhomis dataset.
+This function is run on load (see zzz.R)
+to set the default list of repeated columns
+when reading in a new rhomis dataset.
 }

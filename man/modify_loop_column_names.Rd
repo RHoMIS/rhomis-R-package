@@ -38,12 +38,12 @@ user-friendly format:
 "crop_name_3" ...
 }
 \examples{
-original_columns <- c("x/non_repeat_column","xxxx/crop_repeat[1]/crop_name", "xxxx/crop_repeat[2]/crop_name")
-loop_type <- "crop_repeat" # See here how the look type matches exactly the pattern in the "original_columns"
+original_columns <- c(
+  "x/non_repeat_column",
+  "xxxx/crop_repeat[1]/crop_name",
+  "xxxx/crop_repeat[2]/crop_name"
+)
+loop_type <- "crop_repeat"
 
 modified_names <- modify_loop_column_names(original_columns, loop_type)
-# modified_names will equal "x/non_repeat_column","xxxx/crop_repeat[1]/crop_name_1", "xxxx/crop_repeat[2]/crop_name_2"
-
-# You can then use the function "shorten_multiple_column_names" to further tidy the column names
-
 }

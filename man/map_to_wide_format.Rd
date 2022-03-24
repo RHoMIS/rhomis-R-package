@@ -28,15 +28,17 @@ name_column <- "crop_name"
 column_prefixes <- c("crop_variable", "crop_unit", "crop_price")
 types <- c("chr", "chr", "chr")
 
-data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
-                       crop_name_2=c("cassava",NA, "melon", "maize"),
-                       random_crop_name_2=c("blue", "green",  "red",NA),
-                       crop_name=c("orange", "purple", NA, "black"),
-                       crop_variable_1=c("ex1","ex2",NA,NA),
-                       crop_variable_2=c("ex3",NA,"ex4","ex5"),
-                       crop_unit_1=c("unit1","unit2","unit3",NA),
-                       crop_unit_2=c(NA,NA,"unit4","unit5"),
-                       crop_price_1=c(NA,NA,NA,NA),
-                       crop_price_2=c(NA,NA,NA,NA)))
+data <- tibble::as_tibble(list(
+  crop_name_1 = c("banana", "cassava", NA, "millet"),
+  crop_name_2 = c("cassava", NA, "melon", "maize"),
+  random_crop_name_2 = c("blue", "green", "red", NA),
+  crop_name = c("orange", "purple", NA, "black"),
+  crop_variable_1 = c("ex1", "ex2", NA, NA),
+  crop_variable_2 = c("ex3", NA, "ex4", "ex5"),
+  crop_unit_1 = c("unit1", "unit2", "unit3", NA),
+  crop_unit_2 = c(NA, NA, "unit4", "unit5"),
+  crop_price_1 = c(NA, NA, NA, NA),
+  crop_price_2 = c(NA, NA, NA, NA)
+))
 map_to_wide_format(data, name_column, column_prefixes, types)
 }

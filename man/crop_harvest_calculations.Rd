@@ -9,10 +9,7 @@ crop_harvest_calculations(data, unit_conv_tibble = NULL)
 \arguments{
 \item{data}{RHoMIS data containing cropping information}
 
-\item{units}{Units to convert crop yields to kg}
-
-\item{unit_conversions}{Converstion factors to convert
-crop yields to kg}
+\item{unit_conv_tibble}{Units and conversions to convert crop yields to kg}
 }
 \value{
 

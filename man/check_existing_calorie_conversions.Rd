@@ -15,6 +15,3 @@ check_existing_calorie_conversions(data)
 \description{
 Go through the common conversions stored in the R-package
 }
-\examples{
-get list of dataframes, containing all the calorie units and conversions
-}

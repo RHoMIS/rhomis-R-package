@@ -17,10 +17,14 @@ ODK central returns context in the form of a nested list. This converts
 this nested list into a more accessible tibble format
 }
 \examples{
-central_results <- list(list("id"=1,"name"="name1","email"="email1"),
-list("id"=2,"name"="name2","email"="email2"),
-list("id"=3,"name"="name3","email"="email3"))
-central_results_to_df(list(list("id"=1,"name"="name1","email"="email1"),
-list("id"=2,"name"="name2","email"="email2"),
-list("id"=3,"name"="name3","email"="email3")))
+central_results <- list(
+  list("id" = 1, "name" = "name1", "email" = "email1"),
+  list("id" = 2, "name" = "name2", "email" = "email2"),
+  list("id" = 3, "name" = "name3", "email" = "email3")
+)
+central_results_to_df(list(
+  list("id" = 1, "name" = "name1", "email" = "email1"),
+  list("id" = 2, "name" = "name2", "email" = "email2"),
+  list("id" = 3, "name" = "name3", "email" = "email3")
+))
 }

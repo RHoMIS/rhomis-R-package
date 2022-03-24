@@ -15,25 +15,28 @@
 #' @export
 #'
 #' @examples
-split_string_categories_to_dummy <- function(x, seperator)
-{
-    x[is.na(x)] <- "NA"
-    x <- tolower(x)
-    split <- strsplit(x, seperator, fixed = T)
-    all_potential_value <- unique(unlist(strsplit(x, seperator,
-                                                  fixed = T)))
-    boolean_nested_list <- lapply(split, function(x) create_nested_lest(longer_list = all_potential_value,
-                                                                        shorter_list = x))
-    df_to_return <- tibble::as_tibble(do.call(rbind, boolean_nested_list),check.names = F)
+split_string_categories_to_dummy <- function(x, seperator) {
+  x[is.na(x)] <- "NA"
+  x <- tolower(x)
+  split <- strsplit(x, seperator, fixed = T)
+  all_potential_value <- unique(unlist(strsplit(x, seperator,
+    fixed = T
+  )))
+  boolean_nested_list <- lapply(split, function(x) {
+    create_nested_lest(
+      longer_list = all_potential_value,
+      shorter_list = x
+    )
+  })
+  df_to_return <- tibble::as_tibble(do.call(rbind, boolean_nested_list), check.names = F)
 
-    return(df_to_return)
+  return(df_to_return)
 }
 
-create_nested_lest <- function (longer_list, shorter_list)
-{
-    temp_list <- longer_list %in% shorter_list
-    names(temp_list) <- longer_list
-    return(temp_list)
+create_nested_lest <- function(longer_list, shorter_list) {
+  temp_list <- longer_list %in% shorter_list
+  names(temp_list) <- longer_list
+  return(temp_list)
 }
 
 #' Merge original and other units
@@ -55,29 +58,25 @@ create_nested_lest <- function (longer_list, shorter_list)
 #' @export
 #'
 #' @examples
-#'
+merge_original_and_other_units <- function(data, main_column, other_column, loop_structure) {
+  if (loop_structure == T) {
+    number_of_loops <- find_number_of_loops(data, main_column)
+    new_column_names <- paste0(main_column, "_", c(1:number_of_loops))
+    new_columns <- sapply(
+      c(1:number_of_loops),
+      function(x) merge_original_and_other_unit_single_pair(data[[paste0(main_column, "_", x)]], data[[paste0(other_column, "_", x)]])
+    )
+    colnames(new_columns) <- new_column_names
+    new_columns <- tibble::as_tibble(new_columns)
+    return(new_columns)
+  }
+  if (loop_structure == F) {
+    new_values <- merge_original_and_other_unit_single_pair(data[[main_column]], data[[other_column]])
+    new_column <- tibble::as_tibble(list(x = new_values))
+    colnames(new_column) <- main_column
 
-
-
-merge_original_and_other_units <- function(data, main_column,other_column,loop_structure){
-    if (loop_structure==T){
-        number_of_loops <- find_number_of_loops(data,main_column)
-        new_column_names <- paste0(main_column,"_", c(1:number_of_loops))
-        new_columns <- sapply(c(1:number_of_loops),
-                              function(x) merge_original_and_other_unit_single_pair(data[[paste0(main_column,"_",x)]],data[[paste0(other_column,"_",x)]])
-        )
-        colnames(new_columns) <- new_column_names
-        new_columns <- tibble::as_tibble(new_columns)
-        return(new_columns)
-
-    }
-    if(loop_structure==F){
-        new_values <- merge_original_and_other_unit_single_pair(data[[main_column]],data[[other_column]])
-        new_column <- tibble::as_tibble(list(x=new_values))
-        colnames(new_column) <- main_column
-
-        return(new_column)
-    }
+    return(new_column)
+  }
 }
 
 
@@ -95,9 +94,9 @@ merge_original_and_other_units <- function(data, main_column,other_column,loop_s
 #' @export
 #'
 #' @examples
-merge_original_and_other_unit_single_pair <- function(original_column, other_column){
-    original_column[!is.na(other_column)] <- other_column[!is.na(other_column)]
-    return(original_column)
+merge_original_and_other_unit_single_pair <- function(original_column, other_column) {
+  original_column[!is.na(other_column)] <- other_column[!is.na(other_column)]
+  return(original_column)
 }
 
 
@@ -124,30 +123,29 @@ merge_original_and_other_unit_single_pair <- function(original_column, other_col
 #' @export
 #'
 #' @examples
-add_column_after_specific_column <- function(data,new_data, new_column_name=NULL, old_column_name, loop_structure){
-    if(loop_structure==T){
-        if (is.null(new_column_name)){
-            stop("When adding new columns to a loop structure, must specify the base name for the new columns")
-        }
-        number_of_loops_old <- find_number_of_loops(data,name_column = old_column_name)
-        number_of_loops_new <- find_number_of_loops(new_data,name_column = new_column_name)
-        if(number_of_loops_old!=number_of_loops_new){
-            stop("The datasets you are merging do not have the same number loops")
-        }
-
-        for(loop in 1:number_of_loops_old){
-            new_column_to_add <- new_data[paste0(new_column_name,"_",loop)]
-            data <-tibble::add_column(.data=data, new_column_to_add,.after=paste0(old_column_name,"_",loop))
-        }
-
-        return(data)
-
+add_column_after_specific_column <- function(data, new_data, new_column_name = NULL, old_column_name, loop_structure) {
+  if (loop_structure == T) {
+    if (is.null(new_column_name)) {
+      stop("When adding new columns to a loop structure, must specify the base name for the new columns")
+    }
+    number_of_loops_old <- find_number_of_loops(data, name_column = old_column_name)
+    number_of_loops_new <- find_number_of_loops(new_data, name_column = new_column_name)
+    if (number_of_loops_old != number_of_loops_new) {
+      stop("The datasets you are merging do not have the same number loops")
     }
 
-    if(loop_structure==F){
-        data <- tibble::add_column(.data=data, new_data,.after=old_column_name)
-        return(data)
+    for (loop in 1:number_of_loops_old) {
+      new_column_to_add <- new_data[paste0(new_column_name, "_", loop)]
+      data <- tibble::add_column(.data = data, new_column_to_add, .after = paste0(old_column_name, "_", loop))
     }
+
+    return(data)
+  }
+
+  if (loop_structure == F) {
+    data <- tibble::add_column(.data = data, new_data, .after = old_column_name)
+    return(data)
+  }
 }
 
 
@@ -162,49 +160,44 @@ add_column_after_specific_column <- function(data,new_data, new_column_name=NULL
 #' @param use_column The column which includes the uses for this item
 #' @param loop_number The number of the loop which is being processed
 #' @param prop_column The column containing the proportions for this use
-#' @param id_column The id column
 #'
 #' @return
 #' @export
 #'
 #' @examples
-proportions_calculation <- function(data, use,use_column, prop_column, loop_number=NULL){
+proportions_calculation <- function(data, use, use_column, prop_column, loop_number = NULL) {
+  if (use != "sell" & use != "eat" & use != "feed_livestock" & use != "use") {
+    stop("Invalid 'use' defined for crop proportions")
+  }
+
+  if (!is.null(loop_number)) {
+    use_data <- data[[paste0(use_column, "_", loop_number)]]
+    proportions_data <- data[[paste0(prop_column, "_", loop_number)]]
+  }
 
 
 
-    if(use!="sell"&use!="eat"&use!="feed_livestock" &use!="use"){
-        stop("Invalid 'use' defined for crop proportions")
-    }
+  if (is.null(loop_number)) {
+    use_data <- data[[use_column]]
+    proportions_data <- data[[prop_column]]
+  }
 
-    if (!is.null(loop_number))
-    {
-        use_data <- data[[paste0(use_column,"_",loop_number)]]
-        proportions_data <- data[[paste0(prop_column,"_",loop_number)]]
-    }
+  if (all(is.na(use_data)) == F) {
+    single_uses <- strsplit(as.character(use_data), " ")
+  }
+  if (all(is.na(use_data)) == T) {
+    single_uses <- use_data
+  }
 
-    if (is.null(loop_number))
-    {
-        use_data <- data[[use_column]]
-        proportions_data <- data[[prop_column]]
-    }
+  single_uses <- sapply(single_uses, function(x) length(x))
+  single_uses <- single_uses == 1 & !is.na(use_data) & grepl(use, use_data)
 
-    if (all(is.na(use_data))==F){
-        single_uses <- strsplit(use_data," ")
-    }
-    if (all(is.na(use_data))==T){
-        single_uses <- use_data
-    }
+  id_col <- rep("x", nrow(data))
+  unit_conv_tibble <- make_per_project_conversion_tibble(proj_id_vector = id_col, unit_conv_tibble = proportion_conversions)
+  proportions_data <- switch_units(proportions_data, unit_tibble = unit_conv_tibble, id_vector = id_col)
+  proportions_data[single_uses] <- 1
 
-    single_uses <- sapply(single_uses,function(x)length(x))
-    single_uses <- single_uses==1 & !is.na(use_data) & grepl(use,use_data)
-
-    id_col <- rep("x", nrow(data))
-    unit_conv_tibble <- make_per_project_conversion_tibble(proj_id_vector = id_col,unit_conv_tibble = proportion_conversions)
-    proportions_data <- switch_units(proportions_data, unit_tibble = unit_conv_tibble,id_vector = id_col)
-    proportions_data[single_uses]<-1
-
-    return(proportions_data)
-
+  return(proportions_data)
 }
 
 
@@ -219,16 +212,14 @@ proportions_calculation <- function(data, use,use_column, prop_column, loop_numb
 #' @export
 #'
 #' @examples
-collapse_list_of_tibbles <- function(list_of_tibbles){
-    new_data <- lapply(names(list_of_tibbles), FUN=function(x){
-        temp_data <- list_of_tibbles[[x]]
-        colnames(temp_data) <- paste0(colnames(temp_data),"_",x)
-        return(temp_data)
+collapse_list_of_tibbles <- function(list_of_tibbles) {
+  new_data <- lapply(names(list_of_tibbles), FUN = function(x) {
+    temp_data <- list_of_tibbles[[x]]
+    colnames(temp_data) <- paste0(colnames(temp_data), "_", x)
+    return(temp_data)
+  })
 
-    })
+  new_data <- dplyr::bind_cols(new_data)
 
-    new_data <- dplyr::bind_cols(new_data)
-
-    return(new_data)
+  return(new_data)
 }
-
