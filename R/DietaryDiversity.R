@@ -153,6 +153,7 @@ hdds_calc <- function(data) {
       HDDS_good_season_bought[rowSums(is.na(good_season_bought_10)) == ncol(good_season_bought_10)] <- NA
 
       outputs$hdds_good_season_bought <- HDDS_good_season_bought
+      outputs$hdds_good_season_bought[is.na(outputs$hdds_good_season)] <- NA
 
       good_season_farm_sourced_14 <- tibble::as_tibble(sapply(good_season_source_14, function(x) as.numeric(grepl("on-farm", x))))
       good_season_farm_sourced_10 <- collapse_14_groups(good_season_farm_sourced_14)
@@ -161,6 +162,7 @@ hdds_calc <- function(data) {
       HDDS_good_season_farm[rowSums(is.na(good_season_farm_sourced_10)) == ncol(good_season_farm_sourced_10)] <- NA
 
       outputs$hdds_good_season_farm <- HDDS_good_season_farm
+      outputs$hdds_good_season_farm[is.na(outputs$hdds_good_season)] <- NA
     }
   }
 
@@ -186,6 +188,8 @@ hdds_calc <- function(data) {
       HDDS_last_month_bought[rowSums(is.na(last_month_bought_10)) == ncol(last_month_bought_10)] <- NA
 
       outputs$hdds_last_month_bought <- HDDS_last_month_bought
+      outputs$hdds_last_month_bought[is.na(outputs$hdds_last_month)] <- NA
+
 
       last_month_farm_sourced_14 <- tibble::as_tibble(sapply(last_month_source_14, function(x) as.numeric(grepl("on-farm", x))))
       last_month_farm_sourced_10 <- collapse_14_groups(last_month_farm_sourced_14)
@@ -194,6 +198,7 @@ hdds_calc <- function(data) {
       HDDS_last_month_farm[rowSums(is.na(last_month_farm_sourced_10)) == ncol(last_month_farm_sourced_10)] <- NA
 
       outputs$hdds_last_month_farm <- HDDS_last_month_farm
+      outputs$hdds_last_month_farm[is.na(outputs$hdds_last_month)] <- NA
     }
   }
 
@@ -228,6 +233,7 @@ hdds_calc <- function(data) {
       HDDS_good_season_bought[rowSums(is.na(good_season_bought_10)) == ncol(good_season_bought_10)] <- NA
 
       outputs$hdds_good_season_bought <- HDDS_good_season_bought
+      outputs$hdds_good_season_bought[is.na(outputs$hdds_good_season)] <- NA
 
       good_season_farm_sourced_10 <- tibble::as_tibble(sapply(good_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
       good_season_farm_sourced_10[good_season_10 == 0] <- 0
@@ -235,6 +241,7 @@ hdds_calc <- function(data) {
       HDDS_good_season_farm[rowSums(is.na(good_season_farm_sourced_10)) == ncol(good_season_farm_sourced_10)] <- NA
 
       outputs$hdds_good_season_farm <- HDDS_good_season_farm
+      outputs$hdds_good_season_farm[is.na(outputs$hdds_good_season)] <- NA
     }
   }
 
@@ -256,6 +263,7 @@ hdds_calc <- function(data) {
       HDDS_bad_season_bought[rowSums(is.na(bad_season_bought_10)) == ncol(bad_season_bought_10)] <- NA
 
       outputs$hdds_bad_season_bought <- HDDS_bad_season_bought
+      outputs$hdds_bad_season_bought[is.na(outputs$hdds_bad_season)] <- NA
 
       bad_season_farm_sourced_10 <- tibble::as_tibble(sapply(bad_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
       bad_season_farm_sourced_10[bad_season_10 == 0] <- 0
@@ -263,6 +271,7 @@ hdds_calc <- function(data) {
       HDDS_bad_season_farm[rowSums(is.na(bad_season_farm_sourced_10)) == ncol(bad_season_farm_sourced_10)] <- NA
 
       outputs$hdds_bad_season_farm <- HDDS_bad_season_farm
+      outputs$hdds_bad_season_farm[is.na(outputs$hdds_bad_season)] <- NA
     }
   }
 
@@ -284,6 +293,7 @@ hdds_calc <- function(data) {
       HDDS_good_season_bought[rowSums(is.na(good_season_bought_10)) == ncol(good_season_bought_10)] <- NA
 
       outputs$hdds_good_season_bought <- HDDS_good_season_bought
+      outputs$hdds_good_season_bought[is.na(outputs$hdds_good_season)] <- NA
 
       good_season_farm_sourced_10 <- tibble::as_tibble(sapply(good_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
       good_season_farm_sourced_10[good_season_10 == 0] <- 0
@@ -291,6 +301,7 @@ hdds_calc <- function(data) {
       HDDS_good_season_farm[rowSums(is.na(good_season_farm_sourced_10)) == ncol(good_season_farm_sourced_10)] <- NA
 
       outputs$hdds_good_season_farm <- HDDS_good_season_farm
+      outputs$hdds_good_season_farm[is.na(outputs$hdds_good_season)] <- NA
     }
   }
 
@@ -313,6 +324,7 @@ hdds_calc <- function(data) {
       HDDS_last_month_bought[rowSums(is.na(last_month_bought_10)) == ncol(last_month_bought_10)] <- NA
 
       outputs$hdds_last_month_bought <- HDDS_last_month_bought
+      outputs$hdds_last_month_bought[is.na(outputs$hdds_last_month)] <- NA
 
       last_month_farm_sourced_10 <- tibble::as_tibble(sapply(last_month_source_10, function(x) as.numeric(grepl("on-farm", x))))
       last_month_farm_sourced_10[last_month_10 == 0] <- 0
@@ -320,6 +332,7 @@ hdds_calc <- function(data) {
       HDDS_last_month_farm[rowSums(is.na(last_month_farm_sourced_10)) == ncol(last_month_farm_sourced_10)] <- NA
 
       outputs$hdds_last_month_farm <- HDDS_last_month_farm
+      outputs$hdds_last_month_farm[is.na(outputs$hdds_last_month)] <- NA
     }
   }
 
