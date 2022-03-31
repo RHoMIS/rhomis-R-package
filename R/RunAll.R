@@ -50,7 +50,7 @@ make_id_columns <- function(data,
 
   # make sure that the unique_id_col does indeed contain unique values
   if (any(duplicated(data[unique_id_col]))) {
-    stop("The unique_id_col you provided exists in the data, but contains duplicate entries")
+    stop("The unique_id_col you provided `",unique_id_col,"` exists in the data, but contains duplicate entries.")
   }
 
   # if form and proj ids are provided as strings, create new columns filled with these string values
@@ -64,7 +64,7 @@ make_id_columns <- function(data,
 
       # confirm that these columns exist in the dataset, otherwise bail and print error
       if (!(cname %in% colnames(data))) {
-        stop(paste0("Expected id column", cname, "does not exist in the dataset provided"))
+        stop(paste0("Expected column", cname, "does not exist in the input dataset."))
       }
     }
 
@@ -101,6 +101,137 @@ make_id_columns <- function(data,
 }
 
 
+
+
+#' Load RHoMIS Central
+#'
+#' Load Raw RHoMIS data from ODK central and
+#' convert the column names into a shortened, standardised
+#' version.
+#'
+#' @param id_type The type of ID you would like to use ("string" or "column")
+#' @param proj_id An ID for your project
+#' @param form_id An ID for your form
+#' @param central_url The url of the ODK-central server you are using.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param central_email The email of the ODK-central account you are using.
+#' ONLY RELEVANT IF "dataSource" WAS "central"
+#' @param central_password The password of the ODK-central account you are using.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param project_name The name of the ODK-central project you are processing.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param form_name The name of the ODK-central form you are processing.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param form_version The version of the ODK-central form you are processing.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
+#' @param database The name of the database you would like to save results to
+#' @param isDraft Whether or not the ODK form you are working with is a draft
+#' or a final version. Only relevant if you are processing a project from ODK central
+#' @param repeat_columns The columns which are looped in the datasets being processed
+#' @return
+#' @export
+#'
+#' @examples
+
+load_rhomis_central <- function(
+                        id_type=c("string", "column"),
+                        proj_id,
+                        form_id,
+
+                        # Arguments for if processing from ODK central
+                        central_url=NULL,
+                        central_email=NULL,
+                        central_password=NULL,
+                        project_name=NULL,
+                        form_name=NULL,
+                        form_version=NULL,
+                        database=NULL,
+                        isDraft=NULL,
+                        central_test_case=FALSE,
+                        repeat_columns=pkg.env$repeat_columns
+                        ){
+
+
+    # Checking if the right arguments are supplied to obtain data from ODK central
+    items_to_test <- list("central_email",
+                          "central_password",
+                          "project_name",
+                          "form_name",
+                          "form_version",
+                          "database",
+                          "isDraft")
+    null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
+    if(any(null_variables)){
+        error_message <- paste(items_to_test[null_variables], collapse="\n")
+        stop(paste0('You specified the data was coming from a ODK central. You need to define: \n',error_message))
+    }
+
+    if ( !(central_test_case) ){
+
+        # Getting project and formID
+        projectID <- get_project_id_from_name(
+            project_name,
+            central_url,
+            central_email,
+            central_password
+        )
+
+        # Finding form information from the API
+        formID <- get_xml_form_id_from_name(
+            form_name,
+            projectID,
+            central_url,
+            central_email,
+            central_password
+        )
+
+    }
+
+
+    rhomis_data <- get_submission_data(
+        central_url,
+        central_email,
+        central_password,
+        projectID,
+        formID,
+        isDraft,
+        central_test_case=central_test_case
+    )
+
+
+    # Cleaning the column names
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
+    # There are some extra central columns
+    # which are problematic, these need to be removed
+    rhomis_data <- rhomis_data %>%
+        remove_extra_central_columns()
+
+    rhomis_data <- make_id_columns(
+        data = rhomis_data,
+        country_column = pkg.env$identification_column_list$country,
+        unique_id_col = "key",
+        hh_id_col = NULL,
+        id_type = id_type,
+        proj_id = project_name,
+        form_id = form_name)
+
+    # Convert the IDs to lower case
+    rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
+    # An extra step to ensure all -999 values are set to NA,
+    # This wasn't always happening with ODK central datasets.
+    rhomis_data <- sapply(rhomis_data, function(x){
+        x[as.numeric(x)==-999]<-NA
+        x
+    }, simplify = F) %>% tibble::as_tibble()
+
+    return(rhomis_data)
+
+}
+
+
+
 #' Load RHoMIS CSV
 #'
 #' Load a Raw RHoMIS csv file, collected using ODK, and
@@ -130,7 +261,9 @@ load_rhomis_csv <- function(file_path,
                             proj_id = NULL,
                             form_id = NULL,
                             overwrite = FALSE,
-                            repeat_columns = pkg.env$repeat_columns) {
+                            repeat_columns = pkg.env$repeat_columns)
+{
+
 
 
   # read in the input csv file
@@ -289,18 +422,6 @@ processData <- function(
     outputType <- match.arg(outputType)
     dataSource <- match.arg(dataSource)
 
-
-
-    # If the user specified a csv, then they must provide a file path
-    # for the dataset they are loading
-    if(dataSource=="csv"){
-        if(is.null(dataFilePath)){
-            stop('You specified the data was coming from a local csv but have not specified a "dataFilePath"')
-        }
-    }
-
-
-
     #---------------------------------------------------------------
     # Loading Submission Data
     #---------------------------------------------------------------
@@ -309,6 +430,13 @@ processData <- function(
     # add some identification columns and
     # clean the column names
     if (dataSource == "csv") {
+
+        # If the user specified a csv, then they must provide a file path
+        # for the dataset they are loading
+        if(is.null(dataFilePath)){
+            stop('You specified the data was coming from a local csv but have not specified a "dataFilePath"')
+        }
+
         rhomis_data <- load_rhomis_csv(
             file_path = dataFilePath,
             country_column = pkg.env$identification_column_list$country,
@@ -328,79 +456,24 @@ processData <- function(
     # clean the column names
     if(dataSource == "central")
     {
-        # Checking if the right arguments are supplied to obtain data from ODK central
-        items_to_test <- list("central_email",
-                              "central_password",
-                              "project_name",
-                              "form_name",
-                              "form_version",
-                              "database",
-                              "isDraft")
-        null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
-        if(any(null_variables)){
-            error_message <- paste(items_to_test[null_variables], collapse="\n")
-            stop(paste0('You specified the data was coming from a ODK central. You need to define: \n',error_message))
-        }
 
-        if ( !(central_test_case) ){
-
-            # Getting project and formID
-            projectID <- get_project_id_from_name(
-                project_name,
-                central_url,
-                central_email,
-                central_password
-            )
-
-            # Finding form information from the API
-            formID <- get_xml_form_id_from_name(
-                form_name,
-                projectID,
-                central_url,
-                central_email,
-                central_password
-            )
-
-        }
-
-
-        rhomis_data <- get_submission_data(
+        rhomis_data <- load_rhomis_central(
+            id_type,
+            proj_id,
+            form_id,
             central_url,
             central_email,
             central_password,
-            projectID,
-            formID,
+            project_name,
+            form_name,
+            form_version,
+            database,
             isDraft,
-            central_test_case=central_test_case
+            central_test_case,
+            repeat_columns
         )
-
-
-        # Cleaning the column names
-        colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
-        # There are some extra central columns
-        # which are problematic, these need to be removed
-        rhomis_data <- rhomis_data %>%
-            remove_extra_central_columns()
-
-        rhomis_data <- make_id_columns(
-            data = rhomis_data,
-            country_column = pkg.env$identification_column_list$country,
-            unique_id_col = "key",
-            hh_id_col = NULL,
-            id_type = id_type,
-            proj_id = project_name,
-            form_id = form_name)
-
-        # Convert the IDs to lower case
-        rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
-
-        # An extra step to ensure all -999 values are set to NA,
-        # This wasn't always happening with ODK central datasets.
-        rhomis_data <- sapply(rhomis_data, function(x){
-            x[as.numeric(x)==-999]<-NA
-            x
-        }, simplify = F) %>% tibble::as_tibble()
     }
+
 
 
     # Make an empty indicator dataset with

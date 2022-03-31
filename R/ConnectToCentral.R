@@ -617,6 +617,9 @@ get_submission_data <- function(central_url, central_email, central_password, pr
         # get list of files matching string of repeat column name
         fname <- files[grepl(rep_col, files)]
 
+        # skip if there are no matching files found
+        if(length(fname)<1){ next }
+
         # read in repeat files
         repeat_df <- readr::read_csv(fname, col_types = readr::cols())
 

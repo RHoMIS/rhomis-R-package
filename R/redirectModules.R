@@ -6,7 +6,7 @@ extract_values_central <- function(central_email,
                                    form_name,
                                    form_version,
                                    database,
-                                   draft,
+                                   isDraft,
                                    country_column = "country",
                                    unique_id_col = "_uuid",
                                    hh_id_col = NULL) {
@@ -36,7 +36,7 @@ extract_values_central <- function(central_email,
     central_password,
     projectID,
     formID,
-    draft
+    isDraft
   )
 
 
