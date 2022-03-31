@@ -21,7 +21,9 @@ load_rhomis_csv(
 
 \item{country_column}{The name of the column containing the country}
 
-\item{hh_id_col}{The household ID column}
+\item{unique_id_col}{The column in the dataset which contains unique IDs (usually _uuid)}
+
+\item{hh_id_col}{The column containing household IDs}
 
 \item{id_type}{Indicator of whether you are providing a single ID}
 
@@ -31,7 +33,7 @@ load_rhomis_csv(
 
 \item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
 
-\item{repeat_column_names}{The types of repeat column name}
+\item{repeat_columns}{The types of repeat column name}
 }
 \value{
 A tibble of RHoMIS data
@@ -40,7 +42,4 @@ A tibble of RHoMIS data
 Load a Raw RHoMIS csv file, collected using ODK, and
 convert the column names into a shortened, standardised
 version.
-}
-\examples{
-
 }

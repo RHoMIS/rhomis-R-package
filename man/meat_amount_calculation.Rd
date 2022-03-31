@@ -7,9 +7,9 @@
 meat_amount_calculation(data, unit_conv_tibble = NULL)
 }
 \arguments{
-\item{unit_conv_tibble}{A conversion table for animal names and their weights}
+\item{data}{The dataset for which meat amounts need to be calculated}
 
-\item{animal_weights_names}{The vector which contains the names of the animals}
+\item{unit_conv_tibble}{A conversion table for animal names and their weights}
 }
 \value{
 

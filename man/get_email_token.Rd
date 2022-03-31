@@ -19,9 +19,3 @@ This function will return a token. This token is useful for
 \description{
 A function used to get the email token required to connext to ODK central
 }
-\examples{
-central_url <- "https://central.rhomis.cgiar.org"
-central_email <- "my_email"
-central_password <- "my_password"
-#get_email_token(central_url,central_email,central_password)
-}

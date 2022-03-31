@@ -26,7 +26,9 @@ This function helps to extract only the final value
 \examples{
 
 long_name <- "xxxx/xxxxx/xxxxx/important_name"
-shortened_name <- shorten_individual_column_name(column_name=long_name, seperator="/")
+shortened_name <- shorten_individual_column_name(
+  column_name = long_name,
+  seperator = "/"
+)
 # Shortened name will be equal "important_name"
-
 }

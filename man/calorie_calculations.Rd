@@ -9,7 +9,11 @@ Calorie Calculations}
 calorie_calculations(processed_data, indicator_data, calorie_conversions)
 }
 \arguments{
-\item{mean_prices}{}
+\item{processed_data}{A processed dataset}
+
+\item{indicator_data}{An indicator dataset}
+
+\item{calorie_conversions}{A tibble of calorie conversions}
 }
 \value{
 

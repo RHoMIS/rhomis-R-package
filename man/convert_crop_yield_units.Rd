@@ -9,7 +9,9 @@ convert_crop_yield_units(data, unit_conv_tibble = NULL)
 \arguments{
 \item{data}{The data containing the units to convert}
 
-\item{units_conversion_tibble}{Unit tibble for crop yield, including individual ids for projects. Crops to be coverted to kg amount}
+\item{unit_conv_tibble}{Unit tibble for crop yield,
+including individual idsfor projects. Crops to be coverted
+to kg amount}
 }
 \value{
 

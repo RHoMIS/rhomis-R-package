@@ -29,6 +29,9 @@ calculate_values_gender_and_fa_local(
 \item{prices_path}{Path to prices folder}
 
 \item{staple_crop}{The main staple crop consumed in the area}
+
+\item{gender_categories}{The gender categories to include in
+the analysis}
 }
 \value{
 

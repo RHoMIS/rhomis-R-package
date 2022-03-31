@@ -11,7 +11,7 @@ get_xls_form(
   projectID,
   formID,
   form_version = 1,
-  draft = T
+  isDraft = T
 )
 }
 \arguments{
@@ -21,15 +21,15 @@ get_xls_form(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
-"get_projects" function}
+\item{projectID}{The ID of the project you are looking at. To get a
+list of project, see the}
 
 \item{formID}{The XML form ID from a specific project}
 
 \item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 
-\item{draft}{Stating whether or not the form is a draft}
+\item{isDraft}{Stating whether or not the form is a draft}
 }
 \value{
 

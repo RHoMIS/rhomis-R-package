@@ -20,11 +20,16 @@ See the [issues](https://github.com/l-gorman/rhomis-R-package/issues) page for n
 
 ## Installation
 
-Ensure that you have devtools installed and loaded. To install the RHoMIS package you can use the command:
+Ensure that you have devtools installed and loaded. To sinstall the RHoMIS package you can use the command:
 
 `devtools::install_github("git@github.com:l-gorman/rhomis-R-package.git")`
 
 To get started, there is a sample script which shows how data is processed end-to-end in the `inst/scripts/rhomis_process_pipeline.R` file. I will be working vignettes to demonstrate how to use the package shortly.
+
+If building the package for development, you can install via the command line using the command, if you are working from the `rhomis-R-package` directory:
+
+`R CMD INSTALL --no-multiarch --with-keep.source ./`
+
 
 
 ## Getting Started with Development

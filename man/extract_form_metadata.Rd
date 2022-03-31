@@ -11,7 +11,7 @@ extract_form_metadata(
   projectID,
   formID,
   form_version = 1,
-  draft
+  isDraft
 )
 }
 \arguments{
@@ -21,19 +21,51 @@ extract_form_metadata(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 
-\item{formID}{The XML form ID from a specific project}
+\item{formID}{The ID of the form containing the submissions you are looking at.
+To get the list of forms see the "get_forms" function.}
 
 \item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 
-\item{draft}{Whether or not the form was a draft}
+\item{isDraft}{Whether the form you are submitting to is a draft or not}
+
+\item{submissionID}{The instance ID of the specific submission we want in XML}
+
+\item{xml_string}{The XML string for the data submission you
+would like to make}
 }
 \value{
+
+
+
+
+
+
+
+
 
 }
 \description{
 Extract the metadata for a RHoMIS project
+}
+\examples{
+Get Submissions List
+
+A function for seeing which submissions have been made for
+a specific form, from a specific project
+
+Submission All
+
+Get a list of the submissions for a specific form
+
+Get Submission XML
+
+Get the XML of an ODK submission
+
+Submit XML Data
+
 }

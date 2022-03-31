@@ -20,11 +20,11 @@ a particular gender category is found in a string.
 }
 \examples{
 
-item <- c("male_adult female_adult","male_adult",NA,"female_youth")
+item <- c("male_adult female_adult", "male_adult", NA, "female_youth")
 category <- "female_youth"
 check_val_in_list(item, category)
 
-item <- c("male_adult female_adult","male_adult",NA,"female_youth")
+item <- c("male_adult female_adult", "male_adult", NA, "female_youth")
 category <- "male_adult"
 check_val_in_list(item, category)
 }

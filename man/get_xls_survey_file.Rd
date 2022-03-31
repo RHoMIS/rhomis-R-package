@@ -21,12 +21,14 @@ get_xls_survey_file(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 
 \item{formID}{The XML form ID from a specific project}
 
-\item{file_destination}{Allow the user to specify the destination of the xls file they are working with.
+\item{file_destination}{Allow the user to specify the destination of
+the xls file they are working with.
 include the file name and the extension. Must make sure the directory exists}
 
 \item{form_version}{The version of the form you are examining. For now

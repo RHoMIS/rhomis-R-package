@@ -231,4 +231,9 @@
 #' @source NA
 "meat_calories"
 
-
+#' Sample Raw Data Set
+#'
+#' A sample raw rhomis dataset
+#'
+#' @source NA
+"sample_raw_data_set"

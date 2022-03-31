@@ -16,6 +16,7 @@ processData(
   proj_id,
   form_id,
   overwrite = F,
+  uuid_local = pkg.env$identification_column_list$uuid_local,
   central_url = NULL,
   central_email = NULL,
   central_password = NULL,
@@ -23,7 +24,7 @@ processData(
   form_name = NULL,
   form_version = NULL,
   database = NULL,
-  draft = NULL,
+  isDraft = NULL,
   central_test_case = FALSE,
   repeat_columns = pkg.env$repeat_columns,
   gender_categories = pkg.env$gender_categories
@@ -32,15 +33,20 @@ processData(
 \arguments{
 \item{extractUnitsOnly}{Whether or not to only extract units (TRUE/FALSE)}
 
-\item{calculateInitialIndicatorsOnly}{Whether or not to only calcu,ate initial indicators (TRUE/FALSE)}
+\item{calculateInitialIndicatorsOnly}{Whether or not to only calculate
+initial indicators (TRUE/FALSE)}
 
-\item{calculateFinalIndicatorsOnly}{Whether or not to only calculate final indicators}
+\item{calculateFinalIndicatorsOnly}{Whether or not to only calculate
+final indicators}
 
 \item{dataSource}{The type of RHoMIS data being fed into the
 calculations, whether a local csv file or data from ODK central.
 Options "csv" or "central".}
 
-\item{outputType}{The type of output to produce (options are "csv" or "mongodb")}
+\item{outputType}{The type of output to produce (options are "csv"
+or "mongodb")}
+
+\item{base_path}{The path where all of the data processing should take place}
 
 \item{dataFilePath}{The file to the data (csv format).
 ONLY RELEVANT IF "dataSource" WAS "local".}
@@ -52,6 +58,8 @@ ONLY RELEVANT IF "dataSource" WAS "local".}
 \item{form_id}{An ID for your form}
 
 \item{overwrite}{Whether or not to overwrite the converted values}
+
+\item{uuid_local}{The column in a local dataset containing uuids (usually _uuid)}
 
 \item{central_url}{The url of the ODK-central server you are using.
 ONLY RELEVANT IF "dataSource" WAS "central".}
@@ -73,12 +81,14 @@ ONLY RELEVANT IF "dataSource" WAS "central".}
 
 \item{database}{The name of the database you would like to save results to}
 
-\item{draft}{Whether or not the ODK for you war working with is a draft
+\item{isDraft}{Whether or not the ODK for you war working with is a draft
 or a final version. Only relevant if you are processing a project from ODK central}
 
 \item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
 
 \item{repeat_columns}{The columns which are looped in the datasets being processed}
+
+\item{gender_categories}{The gender categories present in the data which is to be processed}
 }
 \value{
 
@@ -93,36 +103,6 @@ RHoMIS datasets go through 4 stages of processing:
 
 1. Initial Cleaning and Extracting Units
 2. Calculation of initial indicators
-3. Calculation of final indicators, including food availability, gender, and value of products consumed
-}
-\examples{
-If local csv specified, load the csv
-add some identification columns and
-clean the column names
-If central dataset specified,
-identify the relevant projects,
-and load the zip files.
-add some identification columns and
-clean the column names
-There are some extra central columns
-which are problematic, these need to be removed
-Make an empty indicator dataset with
-matching ID columns
-Run all of the preliminary calculations that can
-be done without price verification and without
-verification of calory values
-This function can be found in the
-R/redirectModules.R file.
-From this function we receive a list of
-data frames. These include processed_data,
-indicator_data, and extra_outputs
-If the desired output format is csv,
-Write the processed data, indicator
-data and extra outputs
-will be written to the relevant files
-
-
-NEED TO SIMPLIFY
-Below we write all of the data
-which is processed during the initial calculations
+3. Calculation of final indicators, including food availability,
+gender, and value of products consumed
 }
