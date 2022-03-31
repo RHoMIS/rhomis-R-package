@@ -7,7 +7,10 @@
 split_gender_data(genderdf, gender_categories = pkg.env$gender_categories)
 }
 \arguments{
-\item{genderdf}{A dataframe of gendered control produced by the "map_to_wide_format" (see example)}
+\item{genderdf}{A dataframe of gendered control produced
+by the "map_to_wide_format" (see example)}
+
+\item{gender_categories}{The categories in the dataset to split by (e.g. "male_youth", "male_adult"...)}
 }
 \value{
 
@@ -16,13 +19,24 @@ split_gender_data(genderdf, gender_categories = pkg.env$gender_categories)
 For much of the RHoMIS data
 }
 \examples{
-data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
-                       crop_name_2=c("cassava",NA, "melon", "maize"),
-                       random_crop_name_2=c("blue", "green",  "red",NA),
-                       crop_name=c("orange", "purple", NA, "black"),
-                       crop_control_1=c("male_adult female_adult","male_adult",NA,"female_youth"),
-                       crop_control_2=c("male_youth",NA,"female_youth","female_adult")))
-wide_data <- map_to_wide_format(data, "crop_name", c("crop_control"), c("chr"))
+data <- tibble::as_tibble(list(
+  crop_name_1 = c("banana", "cassava", NA, "millet"),
+  crop_name_2 = c("cassava", NA, "melon", "maize"),
+  random_crop_name_2 = c("blue", "green", "red", NA),
+  crop_name = c("orange", "purple", NA, "black"),
+  crop_control_1 = c(
+    "male_adult female_adult",
+    "male_adult",
+    NA,
+    "female_youth"
+  ),
+  crop_control_2 = c("male_youth", NA, "female_youth", "female_adult")
+))
+wide_data <- map_to_wide_format(
+  data,
+  "crop_name",
+  c("crop_control"), c("chr")
+)
 gender_data <- wide_data$crop_control
 split_gender_data(gender_data)
 }

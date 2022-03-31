@@ -11,6 +11,8 @@ gendered_off_farm_income_indicator(
 }
 \arguments{
 \item{data}{RHoMIS data including off-farm income loops}
+
+\item{gender_categories}{The gender categories included in the survey}
 }
 \value{
 

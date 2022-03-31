@@ -2,7 +2,12 @@
 % Please edit documentation in R/CleanColumnNames.R
 \name{shorten_multiple_column_names}
 \alias{shorten_multiple_column_names}
-\title{Shorten Multiple Column Names}
+\title{Used to abbreviate multiple column
+names based on their last values.
+Typical RHoMIS column names come
+in the for "xxxx/xxxxx/xxxxx/important_name".
+This function helps to extract only the final value
+"important name". It will do this for multiple column names}
 \usage{
 shorten_multiple_column_names(long_names, seperator)
 }
@@ -24,11 +29,12 @@ This function helps to extract only the final value
 }
 \examples{
 
-long_names <- c("xxxx/xxxxx/xxxxx/important_name_1",
-                "xxxx/xxxxx/xxxxx/important_name_2",
-                "xxxx/xxxxx/xxxxx/important_name_3")
+long_names <- c(
+  "xxxx/xxxxx/xxxxx/important_name_1",
+  "xxxx/xxxxx/xxxxx/important_name_2",
+  "xxxx/xxxxx/xxxxx/important_name_3"
+)
 seperator <- "/"
 
 shortened_names <- shorten_multiple_column_names(long_names, seperator)
-# shortened_names will equal c("important_name_1","important_name_2", "important_name_3")
 }

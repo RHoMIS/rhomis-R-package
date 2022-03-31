@@ -19,9 +19,3 @@ A tibble of all of the users in the central database
 \description{
 Get a table of users from the ODK central database
 }
-\examples{
-central_url <- "https://central.rhomis.cgiar.org"
-central_email <- "my_email"
-central_password <- "my_password"
-#get_users(central_url,central_email,central_password)
-}

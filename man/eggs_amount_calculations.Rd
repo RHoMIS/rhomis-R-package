@@ -9,7 +9,7 @@ eggs_amount_calculations(data, unit_conv_tibble = NULL)
 \arguments{
 \item{data}{Data containing crop loop information}
 
-\item{unit_conv_table}{A tibble of units and conversion factor, and project IDs}
+\item{unit_conv_tibble}{A tibble of units and conversion factor, and project IDs}
 }
 \value{
 

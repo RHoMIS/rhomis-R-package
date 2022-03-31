@@ -15,7 +15,8 @@ submit_xml_data(
 )
 }
 \arguments{
-\item{xml_string}{The XML string for the data submission you would like to make}
+\item{xml_string}{The XML string for the data submission you
+would like to make}
 
 \item{central_url}{The url of the ODK central server}
 
@@ -23,7 +24,8 @@ submit_xml_data(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 
 \item{formID}{The ID of the form containing the submissions you are looking at.

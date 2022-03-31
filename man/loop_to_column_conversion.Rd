@@ -27,13 +27,14 @@ Converting from loop to a format that is easy to analyze.
 
 name_column <- "crop_name"
 variable_to_convert <- "crop_variable"
-data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
-                       crop_name_2=c("cassava",NA, "melon", "maize"),
-                       random_crop_name_2=c("blue", "green",  "red",NA),
-                       crop_name=c("orange", "purple", NA, "black"),
-                       crop_variable_1=c("ex1","ex2",NA,NA),
-                       crop_variable_2=c("ex3",NA,"ex4","ex5")))
-number_of_loops <- find_number_of_loops(data,name_column)
+data <- tibble::as_tibble(list(
+  crop_name_1 = c("banana", "cassava", NA, "millet"),
+  crop_name_2 = c("cassava", NA, "melon", "maize"),
+  random_crop_name_2 = c("blue", "green", "red", NA),
+  crop_name = c("orange", "purple", NA, "black"),
+  crop_variable_1 = c("ex1", "ex2", NA, NA),
+  crop_variable_2 = c("ex3", NA, "ex4", "ex5")
+))
+number_of_loops <- find_number_of_loops(data, name_column)
 loop_to_column_conversion(data, name_column, variable_to_convert, type = "chr")
-
 }

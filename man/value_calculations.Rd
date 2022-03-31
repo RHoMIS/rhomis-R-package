@@ -7,11 +7,17 @@
 value_calculations(processed_data, indicator_data, prices, gender_categories)
 }
 \arguments{
-\item{indicator_data}{}
+\item{processed_data}{A processed rhomis dataset}
+
+\item{indicator_data}{An indicator tibble}
+
+\item{prices}{A list of tibbles including prices}
+
+\item{gender_categories}{The gender categories to examing}
 }
 \value{
 
 }
 \description{
-Value Calculations
+Calculations of the value of products consumed
 }

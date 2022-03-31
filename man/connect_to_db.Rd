@@ -19,6 +19,3 @@ Returns a connection object
 \description{
 A simple function for connecting to a mongo database
 }
-\examples{
-
-}

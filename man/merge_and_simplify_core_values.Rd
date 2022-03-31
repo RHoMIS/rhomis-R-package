@@ -39,35 +39,70 @@ function.
 }
 \examples{
 
-categories_to_merge <- list(crop_name=c("crop_name"),
-livestock_name=c("livestock_name"),
-crop_yield_units=c("crop_yield_units_other"),
-crop_sold_price_quantityunits=c("crop_price_quantityunits_other"),
-unitland= c("areaunits_other","unitland_owned","unitland_rentin","unitland_rentout"),
-milk_units=c("milk_amount_units_other"),
-milk_sold_price_timeunits=c("milk_amount_time_units_other"),
-bees_honey_production_units=c("bees_honey_production_units_other"),
-eggs_units=c("eggs_amount_units_other"),
-eggs_sold_price_timeunits=c("eggs_sold_price_timeunits_other"),
-fertiliser_units=c("fertiliser_units_other"))
+categories_to_merge <- list(
+  crop_name = c("crop_name"),
+  livestock_name = c("livestock_name"),
+  crop_yield_units = c("crop_yield_units_other"),
+  crop_sold_price_quantityunits = c("crop_price_quantityunits_other"),
+  unitland = c(
+    "areaunits_other",
+    "unitland_owned",
+    "unitland_rentin",
+    "unitland_rentout"
+  ),
+  milk_units = c("milk_amount_units_other"),
+  milk_sold_price_timeunits = c("milk_amount_time_units_other"),
+  bees_honey_production_units = c("bees_honey_production_units_other"),
+  eggs_units = c("eggs_amount_units_other"),
+  eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
+  fertiliser_units = c("fertiliser_units_other")
+)
 
-list_of_unique_core_values <- c(list(crop_sold_price_quantityunits=c("cropPriceA","cropPriceB", "cropPriceC"),
-                                     crop_price_quantityunits_other=c("cropPriceD","cropPriceE", "cropPriceF"),
-                                     random_unimportant_column=c("bla", "bla", "bla")))
+list_of_unique_core_values <- c(list(
+  crop_sold_price_quantityunits = c(
+    "cropPriceA",
+    "cropPriceB",
+    "cropPriceC"
+  ),
+  crop_price_quantityunits_other = c(
+    "cropPriceD",
+    "cropPriceE",
+    "cropPriceF"
+  ),
+  random_unimportant_column = c("bla", "bla", "bla")
+))
 
 main_item <- "crop_sold_price_quantityunits"
-categories_to_merge <- list(crop_name=c("crop_name"),
-                            livestock_name=c("livestock_name"),
-                            crop_yield_units=c("crop_yield_units_other"),
-                            crop_sold_price_quantityunits=c("crop_price_quantityunits_other"),
-                            unitland= c("areaunits_other","unitland_owned","unitland_rentin","unitland_rentout"),
-                            milk_units=c("milk_amount_units_other"),
-                            milk_sold_price_timeunits=c("milk_amount_time_units_other"),
-                            bees_honey_production_units=c("bees_honey_production_units_other"),
-                            eggs_units=c("eggs_amount_units_other"),
-                            eggs_sold_price_timeunits=c("eggs_sold_price_timeunits_other"),
-                            fertiliser_units=c("fertiliser_units_other"))
+categories_to_merge <- list(
+  crop_name = c("crop_name"),
+  livestock_name = c("livestock_name"),
+  crop_yield_units = c("crop_yield_units_other"),
+  crop_sold_price_quantityunits = c("crop_price_quantityunits_other"),
+  unitland = c(
+    "areaunits_other",
+    "unitland_owned",
+    "unitland_rentin",
+    "unitland_rentout"
+  ),
+  milk_units = c("milk_amount_units_other"),
+  milk_sold_price_timeunits = c("milk_amount_time_units_other"),
+  bees_honey_production_units = c("bees_honey_production_units_other"),
+  eggs_units = c("eggs_amount_units_other"),
+  eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
+  fertiliser_units = c("fertiliser_units_other")
+)
 
-expected_result <- c("cropPriceA","cropPriceB","cropPriceC","cropPriceD","cropPriceE","cropPriceF")
-merge_and_simplify_core_values(list_of_unique_core_values, main_item,categories_to_merge)
+expected_result <- c(
+  "cropPriceA",
+  "cropPriceB",
+  "cropPriceC",
+  "cropPriceD",
+  "cropPriceE",
+  "cropPriceF"
+)
+merge_and_simplify_core_values(
+  list_of_unique_core_values,
+  main_item,
+  categories_to_merge
+)
 }

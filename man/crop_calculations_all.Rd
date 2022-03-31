@@ -18,7 +18,7 @@ crop_calculations_all(
 
 \item{crop_income_units_conv_tibble}{Conversion tibble of crop income units}
 
-\item{gender_catgegories}{The categories you are interested in examining}
+\item{gender_categories}{The categories you are interested in examining}
 }
 \value{
 

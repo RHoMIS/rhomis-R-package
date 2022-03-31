@@ -25,15 +25,22 @@ clean all RHoMIS column names.
 }
 \examples{
 
-repeat_columns<- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")
+repeat_columns <- c(
+  "crop_repeat",
+  "livestock_repeat",
+  "offfarm_repeat",
+  "hh_rep"
+)
 seperator <- "/"
-column_names <- c("xxx/crop_repeat[1]/crop_name",
-                  "xxx/livestock_repeat[2]/livestock_name",
-                  "xxx/crop_repeat[3]/crop_name",
-                  "xx/crop_repeat/crop_name",
-                  "x/offfarm_repeat[4]/offfarm_name",
-                  "y/hh_rep[5]/person_name",
-                  "z/crop_repeat/crop_name")
+column_names <- c(
+  "xxx/crop_repeat[1]/crop_name",
+  "xxx/livestock_repeat[2]/livestock_name",
+  "xxx/crop_repeat[3]/crop_name",
+  "xx/crop_repeat/crop_name",
+  "x/offfarm_repeat[4]/offfarm_name",
+  "y/hh_rep[5]/person_name",
+  "z/crop_repeat/crop_name"
+)
 
 # Will return:
 # c("crop_name_1",
@@ -43,12 +50,4 @@ column_names <- c("xxx/crop_repeat[1]/crop_name",
 # "offfarm_name_4",
 # "person_name_5",
 # "crop_name")
-
-list of possible separators for columns in the raw rhomis survey data
-loop over the list of separators to identify the one that applies in this case
-check whether the current sep exists in a majority of column name fields
-remove the leading "\\\\" (needed for "." special char when using grep)
-loop over the columns and modify them
-no need to continue loop if relevant sep has been identified
-make sure column names are all lower case
 }

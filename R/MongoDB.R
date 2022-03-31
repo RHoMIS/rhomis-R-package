@@ -15,12 +15,13 @@
 #' @export
 #'
 #' @examples
-#'
-connect_to_db <- function(collection,database="rhomis", url="mongodb://localhost"){
-    mongodb <- mongolite::mongo(collection = collection,
-                                db=database,
-                                url="mongodb://localhost")
-    return(mongodb)
+connect_to_db <- function(collection, database = "rhomis", url = "mongodb://localhost") {
+  mongodb <- mongolite::mongo(
+    collection = collection,
+    db = database,
+    url = "mongodb://localhost"
+  )
+  return(mongodb)
 }
 
 
@@ -35,13 +36,15 @@ connect_to_db <- function(collection,database="rhomis", url="mongodb://localhost
 #' @export
 #'
 #' @examples
-#' sample_data_frame <- tibble::as_tibble(list("original_spelling"=c("benana","maz","wetermalon","cokonut"),
-#' "standardised_spelling"=c("benana",NA,"wetermalon","cokonut")))
+#' sample_data_frame <- tibble::as_tibble(list(
+#'   "original_spelling" = c("benana", "maz", "wetermalon", "cokonut"),
+#'   "standardised_spelling" = c("benana", NA, "wetermalon", "cokonut")
+#' ))
 #' data_frame_to_json(sample_data_frame)
 #'
-data_frame_to_json <- function(data_to_change){
-    json_copy <- jsonlite::toJSON(data_to_change, na="null")
-    return(as.character(json_copy))
+data_frame_to_json <- function(data_to_change) {
+  json_copy <- jsonlite::toJSON(data_to_change, na = "null")
+  return(as.character(json_copy))
 }
 
 
@@ -57,11 +60,11 @@ data_frame_to_json <- function(data_to_change){
 #' @export
 #'
 #' @examples
-find_collection <- function(collection,database="rhomis", url="mongodb://localhost"){
-    connection <-connect_to_db(collection,database=database, url=url)
-    data <- connection$find("{}")
-    connection$disconnect()
-    return(data)
+find_collection <- function(collection, database = "rhomis", url = "mongodb://localhost") {
+  connection <- connect_to_db(collection, database = database, url = url)
+  data <- connection$find("{}")
+  connection$disconnect()
+  return(data)
 }
 
 #' Count collection
@@ -76,11 +79,11 @@ find_collection <- function(collection,database="rhomis", url="mongodb://localho
 #' @export
 #'
 #' @examples
-count_collection <- function(collection,database="rhomis", url="mongodb://localhost"){
-    connection <-connect_to_db(collection,database=database, url=url)
-    count <- connection$count("{}")
-    connection$disconnect()
-    return(count)
+count_collection <- function(collection, database = "rhomis", url = "mongodb://localhost") {
+  connection <- connect_to_db(collection, database = database, url = url)
+  count <- connection$count("{}")
+  connection$disconnect()
+  return(count)
 }
 
 
@@ -98,38 +101,32 @@ count_collection <- function(collection,database="rhomis", url="mongodb://localh
 #' @export
 #'
 #' @examples
-write_new_collection <- function(data_to_write, collection,database="rhomis", url="mongodb://localhost"){
+write_new_collection <- function(data_to_write, collection, database = "rhomis", url = "mongodb://localhost") {
+  previous_data <- find_collection(collection, database, url)
+  if (nrow(previous_data) > 0) {
+    stop(paste0("Collection '", collection, "' exists already"))
+  }
 
+  connection <- connect_to_db(collection, database, url)
 
-    previous_data <- find_collection(collection,database,url)
-    if (nrow(previous_data)>0)
-    {
-        stop(paste0("Collection '",collection,"' exists already"))
-    }
-
-    connection <- connect_to_db(collection,database,url)
-
-    # Insert the data frame
-    connection$insert(data_to_write)
-    print("Success in creating new table")
+  # Insert the data frame
+  connection$insert(data_to_write)
+  print("Success in creating new table")
 }
 
 
-update_collection <- function(data_to_write, collection,database="rhomis", url="mongodb://localhost")
-{
-    previous_data <- find_collection(collection,database,url)
-    if (nrow(previous_data)==0)
-    {
-        stop(paste0("Collection '",collection,"'does not exist yet"))
-    }
+update_collection <- function(data_to_write, collection, database = "rhomis", url = "mongodb://localhost") {
+  previous_data <- find_collection(collection, database, url)
+  if (nrow(previous_data) == 0) {
+    stop(paste0("Collection '", collection, "'does not exist yet"))
+  }
 
-    connection <- connect_to_db(collection,database,url)
+  connection <- connect_to_db(collection, database, url)
 
-    # Insert the data frame
-    connection$insert(data_to_write)
-    print("Success in updating table")
-    connection$disconnect()
-
+  # Insert the data frame
+  connection$insert(data_to_write)
+  print("Success in updating table")
+  connection$disconnect()
 }
 
 #' Add Data to Project List
@@ -149,30 +146,27 @@ update_collection <- function(data_to_write, collection,database="rhomis", url="
 #' @export
 #'
 #' @examples
-add_data_to_project_list <- function(data,collection,database="rhomis", url="mongodb://localhost",projectID,formID,overwrite=F){
+add_data_to_project_list <- function(data, collection, database = "rhomis", url = "mongodb://localhost", projectID, formID, overwrite = F) {
+  data_string <- jsonlite::toJSON(data, pretty = T, na = "null")
+  connection <- connect_to_db(collection, database, url)
 
-    data_string <- jsonlite::toJSON(data,pretty=T, na = "null")
-    connection <- connect_to_db(collection,database,url)
+  if (overwrite == F) {
+    data_string <- paste0('{"projectID":"', projectID, '","formID":', formID, ', "data"', ":", data_string, "}")
+    data_string <- gsub("\n", "", data_string, fixed = T)
+    data_string <- gsub('\\"', '"', data_string, fixed = T)
+    data_string <- gsub('"\\', '"', data_string, fixed = T)
 
-    if(overwrite==F){
+    connection$insert(data_string)
+  }
 
-        data_string <- paste0('{"projectID":"',projectID,'","formID":',formID,', "data"',":",data_string,"}")
-        data_string <- gsub("\n","",data_string, fixed=T)
-        data_string <- gsub('\\"','"',data_string, fixed=T)
-        data_string <- gsub('"\\','"',data_string, fixed=T)
+  if (overwrite == T) {
+    connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '"}'),
+      paste0('{"$set":{"data": ', data_string, "}}"),
+      upsert = TRUE
+    )
+  }
 
-        connection$insert(data_string)
-    }
-
-    if(overwrite==T){
-
-        connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
-                          paste0('{"$set":{"data": ',data_string,'}}')
-                          ,upsert = TRUE)
-    }
-
-    connection$disconnect()
-
+  connection$disconnect()
 }
 
 
@@ -191,30 +185,28 @@ add_data_to_project_list <- function(data,collection,database="rhomis", url="mon
 #' @export
 #'
 #' @examples
-add_data_to_db <- function(data,collection="data",data_type,database="rhomis", url="mongodb://localhost",projectID,formID,overwrite=F){
-    data_string <- jsonlite::toJSON(data,pretty=T, na = "null")
-    connection <- connect_to_db(collection,database,url)
+add_data_to_db <- function(data, collection = "data", data_type, database = "rhomis", url = "mongodb://localhost", projectID, formID, overwrite = F) {
+  data_string <- jsonlite::toJSON(data, pretty = T, na = "null")
+  connection <- connect_to_db(collection, database, url)
 
 
-    if(overwrite==F){
+  if (overwrite == F) {
+    data_string <- paste0('{"projectID":"', projectID, '","formID":', formID, '"dataType":', data_type, ', "data"', ":", data_string, "}")
+    data_string <- gsub("\n", "", data_string, fixed = T)
+    data_string <- gsub('\\"', '"', data_string, fixed = T)
+    data_string <- gsub('"\\', '"', data_string, fixed = T)
 
-        data_string <- paste0('{"projectID":"',projectID,'","formID":',formID,'"dataType":',data_type,', "data"',":",data_string,"}")
-        data_string <- gsub("\n","",data_string, fixed=T)
-        data_string <- gsub('\\"','"',data_string, fixed=T)
-        data_string <- gsub('"\\','"',data_string, fixed=T)
+    connection$insert(data_string)
+  }
 
-        connection$insert(data_string)
-    }
+  if (overwrite == T) {
+    connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '"}'),
+      paste0('{"$set":{"data": ', data_string, "}}"),
+      upsert = TRUE
+    )
+  }
 
-    if(overwrite==T){
-
-        connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
-                          paste0('{"$set":{"data": ',data_string,'}}')
-                          ,upsert = TRUE)
-    }
-
-    connection$disconnect()
-
+  connection$disconnect()
 }
 
 
@@ -233,17 +225,17 @@ add_data_to_db <- function(data,collection="data",data_type,database="rhomis", u
 #' @export
 #'
 #' @examples
-adding_project_to_list <- function(database="rhomis", url="mongodb://localhost",projectID,formID){
+adding_project_to_list <- function(database = "rhomis", url = "mongodb://localhost", projectID, formID) {
 
-    #collection, database="rhomis", url="mongodb://localhost",projectID,formID
+  # collection, database="rhomis", url="mongodb://localhost",projectID,formID
 
-    connection <- connect_to_db("projectData",database,url)
+  connection <- connect_to_db("projectData", database, url)
 
-    connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
-                      paste0('{"$set":{"projectID": ','"',projectID,'", "formID":"',formID,'"}}')
-                      ,upsert = TRUE)
-    connection$disconnect()
-
+  connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '"}'),
+    paste0('{"$set":{"projectID": ', '"', projectID, '", "formID":"', formID, '"}}'),
+    upsert = TRUE
+  )
+  connection$disconnect()
 }
 
 
@@ -264,27 +256,27 @@ adding_project_to_list <- function(database="rhomis", url="mongodb://localhost",
 #' @examples
 save_data_set_to_db <- function(data,
                                 data_type,
-                                database="rhomis",
-                                url="mongodb://localhost",
+                                database = "rhomis",
+                                url = "mongodb://localhost",
                                 projectID,
-                                formID){
+                                formID) {
+  data_string <- jsonlite::toJSON(data, pretty = T, na = "null")
+  connection <- connect_to_db("data", database, url)
 
-    data_string <- jsonlite::toJSON(data,pretty=T, na = "null")
-    connection <- connect_to_db("data",database,url)
-
-    connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'", "dataType":"',data_type,'"}'),
-                      paste0('{"$set":{"data": ',data_string,'}}'),
-                      upsert = TRUE)
+  connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '", "dataType":"', data_type, '"}'),
+    paste0('{"$set":{"data": ', data_string, "}}"),
+    upsert = TRUE
+  )
 
 
-    connection$disconnect()
+  connection$disconnect()
 
-    connection <- connect_to_db("projectData",database,url)
-    connection$update(paste0('{"projectID":"',projectID,'","formID":"',formID,'"}'),
-                      paste0('{"$addToSet":{"dataSets":','"',data_type,'"}}'),
-                      upsert = TRUE)
-    connection$disconnect()
-
+  connection <- connect_to_db("projectData", database, url)
+  connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '"}'),
+    paste0('{"$addToSet":{"dataSets":', '"', data_type, '"}}'),
+    upsert = TRUE
+  )
+  connection$disconnect()
 }
 
 
@@ -306,42 +298,38 @@ save_data_set_to_db <- function(data,
 save_list_of_df_to_db <- function(list_of_df,
                                   projectID,
                                   formID,
-                                  database="rhomis",
-                                  url="mongodb://localhost"
-){
-    data_set_names <- names(list_of_df)
+                                  database = "rhomis",
+                                  url = "mongodb://localhost") {
+  data_set_names <- names(list_of_df)
 
-    sapply(data_set_names, function(x){
+  sapply(data_set_names, function(x) {
     data_to_write <- list_of_df[[x]]
-        if (any(class(data_to_write)=="tbl_df") | any(class(data_to_write)=="tbl") | any(class(data_to_write)=="data.frame")){
+    if (any(class(data_to_write) == "tbl_df") | any(class(data_to_write) == "tbl") | any(class(data_to_write) == "data.frame")) {
+      save_data_set_to_db(
+        data = data_to_write,
+        data_type = x,
+        database = database,
+        url = url,
+        projectID = projectID,
+        formID = formID
+      )
+      return()
+    }
+    if (class(data_to_write) == "list") {
+      names(data_to_write) <- paste0(x, "_", names(data_to_write))
 
-            save_data_set_to_db(data = data_to_write,
-                            data_type = x,
-                            database = database,
-                            url = url,
-                            projectID = projectID,
-                            formID = formID)
-            return()
-
-        }
-        if (class(data_to_write)=="list"){
-            names(data_to_write) <- paste0(x,"_",names(data_to_write))
-
-            save_list_of_df_to_db(list_of_df = data_to_write,
-                                  projectID=projectID,
-                                  formID=formID,
-                                  database=database,
-                                  url=url
-            )
-            return()
-        }
+      save_list_of_df_to_db(
+        list_of_df = data_to_write,
+        projectID = projectID,
+        formID = formID,
+        database = database,
+        url = url
+      )
+      return()
+    }
 
     return()
-
-    })
-
-
-
+  })
 }
 
 
@@ -359,14 +347,14 @@ save_list_of_df_to_db <- function(list_of_df,
 #' @export
 #'
 #' @examples
-clean_json_string <- function(json_string){
-    json_string <- gsub("\n","",json_string, fixed=T)
-    json_string <- gsub('\\"','"',json_string, fixed=T)
-    json_string <- gsub('"\\','"',json_string, fixed=T)
-    json_string <- gsub('\\\\','',json_string)
+clean_json_string <- function(json_string) {
+  json_string <- gsub("\n", "", json_string, fixed = T)
+  json_string <- gsub('\\"', '"', json_string, fixed = T)
+  json_string <- gsub('"\\', '"', json_string, fixed = T)
+  json_string <- gsub("\\\\", "", json_string)
 
 
-    return(json_string)
+  return(json_string)
 }
 
 
@@ -385,57 +373,57 @@ clean_json_string <- function(json_string){
 #' @export
 #'
 #' @examples
-read_in_db_dataset <- function(collection="data",
+read_in_db_dataset <- function(collection = "data",
                                database,
                                project_name,
                                form_name,
-                               data_set_name
-                               ){
-
-    connection <- connect_to_db(collection,database,url)
+                               data_set_name) {
+  connection <- connect_to_db(collection, database, url)
 
 
 
-    # Arguments to identify the relevant project
-    match_arguments <- jsonlite::toJSON(list('projectID'=project_name,
-                                            'formID'=form_name,
-                                            'dataType'=data_set_name), na = "null")
-    match_arguments <- gsub("[","",match_arguments, fixed=T)
-    match_arguments <- gsub("]","",match_arguments, fixed=T)
-    match_arguments <- paste0('{"$match":',match_arguments,'}')
-    match_arguments <- clean_json_string(match_arguments)
+  # Arguments to identify the relevant project
+  match_arguments <- jsonlite::toJSON(list(
+    "projectID" = project_name,
+    "formID" = form_name,
+    "dataType" = data_set_name
+  ), na = "null")
+  match_arguments <- gsub("[", "", match_arguments, fixed = T)
+  match_arguments <- gsub("]", "", match_arguments, fixed = T)
+  match_arguments <- paste0('{"$match":', match_arguments, "}")
+  match_arguments <- clean_json_string(match_arguments)
 
-    # Unwind the subarray into the value of interest
-    unwind_arguments <- paste0('{"$unwind": "$data"}')
+  # Unwind the subarray into the value of interest
+  unwind_arguments <- paste0('{"$unwind": "$data"}')
 
-    # Manage the projection (which values are included or not)
-    project_arguments <- jsonlite::toJSON(list("_id"=0,
-                                               "formID"=0,
-                                               "projectID"=0,
-                                               "dataType"=0),
-                                          na = "null")
-    project_arguments <- gsub("[","",project_arguments, fixed=T)
-    project_arguments <- gsub("]","",project_arguments, fixed=T)
-    project_arguments <- paste0('{"$project":',project_arguments,'}')
+  # Manage the projection (which values are included or not)
+  project_arguments <- jsonlite::toJSON(list(
+    "_id" = 0,
+    "formID" = 0,
+    "projectID" = 0,
+    "dataType" = 0
+  ),
+  na = "null"
+  )
+  project_arguments <- gsub("[", "", project_arguments, fixed = T)
+  project_arguments <- gsub("]", "", project_arguments, fixed = T)
+  project_arguments <- paste0('{"$project":', project_arguments, "}")
 
 
-    # Unwind the subarray into the value of interest
-    unwind_data <- paste0('{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}')
+  # Unwind the subarray into the value of interest
+  unwind_data <- paste0('{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}')
 
-    # Group data
+  # Group data
 
-    # e.g
-    # [{"$match":{"projectID":"core_unit","formID":"core_unit","conversionType":"ppi_score_card"}},{"$unwind": "$data"},{"$project":{"_id":0,"formID":0,"projectID":0,"conversionType":0}},{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}]
-    pipeline <- paste0('[',match_arguments,',',unwind_arguments,',',project_arguments,',',unwind_data,']')
+  # e.g
+  # [{"$match":{"projectID":"core_unit","formID":"core_unit","conversionType":"ppi_score_card"}},{"$unwind": "$data"},{"$project":{"_id":0,"formID":0,"projectID":0,"conversionType":0}},{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}]
+  pipeline <- paste0("[", match_arguments, ",", unwind_arguments, ",", project_arguments, ",", unwind_data, "]")
 
-    # Conducting the final query and reshaping
-    result <- connection$aggregate(pipeline = pipeline)
-    result <- result$data
-    result <- tibble::as_tibble(result)
+  # Conducting the final query and reshaping
+  result <- connection$aggregate(pipeline = pipeline)
+  result <- result$data
+  result <- tibble::as_tibble(result)
 
-    connection$disconnect()
-    return(result)
-
+  connection$disconnect()
+  return(result)
 }
-
-

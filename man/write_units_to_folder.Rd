@@ -9,6 +9,8 @@ write_units_to_folder(list_of_df, folder = "./unit_conversions")
 \arguments{
 \item{list_of_df}{A list of dataframes, containing all
 of the units and conversions}
+
+\item{folder}{The folder for writing the units}
 }
 \value{
 

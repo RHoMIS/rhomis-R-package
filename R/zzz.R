@@ -1,16 +1,12 @@
-pkg.env = new.env()
+pkg.env <- new.env()
 
-.onLoad <- function(libname, pkgname){
+.onLoad <- function(libname, pkgname) {
+  set_repeat_column_names()
+  set_gender_categories()
+  set_local_units_file_list()
+  set_produce_list()
+  set_identification_columns()
 
-    set_repeat_column_names()
-    set_gender_categories()
-    set_local_units_file_list()
-    set_produce_list()
-    set_identification_columns()
-
-    set_prices_list()
-    set_calories_list()
-
+  set_prices_list()
+  set_calories_list()
 }
-
-

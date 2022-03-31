@@ -10,7 +10,7 @@ gender_split_livestock(data, gender_categories = pkg.env$gender_categories)
 \item{data}{RHoMIS data including information on number
 of livestock sold and who sells this livestock}
 
-\item{gender_catgegories}{The categories you are interested in examining}
+\item{gender_categories}{The categories you are interested in examining}
 }
 \value{
 

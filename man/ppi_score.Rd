@@ -20,18 +20,21 @@ dataset. It relies on conversion sheets and information which can be found
 in the "data" folder of the package.
 }
 \examples{
-data <- tibble::as_tibble(list("PPI_1"=c(5,1,3,4),
-                       "PPI_2"=c(3,12,7,18),
-                       "PPI_3"=c(17,1,2,3),
-                       "PPI_4"=c(NA,2,1,6),
-                       "PPI_5"=c(1,NA,3,1),
-                       "PPI_6"=c(3,7,4,1),
-                       "PPI_7"=c(8,3,NA,2),
-                       "PPI_8"=c(3,8,1,3),
-                       "PPI_9"=c(9,2,8,5),
-                       "PPI_10"=c(12,4,7,1),
-                       "random_other_column"=c(NA,NA,NA,NA)))
+data <- tibble::as_tibble(list(
+  "PPI_1" = c(5, 1, 3, 4),
+  "PPI_2" = c(3, 12, 7, 18),
+  "PPI_3" = c(17, 1, 2, 3),
+  "PPI_4" = c(NA, 2, 1, 6),
+  "PPI_5" = c(1, NA, 3, 1),
+  "PPI_6" = c(3, 7, 4, 1),
+  "PPI_7" = c(8, 3, NA, 2),
+  "PPI_8" = c(3, 8, 1, 3),
+  "PPI_9" = c(9, 2, 8, 5),
+  "PPI_10" = c(12, 4, 7, 1),
+  "random_other_column" = c(NA, NA, NA, NA)
+))
 
-country_code_column <- c("VN","VN","KE","KE")
-ppi_score(data,country_code_column)
+country_code_column <- c("VN", "VN", "KE", "KE")
+ppi_score(data, country_code_column)
+
 }
