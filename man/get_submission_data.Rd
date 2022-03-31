@@ -10,7 +10,7 @@ get_submission_data(
   central_password,
   projectID,
   formID,
-  draft,
+  isDraft,
   file_destination = NULL,
   central_test_case = F
 )
@@ -30,7 +30,7 @@ To get a list of project, see the
 submissions you are looking at.
 To get the list of forms see the "get_forms" function.}
 
-\item{draft}{Whether or not the form is a draft or whether it is finalized}
+\item{isDraft}{Whether or not the form is a draft or whether it is finalized}
 
 \item{file_destination}{The location to store temporary files}
 
