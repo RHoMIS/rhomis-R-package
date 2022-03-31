@@ -1115,7 +1115,7 @@ honey_proportions_all <- function(data) {
     warning_message = "Could not calculate honey amounts sold or consumed"
   )
   if (length(missing_columns) == 0) {
-    bees_honey_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "bees_honey_use", prop_column = "bees_honey_consumed_amount", loop_number = x))
+    bees_honey_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "bees_honey_use", prop_column = "bees_honey_consumed_amount", loop_number = x))
     colnames(bees_honey_consumed_props_numeric) <- paste0("bees_honey_consumed_props_numeric", "_", c(1:number_of_loops))
     bees_honey_consumed_props_numeric <- tibble::as_tibble(bees_honey_consumed_props_numeric)
     data <- add_column_after_specific_column(
@@ -1701,6 +1701,154 @@ honey_income_calculations <- function(data) {
       loop_structure = T
     )
   }
+
+  return(data)
+}
+
+#' Livestock TLU Calculations
+#'
+#' Calculate amount of livestock kept in
+#' tropical livestock units (TLU).
+#'
+#' @param data RHoMIS processed dataset
+#' @param livestock_name_conversion_tibble A tibble
+#' of conversions for livestock names
+#' @param livestock_tlu_conversion_tibble A tibble
+#' of conversions for livestock TLU values
+#'
+#' @return
+#' @export
+#'
+#' @example
+livestock_tlu <- function(data,
+                          livestock_name_conversion_tibble,
+                          livestock_tlu_conversion_tibble = livestock_tlu_conversions) {
+  livestock_heads_columns <- grep("livestock_heads_", colnames(data), value = T)
+
+  if (length(livestock_heads_columns) == 0) {
+    warning("Could not calculate livestock TLU values, no livestock_heads columns found")
+    return(data)
+  }
+
+  # Replacing livestock_heads_other column
+  # so that all of the column names have
+  # a consistent format
+  # livestock_heads_other1_lstk
+  # livestock_heads_other2_lstk
+  # livestock_heads_other3_lstk...
+}
+
+
+
+#' Clean TLU Column Names
+#'
+#' TLU column names include options for
+#' "other", this is not interperatable or
+#' easy to use for analysis. This function addresses
+#' this
+#'
+#' @param data A rhomis dataset
+#' @param livestock_name_conversion_tibble A tibble to convert
+#' livestock names
+#'
+#' @return
+#' @export
+#'
+#' @example
+clean_tlu_column_names <- function(data,
+                                   livestock_name_conversion_tibble) {
+  if ("livestock_heads_other_lstk" %in% colnames(data) == F) {
+    return(data)
+  }
+
+  colnames(data)[colnames(data) == "livestock_heads_other_lstk"] <- "livestock_heads_other1_lstk"
+
+  # Dealing with the Livestock Others data
+  # Widening data with Others
+  data_to_widen <- data[colnames(data) %in% c(
+    "id_rhomis_dataset",
+    "livestock_other1",
+    "livestock_heads_other1_lstk",
+    "livestock_other2",
+    "livestock_heads_other2_lstk",
+    "livestock_other3",
+    "livestock_heads_other3_lstk"
+  )]
+
+  colnames(data_to_widen) <- gsub("livestock_other1", "livestock_heads_other_1", colnames(data_to_widen))
+  colnames(data_to_widen) <- gsub("livestock_other2", "livestock_heads_other_2", colnames(data_to_widen))
+  colnames(data_to_widen) <- gsub("livestock_other3", "livestock_heads_other_3", colnames(data_to_widen))
+  colnames(data_to_widen) <- gsub("livestock_heads_other1_lstk", "livestock_heads_other_lstk_1", colnames(data_to_widen))
+  colnames(data_to_widen) <- gsub("livestock_heads_other2_lstk", "livestock_heads_other_lstk_2", colnames(data_to_widen))
+  colnames(data_to_widen) <- gsub("livestock_heads_other3_lstk", "livestock_heads_other_lstk_3", colnames(data_to_widen))
+
+  names_to_convert <- c("livestock_heads_other_1", "livestock_heads_other_2", "livestock_heads_other_3")
+
+  data_to_widen[colnames(data_to_widen) %in% names_to_convert] <- switch_units(data_to_widen[names_to_convert],
+    unit_tibble = livestock_name_conversion_tibble,
+    id_vector = data_to_widen[["id_rhomis_dataset"]]
+  )
+
+  data_widened <- map_to_wide_format(data_to_widen, name_column = "livestock_heads_other", column_prefixes = "livestock_heads_other_lstk", types = c("num"))[[1]]
+
+
+  livestock_heads_data <- data[grep("livestock_heads", colnames(data))]
+
+  colnames(livestock_heads_data) <- gsub("livestock_heads_", "", colnames(livestock_heads_data))
+  colnames(data_widened) <- gsub("livestock_heads_", "", colnames(data_widened))
+
+  livestock_heads_data <- livestock_heads_data %>% dplyr::mutate_all(as.numeric)
+  data_widened <- data_widened %>% dplyr::mutate_all(as.numeric)
+
+  if (any(colnames(livestock_heads_data) %in% colnames(data_widened))) {
+    livestock_heads_data <- lapply(colnames(livestock_heads_data), function(x) {
+      if (x %in% colnames(livestock_heads_data) & x %in% colnames(data_widened)) {
+        vector_to_modify <- as.numeric(livestock_heads_data[[x]])
+
+        vector_to_modify[is.na(vector_to_modify)] <- as.numeric(data_widened[[x]][is.na(vector_to_modify)])
+        livestock_heads_data[[x]] <- vector_to_modify
+      }
+      return(livestock_heads_data[x])
+    }) %>% dplyr::bind_cols()
+
+    data_widened <- data_widened[colnames(data_widened) %in% colnames(livestock_heads_data) == F]
+  }
+
+  livestock_heads_data <- dplyr::bind_cols(livestock_heads_data, data_widened)
+
+  data <- data[grepl("livestock_heads_", colnames(data)) == F]
+
+  if ("livestock_other3" %in% colnames(data)) {
+    data <- add_column_after_specific_column(
+      data,
+      livestock_heads_data,
+      old_column_name = "livestock_other3",
+      loop_structure = F
+    )
+    return(data)
+  }
+  if ("livestock_other2" %in% colnames(data)) {
+    data <- add_column_after_specific_column(
+      data,
+      livestock_heads_data,
+      old_column_name = "livestock_other2",
+      loop_structure = F
+    )
+    return(data)
+  }
+  data <- add_column_after_specific_column(
+    data,
+    livestock_heads_data,
+    old_column_name = "livestock_other1",
+    loop_structure = F
+  )
+
+
+
+  livesto
+
+
+
 
   return(data)
 }

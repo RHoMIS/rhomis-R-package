@@ -149,6 +149,48 @@ add_column_after_specific_column <- function(data, new_data, new_column_name = N
 }
 
 
+#' Switch Column Names and Merge Categories
+#'
+#' A function for changing the column names
+#' e.g, where the column names represent crops,
+#' and merging categories.
+switch_column_names_and_add_categories <- function(data,
+                                                   conversion_tibble) {
+  conversion_tibble <- tibble::as_tibble(
+    list(
+      "id_rhomis_dataset" = c("x", "x", "x", "y", "y", "y"),
+      "survey_value" = c("sheep", "young_sheep", "cattle", "young_sheep", "sheep", "cattle"),
+      "conversion" = c("sheep", "young_sheep", "cattle", "sheep", "sheep", "cattle")
+    )
+  )
+
+
+  data <- tibble::as_tibble(
+    list(
+      "id_rhomis_dataset" = c("x", "x", "y", "y"),
+      "sheep" = c(1, 2, NA, NA),
+      "young_sheep" = c(3, NA, 6, 7),
+      "cattle" = c(1, 2, 3, 4)
+    )
+  )
+
+  dplyr::coalesce(data[["sheep"]], data[["young_sheep"]])
+
+  original_column_names <- colnames(data)
+  new_column_names <- switch_units(colnames(data), conversion_tibble, id_vector = rep("y", ncol(data)))
+
+  new_data_set <- data["id_rhomis_dataset"]
+  lapply(data, {})
+
+  split_data <- lapply(unique(data[["id_rhomis_dataset"]]), function(id) {
+    data[data$id_rhomis_dataset == id, ]
+  })
+
+
+  new_columns <- switch_units(, )
+}
+
+
 #' Proportions for individual proportion types
 #'
 #' A function for calculating the numeric proportions of crops which are sold,
@@ -192,10 +234,14 @@ proportions_calculation <- function(data, use, use_column, prop_column, loop_num
   single_uses <- sapply(single_uses, function(x) length(x))
   single_uses <- single_uses == 1 & !is.na(use_data) & grepl(use, use_data)
 
+  other_uses <- !is.na(use_data) & grepl(use, use_data) == F
+
+
   id_col <- rep("x", nrow(data))
   unit_conv_tibble <- make_per_project_conversion_tibble(proj_id_vector = id_col, unit_conv_tibble = proportion_conversions)
   proportions_data <- switch_units(proportions_data, unit_tibble = unit_conv_tibble, id_vector = id_col)
   proportions_data[single_uses] <- 1
+  proportions_data[other_uses] <- 0
 
   return(proportions_data)
 }

@@ -365,14 +365,12 @@ extract_new_core_units <- function(data) {
 
 
 
-
   return(final_result)
 }
 
-
 #' Extract names of Values to Receive Calorie Conversions
 #'
-#' @param data The RHoMIS data set conta
+#' @param data The RHoMIS data set
 #'
 #' @return
 #' @export

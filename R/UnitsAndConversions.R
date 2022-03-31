@@ -349,16 +349,16 @@ write_units_to_folder <- function(list_of_df,
 #' load them into the global environment
 #'
 #' @param id_rhomis_dataset A vector including the ID of the RHoMIS datasets being processed
-#' @param base_folder The path to the folder containing the units to load
+#' @param units_folder The path to the folder containing the units to load
 #'
 #' @return
 #' @export
 #'
 #' @examples
-load_local_units <- function(base_folder, id_rhomis_dataset) {
+load_local_units <- function(units_folder, id_rhomis_dataset) {
 
   # get list of files stored in base_folder
-  file_names <- list.files(base_folder)
+  file_names <- list.files(units_folder)
 
   # loop over the possible list of unit conversion csv file names
   for (unit_file in names(pkg.env$local_units_file_list)) {

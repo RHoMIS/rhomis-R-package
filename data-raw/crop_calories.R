@@ -30,7 +30,6 @@ crop_calories <- tibble::as_tibble(list(
     "tomato" = 210,
     "onions" = 420,
     "fodder" = NA,
-    "ground_nut" = 5670,
     "sesame" = 5730,
     "cowpea" = 3360,
     "chilipepper" = NA,

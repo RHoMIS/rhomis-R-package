@@ -15,7 +15,6 @@ livestock_name <- c(
     "duck",
     "buffalo",
     "bees"
-
 )
 
-usethis::use_data(livestock_name, overwrite=T)
+usethis::use_data(livestock_name, overwrite = T)
