@@ -163,3 +163,118 @@ testthat::test_that("Can conduct proportions swap to numeric", {
 
     expect_equal(actual_result, actual_result)
 })
+
+testthat::test_that("Can merge and add columns which need to be cleaned for specific project", {
+    # Test conversion table
+    conversion_tibble <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "x", "y", "y", "y"),
+            "survey_value" = c("sheep", "young_sheep", "cattle", "sheep", "young_sheep", "cattle"),
+            "conversion" = c("sheep", "sheep", "cattle", "sheep", "young_sheep", "cattle")
+        )
+    )
+    # Test dataset
+    data <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "x"),
+            "sheep" = c(1, 2, NA, NA, NA),
+            "young_sheep" = c(3, NA, 6, 7, NA),
+            "cattle" = c(1, 2, 3, 4, NA),
+            "extra_column_after" = c(NA, NA, NA, 1, 2)
+        )
+    )
+
+    id_rhomis_dataset <- "x"
+
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "x"),
+            "sheep" = c(4, 2, NA),
+            "cattle" = c(1, 2, NA),
+            "extra_column_after" = c(NA, NA, 2)
+        )
+    )
+
+    actual_result <- switch_column_names_and_add_categories_for_specific_project(
+        data = data,
+        conversion_tibble = conversion_tibble,
+        id_rhomis_dataset = id_rhomis_dataset
+    )
+
+    testthat::expect_equal(actual_result, expected_result)
+
+
+
+    id_rhomis_dataset <- "y"
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("y", "y"),
+            "sheep" = as.numeric(c(NA, NA)),
+            "young_sheep" = c(6, 7),
+            "cattle" = c(3, 4),
+            "extra_column_after" = c(NA, 1)
+        )
+    )
+
+
+    actual_result <- switch_column_names_and_add_categories_for_specific_project(
+        data = data,
+        conversion_tibble = conversion_tibble,
+        id_rhomis_dataset = id_rhomis_dataset
+    )
+    testthat::expect_equal(actual_result, expected_result)
+})
+
+testthat::test_that("Can merge categories for multiple projects", {
+    conversion_tibble <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "x", "y", "y", "y"),
+            "survey_value" = c("sheep", "young_sheep", "cattle", "sheep", "young_sheep", "cattle"),
+            "conversion" = c("sheep", "sheep", "cattle", "sheep", "young_sheep", "cattle")
+        )
+    )
+    # Test dataset
+    data <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "x"),
+            "sheep" = c(1, 2, NA, NA, NA),
+            "young_sheep" = c(3, NA, 6, 7, NA),
+            "cattle" = c(1, 2, 3, 4, NA),
+            "extra_column_after" = c(NA, NA, NA, 1, 2)
+        )
+    )
+
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "x"),
+            "sheep" = c(4, 2, NA, NA, NA),
+            "cattle" = c(1, 2, 3, 4, NA),
+            "young_sheep" = c(NA, NA, 6, 7, NA),
+            "extra_column_after" = c(NA, NA, NA, 1, 2)
+        )
+    )
+
+    actual_result <- switch_column_names_and_merge_categories(data, conversion_tibble)
+
+
+    conversion_tibble <- tibble::as_tibble(
+        list(
+            "survey_value" = c("sheep", "young_sheep", "cattle"),
+            "conversion" = c("sheep", "sheep", "cattle")
+        )
+    )
+
+    actual_result <- switch_column_names_and_merge_categories(data, conversion_tibble, by_project = F)
+
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "x"),
+            "sheep" = c(4, 2, 6, 7, NA),
+            "cattle" = c(1, 2, 3, 4, NA),
+            "extra_column_after" = c(NA, NA, NA, 1, 2)
+        )
+    )
+
+
+    testthat::expect_equal(actual_result, expected_result)
+})

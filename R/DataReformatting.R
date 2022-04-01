@@ -149,47 +149,141 @@ add_column_after_specific_column <- function(data, new_data, new_column_name = N
 }
 
 
-#' Switch Column Names and Merge Categories
+#' Switch Column Names and Add Categories For a Project
 #'
 #' A function for changing the column names
 #' e.g, where the column names represent crops,
 #' and merging categories.
-switch_column_names_and_add_categories <- function(data,
-                                                   conversion_tibble) {
-  conversion_tibble <- tibble::as_tibble(
-    list(
-      "id_rhomis_dataset" = c("x", "x", "x", "y", "y", "y"),
-      "survey_value" = c("sheep", "young_sheep", "cattle", "young_sheep", "sheep", "cattle"),
-      "conversion" = c("sheep", "young_sheep", "cattle", "sheep", "sheep", "cattle")
-    )
-  )
+#'
+#' @param data Dataset with categories to be merged
+#' @param conversion_tibble A tibble of conversion factors
+#' @param id_rhomis_dataset The id of the rhomis dataset to
+#' be converted
+#'
+#' @return
+#' @export
+#'
+#' @example
+switch_column_names_and_add_categories_for_specific_project <- function(data,
+                                                                        conversion_tibble,
+                                                                        id_rhomis_dataset) {
+  if (c("id_rhomis_dataset") %in% colnames(data) == F) {
+    stop("Cannot merge these data, id_rhomis_dataset not present")
+  }
 
+  if (all(c("id_rhomis_dataset", "survey_value", "conversion") %in% colnames(conversion_tibble) == F)) {
+    stop("Cannot merge these data, conversion tibble does not contain the correct column names.
+    Must contain columns: id_rhomis_dataset, survey_value, and conversion")
+  }
+  # Create A new blank dataset
 
-  data <- tibble::as_tibble(
-    list(
-      "id_rhomis_dataset" = c("x", "x", "y", "y"),
-      "sheep" = c(1, 2, NA, NA),
-      "young_sheep" = c(3, NA, 6, 7),
-      "cattle" = c(1, 2, 3, 4)
-    )
-  )
+  project_data <- data[data$id_rhomis_dataset == id_rhomis_dataset, ]
+  project_conversion_tibble <- conversion_tibble[conversion_tibble$id_rhomis_dataset == id_rhomis_dataset, ]
 
-  dplyr::coalesce(data[["sheep"]], data[["young_sheep"]])
+  # Loop through the converted values
+  new_data_set <- sapply(unique(project_conversion_tibble$conversion), function(converted_value) {
 
-  original_column_names <- colnames(data)
-  new_column_names <- switch_units(colnames(data), conversion_tibble, id_vector = rep("y", ncol(data)))
+    # Find the survey values which match
+    columns_to_merge <- project_conversion_tibble$survey_value[project_conversion_tibble$conversion == converted_value]
+    subset_to_add <- project_data[columns_to_merge]
+    result <- rowSums(subset_to_add, na.rm = T)
 
-  new_data_set <- data["id_rhomis_dataset"]
-  lapply(data, {})
+    result[rowSums(is.na(subset_to_add)) == ncol(subset_to_add)] <- NA
+    return(result)
+  }, simplify = F) %>% tibble::as_tibble()
 
-  split_data <- lapply(unique(data[["id_rhomis_dataset"]]), function(id) {
-    data[data$id_rhomis_dataset == id, ]
-  })
+  columns_to_replace <- which(colnames(project_data) %in% project_conversion_tibble$survey_value)
 
+  location_to_insert <- min(columns_to_replace)
+  if (location_to_insert > 1) {
+    location_to_insert <- location_to_insert - 1
+  }
 
-  new_columns <- switch_units(, )
+  project_data <- project_data[-columns_to_replace]
+  project_data <- project_data %>% tibble::add_column(new_data_set, .after = location_to_insert)
+
+  return(project_data)
 }
 
+#' Switch Column Names and Add Categories For a Project
+#'
+#' A function for changing the column names
+#' e.g, where the column names represent crops,
+#' and merging categories.
+#'
+#' @param data Dataset with categories to be merged
+#' @param conversion_tibble A tibble of conversion factors
+#' be converted
+#' @param by_project Should
+#'
+#' @return
+#' @export
+#'
+#' @example
+switch_column_names_and_merge_categories <- function(data,
+                                                     conversion_tibble,
+                                                     by_project = T) {
+  if ("id_rhomis_dataset" %in% colnames(data) == F) {
+    stop("Cannot merge categories, missing column 'id_rhomis_dataset'")
+  }
+
+  if (any(is.na(data$id_rhomis_dataset))) {
+    warning("Missing ids for rhomis dataset, projects with no ids will be removed")
+  }
+
+  # Making fake ids to work with if do not want to
+  if (by_project == F) {
+    remove_id <- F
+    if ("id_rhomis_dataset" %in% colnames(conversion_tibble) == T) {
+      stop("There are ids in the conversion tibble provided
+      But the argument 'by_project' is False.")
+    }
+    if ("id_rhomis_dataset" %in% colnames(data) == F) {
+      remove_id <- T
+      data$id_rhomis_dataset <- "x"
+    }
+
+    conversion_tibble <- make_per_project_conversion_tibble(data$id_rhomis_dataset, conversion_tibble)
+    conversion_tibble <- conversion_tibble[duplicated(conversion_tibble) == F, ]
+  }
+
+  project_ids <- unique(data$id_rhomis_dataset)
+
+  result <- lapply(project_ids, function(project_id) {
+    indexes <- which(data$id_rhomis_dataset == project_id)
+    result <- switch_column_names_and_add_categories_for_specific_project(
+      data = data,
+      conversion_tibble = conversion_tibble,
+      id_rhomis_dataset = project_id
+    )
+    result$merging_index <- indexes
+    return(result)
+  }) %>%
+    dplyr::bind_rows() %>%
+    dplyr::arrange(merging_index) %>%
+    dplyr::select(-merging_index)
+
+
+
+  columns_to_replace <- which(colnames(data) %in% conversion_tibble$survey_value)
+  columns_to_add <- which(colnames(result) %in% conversion_tibble$conversion)
+
+  location_to_insert <- min(columns_to_replace)
+  if (location_to_insert > 1) {
+    location_to_insert <- location_to_insert - 1
+  }
+
+  data <- data[-columns_to_replace]
+  data <- data %>% tibble::add_column(result[columns_to_add], .after = location_to_insert)
+
+
+  if (by_project == F) {
+    if (remove_id == T) {
+      data$id_rhomis_dataset <- NULL
+    }
+  }
+  return(data)
+}
 
 #' Proportions for individual proportion types
 #'
