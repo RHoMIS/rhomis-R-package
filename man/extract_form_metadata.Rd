@@ -11,7 +11,7 @@ extract_form_metadata(
   projectID,
   formID,
   form_version = 1,
-  draft
+  isDraft
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ To get a list of project, see the
 \item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 
-\item{draft}{Whether or not the form was a draft}
+\item{isDraft}{Whether or not the form was a draft}
 }
 \value{
 

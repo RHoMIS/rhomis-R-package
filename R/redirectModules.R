@@ -817,7 +817,7 @@ read_folder_of_csvs <- function(folder = "./") {
   table_name <- gsub(".csv", "", tables, fixed = T)
   results <- sapply(table_name, function(x) {
     path <- paste0(folder, x, ".csv")
-    readr::read_csv(path)
+    readr::read_csv(path, show_col_types = FALSE)
   }, simplify = F)
 
   return(results)

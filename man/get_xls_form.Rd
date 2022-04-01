@@ -11,7 +11,7 @@ get_xls_form(
   projectID,
   formID,
   form_version = 1,
-  draft = T
+  isDraft = T
 )
 }
 \arguments{
@@ -29,7 +29,7 @@ list of project, see the}
 \item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 
-\item{draft}{Stating whether or not the form is a draft}
+\item{isDraft}{Stating whether or not the form is a draft}
 }
 \value{
 

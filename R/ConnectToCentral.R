@@ -236,40 +236,19 @@ get_forms <- function(central_url, central_email, central_password, projectID) {
 #' @param formID The XML form ID from a specific project
 #' @param form_version The version of the form you are examining. For now
 #' we presume you are looking for the first version of the form
-#' @param draft Stating whether or not the form is a draft
+#' @param isDraft Stating whether or not the form is a draft
 #'
 #' @return
 #' @export
 #'
 #' @examples
-get_xls_form <- function(central_url,
-                         central_email,
-                         central_password,
-                         projectID, formID,
-                         form_version = 1, draft = T) {
-  if (draft == FALSE) {
-    url <- paste0(
-      central_url,
-      "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/versions/",
-      form_version,
-      ".xlsx"
-    )
+get_xls_form <- function(central_url, central_email, central_password, projectID, formID, form_version = 1, isDraft = T) {
+  if (isDraft) {
+    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft.xlsx")
+  } else {
+    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/versions/", form_version, ".xlsx")
   }
 
-  if (draft == TRUE) {
-    url <- paste0(
-      central_url,
-      "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/draft.xlsx"
-    )
-  }
 
 
   file_destination <- tempfile(fileext = ".xls")
@@ -362,36 +341,20 @@ get_xls_survey_file <- function(central_url,
 #' @param formID The XML form ID from a specific project
 #' @param form_version The version of the form you are examining. For now
 #' we presume you are looking for the first version of the form
-#' @param draft Whether or not the form was a draft
+#' @param isDraft Whether or not the form was a draft
 #'
 #' @return
 #' @export
 #'
 #' @examples
-extract_form_metadata <- function(central_url,
-                                  central_email,
-                                  central_password,
-                                  projectID,
-                                  formID,
-                                  form_version = 1,
-                                  draft) {
-  xls_form <- get_xls_form(
-    central_url,
-    central_email,
-    central_password,
-    projectID,
-    formID,
-    form_version,
-    draft
-  )
+extract_form_metadata <- function(central_url, central_email, central_password, projectID, formID, form_version = 1, isDraft) {
+  xls_form <- get_xls_form(central_url, central_email, central_password, projectID, formID, form_version, isDraft)
 
   metadata <- xls_form[c("metadata_variable", "metadata_value")]
-  metadata <- metadata[!is.na(metadata["metadata_variable"]) &
-    !is.na(metadata["metadata_value"]), ]
+  metadata <- metadata[!is.na(metadata["metadata_variable"]) & !is.na(metadata["metadata_value"]), ]
 
   return(metadata)
 }
-
 
 
 #' Get Submissions List
@@ -531,19 +494,13 @@ get_submission_xml <- function(central_url,
 #' "get_projects" function
 #' @param formID The ID of the form containing the submissions you are looking at.
 #' To get the list of forms see the "get_forms" function.
-#' @param draft Whether the form you are submitting to is a draft or not
+#' @param isDraft Whether the form you are submitting to is a draft or not
 #'
 #' @return
 #' @export
 #'
 #' @examples
-submit_xml_data <- function(xml_string,
-                            central_url,
-                            central_email,
-                            central_password,
-                            projectID,
-                            formID,
-                            draft) {
+submit_xml_data <- function(xml_string, central_url, central_email, central_password, projectID, formID, isDraft) {
   deviceID <- uuid::UUIDgenerate()
   instanceID <- uuid::UUIDgenerate()
 
@@ -553,29 +510,11 @@ submit_xml_data <- function(xml_string,
 
   xml_string <- gsub(unknownID, instanceID, xml_string)
 
-  if (draft == TRUE) {
-    url <- paste0(
-      central_url,
-      "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/draft/submissions?deviceID=",
-      deviceID
-    )
+  if (isDraft) {
+    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft/submissions?deviceID=", deviceID)
+  } else {
+    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/submissions?deviceID=", deviceID)
   }
-  if (draft == F) {
-    url <- paste0(
-      central_url,
-      "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/submissions?deviceID=",
-      deviceID
-    )
-  }
-
 
   email_token <- get_email_token(central_url, central_email, central_password)
   central_response <- httr::POST(
@@ -603,7 +542,7 @@ submit_xml_data <- function(xml_string,
 #' @param formID The ID of the form containing the
 #' submissions you are looking at.
 #' To get the list of forms see the "get_forms" function.
-#' @param draft Whether or not the form is a draft or whether it is finalized
+#' @param isDraft Whether or not the form is a draft or whether it is finalized
 #' @param file_destination The location to store temporary files
 #' @param central_test_case Whether or not you are running a test
 #' example to show how data downloads from ODK central work
@@ -612,14 +551,7 @@ submit_xml_data <- function(xml_string,
 #' @export
 #'
 #' @examples
-get_submission_data <- function(central_url,
-                                central_email,
-                                central_password,
-                                projectID,
-                                formID,
-                                draft,
-                                file_destination = NULL,
-                                central_test_case = F) {
+get_submission_data <- function(central_url, central_email, central_password, projectID, formID, isDraft, file_destination = NULL, central_test_case = F) {
   if (central_test_case == F) {
     email_token <- get_email_token(central_url, central_email, central_password)
     if (is.null(file_destination)) {
@@ -627,26 +559,10 @@ get_submission_data <- function(central_url,
     }
 
 
-    if (draft == T) {
-      url <- paste0(
-        central_url,
-        "/v1/projects/",
-        projectID,
-        "/forms/",
-        formID,
-        "/draft/submissions.csv.zip?attachments=false"
-      )
-    }
-
-    if (draft == F) {
-      url <- paste0(
-        central_url,
-        "/v1/projects/",
-        projectID,
-        "/forms/",
-        formID,
-        "/submissions.csv.zip?attachments=false"
-      )
+    if (isDraft) {
+      url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft/submissions.csv.zip?attachments=false")
+    } else {
+      url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/submissions.csv.zip?attachments=false")
     }
 
     central_response <- httr::GET(
