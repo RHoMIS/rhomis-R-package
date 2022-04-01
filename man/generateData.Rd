@@ -12,7 +12,7 @@ generateData(
   form_name,
   number_of_responses,
   form_version,
-  draft = T
+  isDraft = T
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ generateData(
 
 \item{form_version}{The version of the form to upload}
 
-\item{draft}{Whether or not the form is a draft or finalized}
+\item{isDraft}{Whether or not the form is a draft or finalized}
 }
 \value{
 
