@@ -534,7 +534,7 @@ testthat::test_that("Crop incomes calculated", {
     crop_sold_income_1 = c(NA, 500, 800),
     crop_sold_price_quantityunits_1 = c("other bla_unir", "price_per_bag_50kg", "price_per_quintal"),
     crop_sold_units_numeric_1 = c(NA, "0.02", "0.01"),
-    crop_income_per_year_1 = c(NA, 2000, 8000),
+    crop_income_per_year_1 = c(0, 2000, 8000),
     crop_price_1 = c(NA, 10, 8),
     crop_name_2 = c("wheat", "maize", "millet"),
     crop_yield_2 = c(12, 8, NA),

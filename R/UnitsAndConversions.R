@@ -365,11 +365,11 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
 
     # check that this list of files exists in the base_folder
     if (paste0(unit_file, ".csv") %in% file_names) {
-      conversions <- readr::read_csv(paste0(base_folder, unit_file, ".csv"), col_types = readr::cols())
+      conversions <- readr::read_csv(paste0(units_folder, unit_file, ".csv"), col_types = readr::cols())
     } else {
 
       # print a warning if the file isn't where it should be
-      warning(paste0("Could not locate  ", unit_file, " in ", base_folder))
+      warning(paste0("Could not locate  ", unit_file, " in ", units_folder))
 
       # need a catch for these two files, because of the extra step in creating a dummy table
       if (unit_file %in% c("crop_name", "livestock_name")) {

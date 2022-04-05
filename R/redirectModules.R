@@ -748,7 +748,9 @@ run_preliminary_calculations <- function(rhomis_data,
   indicator_data$livestock_income_lcu_per_year <- total_livestock_income(rhomis_data)
 
 
-  if (!is.null(indicator_data$crop_income_lcu_per_year) & !is.null(indicator_data$livestock_income_lcu_per_year) & "offfarm_income_proportion" %in% colnames(rhomis_data)) {
+  if (!is.null(indicator_data$crop_income_lcu_per_year) & !is.null(indicator_data$livestock_income_lcu_per_year) & 
+  "offfarm_income_proportion" %in% colnames(rhomis_data)&
+  "offfarm_incomes_any" %in% colnames(rhomis_data)) {
     total_and_off_farm_income <- total_and_off_farm_incomes(rhomis_data,
       total_crop_income = indicator_data$crop_income_lcu_per_year,
       total_livestock_income = indicator_data$livestock_income_lcu_per_year

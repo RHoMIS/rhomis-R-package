@@ -23,6 +23,10 @@ price_per_livestock <- function(data) {
   income_data <- data[income_columns]
   income_data <- income_data %>% dplyr::mutate_all(as.numeric)
 
+  income_data[sold_data==0] <- 0
+
+    data[income_columns] <- income_data
+
 
   livestock_sale_prices <- income_data / sold_data
   colnames(livestock_sale_prices) <- price_columns
@@ -246,8 +250,8 @@ meat_prices <- function(data) {
   sold_amount_data <- data[sold_amount_columns]
   sold_amount_data <- sold_amount_data %>% dplyr::mutate_all(as.numeric)
 
-
-
+sold_income_data[sold_amount_data==0] <- 0
+data[sold_income_columns] <- sold_income_data
 
   price_data <- sold_income_data / sold_amount_data
   colnames(price_data) <- price_columns
@@ -527,6 +531,8 @@ milk_income_calculations <- function(data, unit_conv_tibble = NULL) {
 
   milk_income_per_year <- tibble::as_tibble(milk_sold_income_data * milk_income_conversions)
   colnames(milk_income_per_year) <- paste0("milk_sold_income_per_year", "_", c(1:number_of_loops))
+
+milk_income_per_year[milk_sold_amount_data==0] <- 0  
 
   data <- add_column_after_specific_column(
     data = data,
@@ -822,6 +828,10 @@ egg_income_calculations <- function(data,
   total_income <- units_converted * income_data %>%
     tibble::as_tibble()
   colnames(total_income) <- paste0("eggs_income_per_year", "_", c(1:number_of_loops))
+
+  if (all(amount_sold_columns %in% colnames(data))) {
+total_income[amount_sold_data==0] <- 0
+  }
 
   data <- add_column_after_specific_column(
     data = data,
@@ -1690,6 +1700,8 @@ honey_income_calculations <- function(data) {
     income_data <- data[income_columns]
     income_data <- income_data %>% dplyr::mutate_all(as.numeric)
 
+    income_data[sold_data==0] <- 0
+    data[income_columns] <- income_data 
 
     bees_honey_prices <- income_data / sold_data
     colnames(bees_honey_prices) <- price_columns

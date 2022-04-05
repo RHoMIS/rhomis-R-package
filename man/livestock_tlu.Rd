@@ -7,7 +7,7 @@
 livestock_tlu(
   data,
   livestock_name_conversion_tibble,
-  livestock_tlu_conversion_tibble
+  livestock_tlu_conversion_tibble = livestock_tlu_conversions
 )
 }
 \arguments{
