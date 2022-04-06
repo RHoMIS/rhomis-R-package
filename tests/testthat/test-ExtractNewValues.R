@@ -63,6 +63,7 @@ testthat::test_that("Can extract units for core RHoMIS data", {
         crop_price_quantityunits_other_2 = c(NA, "crop_price_2"),
         crop_price_quantityunits_other_3 = c(NA, "crop_price_3"),
         crop_price_quantityunits_other_4 = c(NA, NA),
+        livestock_heads_weird_animal = c(NA, NA),
         unitland = c("acre", NA),
         areaunits_other = c("area1", "area2"),
         unitland_owned = c("unitland1", "unitland2"),
@@ -97,7 +98,7 @@ testthat::test_that("Can extract units for core RHoMIS data", {
     expected_result <- c(list(
         "country" = c("vietnam", "new-zealand"),
         "crop_name" = c("maize", "cassava", "cucumber", NA),
-        "livestock_name" = c("cow", "chicken", "pig", NA),
+        "livestock_name" = c("cow", "chicken", "pig", NA, "weird_animal"),
         "crop_yield_units" = c("kg", "sacks", "wheelbarrow"),
         "crop_sold_price_quantityunits" = c("price1", "price2", "price3", "crop_price_1", "crop_price_2", "crop_price_3"),
         "unitland" = c("acre", "unitland1", "unitland2", "renty1", "renty2", "rent1", "rent5", NA, "area1", "area2"),

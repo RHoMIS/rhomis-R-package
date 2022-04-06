@@ -1122,20 +1122,75 @@ testthat::test_that("Can correctly calculate the price of honey per litre", {
     testthat::expect_equal(actual_result, expected_result)
 })
 
+testthat::test_that("Can swap livestock heads other, with the name of the livestock_heads", {
+    data <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y"),
+            "livestock_other1" = c("first_other_animal", "sheep", NA, "third_other_animal"),
+            "livestock_other2" = c("fourth_other_animal", NA, "fifth_other_animal", NA),
+            "livestock_other3" = c("sixth_other_animal", "seventh_other_animal", "first_other_animal", NA),
+            "column_x" = c(NA, NA, NA, NA),
+            "livestock_heads_sheep" = c("3", "4", NA, "5"),
+            "livestock_heads_goats" = c(2, 1, 10, NA),
+            "livestock_head_animal_with_no_conversion" = c(NA, NA, NA, NA),
+            "livestock_heads_another_animal_with_no_conversion" = c(2, 1, 10, NA),
+            "livestock_heads_other_lstk" = c(1, 2, 1, NA),
+            "livestock_heads_other2_lstk" = c(NA, NA, 100, 4),
+            "livestock_heads_other3_lstk" = c(NA, 4, 3, 3)
+        )
+    )
+
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y"),
+            "livestock_other1" = c("first_other_animal", "sheep", NA, "third_other_animal"),
+            "livestock_other2" = c("fourth_other_animal", NA, "fifth_other_animal", NA),
+            "livestock_other3" = c("sixth_other_animal", "seventh_other_animal", "first_other_animal", NA),
+            "livestock_heads_sheep" = c(3, 6, NA, 5),
+            "livestock_heads_goats" = c(2, 1, 10, NA),
+            "livestock_heads_another_animal_with_no_conversion" = c(2, 1, 10, NA),
+            "livestock_heads_first_other_animal" = c(1, NA, 3, NA),
+            "livestock_heads_third_other_animal" = as.numeric(c(NA, NA, NA, NA)),
+            "livestock_heads_fourth_other_animal" = as.numeric(c(NA, NA, NA, NA)),
+            "livestock_heads_fifth_other_animal" = c(NA, NA, 100, NA),
+            "livestock_heads_sixth_other_animal" = as.numeric(c(NA, NA, NA, NA)),
+            "livestock_heads_seventh_other_animal" = c(NA, 4, NA, NA),
+            "column_x" = c(NA, NA, NA, NA),
+            "livestock_head_animal_with_no_conversion" = c(NA, NA, NA, NA)
+        )
+    )
+
+    actual_result <- swap_livestock_heads_other(data)
+
+    testthat::expect_equal(actual_result, expected_result)
+})
+
 testthat::test_that("Can correctly clean livestock heads columns", {
-    livestock_name_conversion <- tibble::as_tibble(list(
+    livestock_name_conversion_tibble <- tibble::as_tibble(list(
         "id_rhomis_dataset" = c(
-            "x",
-            "x",
             "y",
-            "x",
             "y",
             "x",
             "x",
             "y",
-            "x"
+            "x",
+            "x",
+            "x",
+            "x",
+            "y",
+            "y",
+            "x",
+            "y",
+            "x",
+            "y"
         ),
         "survey_value" = c(
+            "sheep",
+            "goats",
+            "sheep",
+            "goats",
+            "animal_with_no_conversion",
+            "another_animal_with_no_conversion",
             "first_other_animal",
             "second_other_animal",
             "third_other_animal",
@@ -1143,10 +1198,16 @@ testthat::test_that("Can correctly clean livestock heads columns", {
             "fifth_other_animal",
             "sixth_other_animal",
             "seventh_other_animal",
-            "eight_other_animal",
+            "eighth_other_animal",
             "ninth_other_animal"
         ),
         "conversion" = c(
+            "sheep",
+            "goats",
+            "sheep",
+            "goats",
+            NA,
+            NA,
             "first_other_animal_converted",
             "second_other_animal_converted",
             "third_other_animal_converted",
@@ -1154,7 +1215,7 @@ testthat::test_that("Can correctly clean livestock heads columns", {
             "sheep",
             "sixth_other_animal",
             "seventh_other_animal",
-            "eight_other_animal",
+            "eighth_other_animal",
             "ninth_other_animal"
         )
     ))
@@ -1163,11 +1224,11 @@ testthat::test_that("Can correctly clean livestock heads columns", {
             "id_rhomis_dataset" = c("x", "x", "y", "y"),
             "livestock_other1" = c("first_other_animal", "second_other_animal", NA, "third_other_animal"),
             "livestock_other2" = c("fourth_other_animal", NA, "fifth_other_animal", NA),
-            "livestock_other3" = c("sixth_other_animal", "seventh_other_animal", "eight_other_animal", NA),
+            "livestock_other3" = c("sixth_other_animal", "seventh_other_animal", "eighth_other_animal", NA),
             "column_x" = c(NA, NA, NA, NA),
             "livestock_heads_sheep" = c("3", "4", NA, "5"),
             "livestock_heads_goats" = c(2, 1, 10, NA),
-            "livestock_head_animal_with_no_conversion" = c(NA, NA, NA, NA),
+            "livestock_heads_animal_with_no_conversion" = c(NA, NA, NA, NA),
             "livestock_heads_another_animal_with_no_conversion" = c(2, 1, 10, NA),
             "livestock_heads_other_lstk" = c(1, 2, 1, NA),
             "livestock_heads_other2_lstk" = c(NA, NA, 100, 4),
@@ -1180,20 +1241,26 @@ testthat::test_that("Can correctly clean livestock heads columns", {
             "id_rhomis_dataset" = c("x", "x", "y", "y"),
             "livestock_other1" = c("first_other_animal", "second_other_animal", NA, "third_other_animal"),
             "livestock_other2" = c("fourth_other_animal", NA, "fifth_other_animal", NA),
-            "livestock_other3" = c("sixth_other_animal", "seventh_other_animal", "eight_other_animal", NA),
-            "column_x" = c(NA, NA, NA, NA),
-            "livestock_heads_sheep" = c("3", "4", NA, "5"),
+            "livestock_other3" = c("sixth_other_animal", "seventh_other_animal", "eighth_other_animal", NA),
+            "livestock_heads_sheep" = c(3, 4, 100, 5),
             "livestock_heads_goats" = c(2, 1, 10, NA),
-            "livestock_head_animal_with_no_conversion" = c(NA, NA, NA, NA),
-            "livestock_heads_another_animal_with_no_conversion" = c(2, 1, 10, NA),
-            "livestock_heads_other_lstk" = c(1, 2, 1, NA),
-            "livestock_heads_other2_lstk" = c(NA, NA, 100, 4),
-            "livestock_heads_other3_lstk" = c(NA, 4, NA, 3)
+            "livestock_heads_first_other_animal_converted" = c(1, NA, NA, NA),
+            "livestock_heads_second_other_animal_converted" = c(NA, 2, NA, NA),
+            "livestock_heads_third_other_animal_converted" = as.numeric(c(NA, NA, NA, NA)),
+            "livestock_heads_sixth_other_animal" = as.numeric(c(NA, NA, NA, NA)),
+            "livestock_heads_eighth_other_animal" = as.numeric(c(NA, NA, NA, NA)),
+            "livestock_heads_seventh_other_animal" = c(NA, 4, NA, NA),
+            "livestock_heads_fourth_other_animal_converted" = as.numeric(c(NA, NA, NA, NA)),
+            "column_x" = c(NA, NA, NA, NA)
         )
     )
+
+    actual_result <- clean_tlu_column_names(data, livestock_name_conversion_tibble)
+
+    testthat::expect_equal(actual_result, expected_result)
 })
 
 
-testthat::test_that("Can calculate TLU values for livestock", {
+testthat::test_that("Can calculate TLUS", {
 
 })

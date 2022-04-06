@@ -179,7 +179,14 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
 
   project_data <- data[data$id_rhomis_dataset == id_rhomis_dataset, ]
   project_conversion_tibble <- conversion_tibble[conversion_tibble$id_rhomis_dataset == id_rhomis_dataset, ]
+  project_conversion_tibble <- project_conversion_tibble[project_conversion_tibble$survey_value %in% colnames(project_data), ]
 
+  if (any(is.na(project_conversion_tibble$conversion))) {
+    categories_to_remove <- project_conversion_tibble$survey_value[is.na(project_conversion_tibble$conversion)]
+
+    project_data <- project_data[colnames(project_data) %in% categories_to_remove == F]
+    project_conversion_tibble <- project_conversion_tibble[!is.na(project_conversion_tibble$conversion), ]
+  }
   # Loop through the converted values
   new_data_set <- sapply(unique(project_conversion_tibble$conversion), function(converted_value) {
 

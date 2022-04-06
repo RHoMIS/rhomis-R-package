@@ -23,9 +23,9 @@ price_per_livestock <- function(data) {
   income_data <- data[income_columns]
   income_data <- income_data %>% dplyr::mutate_all(as.numeric)
 
-  income_data[sold_data==0] <- 0
+  income_data[sold_data == 0] <- 0
 
-    data[income_columns] <- income_data
+  data[income_columns] <- income_data
 
 
   livestock_sale_prices <- income_data / sold_data
@@ -250,8 +250,8 @@ meat_prices <- function(data) {
   sold_amount_data <- data[sold_amount_columns]
   sold_amount_data <- sold_amount_data %>% dplyr::mutate_all(as.numeric)
 
-sold_income_data[sold_amount_data==0] <- 0
-data[sold_income_columns] <- sold_income_data
+  sold_income_data[sold_amount_data == 0] <- 0
+  data[sold_income_columns] <- sold_income_data
 
   price_data <- sold_income_data / sold_amount_data
   colnames(price_data) <- price_columns
@@ -532,7 +532,7 @@ milk_income_calculations <- function(data, unit_conv_tibble = NULL) {
   milk_income_per_year <- tibble::as_tibble(milk_sold_income_data * milk_income_conversions)
   colnames(milk_income_per_year) <- paste0("milk_sold_income_per_year", "_", c(1:number_of_loops))
 
-milk_income_per_year[milk_sold_amount_data==0] <- 0  
+  milk_income_per_year[milk_sold_amount_data == 0] <- 0
 
   data <- add_column_after_specific_column(
     data = data,
@@ -830,7 +830,7 @@ egg_income_calculations <- function(data,
   colnames(total_income) <- paste0("eggs_income_per_year", "_", c(1:number_of_loops))
 
   if (all(amount_sold_columns %in% colnames(data))) {
-total_income[amount_sold_data==0] <- 0
+    total_income[amount_sold_data == 0] <- 0
   }
 
   data <- add_column_after_specific_column(
@@ -1700,8 +1700,8 @@ honey_income_calculations <- function(data) {
     income_data <- data[income_columns]
     income_data <- income_data %>% dplyr::mutate_all(as.numeric)
 
-    income_data[sold_data==0] <- 0
-    data[income_columns] <- income_data 
+    income_data[sold_data == 0] <- 0
+    data[income_columns] <- income_data
 
     bees_honey_prices <- income_data / sold_data
     colnames(bees_honey_prices) <- price_columns
@@ -1769,98 +1769,152 @@ livestock_tlu <- function(data,
 #' @example
 clean_tlu_column_names <- function(data,
                                    livestock_name_conversion_tibble) {
-  if ("livestock_heads_other_lstk" %in% colnames(data) == F) {
+  if ("id_rhomis_dataset" %in% colnames(livestock_name_conversion_tibble) == F) {
+    livestock_name_conversion_tibble <- make_per_project_conversion_tibble(data[["id_rhomis_dataset"]], livestock_name_conversion_tibble)
+  }
+
+  data <- swap_livestock_heads_other(data)
+  livestock_heads_data <- data[grepl("livestock_heads_", colnames(data)) | colnames(data) == "id_rhomis_dataset"]
+  colnames(livestock_heads_data) <- gsub("livestock_heads_", "", colnames(livestock_heads_data))
+
+  livestock_heads_data_merged <- switch_column_names_and_merge_categories(livestock_heads_data,
+    conversion_tibble = livestock_name_conversion_tibble,
+    by_project = T
+  )
+
+  livestock_heads_data_merged <- livestock_heads_data_merged[colnames(livestock_heads_data_merged) != "id_rhomis_dataset"]
+  colnames(livestock_heads_data_merged) <- paste0("livestock_heads_", colnames(livestock_heads_data_merged))
+
+  data <- data[grepl("livestock_heads_", colnames(data)) == F]
+
+  # Finding the position to add the new livestock heads dataset
+  position_to_add <- which(colnames(data) %in% c("livestock_other1", "livestock_other2", "livestock_other3")) %>%
+    max()
+
+  column_to_add <- colnames(data)[position_to_add]
+  data <- add_column_after_specific_column(
+    data,
+    livestock_heads_data_merged,
+    old_column_name = column_to_add,
+    loop_structure = F
+  )
+
+  return(data)
+}
+
+#' Swap Livestock Heads With Other
+#'
+#' TLU column names include options for
+#' "other", this is not interperatable or
+#' easy to use for analysis. This function addresses
+#' this
+#' @param data A rhomis dataset
+#'
+#' @return
+#' @export
+#'
+#' @example
+swap_livestock_heads_other <- function(data) {
+  number_of_livestock_other <- length(grep("livestock_other[[:digit:]]", colnames(data)))
+  number_of_livestock_heads_other <- length(grep("livestock_heads_other", colnames(data)))
+
+  if (number_of_livestock_other != number_of_livestock_heads_other & number_of_livestock_heads_other > 0) {
+    stop("Number of 'other' livestock, and number of 'other' livestock heads do not match")
+  }
+
+  if (number_of_livestock_heads_other == 0) {
     return(data)
   }
 
-  colnames(data)[colnames(data) == "livestock_heads_other_lstk"] <- "livestock_heads_other1_lstk"
+  if (number_of_livestock_other < number_of_livestock_heads_other) {
+    warning("Unable to convert all livestock heads to TLU, cannot convert all 'other' livestock")
+    return(data)
+  }
+
+  if ("livestock_heads_other_lstk" %in% colnames(data)) {
+    colnames(data)[colnames(data) == "livestock_heads_other_lstk"] <- "livestock_heads_other1_lstk"
+  }
+
+  livestock_other_columns <- paste0("livestock_other", c(1:number_of_livestock_other))
+  livestock_heads_other_columns <- paste0("livestock_heads_other", c(1:number_of_livestock_other), "_lstk")
 
   # Dealing with the Livestock Others data
   # Widening data with Others
+  # This was a little rushed and could do with refactoring
   data_to_widen <- data[colnames(data) %in% c(
     "id_rhomis_dataset",
-    "livestock_other1",
-    "livestock_heads_other1_lstk",
-    "livestock_other2",
-    "livestock_heads_other2_lstk",
-    "livestock_other3",
-    "livestock_heads_other3_lstk"
+    livestock_other_columns,
+    livestock_heads_other_columns
   )]
 
-  colnames(data_to_widen) <- gsub("livestock_other1", "livestock_heads_other_1", colnames(data_to_widen))
-  colnames(data_to_widen) <- gsub("livestock_other2", "livestock_heads_other_2", colnames(data_to_widen))
-  colnames(data_to_widen) <- gsub("livestock_other3", "livestock_heads_other_3", colnames(data_to_widen))
-  colnames(data_to_widen) <- gsub("livestock_heads_other1_lstk", "livestock_heads_other_lstk_1", colnames(data_to_widen))
-  colnames(data_to_widen) <- gsub("livestock_heads_other2_lstk", "livestock_heads_other_lstk_2", colnames(data_to_widen))
-  colnames(data_to_widen) <- gsub("livestock_heads_other3_lstk", "livestock_heads_other_lstk_3", colnames(data_to_widen))
+  # Substitute "other" columns into the correct format
+  colnames(data_to_widen) <- gsub("(livestock_other)([[:digit:]])", "\\1_\\2", colnames(data_to_widen))
+  colnames(data_to_widen) <- gsub("(livestock_heads_other)([[:digit:]])(_lstk)", "\\1\\3_\\2", colnames(data_to_widen))
+
 
   names_to_convert <- c("livestock_heads_other_1", "livestock_heads_other_2", "livestock_heads_other_3")
 
-  data_to_widen[colnames(data_to_widen) %in% names_to_convert] <- switch_units(data_to_widen[names_to_convert],
-    unit_tibble = livestock_name_conversion_tibble,
-    id_vector = data_to_widen[["id_rhomis_dataset"]]
-  )
+  # data_to_widen[colnames(data_to_widen) %in% names_to_convert] <- switch_units(data_to_widen[names_to_convert],
+  #   unit_tibble = livestock_name_conversion_tibble,
+  #   id_vector = data_to_widen[["id_rhomis_dataset"]]
+  # )
 
-  data_widened <- map_to_wide_format(data_to_widen, name_column = "livestock_heads_other", column_prefixes = "livestock_heads_other_lstk", types = c("num"))[[1]]
+  data_widened <- map_to_wide_format(
+    data = data_to_widen,
+    name_column = "livestock_other",
+    column_prefixes = "livestock_heads_other_lstk",
+    types = c("num")
+  )[[1]]
 
 
   livestock_heads_data <- data[grep("livestock_heads", colnames(data))]
 
-  colnames(livestock_heads_data) <- gsub("livestock_heads_", "", colnames(livestock_heads_data))
-  colnames(data_widened) <- gsub("livestock_heads_", "", colnames(data_widened))
+  colnames(data_widened) <- paste0("livestock_heads_", colnames(data_widened))
 
   livestock_heads_data <- livestock_heads_data %>% dplyr::mutate_all(as.numeric)
   data_widened <- data_widened %>% dplyr::mutate_all(as.numeric)
 
+  # Checking for duplicated column names, and adding them together where they exist
   if (any(colnames(livestock_heads_data) %in% colnames(data_widened))) {
+    # Loop through columns in livestock heads data
     livestock_heads_data <- lapply(colnames(livestock_heads_data), function(x) {
+      # if column is in livestock heads data
       if (x %in% colnames(livestock_heads_data) & x %in% colnames(data_widened)) {
-        vector_to_modify <- as.numeric(livestock_heads_data[[x]])
+        column_1 <- as.numeric(livestock_heads_data[[x]])
+        column_2 <- as.numeric(data_widened[[x]])
+        final_vector <- column_1
+        # Where column 1 is not NA, and column 2 is na, select the column1 value
+        final_vector[!is.na(column_1) & is.na(column_2)] <- column_1[!is.na(column_1) & is.na(column_2)]
+        # Where column 1 is NA, and column 2 is not na, select the column2 value
+        final_vector[is.na(column_1) & !is.na(column_2)] <- column_2[is.na(column_1) & !is.na(column_2)]
+        # Where column 1 is not NA, and column 2 is not na, add their values
+        final_vector[!is.na(column_1) & !is.na(column_2)] <- column_1[!is.na(column_1) & !is.na(column_2)] + column_2[!is.na(column_1) & !is.na(column_2)]
 
-        vector_to_modify[is.na(vector_to_modify)] <- as.numeric(data_widened[[x]][is.na(vector_to_modify)])
-        livestock_heads_data[[x]] <- vector_to_modify
+        livestock_heads_data[[x]] <- final_vector
       }
       return(livestock_heads_data[x])
     }) %>% dplyr::bind_cols()
-
+    # Remove the duplicated columns
     data_widened <- data_widened[colnames(data_widened) %in% colnames(livestock_heads_data) == F]
   }
 
   livestock_heads_data <- dplyr::bind_cols(livestock_heads_data, data_widened)
+  livestock_heads_data <- livestock_heads_data[grepl("livestock_heads_other[[:digit:]]_lstk", colnames(livestock_heads_data)) == F]
 
+  # Removing old livestock_heads columns from data
   data <- data[grepl("livestock_heads_", colnames(data)) == F]
 
-  if ("livestock_other3" %in% colnames(data)) {
-    data <- add_column_after_specific_column(
-      data,
-      livestock_heads_data,
-      old_column_name = "livestock_other3",
-      loop_structure = F
-    )
-    return(data)
-  }
-  if ("livestock_other2" %in% colnames(data)) {
-    data <- add_column_after_specific_column(
-      data,
-      livestock_heads_data,
-      old_column_name = "livestock_other2",
-      loop_structure = F
-    )
-    return(data)
-  }
+  # Finding the position to add the new livestock heads dataset
+  position_to_add <- which(colnames(data) %in% c("livestock_other1", "livestock_other2", "livestock_other3")) %>%
+    max()
+
+  column_to_add <- colnames(data)[position_to_add]
   data <- add_column_after_specific_column(
     data,
     livestock_heads_data,
-    old_column_name = "livestock_other1",
+    old_column_name = column_to_add,
     loop_structure = F
   )
-
-
-
-  livesto
-
-
-
 
   return(data)
 }
