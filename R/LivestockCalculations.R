@@ -1725,16 +1725,13 @@ honey_income_calculations <- function(data) {
 #' @param data RHoMIS processed dataset
 #' @param livestock_name_conversion_tibble A tibble
 #' of conversions for livestock names
-#' @param livestock_tlu_conversion_tibble A tibble
-#' of conversions for livestock TLU values
 #'
 #' @return
 #' @export
 #'
 #' @example
 livestock_tlu <- function(data,
-                          livestock_name_conversion_tibble,
-                          livestock_tlu_conversion_tibble = livestock_tlu_conversions) {
+                          livestock_name_conversion_tibble) {
   livestock_heads_columns <- grep("livestock_heads_", colnames(data), value = T)
 
   if (length(livestock_heads_columns) == 0) {
@@ -1742,12 +1739,41 @@ livestock_tlu <- function(data,
     return(data)
   }
 
+
+
   # Replacing livestock_heads_other column
   # so that all of the column names have
   # a consistent format
   # livestock_heads_other1_lstk
   # livestock_heads_other2_lstk
   # livestock_heads_other3_lstk...
+  data <- clean_tlu_column_names(data, livestock_name_conversion_tibble)
+
+  livestock_heads_data <- data[grepl("livestock_heads_", colnames(data)) |
+    colnames(data) == "id_rhomis_dataset"]
+  colnames(livestock_heads_data) <- gsub("livestock_heads_", "", colnames(livestock_heads_data))
+
+  tlu_conversion_tibble <- make_per_project_conversion_tibble(
+    livestock_heads_data[["id_rhomis_dataset"]],
+    livestock_tlu_conversions
+  )
+
+
+  tlu_data <- apply_conversion_factor_to_columns_multiple_projects(livestock_heads_data, tlu_conversion_tibble)
+  tlu_data["id_rhomis_dataset"] <- NULL
+
+  na_values <- rowSums(is.na(tlu_data)) == ncol(tlu_data)
+
+  tlu_total <- rowSums(tlu_data, na.rm = T)
+  tlu_total[na_values] <- NA
+
+
+  if ("livestock_owners" %in% colnames(data)) {
+    tlu_zeros <- tolower(data[["livestock_owners"]]) == "n"
+    tlu_total[tlu_zeros] <- 0
+  }
+
+  return(tlu_total)
 }
 
 
@@ -1816,7 +1842,10 @@ clean_tlu_column_names <- function(data,
 #' @example
 swap_livestock_heads_other <- function(data) {
   number_of_livestock_other <- length(grep("livestock_other[[:digit:]]", colnames(data)))
-  number_of_livestock_heads_other <- length(grep("livestock_heads_other", colnames(data)))
+
+  other_columns <- colnames(data)[grepl("livestock_heads_other_", colnames(data)) |
+    grepl("livestock_heads_other[[:digit:]]", colnames(data))]
+  number_of_livestock_heads_other <- length(other_columns)
 
   if (number_of_livestock_other != number_of_livestock_heads_other & number_of_livestock_heads_other > 0) {
     stop("Number of 'other' livestock, and number of 'other' livestock heads do not match")

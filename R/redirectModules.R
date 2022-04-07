@@ -664,7 +664,15 @@ run_preliminary_calculations <- function(rhomis_data,
     warning("No extra outputs generated for livestock loops")
   }
 
+  # Livestock TLU
 
+  livestock_heads_columns <- grep("livestock_heads_", colnames(rhomis_data))
+
+  if (length(livestock_heads_columns) == 0) {
+    warning("Unable to calculate livestock TLU, no 'livestock_heads' columns")
+  } else {
+    indicator_data$livestock_tlu <- livestock_tlu(rhomis_data, livestock_name_conversions)
+  }
 
   ###############
   # Demographics
@@ -748,9 +756,9 @@ run_preliminary_calculations <- function(rhomis_data,
   indicator_data$livestock_income_lcu_per_year <- total_livestock_income(rhomis_data)
 
 
-  if (!is.null(indicator_data$crop_income_lcu_per_year) & !is.null(indicator_data$livestock_income_lcu_per_year) & 
-  "offfarm_income_proportion" %in% colnames(rhomis_data)&
-  "offfarm_incomes_any" %in% colnames(rhomis_data)) {
+  if (!is.null(indicator_data$crop_income_lcu_per_year) & !is.null(indicator_data$livestock_income_lcu_per_year) &
+    "offfarm_income_proportion" %in% colnames(rhomis_data) &
+    "offfarm_incomes_any" %in% colnames(rhomis_data)) {
     total_and_off_farm_income <- total_and_off_farm_incomes(rhomis_data,
       total_crop_income = indicator_data$crop_income_lcu_per_year,
       total_livestock_income = indicator_data$livestock_income_lcu_per_year

@@ -1262,5 +1262,93 @@ testthat::test_that("Can correctly clean livestock heads columns", {
 
 
 testthat::test_that("Can calculate TLUS", {
+    livestock_name_conversion_tibble <- tibble::as_tibble(list(
+        "id_rhomis_dataset" = c(
+            "y",
+            "y",
+            "x",
+            "x",
+            "y",
+            "x",
+            "x",
+            "x",
+            "x",
+            "y",
+            "y",
+            "x",
+            "y",
+            "y",
+            "y"
+        ),
+        "survey_value" = c(
+            "sheep",
+            "goats",
+            "sheep",
+            "goats",
+            "animal_with_no_conversion",
+            "another_animal_with_no_conversion",
+            "first_other_animal",
+            "second_other_animal",
+            "third_other_animal",
+            "fourth_other_animal",
+            "fifth_other_animal",
+            "sixth_other_animal",
+            "seventh_other_animal",
+            "eighth_other_animal",
+            "ninth_other_animal"
+        ),
+        "conversion" = c(
+            "sheep",
+            "goats",
+            "sheep",
+            "goats",
+            NA,
+            NA,
+            "sheep",
+            "goats",
+            "cattle",
+            "buffalo",
+            "sheep",
+            "cattle",
+            "pigs",
+            "chickens",
+            "otherpoultry"
+        )
+    ))
+    data <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "y"),
+            "livestock_owners" = c("y", "y", "y", "y", "n"),
+            "livestock_other1" = c("first_other_animal", "second_other_animal", NA, "third_other_animal", NA),
+            "livestock_other2" = c("fourth_other_animal", NA, "fifth_other_animal", NA, NA),
+            "livestock_other3" = c("sixth_other_animal", "seventh_other_animal", "eighth_other_animal", NA, NA),
+            "column_x" = c(NA, NA, NA, NA, NA),
+            "livestock_heads_sheep" = c("3", "4", NA, "5", NA),
+            "livestock_heads_goats" = c(2, 1, 10, NA, NA),
+            "livestock_heads_animal_with_no_conversion" = c(NA, NA, NA, NA, NA),
+            "livestock_heads_another_animal_with_no_conversion" = c(2, 1, 10, NA, NA),
+            "livestock_heads_other_lstk" = c(1, 2, 1, NA, NA),
+            "livestock_heads_other2_lstk" = c(NA, NA, 100, 4, NA),
+            "livestock_heads_other3_lstk" = c(NA, 4, NA, 3, NA)
+        )
+    )
 
+    household_1 <- (4 * 0.1) + # 4 sheep
+        +(2 * 0.1) # 2 goats
+
+    household_2 <- (4 * 0.1) + # 4 Sheep
+        (3 * 0.1) # 3 Goats
+
+    household_3 <- (100 * 0.1) + # 100 sheep
+        (10 * 0.1) # 10 goats
+
+    household_4 <- (5 * 0.1)
+
+    household_5 <- 0
+
+    expected_result <- c(household_1, household_2, household_3, household_4, household_5)
+
+    actual_result <- livestock_tlu(data, livestock_name_conversion_tibble)
+
+    testthat::expect_equal(actual_result, expected_result)
 })

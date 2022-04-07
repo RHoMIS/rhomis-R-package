@@ -340,7 +340,7 @@ apply_conversion_factor_to_columns <- function(data,
 
   data_to_convert <- sapply(colnames(data_to_convert), function(column_name) {
     zeroes <- data_to_convert[[column_name]] == 0
-    converted_column <- data_to_convert[[column_name]] * project_conversion_tibble[[column_name]][1]
+    converted_column <- as.numeric(unlist(data_to_convert[[column_name]])) * as.numeric(unlist(project_conversion_tibble[[column_name]][1]))
     converted_column[zeroes] <- 0
     return(converted_column)
   }) %>% tibble::as_tibble()
