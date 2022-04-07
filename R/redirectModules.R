@@ -766,7 +766,9 @@ run_preliminary_calculations <- function(rhomis_data,
   missing_off_farm_columns <- check_columns_in_data(rhomis_data,
     loop_columns = off_farm_columns
   )
-  if (length(missing_off_farm_columns) >= 0 & length(missing_off_farm_columns) < length(off_farm_columns) & "offfarm_income_name" %in% missing_off_farm_columns == F) {
+  if (length(missing_off_farm_columns) >= 0 &
+    length(missing_off_farm_columns) < length(off_farm_columns) &
+    "offfarm_income_name" %in% missing_off_farm_columns == F) {
     columns_to_widen <- off_farm_columns[off_farm_columns %in% missing_off_farm_columns == F]
     off_farm_data <- map_to_wide_format(
       data = rhomis_data,
@@ -781,7 +783,8 @@ run_preliminary_calculations <- function(rhomis_data,
     })
   }
 
-  if (length(missing_off_farm_columns) == length(off_farm_columns)) {
+  if (length(missing_off_farm_columns) == length(off_farm_columns) |
+    "offfarm_income_name" %in% missing_off_farm_columns) {
     off_farm_data <- NULL
     warning("No extra outputs generated for off-farm loops")
   }
