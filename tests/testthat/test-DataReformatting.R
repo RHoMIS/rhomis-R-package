@@ -278,3 +278,101 @@ testthat::test_that("Can merge categories for multiple projects", {
 
     testthat::expect_equal(actual_result, expected_result)
 })
+
+
+testthat::test_that("Can apply conversion factors to column of a single project", {
+    conversion_tibble <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "x", "y", "y", "y"),
+            "survey_value" = c("sheep", "young_sheep", "cattle", "sheep", "young_sheep", "cattle"),
+            "conversion" = c("2", "1", NA, "4", "3", "0")
+        )
+    )
+    # Test dataset
+    data <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "x"),
+            "sheep" = c(1, 2, NA, NA, NA),
+            "young_sheep" = c(3, NA, 6, 7, NA),
+            "cattle" = c(1, 0, 3, 4, NA),
+            "extra_column_after" = c(NA, NA, NA, 1, 2)
+        )
+    )
+
+    id_rhomis_dataset <- "x"
+
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "x"),
+            "sheep" = c(2, 4, NA),
+            "young_sheep" = c(3, NA, NA),
+            "cattle" = c(NA, 0, NA)
+        )
+    )
+
+    actual_result <- apply_conversion_factor_to_columns(
+        data = data,
+        conversion_tibble = conversion_tibble,
+        id_rhomis_dataset = id_rhomis_dataset
+    )
+
+    testthat::expect_equal(actual_result, expected_result)
+
+
+
+    id_rhomis_dataset <- "y"
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("y", "y"),
+            "sheep" = as.numeric(c(NA, NA)),
+            "young_sheep" = c(18, 21),
+            "cattle" = c(0, 0)
+        )
+    )
+
+
+    actual_result <- apply_conversion_factor_to_columns(
+        data = data,
+        conversion_tibble = conversion_tibble,
+        id_rhomis_dataset = id_rhomis_dataset
+    )
+    testthat::expect_equal(actual_result, expected_result)
+})
+
+testthat::test_that("Can apply conversion factors to columns of multiple projects", {
+    conversion_tibble <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "x", "y", "y", "y"),
+            "survey_value" = c("sheep", "young_sheep", "cattle", "sheep", "young_sheep", "cattle"),
+            "conversion" = c("2", "1", NA, "4", "3", "0")
+        )
+    )
+    # Test dataset
+    data <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "x"),
+            "sheep" = c(1, 2, NA, NA, NA),
+            "young_sheep" = c(3, NA, 6, 7, NA),
+            "cattle" = c(1, 0, 3, 4, NA),
+            "extra_column_after" = c(NA, NA, NA, 1, 2)
+        )
+    )
+
+
+
+    expected_result <- tibble::as_tibble(
+        list(
+            "id_rhomis_dataset" = c("x", "x", "y", "y", "x"),
+            "sheep" = c(2, 4, NA, NA, NA),
+            "young_sheep" = c(3, NA, 18, 21, NA),
+            "cattle" = c(NA, 0, 0, 0, NA)
+        )
+    )
+
+    actual_result <- apply_conversion_factor_to_columns_multiple_projects(
+        data = data,
+        conversion_tibble = conversion_tibble,
+    )
+
+    testthat::expect_equal(actual_result, expected_result)
+})

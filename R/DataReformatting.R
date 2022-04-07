@@ -171,7 +171,7 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
     stop("Cannot merge these data, id_rhomis_dataset not present")
   }
 
-  if (all(c("id_rhomis_dataset", "survey_value", "conversion") %in% colnames(conversion_tibble) == F)) {
+  if (any(c("id_rhomis_dataset", "survey_value", "conversion") %in% colnames(conversion_tibble) == F)) {
     stop("Cannot merge these data, conversion tibble does not contain the correct column names.
     Must contain columns: id_rhomis_dataset, survey_value, and conversion")
   }
@@ -292,6 +292,134 @@ switch_column_names_and_merge_categories <- function(data,
   return(data)
 }
 
+
+#' Apply Conversion Factor to Columns
+#'
+#' Sometimes it can be helpful to apply conversion
+#' factors to a series of columns, for example to
+#' get the calorie values of crops produced. This
+#' function allows us to apply conversion factors
+#' to an individual project.
+#'
+#' @param data A tibble to be converted
+#' @param conversion_tibble The conversion tibble
+#' @param id_rhomis_dataset The id of the project to
+#' be converted
+#'
+#' @return
+#' @export
+#'
+#' @example
+apply_conversion_factor_to_columns <- function(data,
+                                               conversion_tibble,
+                                               id_rhomis_dataset) {
+  if (c("id_rhomis_dataset") %in% colnames(data) == F) {
+    stop("Cannot merge these data, id_rhomis_dataset not present")
+  }
+
+  if (any(c("id_rhomis_dataset", "survey_value", "conversion") %in% colnames(conversion_tibble) == F)) {
+    stop("Cannot merge these data, conversion tibble does not contain the correct column names.
+    Must contain columns: id_rhomis_dataset, survey_value, and conversion")
+  }
+  # Create A new blank dataset
+
+  project_data <- data[data$id_rhomis_dataset == id_rhomis_dataset, ]
+  project_conversion_tibble <- conversion_tibble[conversion_tibble$id_rhomis_dataset == id_rhomis_dataset, ]
+  project_conversion_tibble <- project_conversion_tibble[project_conversion_tibble$survey_value %in% colnames(project_data), ]
+  project_data <- project_data[colnames(project_data) %in% project_conversion_tibble$survey_value | colnames(project_data) == "id_rhomis_dataset"]
+  data_to_convert <- project_data[colnames(project_data) %in% project_conversion_tibble$survey_value]
+
+  data_to_convert <- data_to_convert %>%
+    dplyr::mutate_all(as.numeric)
+
+  project_conversion_tibble$conversion <- as.numeric(project_conversion_tibble$conversion)
+  project_conversion_tibble <- project_conversion_tibble %>%
+    dplyr::select(-id_rhomis_dataset) %>%
+    tidyr::pivot_wider(names_from = survey_value, values_from = conversion)
+  project_conversion_tibble <- project_conversion_tibble[colnames(data_to_convert)]
+
+  data_to_convert <- sapply(colnames(data_to_convert), function(column_name) {
+    zeroes <- data_to_convert[[column_name]] == 0
+    converted_column <- data_to_convert[[column_name]] * project_conversion_tibble[[column_name]][1]
+    converted_column[zeroes] <- 0
+    return(converted_column)
+  }) %>% tibble::as_tibble()
+
+  project_data[colnames(data_to_convert)] <- data_to_convert
+
+  return(project_data)
+}
+
+#' Apply Conversion Factor to Columns Multiple Projects
+#'
+#' Sometimes it can be helpful to apply conversion
+#' factors to a series of columns, for example to
+#' get the calorie values of crops produced. This
+#' function allows us to apply conversion factors
+#' to mulptiple projects.
+#'
+#'
+#' @param data A tibble to be converted
+#' @param conversion_tibble The conversion tibble
+#' @param by_project Whether or not to apply
+#' conversion factors by project
+#' be converted
+#'
+#' @return
+#' @export
+#'
+#' @example
+apply_conversion_factor_to_columns_multiple_projects <- function(data, conversion_tibble, by_project = T) {
+  if ("id_rhomis_dataset" %in% colnames(data) == F) {
+    stop("Cannot merge categories, missing column 'id_rhomis_dataset'")
+  }
+
+  if (any(is.na(data$id_rhomis_dataset))) {
+    warning("Missing ids for rhomis dataset, projects with no ids will be removed")
+  }
+
+  # Making fake ids to work with if do not want to
+  if (by_project == F) {
+    remove_id <- F
+    if ("id_rhomis_dataset" %in% colnames(conversion_tibble) == T) {
+      stop("There are ids in the conversion tibble provided
+      But the argument 'by_project' is False.")
+    }
+    if ("id_rhomis_dataset" %in% colnames(data) == F) {
+      remove_id <- T
+      data$id_rhomis_dataset <- "x"
+    }
+
+    conversion_tibble <- make_per_project_conversion_tibble(data$id_rhomis_dataset, conversion_tibble)
+    conversion_tibble <- conversion_tibble[duplicated(conversion_tibble) == F, ]
+  }
+
+  project_ids <- unique(data$id_rhomis_dataset)
+
+  result <- lapply(project_ids, function(project_id) {
+    indexes <- which(data$id_rhomis_dataset == project_id)
+    result <- apply_conversion_factor_to_columns(
+      data = data,
+      conversion_tibble = conversion_tibble,
+      id_rhomis_dataset = project_id
+    )
+    result$merging_index <- indexes
+    return(result)
+  }) %>%
+    dplyr::bind_rows() %>%
+    dplyr::arrange(merging_index) %>%
+    dplyr::select(-merging_index)
+
+
+
+  if (by_project == F) {
+    if (remove_id == T) {
+      data$id_rhomis_dataset <- NULL
+    }
+  }
+  return(result)
+}
+
 #' Proportions for individual proportion types
 #'
 #' A function for calculating the numeric proportions of crops which are sold,
@@ -346,6 +474,8 @@ proportions_calculation <- function(data, use, use_column, prop_column, loop_num
 
   return(proportions_data)
 }
+
+
 
 
 #' Collapse list of tibbles
