@@ -192,6 +192,11 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
 
     # Find the survey values which match
     columns_to_merge <- project_conversion_tibble$survey_value[project_conversion_tibble$conversion == converted_value]
+
+    if (converted_value %in% columns_to_merge == F & converted_value %in% colnames(project_data)) {
+      columns_to_merge <- c(columns_to_merge, converted_value)
+    }
+
     subset_to_add <- project_data[columns_to_merge]
     result <- rowSums(subset_to_add, na.rm = T)
 
@@ -199,7 +204,8 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
     return(result)
   }, simplify = F) %>% tibble::as_tibble()
 
-  columns_to_replace <- which(colnames(project_data) %in% project_conversion_tibble$survey_value)
+  columns_to_replace <- which(colnames(project_data) %in% project_conversion_tibble$survey_value |
+    colnames(project_data) %in% project_conversion_tibble$conversion)
 
   location_to_insert <- min(columns_to_replace)
   if (location_to_insert > 1) {
@@ -272,7 +278,7 @@ switch_column_names_and_merge_categories <- function(data,
 
 
 
-  columns_to_replace <- which(colnames(data) %in% conversion_tibble$survey_value)
+  columns_to_replace <- which(colnames(data) %in% conversion_tibble$survey_value | colnames(data) %in% conversion_tibble$conversion)
   columns_to_add <- which(colnames(result) %in% conversion_tibble$conversion)
 
   location_to_insert <- min(columns_to_replace)

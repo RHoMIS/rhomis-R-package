@@ -470,7 +470,6 @@ processData <- function( # Arguments to indicate the stage of analysis
         # Load Conversions
         #---------------------------------------------------------------
         if (outputType == "csv") {
-            
             units_folder <- paste0(base_path, "converted_units/")
 
             if (!dir.exists(units_folder)) {
