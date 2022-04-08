@@ -4,20 +4,13 @@
 \alias{livestock_tlu}
 \title{Livestock TLU Calculations}
 \usage{
-livestock_tlu(
-  data,
-  livestock_name_conversion_tibble,
-  livestock_tlu_conversion_tibble = livestock_tlu_conversions
-)
+livestock_tlu(data, livestock_name_conversion_tibble)
 }
 \arguments{
 \item{data}{RHoMIS processed dataset}
 
 \item{livestock_name_conversion_tibble}{A tibble
 of conversions for livestock names}
-
-\item{livestock_tlu_conversion_tibble}{A tibble
-of conversions for livestock TLU values}
 }
 \value{
 
