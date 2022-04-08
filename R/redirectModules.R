@@ -671,6 +671,7 @@ run_preliminary_calculations <- function(rhomis_data,
   if (length(livestock_heads_columns) == 0) {
     warning("Unable to calculate livestock TLU, no 'livestock_heads' columns")
   } else {
+    data <- clean_tlu_column_names(rhomis_data, livestock_name_conversions)
     indicator_data$livestock_tlu <- livestock_tlu(rhomis_data, livestock_name_conversions)
   }
 

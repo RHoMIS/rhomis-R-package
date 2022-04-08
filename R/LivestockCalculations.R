@@ -1736,7 +1736,7 @@ livestock_tlu <- function(data,
 
   if (length(livestock_heads_columns) == 0) {
     warning("Could not calculate livestock TLU values, no livestock_heads columns found")
-    return(data)
+    return(rep(NA, nrow(data)))
   }
 
 
@@ -1753,10 +1753,14 @@ livestock_tlu <- function(data,
     colnames(data) == "id_rhomis_dataset"]
   colnames(livestock_heads_data) <- gsub("livestock_heads_", "", colnames(livestock_heads_data))
 
-  tlu_conversion_tibble <- make_per_project_conversion_tibble(
-    livestock_heads_data[["id_rhomis_dataset"]],
-    livestock_tlu_conversions
-  )
+  if ("id_rhomis_dataset" %in% colnames(livestock_tlu_conversions) == F) {
+    tlu_conversion_tibble <- make_per_project_conversion_tibble(
+      livestock_heads_data[["id_rhomis_dataset"]],
+      livestock_tlu_conversions
+    )
+  } else {
+    tlu_conversion_tibble <- livestock_tlu_conversions
+  }
 
 
   tlu_data <- apply_conversion_factor_to_columns_multiple_projects(livestock_heads_data, tlu_conversion_tibble)
@@ -1808,7 +1812,9 @@ clean_tlu_column_names <- function(data,
     by_project = T
   )
 
-  livestock_heads_data_merged <- livestock_heads_data_merged[colnames(livestock_heads_data_merged) != "id_rhomis_dataset"]
+  livestock_heads_data_merged <- livestock_heads_data_merged[colnames(livestock_heads_data_merged) != "id_rhomis_dataset" &
+    (colnames(livestock_heads_data_merged) %in% livestock_name_conversion_tibble$conversion == T | colnames(livestock_heads_data_merged) %in% livestock_tlu_conversions$survey_value == T)]
+
   colnames(livestock_heads_data_merged) <- paste0("livestock_heads_", colnames(livestock_heads_data_merged))
 
   data <- data[grepl("livestock_heads_", colnames(data)) == F]

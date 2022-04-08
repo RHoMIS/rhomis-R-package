@@ -328,12 +328,18 @@ apply_conversion_factor_to_columns <- function(data,
     Must contain columns: id_rhomis_dataset, survey_value, and conversion")
   }
   # Create A new blank dataset
-
+  # Subset by project ID
   project_data <- data[data$id_rhomis_dataset == id_rhomis_dataset, ]
   project_conversion_tibble <- conversion_tibble[conversion_tibble$id_rhomis_dataset == id_rhomis_dataset, ]
+  # Make sure the conversion factors exist in the dataset
   project_conversion_tibble <- project_conversion_tibble[project_conversion_tibble$survey_value %in% colnames(project_data), ]
-  project_data <- project_data[colnames(project_data) %in% project_conversion_tibble$survey_value | colnames(project_data) == "id_rhomis_dataset"]
-  data_to_convert <- project_data[colnames(project_data) %in% project_conversion_tibble$survey_value]
+  project_data <- project_data[colnames(project_data) %in% project_conversion_tibble$survey_value |
+    colnames(project_data) == "id_rhomis_dataset" |
+    colnames(project_data) %in% project_conversion_tibble$conversion]
+
+  data_to_convert <- project_data[colnames(project_data) %in% project_conversion_tibble$survey_value |
+    colnames(project_data) %in% project_conversion_tibble$conversion]
+
 
   data_to_convert <- data_to_convert %>%
     dplyr::mutate_all(as.numeric)

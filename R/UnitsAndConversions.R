@@ -365,7 +365,11 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
 
     # check that this list of files exists in the base_folder
     if (paste0(unit_file, ".csv") %in% file_names) {
-      conversions <- readr::read_csv(paste0(units_folder, unit_file, ".csv"), col_types = readr::cols())
+      conversions <- readr::read_csv(paste0(units_folder, unit_file, ".csv"),
+        col_types = readr::cols(),
+        na = c("n/a", "-999", "NA"),
+        locale = readr::locale(encoding = "latin1")
+      )
     } else {
 
       # print a warning if the file isn't where it should be
@@ -430,7 +434,11 @@ load_calorie_conversions <- function(base_folder, id_rhomis_dataset) {
     if (csv_filename %in% file_names) {
 
       # load the conversion csv file
-      calorie_conversion <- readr::read_csv(paste0(base_folder, csv_filename), col_types = readr::cols())
+      calorie_conversion <- readr::read_csv(paste0(base_folder, csv_filename),
+        col_types = readr::cols(),
+        na = c("n/a", "-999", "NA"),
+        locale = readr::locale(encoding = "latin1")
+      )
     } else {
 
       # print a warning if the file isn't where expected
