@@ -431,13 +431,13 @@ processData <- function( # Arguments to indicate the stage of analysis
         units_and_conversions <- check_existing_conversions(list_of_df = units_and_conversions)
 
         if (outputType == "csv") {
-            units_folder_dest <- paste0(base_path, "/original_units")
+            units_folder_dest <- paste0(base_path, ".original_units")
             write_units_to_folder(
                 list_of_df = units_and_conversions,
                 folder = units_folder_dest
             )
 
-            new_units_dest <- paste0(base_path, "/converted_units")
+            new_units_dest <- paste0(base_path, "units_and_conversions")
 
             write_units_to_folder(
                 list_of_df = units_and_conversions,
@@ -500,10 +500,10 @@ processData <- function( # Arguments to indicate the stage of analysis
         # Load Conversions
         #---------------------------------------------------------------
         if (outputType == "csv") {
-            units_folder <- paste0(base_path, "converted_units/")
+            units_folder <- paste0(base_path, "units_and_conversions/")
 
             if (!dir.exists(units_folder)) {
-                stop('Specified that the units were stored locally but the path "converted_units" does not exist')
+                stop('Specified that the units were stored locally but the path "units_and_conversions" does not exist')
             }
 
             #---------------------------------------------
@@ -542,6 +542,9 @@ processData <- function( # Arguments to indicate the stage of analysis
 
                 if (outputType == "csv") {
                     new_folder <- paste0(base_path, x)
+                    if (x == "original_prices") {
+                        return()
+                    }
                     dir.create(new_folder, showWarnings = F)
 
                     if (x == "processed_data" | x == "indicator_data") {
@@ -549,9 +552,7 @@ processData <- function( # Arguments to indicate the stage of analysis
                         readr::write_csv(data_to_write, path)
                         return()
                     }
-                    if (x == "original_prices") {
-
-                    }
+                    
                     write_list_of_df_to_folder(list_of_df = data_to_write, folder = new_folder)
                 }
 
@@ -624,20 +625,19 @@ processData <- function( # Arguments to indicate the stage of analysis
 
 
                 if (outputType == "csv") {
-                    original_calorie_values_folder <- paste0(base_path, "original_calorie_conversions")
-
+                    original_calorie_values_folder <- paste0(base_path, ".original_calorie_conversions")
                     write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = original_calorie_values_folder)
-                    converted_calorie_conversions_folder <- paste0(base_path, "completed_calorie_conversions")
-                    if (!dir.exists(converted_calorie_conversions_folder)) {
-                        write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = converted_calorie_conversions_folder,converted_values=T)
-                    }
+                    
+                    converted_calorie_conversions_folder <- paste0(base_path, "calorie_conversions")
+                    write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = converted_calorie_conversions_folder,converted_values=T)
+                    
 
-                    converted_prices_folder <- paste0(base_path, "converted_prices")
-                    if (!dir.exists(converted_prices_folder)) {
-                        dir.create(converted_prices_folder, showWarnings = F)
-                        data_to_write <- results[["original_prices"]]
-                        write_list_of_df_to_folder(list_of_df = data_to_write, folder = converted_prices_folder,converted_values=T)
-                    }
+                    data_to_write <- results[["original_prices"]]
+                    original_mean_prices_folder <- paste0(base_path, ".original_mean_prices_conversions")
+                    write_list_of_df_to_folder(list_of_df = data_to_write, folder = original_mean_prices_folder)
+
+                    converted_prices_folder <- paste0(base_path, "mean_prices")
+                    write_list_of_df_to_folder(list_of_df = data_to_write, folder = converted_prices_folder,converted_values=T)
                 }
 
                 if (outputType == "mongodb") {
@@ -674,10 +674,10 @@ processData <- function( # Arguments to indicate the stage of analysis
                 # Read in the processed csvs and check everything exists
                 processed_data <- read_folder_of_csvs(folder = paste0(base_path, "processed_data/"))[[1]]
                 indicator_data <- read_folder_of_csvs(folder = paste0(base_path, "indicator_data/"))[[1]]
-                load_local_units(paste0(base_path, "converted_units/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
+                load_local_units(paste0(base_path, "units_and_conversions/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
-                prices <- read_folder_of_csvs(folder = paste0(base_path, "converted_prices/"))
-                calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "completed_calorie_conversions/"))
+                prices <- read_folder_of_csvs(folder = paste0(base_path, "mean_prices/"))
+                calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "calorie_conversions/"))
             }
             if (outputType == "mongodb") {
                 # Read in the mongodb values and check everything exists
