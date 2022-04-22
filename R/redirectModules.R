@@ -554,7 +554,7 @@ run_preliminary_calculations <- function(rhomis_data,
         dplyr::summarise_all(mean, na.rm = TRUE)
 
       crop_price <- crop_price %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
-
+      crop_price$unit_type <- "crop_price_lcu_per_kg"
       prices$mean_crop_price_lcu_per_kg <- crop_price
     }
 
@@ -647,7 +647,7 @@ run_preliminary_calculations <- function(rhomis_data,
           dplyr::summarise_all(mean, na.rm = TRUE)
 
         mean_price_df <- mean_price_df %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
-
+        mean_price_df$unit_type<- paste0("mean_", price_data_set)
         prices[[paste0("mean_", price_data_set)]] <- mean_price_df
       }
     }

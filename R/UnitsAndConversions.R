@@ -7,7 +7,7 @@
 
 #' Saving Set of Conversions
 #'
-#' Save a singly type of conversion factor into the conversion factor database
+#' Save a single type of conversion factor into the conversion factor database
 #'
 #' @param database The database which will store the units
 #' @param url The url of the database storing the units
@@ -15,7 +15,9 @@
 #' @param formID The name of the form the projects are related to
 #' @param conversions A table of the conversion factors to be used
 #' @param conversion_type Which type of conversion is being saves (e.g crop yield, PPI, HDDS etc...)
-#'
+#' @param collection The mongodb collection to save the units
+#' @param converted_values Whether saving values which user has already converted
+#' 
 #' @return
 #' @export
 #'
@@ -24,11 +26,44 @@ save_set_of_conversions <- function(database = "rhomis", url = "mongodb://localh
                                     projectID = "core_unit",
                                     formID = "core_unit",
                                     conversions,
-                                    conversion_type) {
+                                    conversion_type,
+                                    collection,
+                                    converted_values=F) {
 
-  # conversions <- crop_price_units
-  # conversion_type <- "crop_price_units"
-  connection <- connect_to_db("units_and_conversions", database, url)
+  # conversions <- crop_calories
+  # conversion_type <- "crop_calories"
+  # database <- "rhomis-data-dev"
+
+  # formID <- 'form1'
+  # projectID <- 'project xy leo laptop'
+  connection <- connect_to_db(collection, database, url)
+
+  if (converted_values==T){
+
+  
+    old_conversions <- extract_units_from_db(database,
+          url = url,
+          projectID = projectID,
+          formID = formID,
+          conversion_type = conversion_type,
+          collection = collection
+        )
+
+    if (nrow(old_conversions)>0){
+      if(all(c("unit_type", "id_rhomis_dataset", "survey_value", "conversion") %in% colnames(old_conversions))){
+
+         conversions <- dplyr::left_join(conversions,
+          old_conversions,
+          by = c("survey_value" = "survey_value",
+          "id_rhomis_dataset"="id_rhomis_dataset")) %>%
+          dplyr::select("unit_type.x", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
+          dplyr::rename("conversion" = "conversion.y") %>%
+          dplyr::rename("unit_type" = "unit_type.x")
+
+      }
+    }
+  }
+
 
   conversion_data <- jsonlite::toJSON(conversions, na = "null") %>% clean_json_string()
 
@@ -57,6 +92,9 @@ save_set_of_conversions <- function(database = "rhomis", url = "mongodb://localh
 #' @param formID The name of the form the projects are related to
 #' @param conversion_data A list of tibbles of the conversion factors to be used
 #' @param conversion_types Which types of conversion is being saves (e.g crop yield, PPI, HDDS etc...)
+#' @param collection The mongodb collection to save the units
+#' @param converted_values Whether saving values which user has already converted
+#' 
 #'
 #'
 #' @return
@@ -67,7 +105,9 @@ save_multiple_conversions <- function(database = "rhomis", url = "mongodb://loca
                                       projectID = "core_units",
                                       formID = "core_units",
                                       conversion_data,
-                                      conversion_types) {
+                                      conversion_types,
+                                      collection,
+                                      converted_values=F) {
   if (length(conversion_data) != length(conversion_types)) {
     stop("Length of conversion data argument not the same as the names for conversion data")
   }
@@ -78,7 +118,9 @@ save_multiple_conversions <- function(database = "rhomis", url = "mongodb://loca
       projectID,
       formID,
       conversion_data[[index]],
-      conversion_types[index]
+      conversion_types[index],
+      collection,
+      converted_values
     )
   }
 }
@@ -142,6 +184,7 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
 
 
   # loop over the possible list of unit conversion csv file names
+  unit_name <- names(pkg.env$local_units_file_list)[13]
   for (unit_name in names(pkg.env$local_units_file_list)) {
     if (unit_name %in% unit_list) {
       conversions <- extract_units_from_db(database,
@@ -156,12 +199,12 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
 
       if (unit_name %in% c("crop_name", "livestock_name")) {
         # evaluate the string denoting the variable name to be used
-        var <- eval(parse(text = unit_file))
+        var <- eval(parse(text = unit_name))
 
         # make dummy tibble
         conversions <- tibble::as_tibble(list("survey_value" = var, "conversion" = var))
       } else {
-        conversions <- eval(parse(text = pkg.env$local_units_file_tibble_list[[unit_file]]))
+        conversions <- eval(parse(text = pkg.env$local_units_file_tibble_list[[unit_name]]))
 
         if (!(unit_name == "country")) {
           colnames(conversions) <- c("survey_value", "conversion")
@@ -290,6 +333,8 @@ check_existing_conversions <- function(list_of_df) {
 }
 
 
+
+
 #' Check Existing Crop Calorie Conversion
 #'
 #' Go through the common conversions stored in the R-package
@@ -326,6 +371,11 @@ check_existing_calorie_conversions <- function(data) {
 #' @param list_of_df A list of dataframes, containing all
 #' of the units and conversions
 #' @param folder The folder for writing the units
+#' @param converted_folder A flag indicating whether the 
+#' units being over written have already been converted 
+#' by the user. In which case, preserve their previously 
+#' verified values. 
+#' 
 #'
 #'
 #' @return
@@ -333,12 +383,34 @@ check_existing_calorie_conversions <- function(data) {
 #'
 #' @examples
 write_units_to_folder <- function(list_of_df,
-                                  folder = "./unit_conversions") {
+                                  folder = "./unit_conversions",
+                                  converted_folder = F) {
   dir.create(folder, showWarnings = F)
 
   sapply(names(list_of_df), function(x) {
     file_path <- paste0(folder, "/", x, ".csv")
-    readr::write_csv(list_of_df[[x]], file_path)
+
+    data_to_write <- list_of_df[[x]]
+
+    if(converted_folder){
+      if (file.exists(file_path)){
+        old_conversion_file <- readr::read_csv(file_path,
+        col_types = readr::cols(),
+          na = c("n/a", "-999", "NA"),
+          locale = readr::locale(encoding = "latin1")
+          )
+
+        data_to_write <- dplyr::left_join(data_to_write,
+          old_conversion_file,
+          by = c("survey_value" = "survey_value",
+          "id_rhomis_dataset"="id_rhomis_dataset")) %>%
+          dplyr::select("unit_type.x", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
+          dplyr::rename("conversion" = "conversion.y") %>%
+          dplyr::rename("unit_type" = "unit_type.x")
+
+      }
+    }
+    readr::write_csv(data_to_write, file_path)
   })
 }
 

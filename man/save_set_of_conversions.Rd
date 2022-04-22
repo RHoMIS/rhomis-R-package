@@ -10,7 +10,9 @@ save_set_of_conversions(
   projectID = "core_unit",
   formID = "core_unit",
   conversions,
-  conversion_type
+  conversion_type,
+  collection,
+  converted_values = F
 )
 }
 \arguments{
@@ -25,10 +27,14 @@ save_set_of_conversions(
 \item{conversions}{A table of the conversion factors to be used}
 
 \item{conversion_type}{Which type of conversion is being saves (e.g crop yield, PPI, HDDS etc...)}
+
+\item{collection}{The mongodb collection to save the units}
+
+\item{converted_values}{Whether saving values which user has already converted}
 }
 \value{
 
 }
 \description{
-Save a singly type of conversion factor into the conversion factor database
+Save a single type of conversion factor into the conversion factor database
 }
