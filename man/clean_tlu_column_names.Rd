@@ -4,13 +4,19 @@
 \alias{clean_tlu_column_names}
 \title{Clean TLU Column Names}
 \usage{
-clean_tlu_column_names(data, livestock_name_conversion_tibble)
+clean_tlu_column_names(
+  data,
+  livestock_name_conversion_tibble,
+  livestock_tlu_conversions
+)
 }
 \arguments{
 \item{data}{A rhomis dataset}
 
 \item{livestock_name_conversion_tibble}{A tibble to convert
 livestock names}
+
+\item{livestock_tlu_conversions}{A conversions table for TLU}
 }
 \value{
 

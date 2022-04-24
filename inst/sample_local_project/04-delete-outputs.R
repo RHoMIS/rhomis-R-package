@@ -14,7 +14,13 @@ directories <- c(
     "original_calorie_conversions/",
     "consumption_calorie_values/",
     "consumption_lcu_values/",
-    "gender_control/"
+    "gender_control/",
+    ".original_calorie_conversions/",
+    ".original_mean_prices_conversions/",
+    ".original_units/",
+    "calorie_conversions/",
+    "units_and_conversions/",
+    "mean_prices/"
 )
 
 directories_to_remove <- paste0(base_path, directories)

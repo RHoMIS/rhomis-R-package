@@ -3,7 +3,7 @@ library(tibble)
 library(magrittr)
 library(tidyr)
 
-livestock_tlu_conversions <- tibble::as_tibble(list(
+livestock_tlu <- tibble::as_tibble(list(
     "cattle" = 0.7,
     "sheep" = 0.1,
     "goats" = 0.1,
@@ -21,4 +21,4 @@ livestock_tlu_conversions <- tibble::as_tibble(list(
     "geese" = 0.02
 )) %>% tidyr::pivot_longer(tidyr::everything(), names_to = "survey_value", values_to = "conversion")
 
-usethis::use_data(livestock_tlu_conversions, overwrite = TRUE)
+usethis::use_data(livestock_tlu, overwrite = TRUE)

@@ -136,6 +136,10 @@ add_column_after_specific_column <- function(data, new_data, new_column_name = N
 
     for (loop in 1:number_of_loops_old) {
       new_column_to_add <- new_data[paste0(new_column_name, "_", loop)]
+
+      if (new_column_to_add %in% colnames(data)){
+        data[new_column_to_add] <- NULL
+      }
       data <- tibble::add_column(.data = data, new_column_to_add, .after = paste0(old_column_name, "_", loop))
     }
 
@@ -143,6 +147,9 @@ add_column_after_specific_column <- function(data, new_data, new_column_name = N
   }
 
   if (loop_structure == F) {
+    if (colnames(new_data) %in% colnames(data)){
+        data[colnames(new_data)] <- NULL
+      }
     data <- tibble::add_column(.data = data, new_data, .after = old_column_name)
     return(data)
   }
