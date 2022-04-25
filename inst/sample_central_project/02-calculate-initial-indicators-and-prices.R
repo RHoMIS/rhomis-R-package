@@ -19,10 +19,3 @@ initial_processed_data <- processData(
     central_test_case=T,
     database="rhomis-test"
 )
-
-
-
-
-
-
-

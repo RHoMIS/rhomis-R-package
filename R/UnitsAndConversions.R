@@ -174,18 +174,18 @@ save_initial_units <- function(database = "rhomis", url = "mongodb://localhost",
 #' @param projectID The Name of the project
 #' @param formID The name of the form
 #' @param unit_list The list of units which are to be queried and loaded into the global environment
-#'
+#' @param id_rhomis_dataset A vector of rhomis IDs for the project being processed. 
 #' @return
 #' @export
 #'
 #' @examples
-load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_units", formID = "core_units") {
+load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_units", formID = "core_units", id_rhomis_dataset) {
 
 
 
   # loop over the possible list of unit conversion csv file names
-  unit_name <- names(pkg.env$local_units_file_list)[13]
   for (unit_name in names(pkg.env$local_units_file_list)) {
+
     if (unit_name %in% unit_list) {
       conversions <- extract_units_from_db(database,
         url = "mongodb://localhost",
@@ -204,10 +204,14 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
         # make dummy tibble
         conversions <- tibble::as_tibble(list("survey_value" = var, "conversion" = var))
       } else {
-        conversions <- eval(parse(text = pkg.env$local_units_file_tibble_list[[unit_name]]))
+        conversions <- make_per_project_conversion_tibble(
+          proj_id_vector = id_rhomis_dataset,
+          unit_conv_tibble = eval(parse(text = unit_name))
+        )
+        conversions$unit_type <- unit_name
 
         if (!(unit_name == "country")) {
-          colnames(conversions) <- c("survey_value", "conversion")
+          colnames(conversions) <- c("survey_value", "conversion", "id_rhomis_dataset", "unit_type")
         }
       }
     }

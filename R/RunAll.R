@@ -477,21 +477,7 @@ processData <- function( # Arguments to indicate the stage of analysis
 
 
 
-        if (outputType == "mongodb") {
-            unit_list <- find_db_units(
-                projectID = project_name,
-                formID = form_name,
-                url = "mongodb://localhost",
-                collection = "projectData",
-                database = database
-            )
-            # Not yet complete
-            load_all_db_units(unit_list,
-                projectID = project_name,
-                formID = form_name,
-                database = database
-            )
-        }
+       
 
 
         if (calculateInitialIndicatorsOnly == T) {
@@ -510,6 +496,22 @@ processData <- function( # Arguments to indicate the stage of analysis
             # Loading all of the unit conversions locally
             #---------------------------------------------
             load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+        }
+         if (outputType == "mongodb") {
+            unit_list <- find_db_units(
+                projectID = project_name,
+                formID = form_name,
+                url = "mongodb://localhost",
+                collection = "projectData",
+                database = database
+            )
+            # Not yet complete
+            load_all_db_units(unit_list,
+                projectID = project_name,
+                formID = form_name,
+                database = database,
+                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
+            )
         }
 
             # Run all of the preliminary calculations that can
@@ -726,6 +728,23 @@ processData <- function( # Arguments to indicate the stage of analysis
                         collection = "units_and_conversions"
                     )
                 }, simplify = F)
+
+                 if (outputType == "mongodb") {
+                    unit_list <- find_db_units(
+                        projectID = project_name,
+                        formID = form_name,
+                        url = "mongodb://localhost",
+                        collection = "projectData",
+                        database = database
+                    )
+                    # Not yet complete
+                    load_all_db_units(unit_list,
+                        projectID = project_name,
+                        formID = form_name,
+                        database = database,
+                        id_rhomis_dataset = processed_data[["id_rhomis_dataset"]]
+                    )
+        }
             }
 
 
