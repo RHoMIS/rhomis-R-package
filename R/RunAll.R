@@ -472,6 +472,11 @@ processData <- function( # Arguments to indicate the stage of analysis
                 converted_values=T
 
             )
+            set_project_tag_to_true(database = database, 
+                url = url, 
+                projectID=project_name, 
+                formID=form_name, 
+                project_tag="unitsExtracted")
         }
     } else {
 
@@ -612,8 +617,15 @@ processData <- function( # Arguments to indicate the stage of analysis
                         database = database,
                         url = "mongodb://localhost"
                     )
+                    set_project_tag_to_true(database = database, 
+                url = url, 
+                projectID=project_name, 
+                formID=form_name, 
+                project_tag="pricesCalculated")
                     return()
                 }
+
+                
             })
 
 
@@ -815,6 +827,11 @@ processData <- function( # Arguments to indicate the stage of analysis
                             url = "mongodb://localhost"
                         )
                     }
+                    set_project_tag_to_true(database = database, 
+                        url = url, 
+                        projectID=project_name, 
+                        formID=form_name, 
+                        project_tag="finalIndicators")
                 }
             })
 

@@ -238,6 +238,38 @@ adding_project_to_list <- function(database = "rhomis", url = "mongodb://localho
   connection$disconnect()
 }
 
+#' Set Project Tag to True
+#' 
+#' RHoMIS data goes through several
+#' processing stages. Where units are
+#' extracted, then verified, then 
+#' prices verified. This function allows
+#' us to tick off these stages, letting
+#' the system know what has been verified and what has not.
+#' 
+#' @param database Database to add it to
+#' @param url URL of the database
+#' @param projectID ID of the project you are adding
+#' @param formID The id of the form being you are adding
+#' @param project_tag Which project tag needs to be set to true
+#'
+#' @return
+#' @export
+#'
+#' @examples
+
+set_project_tag_to_true <- function(database = "rhomis", url = "mongodb://localhost", projectID, formID, project_tag) {
+
+
+  connection <- connect_to_db("projectData", database, url)
+
+  connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '"}'),
+    paste0('{"$set":{"', project_tag, '" : true }}'),
+    upsert = TRUE
+  )
+  connection$disconnect()
+}
+
 
 #' Save Dataset to DB
 #'
