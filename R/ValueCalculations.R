@@ -73,8 +73,8 @@ value_or_calorie_calculations_item_consumed <- function(data,
 #   }
 
 
-  return(data)
-}
+#   return(data)
+# }
 
 #' Value Calculations
 #'
