@@ -219,7 +219,6 @@ replace_infinite <- function(column) {
 #' or "mongodb")
 #' @param dataFilePath The file to the data (csv format).
 #' ONLY RELEVANT IF "dataSource" WAS "local".
-#' @param overwrite Whether or not to overwrite the converted values
 #' @param id_type The type of ID you would like to use ("string" or "column")
 #' @param proj_id An ID for your project
 #' @param form_id An ID for your form
@@ -259,7 +258,6 @@ processData <- function( # Arguments to indicate the stage of analysis
                         id_type = c("string", "column"),
                         proj_id,
                         form_id,
-                        overwrite = F,
                         uuid_local = pkg.env$identification_column_list$uuid_local,
                         # Arguments for if processing from ODK central
                         central_url = NULL,
@@ -283,11 +281,16 @@ processData <- function( # Arguments to indicate the stage of analysis
     outputType <- match.arg(outputType)
     dataSource <- match.arg(dataSource)
 
+    if (dataSource == "central"){
+        id_type <- "string"
+        proj_id <- project_name
+        form_id <- form_name
+    }
 
 
     # If the user specified a csv, then they must provide a file path
     # for the dataset they are loading
-    if (dataSource == "csv") {
+    if (dataSource == "csv" & calculateFinalIndicatorsOnly==F) {
         if (is.null(dataFilePath)) {
             stop('You specified the data was coming from a local csv but have not specified a "dataFilePath"')
         }
@@ -319,7 +322,7 @@ processData <- function( # Arguments to indicate the stage of analysis
     # If local csv specified, load the csv
     # add some identification columns and
     # clean the column names
-    if (dataSource == "csv") {
+    if (dataSource == "csv" & calculateFinalIndicatorsOnly==F) {
         rhomis_data <- load_rhomis_csv(
             file_path = dataFilePath,
             country_column = pkg.env$identification_column_list$country,
@@ -337,7 +340,7 @@ processData <- function( # Arguments to indicate the stage of analysis
     # and load the zip files.
     # add some identification columns and
     # clean the column names
-    if (dataSource == "central") {
+    if (dataSource == "central" & calculateFinalIndicatorsOnly==F) {
         if (central_test_case == F) {
             # Getting project and formID
             projectID <- get_project_id_from_name(
@@ -411,8 +414,10 @@ processData <- function( # Arguments to indicate the stage of analysis
 
     # Make an empty indicator dataset with
     # matching ID columns
+    if(calculateFinalIndicatorsOnly==F){
 
-    indicator_data <- make_new_dataset(rhomis_data)
+        indicator_data <- make_new_dataset(rhomis_data)
+    }
 
     #---------------------------------------------------------------
     # Extract and write units
@@ -426,26 +431,21 @@ processData <- function( # Arguments to indicate the stage of analysis
         units_and_conversions <- check_existing_conversions(list_of_df = units_and_conversions)
 
         if (outputType == "csv") {
-            units_folder_dest <- paste0(base_path, "/original_units")
+            units_folder_dest <- paste0(base_path, ".original_units")
             write_units_to_folder(
                 list_of_df = units_and_conversions,
                 folder = units_folder_dest
             )
 
-            new_units_dest <- paste0(base_path, "/converted_units")
+            new_units_dest <- paste0(base_path, "units_and_conversions")
 
-            if (dir.exists(new_units_dest) == F) {
-                write_units_to_folder(
-                    list_of_df = units_and_conversions,
-                    folder = new_units_dest
-                )
-            }
-            if (overwrite == T) {
-                write_units_to_folder(
-                    list_of_df = units_and_conversions,
-                    folder = new_units_dest
-                )
-            }
+            write_units_to_folder(
+                list_of_df = units_and_conversions,
+                folder = new_units_dest,
+                converted_folder=T
+            )
+            
+     
 
             return(units_and_conversions)
         }
@@ -457,23 +457,44 @@ processData <- function( # Arguments to indicate the stage of analysis
                 projectID = project_name,
                 formID = form_name,
                 conversion_data = units_and_conversions,
-                conversion_types = names(units_and_conversions)
+                conversion_types = names(units_and_conversions),
+                collection = "unmodified_units"
             )
+
+            save_multiple_conversions(
+                database = database,
+                url = url,
+                projectID = project_name,
+                formID = form_name,
+                conversion_data = units_and_conversions,
+                conversion_types = names(units_and_conversions),
+                collection = "units_and_conversions",
+                converted_values=T
+
+            )
+            set_project_tag_to_true(database = database, 
+                url = url, 
+                projectID=project_name, 
+                formID=form_name, 
+                project_tag="unitsExtracted")
         }
     } else {
 
-        #---------------------------------------------------------------
-        # Swap "Other" with Standard values
-        #---------------------------------------------------------------
 
-        #---------------------------------------------------------------
+
+       
+
+
+        if (calculateInitialIndicatorsOnly == T) {
+
+              #---------------------------------------------------------------
         # Load Conversions
         #---------------------------------------------------------------
         if (outputType == "csv") {
-            units_folder <- paste0(base_path, "converted_units/")
+            units_folder <- paste0(base_path, "units_and_conversions/")
 
             if (!dir.exists(units_folder)) {
-                stop('Specified that the units were stored locally but the path "unit_conversions" does not exist')
+                stop('Specified that the units were stored locally but the path "units_and_conversions" does not exist')
             }
 
             #---------------------------------------------
@@ -481,9 +502,7 @@ processData <- function( # Arguments to indicate the stage of analysis
             #---------------------------------------------
             load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
         }
-
-
-        if (outputType == "mongodb") {
+         if (outputType == "mongodb") {
             unit_list <- find_db_units(
                 projectID = project_name,
                 formID = form_name,
@@ -495,12 +514,10 @@ processData <- function( # Arguments to indicate the stage of analysis
             load_all_db_units(unit_list,
                 projectID = project_name,
                 formID = form_name,
-                database = database
+                database = database,
+                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
             )
         }
-
-
-        if (calculateInitialIndicatorsOnly == T) {
 
             # Run all of the preliminary calculations that can
             # be done without price verification and without
@@ -532,6 +549,9 @@ processData <- function( # Arguments to indicate the stage of analysis
 
                 if (outputType == "csv") {
                     new_folder <- paste0(base_path, x)
+                    if (x == "original_prices") {
+                        return()
+                    }
                     dir.create(new_folder, showWarnings = F)
 
                     if (x == "processed_data" | x == "indicator_data") {
@@ -539,6 +559,7 @@ processData <- function( # Arguments to indicate the stage of analysis
                         readr::write_csv(data_to_write, path)
                         return()
                     }
+                    
                     write_list_of_df_to_folder(list_of_df = data_to_write, folder = new_folder)
                 }
 
@@ -573,7 +594,19 @@ processData <- function( # Arguments to indicate the stage of analysis
                             projectID = project_name,
                             formID = form_name,
                             conversion_data = data_to_write,
-                            conversion_types = names(data_to_write)
+                            conversion_types = names(data_to_write),
+                            collection="units_and_conversions",
+                            converted_values=T
+                        )
+
+                        save_multiple_conversions(
+                            database = database,
+                            url = "mongodb://localhost",
+                            projectID = project_name,
+                            formID = form_name,
+                            conversion_data = data_to_write,
+                            conversion_types = names(data_to_write),
+                            collection="unmodified_units"
                         )
                         return()
                     }
@@ -584,8 +617,15 @@ processData <- function( # Arguments to indicate the stage of analysis
                         database = database,
                         url = "mongodb://localhost"
                     )
+                    set_project_tag_to_true(database = database, 
+                url = url, 
+                projectID=project_name, 
+                formID=form_name, 
+                project_tag="pricesCalculated")
                     return()
                 }
+
+                
             })
 
 
@@ -599,20 +639,19 @@ processData <- function( # Arguments to indicate the stage of analysis
 
 
                 if (outputType == "csv") {
-                    original_calorie_values_folder <- paste0(base_path, "original_calorie_conversions")
-
+                    original_calorie_values_folder <- paste0(base_path, ".original_calorie_conversions")
                     write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = original_calorie_values_folder)
-                    converted_calorie_conversions_folder <- paste0(base_path, "completed_calorie_conversions")
-                    if (!dir.exists(converted_calorie_conversions_folder)) {
-                        write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = converted_calorie_conversions_folder)
-                    }
+                    
+                    converted_calorie_conversions_folder <- paste0(base_path, "calorie_conversions")
+                    write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = converted_calorie_conversions_folder,converted_values=T)
+                    
 
-                    converted_prices_folder <- paste0(base_path, "converted_prices")
-                    if (!dir.exists(converted_prices_folder)) {
-                        dir.create(converted_prices_folder, showWarnings = F)
-                        data_to_write <- results[["original_prices"]]
-                        write_list_of_df_to_folder(list_of_df = data_to_write, folder = converted_prices_folder)
-                    }
+                    data_to_write <- results[["original_prices"]]
+                    original_mean_prices_folder <- paste0(base_path, ".original_mean_prices_conversions")
+                    write_list_of_df_to_folder(list_of_df = data_to_write, folder = original_mean_prices_folder)
+
+                    converted_prices_folder <- paste0(base_path, "mean_prices")
+                    write_list_of_df_to_folder(list_of_df = data_to_write, folder = converted_prices_folder,converted_values=T)
                 }
 
                 if (outputType == "mongodb") {
@@ -622,7 +661,20 @@ processData <- function( # Arguments to indicate the stage of analysis
                         projectID = project_name,
                         formID = form_name,
                         conversion_data = calorie_conversions_dfs,
-                        conversion_types = names(calorie_conversions_dfs)
+                        conversion_types = names(calorie_conversions_dfs),
+                        collection="units_and_conversions",
+                        converted_values=T
+
+                    )
+
+                    save_multiple_conversions(
+                        database = database,
+                        url = "mongodb://localhost",
+                        projectID = project_name,
+                        formID = form_name,
+                        conversion_data = calorie_conversions_dfs,
+                        conversion_types = names(calorie_conversions_dfs),
+                        collection = "unmodified_units"
                     )
                 }
             }
@@ -631,14 +683,15 @@ processData <- function( # Arguments to indicate the stage of analysis
             return(results)
         }
         if (calculateFinalIndicatorsOnly == T) {
+
             if (outputType == "csv") {
                 # Read in the processed csvs and check everything exists
                 processed_data <- read_folder_of_csvs(folder = paste0(base_path, "processed_data/"))[[1]]
                 indicator_data <- read_folder_of_csvs(folder = paste0(base_path, "indicator_data/"))[[1]]
-                load_local_units(paste0(base_path, "converted_units/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
+                load_local_units(paste0(base_path, "units_and_conversions/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
-                prices <- read_folder_of_csvs(folder = paste0(base_path, "converted_prices/"))
-                calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "completed_calorie_conversions/"))
+                prices <- read_folder_of_csvs(folder = paste0(base_path, "mean_prices/"))
+                calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "calorie_conversions/"))
             }
             if (outputType == "mongodb") {
                 # Read in the mongodb values and check everything exists
@@ -687,6 +740,23 @@ processData <- function( # Arguments to indicate the stage of analysis
                         collection = "units_and_conversions"
                     )
                 }, simplify = F)
+
+                 if (outputType == "mongodb") {
+                    unit_list <- find_db_units(
+                        projectID = project_name,
+                        formID = form_name,
+                        url = "mongodb://localhost",
+                        collection = "projectData",
+                        database = database
+                    )
+                    # Not yet complete
+                    load_all_db_units(unit_list,
+                        projectID = project_name,
+                        formID = form_name,
+                        database = database,
+                        id_rhomis_dataset = processed_data[["id_rhomis_dataset"]]
+                    )
+        }
             }
 
 
@@ -757,6 +827,11 @@ processData <- function( # Arguments to indicate the stage of analysis
                             url = "mongodb://localhost"
                         )
                     }
+                    set_project_tag_to_true(database = database, 
+                        url = url, 
+                        projectID=project_name, 
+                        formID=form_name, 
+                        project_tag="finalIndicators")
                 }
             })
 
@@ -764,7 +839,7 @@ processData <- function( # Arguments to indicate the stage of analysis
             return(results)
         }
 
-        return(rhomis_data)
+        # return(rhomis_data)
     }
 }
 

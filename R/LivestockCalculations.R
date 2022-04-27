@@ -1725,13 +1725,16 @@ honey_income_calculations <- function(data) {
 #' @param data RHoMIS processed dataset
 #' @param livestock_name_conversion_tibble A tibble
 #' of conversions for livestock names
+#' @param livestock_tlu_conversions A tibble for converting 
+#' livestock names into TLUss
 #'
 #' @return
 #' @export
 #'
 #' @example
-livestock_tlu <- function(data,
-                          livestock_name_conversion_tibble) {
+livestock_tlu_calculations <- function(data,
+                          livestock_name_conversion_tibble,
+                          livestock_tlu_conversions) {
   livestock_heads_columns <- grep("livestock_heads_", colnames(data), value = T)
 
   if (length(livestock_heads_columns) == 0) {
@@ -1747,7 +1750,7 @@ livestock_tlu <- function(data,
   # livestock_heads_other1_lstk
   # livestock_heads_other2_lstk
   # livestock_heads_other3_lstk...
-  data <- clean_tlu_column_names(data, livestock_name_conversion_tibble)
+  data <- clean_tlu_column_names(data, livestock_name_conversion_tibble,livestock_tlu_conversions)
 
   livestock_heads_data <- data[grepl("livestock_heads_", colnames(data)) |
     colnames(data) == "id_rhomis_dataset"]
@@ -1792,13 +1795,15 @@ livestock_tlu <- function(data,
 #' @param data A rhomis dataset
 #' @param livestock_name_conversion_tibble A tibble to convert
 #' livestock names
+#' @param livestock_tlu_conversions A conversions table for TLU 
 #'
 #' @return
 #' @export
 #'
 #' @example
 clean_tlu_column_names <- function(data,
-                                   livestock_name_conversion_tibble) {
+                                   livestock_name_conversion_tibble,
+                                   livestock_tlu_conversions) {
   if ("id_rhomis_dataset" %in% colnames(livestock_name_conversion_tibble) == F) {
     livestock_name_conversion_tibble <- make_per_project_conversion_tibble(data[["id_rhomis_dataset"]], livestock_name_conversion_tibble)
   }
