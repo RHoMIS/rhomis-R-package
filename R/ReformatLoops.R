@@ -188,6 +188,7 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
 #' map_to_wide_format(data, name_column, column_prefixes, types)
 map_to_wide_format <- function(data, name_column, column_prefixes, types) {
   reformatted_variables <- lapply(c(1:length(column_prefixes)), function(x) {
+
     loop_to_column_conversion(
       data = data,
       name_column = name_column,

@@ -193,7 +193,12 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
         formID = formID,
         conversion_type = unit_name,
         collection = "units_and_conversions"
+
+
       )
+
+      conversions[conversions$conversion=="NA" & !is.na(conversions$conversion),"conversion"] <- NA
+      
     } else {
       warning(paste("Tried to find ", unit_name, " conversions, but could not find records in projectData collection"))
 

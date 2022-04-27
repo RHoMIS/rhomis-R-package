@@ -357,12 +357,22 @@ apply_conversion_factor_to_columns <- function(data,
     tidyr::pivot_wider(names_from = survey_value, values_from = conversion)
   project_conversion_tibble <- project_conversion_tibble[colnames(data_to_convert)]
 
+  if (nrow(data_to_convert)>1){
   data_to_convert <- sapply(colnames(data_to_convert), function(column_name) {
     zeroes <- data_to_convert[[column_name]] == 0
     converted_column <- as.numeric(unlist(data_to_convert[[column_name]])) * as.numeric(unlist(project_conversion_tibble[[column_name]][1]))
     converted_column[zeroes] <- 0
     return(converted_column)
-  }) %>% tibble::as_tibble()
+  }) %>% tibble::as_tibble()}
+    if (nrow(data_to_convert)==1){
+
+     data_to_convert <- sapply(colnames(data_to_convert), function(column_name) {
+    zeroes <- data_to_convert[[column_name]] == 0
+    converted_column <- as.numeric(unlist(data_to_convert[[column_name]])) * as.numeric(unlist(project_conversion_tibble[[column_name]][1]))
+    converted_column[zeroes] <- 0
+    return(converted_column)
+  }) %>% tibble::as_tibble_row()
+  }
 
   project_data[colnames(data_to_convert)] <- data_to_convert
 

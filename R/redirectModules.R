@@ -589,7 +589,7 @@ run_preliminary_calculations <- function(rhomis_data,
   )
 
 
-  livestock_loop_columns <- c(
+    livestock_loop_columns <- c(
     "livestock_sold",
     "livestock_sale_income",
     "livestock_price_per_animal",
