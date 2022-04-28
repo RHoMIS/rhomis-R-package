@@ -546,7 +546,9 @@ processData <- function( # Arguments to indicate the stage of analysis
 
             lapply(names(results), function(x) {
                 data_to_write <- results[[x]]
-
+                if(length(data_to_write)==0){
+                    return()
+                }
                 if (outputType == "csv") {
                     new_folder <- paste0(base_path, x)
                     if (x == "original_prices") {
@@ -773,7 +775,9 @@ processData <- function( # Arguments to indicate the stage of analysis
 
             lapply(names(results), function(x) {
                 data_to_write <- results[[x]]
-
+                if(length(data_to_write)==0){
+                    return()
+                }
                 if (outputType == "csv") {
                     if (x == "processed_data" | x == "indicator_data") {
                         new_folder <- paste0(base_path, x)

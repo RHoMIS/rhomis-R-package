@@ -41,7 +41,7 @@ set_local_units_file_list <- function() {
       "livestock_name" = "livestock_name_conversions",
       "crop_yield_units" = "crop_yield_unit_conversions",
       "crop_sold_price_quantityunits" = "crop_price_unit_conversions",
-      "unitland" = "land_unit_conversion",
+      "land_area_units" = "land_unit_conversion",
       "milk_units" = "milk_unit_conversion",
       "milk_sold_price_timeunits" = "milk_price_unit_conversion",
       "honey_amount_units" = "honey_unit_conversion",

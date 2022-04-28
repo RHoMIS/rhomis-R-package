@@ -619,7 +619,15 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     column_to_keep <- which(colnames(main_data_set) == "deviceid" & colSums(is.na(main_data_set)) == 0)
     column_to_remove <- which(colnames(main_data_set) == "deviceid" & colSums(is.na(main_data_set)) > 0)
 
-    main_data_set <- main_data_set[-column_to_remove]
+    if (length(column_to_keep)==2){
+      if(all(main_data_set[column_to_keep[[1]]]==main_data_set[column_to_keep[[1]]])){
+       column_to_remove <- column_to_keep[[1]]
+      }
+    }
+
+    if (length(column_to_remove)>0){
+      main_data_set <- main_data_set[-column_to_remove]
+    }
   }
 
   unlink(file_destination)

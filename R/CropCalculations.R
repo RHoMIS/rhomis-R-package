@@ -514,7 +514,9 @@ crop_calculations_all <- function(data,
     ),
     warning_message = "Problems calculating crop sold and crop consumed"
   )
+  if (length(crop_columns_in_data)==0){
   data <- crop_sold_and_consumed_calculation(data)
+  }
 
 
   # Crop income calculations

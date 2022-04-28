@@ -292,6 +292,7 @@ save_data_set_to_db <- function(data,
                                 url = "mongodb://localhost",
                                 projectID,
                                 formID) {
+
   data_string <- jsonlite::toJSON(data, pretty = T, na = "null")
   connection <- connect_to_db("data", database, url)
 
@@ -336,6 +337,9 @@ save_list_of_df_to_db <- function(list_of_df,
 
   sapply(data_set_names, function(x) {
     data_to_write <- list_of_df[[x]]
+    if(length(data_to_write)==0){
+                    return()
+                }
     if (any(class(data_to_write) == "tbl_df") | any(class(data_to_write) == "tbl") | any(class(data_to_write) == "data.frame")) {
       save_data_set_to_db(
         data = data_to_write,
