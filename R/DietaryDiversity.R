@@ -446,6 +446,7 @@ hdds_calc <- function(data) {
 
 collapse_14_groups <- function(hdds_data) {
   hdds_data$grainsrootstubers <- rowSums(data.frame(as.numeric(hdds_data$grains), as.numeric(hdds_data$roots_tubers)), na.rm = T)
+  hdds_data$grainsrootstubers[is.na(hdds_data$grains) & is.na(hdds_data$roots_tubers)]
   hdds_data$grainsrootstubers <- as.numeric(gsub("2", 1, as.character(hdds_data$grainsrootstubers)))
   hdds_data$grains <- NULL
   hdds_data$roots_tubers <- NULL
@@ -460,6 +461,7 @@ collapse_14_groups <- function(hdds_data) {
   hdds_data$green_veg <- NULL
 
   hdds_data$vita_veg_fruit <- rowSums(data.frame(as.numeric(hdds_data$vita_veg), as.numeric(hdds_data$vita_fruits)), na.rm = T)
+  hdds_data$vita_veg_fruit[is.na(hdds_data$vita_veg) & is.na(hdds_data$vita_fruits)]
   hdds_data$vita_veg_fruit <- as.numeric(gsub("2", 1, as.character(hdds_data$vita_veg_fruit)))
   hdds_data$vita_veg <- NULL
   hdds_data$vita_fruits <- NULL
@@ -472,6 +474,7 @@ collapse_14_groups <- function(hdds_data) {
 
 
   hdds_data$meat <- rowSums(data.frame(as.numeric(hdds_data$meat_poultry), as.numeric(hdds_data$organ_meat), as.numeric(hdds_data$fish_seafood)), na.rm = T)
+  hdds_data$meat[is.na(hdds_data$meat_poultry) & is.na(hdds_data$organ_meat) & is.na(hdds_data$fish_seafood)]
   hdds_data$meat <- as.numeric(gsub("2", 1, as.character(hdds_data$meat)))
   hdds_data$meat <- as.numeric(gsub("3", 1, as.character(hdds_data$meat)))
   hdds_data$meat_poultry <- NULL
