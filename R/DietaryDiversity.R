@@ -422,18 +422,7 @@ hdds_calc <- function(data) {
   }
 
 
-  if (all(names(outputs_10) %in% names(outputs_14)) &
-    all(names(outputs_14) %in% names(outputs_10))) {
-    results <- lapply(names(outputs_10), function(x) {
-      column_10 <- outputs_10[x]
-      column_14 <- outputs_14[x]
-
-      temp <- rep(NA, nrow(data))
-      temp[!is.na(column_10)] <- column_10[!is.na(column_10)]
-      temp[!is.na(column_14)] <- column_14[!is.na(column_14)]
-      return(temp)
-    })
-  }
+  
 
   if (length(names(outputs_10)) > 0) {
     results <- outputs_10
@@ -441,6 +430,18 @@ hdds_calc <- function(data) {
   if (length(names(outputs_14)) > 0) {
     results <- outputs_14
   }
+
+  if (length(names(outputs_10)) > 0 &
+    length(names(outputs_14)) > 0){
+        if (all(names(outputs_10) %in% names(outputs_14))){
+            results <- sapply(names(outputs_10), function(x){
+                pmax(outputs_10[[x]], outputs_14[[x]])
+            }, simplify=F)
+
+
+        }
+    }
+
 
   results <- tibble::as_tibble(results)
   return(results)
