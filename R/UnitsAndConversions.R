@@ -469,11 +469,12 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
           unit_conv_tibble = conversions
         )
       } else {
+                var <- eval(parse(text = pkg.env$local_units_file_tibble_list[[unit_file]]))
 
         # make dummy tibble
         conversions <- make_per_project_conversion_tibble(
           proj_id_vector = id_rhomis_dataset,
-          unit_conv_tibble = eval(parse(text = unit_file))
+          unit_conv_tibble = var
         )
       }
     }

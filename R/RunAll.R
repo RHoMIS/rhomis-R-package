@@ -761,8 +761,6 @@ processData <- function( # Arguments to indicate the stage of analysis
         }
             }
 
-
-
             results <- value_gender_fa_calculations(
                 processed_data = processed_data,
                 indicator_data = indicator_data,
