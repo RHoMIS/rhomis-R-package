@@ -243,7 +243,7 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
 switch_column_names_and_merge_categories <- function(data,
                                                      conversion_tibble,
                                                      by_project = T) {
-  if ("id_rhomis_dataset" %in% colnames(data) == F) {
+  if ("id_rhomis_dataset" %in% colnames(data) == F & by_project==T) {
     stop("Cannot merge categories, missing column 'id_rhomis_dataset'")
   }
 
