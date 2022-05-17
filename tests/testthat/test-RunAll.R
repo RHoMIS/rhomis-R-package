@@ -140,6 +140,7 @@ testthat::test_that("Can process a whole central dataset",{
 
     },
     error=function(){
+        traceback()
         return(FALSE)
     },
     finally={
@@ -237,6 +238,7 @@ testthat::test_that("Can process a whole local dataset",{
 
     },
     error=function(){
+        traceback()
         return(FALSE)
     },
     finally={
@@ -280,7 +282,7 @@ print("Directories Removed")
 
     testthat::expect_true(result)
 
-   
+
 
 })
 
