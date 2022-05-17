@@ -139,8 +139,9 @@ testthat::test_that("Can process a whole central dataset",{
         TRUE
 
     },
-    error=function(){
+    error=function(error){
         traceback()
+        print(error)
         return(FALSE)
     },
     finally={
@@ -237,8 +238,9 @@ testthat::test_that("Can process a whole local dataset",{
         TRUE
 
     },
-    error=function(){
+    error=function(error){
         traceback()
+        print(error)
         return(FALSE)
     },
     finally={
