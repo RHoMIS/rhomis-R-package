@@ -187,7 +187,8 @@ testthat::test_that("Can process a whole local dataset",{
    
      result <- tryCatch({
         # Extract Units
-        suppressWarnings(processData(
+        
+        processData(
             extractUnitsOnly=T, # The stage of data processing
 
             # Arguments to indicate the type of processing being done (local or on server)
@@ -200,10 +201,11 @@ testthat::test_that("Can process a whole local dataset",{
             id_type="string",
             proj_id="test_project",
             form_id="test_form"
-        ))
+        )
+        print("Local Units Extracted")
 
         # Calculate initial indicators
-        suppressWarnings(processData(
+        processData(
             extractUnitsOnly = F,
             calculateInitialIndicatorsOnly = T, # The stage of data processing
 
@@ -217,10 +219,12 @@ testthat::test_that("Can process a whole local dataset",{
             id_type = "string",
             proj_id = "test_project",
             form_id = "test_form"
-        ))
+        )
+
+        print("Initial Indicators Calculated")
 
         # Calculate Final Indicators
-        suppressWarnings(processData(
+        processData(
             extractUnitsOnly = F,
             calculateFinalIndicatorsOnly =T, # The stage of data processing
 
@@ -233,7 +237,9 @@ testthat::test_that("Can process a whole local dataset",{
             id_type="string",
             proj_id="test_project",
             form_id="test_form"
-        ))
+        )
+                print("Final Indicators Calculate")
+
 
         TRUE
 
