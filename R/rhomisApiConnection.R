@@ -38,14 +38,21 @@ rhomis_authenticate <- function(base_url, email, password){
 
 #' Create Project
 #' 
-#' Create a project in the RHoMIS database,
+#' Create a project in the RHoMIS database
+#' 
+#' @param api_url The url of the rhomis data api
+#' @param auth_url The url of the rhomis authentication api
+#' @param email The users email
+#' @param password The users password
+#' @param name The name of the project to create
+#' 
 create_project <- function(api_url, auth_url, email, password, name){
 
     base_url <- "http://localhost:3002"
     email <- "test1@domain.com"
     password <- "testpass"
 
-    token <- rhomis_authenticate(auth_url, email, password, name)
+    token <- rhomis_authenticate(auth_url, email, password)
 
     response <- httr::POST(
     url = paste0(auth_url, "/api/projects/create-external"),
