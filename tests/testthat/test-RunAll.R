@@ -71,7 +71,8 @@ test_that("can create ID columns", {
 
 testthat::test_that("Can process a whole central dataset",{
 
-   
+    if(.Platform$OS.type!="windows")
+    {
      result <- tryCatch({
         # Extract Units
         suppressWarnings(processData(
@@ -173,9 +174,11 @@ testthat::test_that("Can process a whole central dataset",{
         print("Database cleared")
 
     })
+    
+
 
     testthat::expect_true(result)
-
+    }
    
 
 })
@@ -183,12 +186,11 @@ testthat::test_that("Can process a whole central dataset",{
 
 
 testthat::test_that("Can process a whole local dataset",{
-
    
      result <- tryCatch({
         # Extract Units
         
-        processData(
+       suppressWarnings(processData(
             extractUnitsOnly=T, # The stage of data processing
 
             # Arguments to indicate the type of processing being done (local or on server)
@@ -201,11 +203,11 @@ testthat::test_that("Can process a whole local dataset",{
             id_type="string",
             proj_id="test_project",
             form_id="test_form"
-        )
+        ))
         print("Local Units Extracted")
 
         # Calculate initial indicators
-        processData(
+        suppressWarnings(processData(
             extractUnitsOnly = F,
             calculateInitialIndicatorsOnly = T, # The stage of data processing
 
@@ -219,12 +221,12 @@ testthat::test_that("Can process a whole local dataset",{
             id_type = "string",
             proj_id = "test_project",
             form_id = "test_form"
-        )
+        ))
 
         print("Initial Indicators Calculated")
 
         # Calculate Final Indicators
-        processData(
+        suppressWarnings(processData(
             extractUnitsOnly = F,
             calculateFinalIndicatorsOnly =T, # The stage of data processing
 
@@ -237,7 +239,7 @@ testthat::test_that("Can process a whole local dataset",{
             id_type="string",
             proj_id="test_project",
             form_id="test_form"
-        )
+        ))
                 print("Final Indicators Calculate")
 
 
