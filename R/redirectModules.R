@@ -431,11 +431,12 @@ value_gender_fa_calculations <- function(processed_data,
 #' @examples
 run_preliminary_calculations <- function(rhomis_data,
                                          gender_categories = pkg.env$gender_categories) {
-  results <- list()
-
+  
+  
   rhomis_data <- replace_crop_and_livestock_other(rhomis_data)
   indicator_data <- make_new_dataset(rhomis_data)
-
+  
+  results <- list()
   prices <- list()
   crop_outputs <- list()
   livestock_outputs <- list()
@@ -740,8 +741,10 @@ run_preliminary_calculations <- function(rhomis_data,
   ###############
 
   hdds_data <- hdds_calc(rhomis_data)
+  if (ncol(hdds_data)>0 & nrow(hdds_data)==nrow(indicator_data))
+  {
   indicator_data <- dplyr::bind_cols(indicator_data, hdds_data)
-
+  }
   #---------------------------------------------------------------
   # Totals
   #---------------------------------------------------------------

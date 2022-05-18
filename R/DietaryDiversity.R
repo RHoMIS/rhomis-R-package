@@ -442,7 +442,10 @@ hdds_calc <- function(data) {
         }
     }
 
-
+  if (length(outputs_10)==0 &
+  length(outputs_14)==0){
+    results <- tibble::as_tibble(c())
+  }
   results <- tibble::as_tibble(results)
   return(results)
 }
