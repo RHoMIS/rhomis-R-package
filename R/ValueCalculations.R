@@ -30,6 +30,7 @@ value_or_calorie_calculations_item_consumed <- function(data,
 
     names_df <- data[names_columns]
     amounts_df <- data[amounts_columns]
+    amounts_df <- amounts_df  %>% dplyr::mutate_all(as.numeric)
 
 
 

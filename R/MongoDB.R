@@ -293,13 +293,49 @@ save_data_set_to_db <- function(data,
                                 projectID,
                                 formID) {
 
-  data_string <- jsonlite::toJSON(data, pretty = T, na = "null")
-  connection <- connect_to_db("data", database, url)
 
-  connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '", "dataType":"', data_type, '"}'),
-    paste0('{"$set":{"data": ', data_string, "}}"),
-    upsert = TRUE
-  )
+#   data <- tibble::as_tibble(list(
+#     "hhid"=c("hh1", "hh2", "hh3"),
+#     "crop"=c("crop_1", "crop_2","crop_4")
+
+#   )) 
+#   data_type <- "crop_name"
+#   projectID <-  "proj_test"
+#   formID <- "form_test"
+#   database <- "rhomis-test"
+# url = "mongodb://localhost"
+
+
+  data_string <- unlist(apply(data, FUN=function(row){
+    item <- list()
+    item$data <- as.list(row)
+    item$data <- lapply(item$data, function(x){
+      jsonlite::unbox(x)
+    })
+    item$projectID <- jsonlite::unbox(projectID)
+    item$formID <- jsonlite::unbox(formID)
+    item$dataType <- jsonlite::unbox(data_type)
+    json_string <- jsonlite::toJSON(item, pretty = T, na = "null")
+
+    return(json_string)
+    # row
+                                }, 
+                                MARGIN=1, simplify=F))     
+
+                                
+
+  
+  connection <- connect_to_db("data", database, url)
+  connection$remove(paste0('{"projectID":"', projectID, '","formID":"', formID, '", "dataType":"', data_type, '"}'))
+  lapply(data_string, function(x){
+    connection$insert(x)
+  })
+  # connection$insert()
+
+  # connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '", "dataType":"', data_type, '"}'),
+  #   paste0('{"$set":{"data": ', data_string, "}}"),
+  #   upsert = TRUE
+  # )
 
 
   connection$disconnect()
@@ -416,49 +452,22 @@ read_in_db_dataset <- function(collection = "data",
                                data_set_name) {
   connection <- connect_to_db(collection, database, url)
 
-
+#   data_set_name <- "crop_name"
+#   project_name <-  "proj_test"
+#   form_name <- "form_test"
+#   database <- "rhomis-test"
+# url = "mongodb://localhost"
 
   # Arguments to identify the relevant project
   match_arguments <- jsonlite::toJSON(list(
-    "projectID" = project_name,
-    "formID" = form_name,
-    "dataType" = data_set_name
+    "projectID" = jsonlite::unbox(project_name),
+    "formID" = jsonlite::unbox(form_name),
+    "dataType" = jsonlite::unbox(data_set_name)
   ), na = "null")
-  match_arguments <- gsub("[", "", match_arguments, fixed = T)
-  match_arguments <- gsub("]", "", match_arguments, fixed = T)
-  match_arguments <- paste0('{"$match":', match_arguments, "}")
-  match_arguments <- clean_json_string(match_arguments)
 
-  # Unwind the subarray into the value of interest
-  unwind_arguments <- paste0('{"$unwind": "$data"}')
+    result  <- connection$find(match_arguments)  
+    result <- tibble::as_tibble(result$data)
 
-  # Manage the projection (which values are included or not)
-  project_arguments <- jsonlite::toJSON(list(
-    "_id" = 0,
-    "formID" = 0,
-    "projectID" = 0,
-    "dataType" = 0
-  ),
-  na = "null"
-  )
-  project_arguments <- gsub("[", "", project_arguments, fixed = T)
-  project_arguments <- gsub("]", "", project_arguments, fixed = T)
-  project_arguments <- paste0('{"$project":', project_arguments, "}")
-
-
-  # Unwind the subarray into the value of interest
-  unwind_data <- paste0('{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}')
-
-  # Group data
-
-  # e.g
-  # [{"$match":{"projectID":"core_unit","formID":"core_unit","conversionType":"ppi_score_card"}},{"$unwind": "$data"},{"$project":{"_id":0,"formID":0,"projectID":0,"conversionType":0}},{"$unwind": {"path":"$data", "preserveNullAndEmptyArrays":true}}]
-  pipeline <- paste0("[", match_arguments, ",", unwind_arguments, ",", project_arguments, ",", unwind_data, "]")
-
-  # Conducting the final query and reshaping
-  result <- connection$aggregate(pipeline = pipeline)
-  result <- result$data
-  result <- tibble::as_tibble(result)
 
   connection$disconnect()
   return(result)
