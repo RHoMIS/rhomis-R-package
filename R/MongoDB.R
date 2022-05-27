@@ -320,7 +320,7 @@ save_data_set_to_db <- function(data,
     return(json_string)
     # row
                                 }, 
-                                MARGIN=1, simplify=F))     
+                                MARGIN=1))     
 
                                 
 
