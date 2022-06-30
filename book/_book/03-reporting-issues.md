@@ -1,0 +1,3 @@
+# Reporting Issues
+
+Please report any problems or requests you encounter in the issues section of [this repo](https://github.com/l-gorman/rhomis-local-processing-scripts). 
