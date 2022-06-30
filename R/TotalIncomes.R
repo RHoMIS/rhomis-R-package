@@ -105,17 +105,18 @@ total_crop_income <- function(data) {
   crop_amount_columns <- paste0("crop_yield", "_", c(1:number_of_loops))
   crop_yield_units_columns <- paste0("crop_yield_units", "_", c(1:number_of_loops))
   crop_sold_units_columns <- paste0("crop_sold_price_quantityunits", "_", c(1:number_of_loops))
-
+  crop_use_columns <- paste0()
 
 
 
   crop_income_data <- data[crop_income_columns]
 
-  na_rows <- rowSums(is.na(data[crop_amount_columns])) != number_of_loops &
-    (
-      rowSums(is.na(data[crop_yield_units_columns])) == number_of_loops |
-        rowSums(is.na(data[crop_sold_units_columns])) == number_of_loops
-    )
+  # na_rows <- rowSums(is.na(data[crop_amount_columns])) != number_of_loops &
+  #   (
+  #     rowSums(is.na(data[crop_yield_units_columns])) == number_of_loops |
+  #       rowSums(is.na(data[crop_sold_units_columns])) == number_of_loops
+  #   )
+  na_rows <- rowSums(is.na(crop_income_data))==ncol(crop_income_data)
 
 
   crop_income_total <- rowSums(crop_income_data, na.rm = T)
@@ -152,9 +153,13 @@ total_and_off_farm_incomes <- function(data, total_crop_income, total_livestock_
 
   id_vector <- rep("x", nrow(data))
 
+  
+  
   off_farm_prop <- data["offfarm_income_proportion"]
+  off_farm_incomes_any <- data["offfarm_incomes_any"]
   off_farm_prop <- switch_units(off_farm_prop, unit_tibble = unit_conv_tibble, id_vector = id_vector)
 
+off_farm_prop[off_farm_incomes_any=="n"] <- 0
   # DERIVING OFF-FARM INCOME
   # total_income = total_crop_income + total_livestock_income + off_farm_income
   # off_farm_income = prop_off_farm*total_income
@@ -167,6 +172,7 @@ total_and_off_farm_incomes <- function(data, total_crop_income, total_livestock_
 
   off_farm_income <- (off_farm_prop[[1]] * (total_farm_income)) / (1 - off_farm_prop[[1]])
 
+  off_farm_income[off_farm_prop==0] <- 0
   total_income <- tibble::as_tibble(list(
     total_farm_income = total_farm_income,
     off_farm_income = off_farm_income

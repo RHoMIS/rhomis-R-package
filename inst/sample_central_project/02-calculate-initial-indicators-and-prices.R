@@ -15,14 +15,7 @@ initial_processed_data <- processData(
     project_name="test_project",
     form_name="test_form",
     form_version="test_version",
-    draft = F,
+    isDraft = F,
     central_test_case=T,
     database="rhomis-test"
 )
-
-
-
-
-
-
-

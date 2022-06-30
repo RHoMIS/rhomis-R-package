@@ -194,10 +194,13 @@ gender_control_summary <- function(processed_data,
       }
     }, simplify = F) %>% dplyr::bind_cols()
 
+    off_farm_gender_total <- off_farm_gender_total  %>% dplyr::mutate_all(as.numeric)
+
     total_off_farm_incomes <- rowSums(off_farm_gender_total, na.rm = T)
     subset <- total_off_farm_incomes > 0 & !is.na(total_off_farm_incomes)
 
     off_farm_gender_total[subset, ] <- off_farm_gender_total[subset, ] / total_off_farm_incomes[subset]
+    indicator_data[["off_farm_income_lcu_per_year"]] <-  as.numeric(indicator_data[["off_farm_income_lcu_per_year"]])
     off_farm_gender_control <- off_farm_gender_total * indicator_data[["off_farm_income_lcu_per_year"]]
     total_gender_incomes$off_farm <- off_farm_gender_control
   }

@@ -364,12 +364,13 @@ replace_units_with_other_all <- function(data) {
 #'
 #' @param list_of_df The list of dataframes (must be a named list)
 #' @param folder The name of the folder where they are to be written
+#' @param converted_values Whether the file being written will contain
 #'
 #' @return
 #' @export
 #'
 #' @examples
-write_list_of_df_to_folder <- function(list_of_df, folder) {
+write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
   folder_name <- paste0("./", folder)
   dir.create(folder_name, showWarnings = F)
 
@@ -379,6 +380,29 @@ write_list_of_df_to_folder <- function(list_of_df, folder) {
     if (any(class(data_to_write) == "tbl_df") |
       any(class(data_to_write) == "tbl") |
       any(class(data_to_write) == "data.frame")) {
+
+      if(converted_values==T){
+        if(file.exists(file_path)){
+          if (all(c("unit_type", "id_rhomis_dataset", "survey_value", "conversion") %in% colnames(data_to_write)))
+          {
+              old_conversion_file <- readr::read_csv(file_path,
+              col_types = readr::cols(),
+                na = c("n/a", "-999", "NA"),
+                locale = readr::locale(encoding = "latin1")
+                )
+
+              data_to_write <- dplyr::left_join(data_to_write,
+                old_conversion_file,
+                by = c("survey_value" = "survey_value",
+                "id_rhomis_dataset"="id_rhomis_dataset")) %>%
+                dplyr::select("unit_type.x", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
+                dplyr::rename("conversion" = "conversion.y") %>%
+                dplyr::rename("unit_type" = "unit_type.x")        
+                }
+      }
+      }
+
+      
       readr::write_csv(data_to_write, file_path)
       return()
     }

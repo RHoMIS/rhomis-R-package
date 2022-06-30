@@ -7,7 +7,7 @@
 extract_calorie_values(data)
 }
 \arguments{
-\item{data}{The RHoMIS data set conta}
+\item{data}{The RHoMIS data set}
 }
 \value{
 

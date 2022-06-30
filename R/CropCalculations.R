@@ -360,6 +360,8 @@ crop_income_calculations <- function(data, unit_conv_tibble = NULL) {
 
   crop_sold_income_per_year <- crop_sold_income_per_year * crop_sold_units_numeric * crop_sold_amount
 
+  crop_sold_income_per_year[crop_sold_amount==0] <- 0
+
   subscript_frame <- crop_sold_units == "total_income_per_year"
   subscript_frame[is.na(subscript_frame)] <- FALSE
   crop_sold_income_per_year[subscript_frame] <- as.numeric(crop_sold_income[subscript_frame])
@@ -512,7 +514,9 @@ crop_calculations_all <- function(data,
     ),
     warning_message = "Problems calculating crop sold and crop consumed"
   )
+  if (length(crop_columns_in_data)==0){
   data <- crop_sold_and_consumed_calculation(data)
+  }
 
 
   # Crop income calculations

@@ -30,6 +30,7 @@ value_or_calorie_calculations_item_consumed <- function(data,
 
     names_df <- data[names_columns]
     amounts_df <- data[amounts_columns]
+    amounts_df <- amounts_df  %>% dplyr::mutate_all(as.numeric)
 
 
 
@@ -65,6 +66,16 @@ value_or_calorie_calculations_item_consumed <- function(data,
   return(data)
 }
 
+# remove_existing_loop_if_exists <- function(data, name) {
+#   already_existent_loop <- find_number_of_loops(processed_data, data)
+#   if (already_existent_loop > 0) {
+#     columns_to_remove <- paste0(name, c(1:already_existent_loop))
+#     data <- data[colnames(data) %in% columns_to_remove == F]
+#   }
+
+
+#   return(data)
+# }
 
 #' Value Calculations
 #'
@@ -87,6 +98,8 @@ value_calculations <- function(processed_data,
 
   # Crop value calcs
   if ("mean_crop_price_lcu_per_kg" %in% names(prices)) {
+
+    # processed_data <- remove_existing_loop_if_exists(processed_data, "value_crop_consumed_lcu")
     processed_data <- value_or_calorie_calculations_item_consumed(
       data = processed_data,
       name_column = "crop_name",

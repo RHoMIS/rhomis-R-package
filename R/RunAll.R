@@ -34,70 +34,70 @@ make_id_columns <- function(data,
 
 
 
-  # Check validity of argument and print error if unknown type is supplied
-  id_type <- match.arg(id_type)
+    # Check validity of argument and print error if unknown type is supplied
+    id_type <- match.arg(id_type)
 
-  # Check whether id columns in list below exist in loaded rhomis data
-  id_columns <- c(country_column, hh_id_col, unique_id_col)
+    # Check whether id columns in list below exist in loaded rhomis data
+    id_columns <- c(country_column, hh_id_col, unique_id_col)
 
-  # loop over column names
-  for (cname in id_columns) {
-    # if column is not found in dataset throw an error
-    if (!(cname %in% colnames(data))) {
-      stop(paste("Expected column", cname, "does not exist in the input dataset."))
-    }
-  }
-
-  # make sure that the unique_id_col does indeed contain unique values
-  if (any(duplicated(data[unique_id_col]))) {
-    stop("The unique_id_col you provided `",unique_id_col,"` exists in the data, but contains duplicate entries.")
-  }
-
-  # if form and proj ids are provided as strings, create new columns filled with these string values
-  if (id_type == "string") {
-    data$id_proj <- rep(proj_id, nrow(data))
-    data$id_form <- rep(form_id, nrow(data))
-  } else {
-
-    # loop over proj and form id arguments
-    for (cname in c(proj_id, form_id)) {
-
-      # confirm that these columns exist in the dataset, otherwise bail and print error
-      if (!(cname %in% colnames(data))) {
-        stop(paste0("Expected column", cname, "does not exist in the input dataset."))
-      }
+    # loop over column names
+    for (cname in id_columns) {
+        # if column is not found in dataset throw an error
+        if (!(cname %in% colnames(data))) {
+            stop(paste("Expected column", cname, "does not exist in the input dataset."))
+        }
     }
 
-    # copy the contents of these columns into id_proj and id_form columns
-    data$id_proj <- data[[proj_id]]
-    data$id_form <- data[[form_id]]
-  }
+    # make sure that the unique_id_col does indeed contain unique values
+    if (any(duplicated(data[unique_id_col]))) {
+        stop("The unique_id_col you provided `",unique_id_col,"` exists in the data, but contains duplicate entries.")
+    }
 
-  # create a unique project, form, country, ID column
-  proj_form_id_col <- paste0(data[["id_proj"]], data[["id_form"]], data[[country_column]])
-  proj_form_id_col <- unname(sapply(proj_form_id_col, function(x) digest::digest(x)))
+    # if form and proj ids are provided as strings, create new columns filled with these string values
+    if (id_type == "string") {
+        data$id_proj <- rep(proj_id, nrow(data))
+        data$id_form <- rep(form_id, nrow(data))
+    } else {
 
-  # add new column to dataset
-  data$id_rhomis_dataset <- proj_form_id_col
+        # loop over proj and form id arguments
+        for (cname in c(proj_id, form_id)) {
 
-  # create unique household id
-  if (is.null(hh_id_col)) {
-    household_id <- paste0(data[["id_proj"]], data[["id_form"]], c(1:nrow(data)))
-    household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
-  } else {
-    household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
-  }
+            # confirm that these columns exist in the dataset, otherwise bail and print error
+            if (!(cname %in% colnames(data))) {
+                stop(paste0("Expected column", cname, "does not exist in the input dataset."))
+            }
+        }
 
-  # add household and unique id columns to dataset
-  data$id_hh <- household_id
-  data$id_unique <- data[[unique_id_col]]
+        # copy the contents of these columns into id_proj and id_form columns
+        data$id_proj <- data[[proj_id]]
+        data$id_form <- data[[form_id]]
+    }
 
-  # shift column ordering so that id columns are the left-most columns
-  for (i in c("id_proj", "id_form", "id_rhomis_dataset", "id_hh", "id_unique")) {
-    data <- data %>% dplyr::relocate(i)
-  }
+    # create a unique project, form, country, ID column
+    proj_form_id_col <- paste0(data[["id_proj"]], data[["id_form"]], data[[country_column]])
+    proj_form_id_col <- unname(sapply(proj_form_id_col, function(x) digest::digest(x)))
 
-  return(data)
+    # add new column to dataset
+    data$id_rhomis_dataset <- proj_form_id_col
+
+    # create unique household id
+    if (is.null(hh_id_col)) {
+        household_id <- paste0(data[["id_proj"]], data[["id_form"]], c(1:nrow(data)))
+        household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
+    } else {
+        household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
+    }
+
+    # add household and unique id columns to dataset
+    data$id_hh <- household_id
+    data$id_unique <- data[[unique_id_col]]
+
+    # shift column ordering so that id columns are the left-most columns
+    for (i in c("id_proj", "id_form", "id_rhomis_dataset", "id_hh", "id_unique")) {
+        data <- data %>% dplyr::relocate(i)
+    }
+
+    return(data)
 }
 
 
@@ -109,9 +109,6 @@ make_id_columns <- function(data,
 #' convert the column names into a shortened, standardised
 #' version.
 #'
-#' @param id_type The type of ID you would like to use ("string" or "column")
-#' @param proj_id An ID for your project
-#' @param form_id An ID for your form
 #' @param central_url The url of the ODK-central server you are using.
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param central_email The email of the ODK-central account you are using.
@@ -135,22 +132,17 @@ make_id_columns <- function(data,
 #' @examples
 
 load_rhomis_central <- function(
-                        id_type=c("string", "column"),
-                        proj_id,
-                        form_id,
-
-                        # Arguments for if processing from ODK central
-                        central_url=NULL,
-                        central_email=NULL,
-                        central_password=NULL,
-                        project_name=NULL,
-                        form_name=NULL,
-                        form_version=NULL,
-                        database=NULL,
-                        isDraft=NULL,
-                        central_test_case=FALSE,
-                        repeat_columns=pkg.env$repeat_columns
-                        ){
+                                central_url=NULL,
+                                central_email=NULL,
+                                central_password=NULL,
+                                project_name=NULL,
+                                form_name=NULL,
+                                form_version=NULL,
+                                database=NULL,
+                                isDraft=NULL,
+                                central_test_case=FALSE,
+                                repeat_columns=pkg.env$repeat_columns
+                                ){
 
 
     # Checking if the right arguments are supplied to obtain data from ODK central
@@ -170,24 +162,17 @@ load_rhomis_central <- function(
     if ( !(central_test_case) ){
 
         # Getting project and formID
-        projectID <- get_project_id_from_name(
-            project_name,
-            central_url,
-            central_email,
-            central_password
-        )
+        projectID <- get_project_id_from_name( project_name, central_url, central_email, central_password )
 
         # Finding form information from the API
-        formID <- get_xml_form_id_from_name(
-            form_name,
-            projectID,
-            central_url,
-            central_email,
-            central_password
-        )
+        formID <- get_xml_form_id_from_name( form_name, projectID, central_url, central_email, central_password )
 
+    } else {
+
+        # Set empty strings for testing purposes
+        projectID <- ""
+        formID <- ""
     }
-
 
     rhomis_data <- get_submission_data(
         central_url,
@@ -195,9 +180,7 @@ load_rhomis_central <- function(
         central_password,
         projectID,
         formID,
-        isDraft,
-        central_test_case=central_test_case
-    )
+        isDraft )
 
 
     # Cleaning the column names
@@ -212,7 +195,7 @@ load_rhomis_central <- function(
         country_column = pkg.env$identification_column_list$country,
         unique_id_col = "key",
         hh_id_col = NULL,
-        id_type = id_type,
+        id_type = "string",
         proj_id = project_name,
         form_id = form_name)
 
@@ -266,27 +249,27 @@ load_rhomis_csv <- function(file_path,
 
 
 
-  # read in the input csv file
-  rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a", "-999", "NA"), locale = readr::locale(encoding = "latin1"))
+    # read in the input csv file
+    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a", "-999", "NA"), locale = readr::locale(encoding = "latin1"))
 
-  # simplify column names to more readable format
-  colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), repeat_columns)
+    # simplify column names to more readable format
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), repeat_columns)
 
-  # ensure all data entries are lower case for consistency / easier data analysis
-  rhomis_data <- convert_all_columns_to_lower_case(rhomis_data)
+    # ensure all data entries are lower case for consistency / easier data analysis
+    rhomis_data <- convert_all_columns_to_lower_case(rhomis_data)
 
-  # temp manual intervention to account for non-standard/missing column fields
-  rhomis_data <- make_id_columns(
-    data = rhomis_data,
-    country_column,
-    unique_id_col = unique_id_col,
-    hh_id_col = hh_id_col,
-    id_type = id_type,
-    proj_id = proj_id,
-    form_id = form_id
-  )
+    # temp manual intervention to account for non-standard/missing column fields
+    rhomis_data <- make_id_columns(
+        data = rhomis_data,
+        country_column,
+        unique_id_col = unique_id_col,
+        hh_id_col = hh_id_col,
+        id_type = id_type,
+        proj_id = proj_id,
+        form_id = form_id
+    )
 
-  return(rhomis_data)
+    return(rhomis_data)
 }
 
 #' Extract New Values
@@ -301,10 +284,10 @@ load_rhomis_csv <- function(file_path,
 #'
 #' @examples
 extract_all_new_values <- function(data) {
-  units_and_conversions <- extract_units_data_frames(rhomis_data)
-  units_and_conversions <- check_existing_conversions(units_and_conversions)
+    units_and_conversions <- extract_units_data_frames(rhomis_data)
+    units_and_conversions <- check_existing_conversions(units_and_conversions)
 
-  return(units_and_conversions)
+    return(units_and_conversions)
 }
 
 
@@ -319,8 +302,8 @@ extract_all_new_values <- function(data) {
 #'
 #' @examples
 replace_infinite <- function(column) {
-  column[is.infinite(column)] <- NA
-  return(column)
+    column[is.infinite(column)] <- NA
+    return(column)
 }
 
 
@@ -352,7 +335,6 @@ replace_infinite <- function(column) {
 #' or "mongodb")
 #' @param dataFilePath The file to the data (csv format).
 #' ONLY RELEVANT IF "dataSource" WAS "local".
-#' @param overwrite Whether or not to overwrite the converted values
 #' @param id_type The type of ID you would like to use ("string" or "column")
 #' @param proj_id An ID for your project
 #' @param form_id An ID for your form
@@ -379,39 +361,32 @@ replace_infinite <- function(column) {
 #' @export
 #'
 #' @examples
-
-processData <- function(
-                        # Arguments to indicate the stage of analysis
-                        extractUnitsOnly=T, # The stage of data processing
-                        calculateInitialIndicatorsOnly=F,
-                        calculateFinalIndicatorsOnly=F,
-
+processData <- function( # Arguments to indicate the stage of analysis
+                        extractUnitsOnly = T, # The stage of data processing
+                        calculateInitialIndicatorsOnly = F,
+                        calculateFinalIndicatorsOnly = F,
                         # Arguments to indicate the type of processing being done (local or on server)
-                        dataSource=c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
-                        outputType=c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
-
+                        dataSource = c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
+                        outputType = c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
                         # Arguments used for processing local data sets
-                        base_path="./", # The path to the folder where outputs will be written
-                        dataFilePath=NULL,
-                        id_type=c("string", "column"),
+                        base_path = "./", # The path to the folder where outputs will be written
+                        dataFilePath = NULL,
+                        id_type = c("string", "column"),
                         proj_id,
                         form_id,
-                        overwrite=F,
                         uuid_local = pkg.env$identification_column_list$uuid_local,
-
                         # Arguments for if processing from ODK central
-                        central_url=NULL,
-                        central_email=NULL,
-                        central_password=NULL,
-                        project_name=NULL,
-                        form_name=NULL,
-                        form_version=NULL,
-                        database=NULL,
-                        isDraft=NULL,
-                        central_test_case=FALSE,
-                        repeat_columns=pkg.env$repeat_columns,
-                        gender_categories=pkg.env$gender_categories
-                        ){
+                        central_url = NULL,
+                        central_email = NULL,
+                        central_password = NULL,
+                        project_name = NULL,
+                        form_name = NULL,
+                        form_version = NULL,
+                        database = NULL,
+                        isDraft = NULL,
+                        central_test_case = FALSE,
+                        repeat_columns = pkg.env$repeat_columns,
+                        gender_categories = pkg.env$gender_categories) {
 
 
     #----------------------------------------
@@ -429,7 +404,7 @@ processData <- function(
     # If local csv specified, load the csv
     # add some identification columns and
     # clean the column names
-    if (dataSource == "csv") {
+    if (dataSource == "csv" & !calculateFinalIndicatorsOnly) {
 
         # If the user specified a csv, then they must provide a file path
         # for the dataset they are loading
@@ -458,9 +433,6 @@ processData <- function(
     {
 
         rhomis_data <- load_rhomis_central(
-            id_type,
-            proj_id,
-            form_id,
             central_url,
             central_email,
             central_password,
@@ -478,15 +450,16 @@ processData <- function(
 
     # Make an empty indicator dataset with
     # matching ID columns
+    if(calculateFinalIndicatorsOnly==F){
 
-    indicator_data <- make_new_dataset(rhomis_data)
+        indicator_data <- make_new_dataset(rhomis_data)
+    }
 
     #---------------------------------------------------------------
     # Extract and write units
     #---------------------------------------------------------------
 
-    if(extractUnitsOnly)
-    {
+    if (extractUnitsOnly) {
 
         # Extract the new units, and replace them with units
         # which are stored in the package where possible.
@@ -494,23 +467,21 @@ processData <- function(
         units_and_conversions <- check_existing_conversions(list_of_df = units_and_conversions)
 
         if (outputType == "csv") {
-            units_folder_dest <- paste0(base_path, "/original_units")
+            units_folder_dest <- paste0(base_path, ".original_units")
             write_units_to_folder(
                 list_of_df = units_and_conversions,
                 folder = units_folder_dest
             )
 
-            new_units_dest <- paste0(base_path, "/converted_units")
+            new_units_dest <- paste0(base_path, "units_and_conversions")
 
-            if (!dir.exists(new_units_dest) | overwrite) {
-                write_units_to_folder(
-                    list_of_df = units_and_conversions,
-                    folder = new_units_dest
-                )
-            }
+
+            write_units_to_folder(
+                list_of_df = units_and_conversions,
+                folder = new_units_dest
+            )
 
             return(units_and_conversions)
-
         }
 
         if (outputType == "mongodb") {
@@ -520,20 +491,41 @@ processData <- function(
                 projectID = project_name,
                 formID = form_name,
                 conversion_data = units_and_conversions,
-                conversion_types = names(units_and_conversions)
+                conversion_types = names(units_and_conversions),
+                collection = "unmodified_units"
             )
+
+            save_multiple_conversions(
+                database = database,
+                url = url,
+                projectID = project_name,
+                formID = form_name,
+                conversion_data = units_and_conversions,
+                conversion_types = names(units_and_conversions),
+                collection = "units_and_conversions",
+                converted_values=T
+
+            )
+            set_project_tag_to_true(database = database,
+                url = url,
+                projectID=project_name,
+                formID=form_name,
+                project_tag="unitsExtracted")
         }
     } else {
 
-        #---------------------------------------------------------------
-        # Swap "Other" with Standard values
-        #---------------------------------------------------------------
 
-        #---------------------------------------------------------------
+
+
+
+
+        if (calculateInitialIndicatorsOnly == T) {
+
+              #---------------------------------------------------------------
         # Load Conversions
         #---------------------------------------------------------------
-        if (outputType=="csv"){
-            units_folder <- paste0(base_path,"converted_units/")
+        if (outputType == "csv") {
+            units_folder <- paste0(base_path, "units_and_conversions/")
 
             if (!dir.exists(units_folder))
             {
@@ -544,11 +536,8 @@ processData <- function(
             # Loading all of the unit conversions locally
             #---------------------------------------------
             load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
-
         }
-
-
-        if (outputType == "mongodb") {
+         if (outputType == "mongodb") {
             unit_list <- find_db_units(
                 projectID = project_name,
                 formID = form_name,
@@ -556,17 +545,14 @@ processData <- function(
                 collection = "projectData",
                 database = database
             )
-                                        # Not yet complete
+            # Not yet complete
             load_all_db_units(unit_list,
-                              projectID = project_name,
-                              formID = form_name,
-                              database = database
-                              )
+                projectID = project_name,
+                formID = form_name,
+                database = database,
+                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
+            )
         }
-
-
-        if (calculateInitialIndicatorsOnly == T)
-        {
 
             # Run all of the preliminary calculations that can
             # be done without price verification and without
@@ -595,9 +581,14 @@ processData <- function(
 
             lapply(names(results), function(x) {
                 data_to_write <- results[[x]]
-
+                if(length(data_to_write)==0){
+                    return()
+                }
                 if (outputType == "csv") {
                     new_folder <- paste0(base_path, x)
+                    if (x == "original_prices") {
+                        return()
+                    }
                     dir.create(new_folder, showWarnings = F)
 
                     if (x == "processed_data" | x == "indicator_data") {
@@ -605,6 +596,7 @@ processData <- function(
                         readr::write_csv(data_to_write, path)
                         return()
                     }
+
                     write_list_of_df_to_folder(list_of_df = data_to_write, folder = new_folder)
                 }
 
@@ -639,7 +631,19 @@ processData <- function(
                             projectID = project_name,
                             formID = form_name,
                             conversion_data = data_to_write,
-                            conversion_types = names(data_to_write)
+                            conversion_types = names(data_to_write),
+                            collection="units_and_conversions",
+                            converted_values=T
+                        )
+
+                        save_multiple_conversions(
+                            database = database,
+                            url = "mongodb://localhost",
+                            projectID = project_name,
+                            formID = form_name,
+                            conversion_data = data_to_write,
+                            conversion_types = names(data_to_write),
+                            collection="unmodified_units"
                         )
                         return()
                     }
@@ -650,8 +654,15 @@ processData <- function(
                         database = database,
                         url = "mongodb://localhost"
                     )
+                    set_project_tag_to_true(database = database,
+                url = url,
+                projectID=project_name,
+                formID=form_name,
+                project_tag="pricesCalculated")
                     return()
                 }
+
+
             })
 
 
@@ -660,25 +671,24 @@ processData <- function(
             if ("processed_data" %in% names(results)) {
                 calorie_conversions_dfs <- check_existing_calorie_conversions(results$processed_data)
                 calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = list(
-                                                                                                                                                   "staple_crop" = c("maize")
-                                                                                                                                               ))
+                    "staple_crop" = c("maize")
+                ))
 
 
                 if (outputType == "csv") {
-                    original_calorie_values_folder <- paste0(base_path, "original_calorie_conversions")
-
+                    original_calorie_values_folder <- paste0(base_path, ".original_calorie_conversions")
                     write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = original_calorie_values_folder)
-                    converted_calorie_conversions_folder <- paste0(base_path, "completed_calorie_conversions")
-                    if (!dir.exists(converted_calorie_conversions_folder)) {
-                        write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = converted_calorie_conversions_folder)
-                    }
 
-                    converted_prices_folder <- paste0(base_path, "converted_prices")
-                    if (!dir.exists(converted_prices_folder)) {
-                        dir.create(converted_prices_folder, showWarnings = F)
-                        data_to_write <- results[["original_prices"]]
-                        write_list_of_df_to_folder(list_of_df = data_to_write, folder = converted_prices_folder)
-                    }
+                    converted_calorie_conversions_folder <- paste0(base_path, "calorie_conversions")
+                    write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = converted_calorie_conversions_folder,converted_values=T)
+
+
+                    data_to_write <- results[["original_prices"]]
+                    original_mean_prices_folder <- paste0(base_path, ".original_mean_prices_conversions")
+                    write_list_of_df_to_folder(list_of_df = data_to_write, folder = original_mean_prices_folder)
+
+                    converted_prices_folder <- paste0(base_path, "mean_prices")
+                    write_list_of_df_to_folder(list_of_df = data_to_write, folder = converted_prices_folder,converted_values=T)
                 }
 
                 if (outputType == "mongodb") {
@@ -688,7 +698,20 @@ processData <- function(
                         projectID = project_name,
                         formID = form_name,
                         conversion_data = calorie_conversions_dfs,
-                        conversion_types = names(calorie_conversions_dfs)
+                        conversion_types = names(calorie_conversions_dfs),
+                        collection="units_and_conversions",
+                        converted_values=T
+
+                    )
+
+                    save_multiple_conversions(
+                        database = database,
+                        url = "mongodb://localhost",
+                        projectID = project_name,
+                        formID = form_name,
+                        conversion_data = calorie_conversions_dfs,
+                        conversion_types = names(calorie_conversions_dfs),
+                        collection = "unmodified_units"
                     )
                 }
             }
@@ -697,17 +720,18 @@ processData <- function(
             return(results)
         }
         if (calculateFinalIndicatorsOnly == T) {
+
             if (outputType == "csv") {
-                                        # Read in the processed csvs and check everything exists
+                # Read in the processed csvs and check everything exists
                 processed_data <- read_folder_of_csvs(folder = paste0(base_path, "processed_data/"))[[1]]
                 indicator_data <- read_folder_of_csvs(folder = paste0(base_path, "indicator_data/"))[[1]]
-                load_local_units(paste0(base_path, "converted_units/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
+                load_local_units(paste0(base_path, "units_and_conversions/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
-                prices <- read_folder_of_csvs(folder = paste0(base_path, "converted_prices/"))
-                calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "completed_calorie_conversions/"))
+                prices <- read_folder_of_csvs(folder = paste0(base_path, "mean_prices/"))
+                calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "calorie_conversions/"))
             }
             if (outputType == "mongodb") {
-                                        # Read in the mongodb values and check everything exists
+                # Read in the mongodb values and check everything exists
                 processed_data <- read_in_db_dataset(
                     collection = "data",
                     database = database,
@@ -735,27 +759,42 @@ processData <- function(
                 prices_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$price_conversion_list]
                 prices <- sapply(prices_conversion_list, function(price_conversion) {
                     extract_units_from_db(database,
-                                          url = "mongodb://localhost",
-                                          projectID = project_name,
-                                          formID = form_name,
-                                          conversion_type = price_conversion,
-                                          collection = "units_and_conversions"
-                                          )
+                        url = "mongodb://localhost",
+                        projectID = project_name,
+                        formID = form_name,
+                        conversion_type = price_conversion,
+                        collection = "units_and_conversions"
+                    )
                 }, simplify = F)
 
                 calorie_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$calorie_conversion_list]
                 calorie_conversions <- sapply(calorie_conversion_list, function(calorie_conversion) {
                     extract_units_from_db(database,
-                                          url = "mongodb://localhost",
-                                          projectID = project_name,
-                                          formID = form_name,
-                                          conversion_type = calorie_conversion,
-                                          collection = "units_and_conversions"
-                                          )
+                        url = "mongodb://localhost",
+                        projectID = project_name,
+                        formID = form_name,
+                        conversion_type = calorie_conversion,
+                        collection = "units_and_conversions"
+                    )
                 }, simplify = F)
+
+                 if (outputType == "mongodb") {
+                    unit_list <- find_db_units(
+                        projectID = project_name,
+                        formID = form_name,
+                        url = "mongodb://localhost",
+                        collection = "projectData",
+                        database = database
+                    )
+                    # Not yet complete
+                    load_all_db_units(unit_list,
+                        projectID = project_name,
+                        formID = form_name,
+                        database = database,
+                        id_rhomis_dataset = processed_data[["id_rhomis_dataset"]]
+                    )
+        }
             }
-
-
 
             results <- value_gender_fa_calculations(
                 processed_data = processed_data,
@@ -769,7 +808,9 @@ processData <- function(
 
             lapply(names(results), function(x) {
                 data_to_write <- results[[x]]
-
+                if(length(data_to_write)==0){
+                    return()
+                }
                 if (outputType == "csv") {
                     if (x == "processed_data" | x == "indicator_data") {
                         new_folder <- paste0(base_path, x)
@@ -823,6 +864,11 @@ processData <- function(
                             url = "mongodb://localhost"
                         )
                     }
+                    set_project_tag_to_true(database = database,
+                        url = url,
+                        projectID=project_name,
+                        formID=form_name,
+                        project_tag="finalIndicators")
                 }
             })
 
@@ -830,7 +876,7 @@ processData <- function(
             return(results)
         }
 
-        return(rhomis_data)
+        # return(rhomis_data)
     }
 }
 
@@ -867,7 +913,7 @@ generateData <- function(central_url,
                          form_name,
                          number_of_responses,
                          form_version,
-                         isDraft=T) {
+                         isDraft = T) {
 
 
     # Finding project information from the API
@@ -896,7 +942,7 @@ generateData <- function(central_url,
         formID = formID,
         # file_destination=form_destination,
         form_version = form_version,
-        isDraft=isDraft
+        isDraft = isDraft
     )
 
 
@@ -917,11 +963,9 @@ generateData <- function(central_url,
             central_password,
             projectID = projectID,
             formID = formID,
-            isDraft=isDraft
+            isDraft = isDraft
         )
     }
     # Delete the xls file
     write("Success in generating responses", stdout())
 }
-
-

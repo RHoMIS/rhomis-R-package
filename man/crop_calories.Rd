@@ -5,7 +5,7 @@
 \alias{crop_calories}
 \title{Crop Calories}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 20 rows and 2 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 111 rows and 2 columns.
 }
 \source{
 NA
