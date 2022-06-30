@@ -502,13 +502,7 @@ processData <- function(
 
             new_units_dest <- paste0(base_path, "/converted_units")
 
-            if (dir.exists(new_units_dest) == F) {
-                write_units_to_folder(
-                    list_of_df = units_and_conversions,
-                    folder = new_units_dest
-                )
-            }
-            if (overwrite == T) {
+            if (!dir.exists(new_units_dest) | overwrite) {
                 write_units_to_folder(
                     list_of_df = units_and_conversions,
                     folder = new_units_dest
@@ -543,7 +537,7 @@ processData <- function(
 
             if (!dir.exists(units_folder))
             {
-                stop('Specified that the units were stored locally but the path "unit_conversions" does not exist')
+                stop('Specified that the units were stored locally but the path ',units_folder,' does not exist')
             }
 
             #---------------------------------------------

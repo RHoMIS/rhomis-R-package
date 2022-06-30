@@ -170,7 +170,7 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
     }
 
 
-    assign(pkg.env$local_units_file_list[[unit_name]], conversions, envir = .GlobalEnv)
+    assign(pkg.env$local_units_file_list[[unit_name]], conversions, envir = pkg.env)
   }
 
 
@@ -393,8 +393,8 @@ load_local_units <- function(base_folder, id_rhomis_dataset) {
       }
     }
 
-    # assign conversion to global env
-    assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = .GlobalEnv)
+    # assign conversion to package env
+    assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = pkg.env)
   }
 
   return()
