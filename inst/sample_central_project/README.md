@@ -15,14 +15,14 @@ If you would like to completely clear the directory and restart the processing, 
 
 You will need to have MongoDB installed in order for this to run, instructions to install can be found [here](https://docs.mongodb.com/manual/administration/install-community/).
 
-## Querying MongoDB 
+## Querying MongoDB
 
 If you would like to see whether the data has been stored in your local
 mongoDB instance follow these commands. First start the mongo shell console:
 
 `mongosh`
 
-To view which databases are available, execute the command 
+To view which databases are available, execute the command
 
 `show databases`
 
@@ -39,3 +39,39 @@ To see all of the data inside a collection, you will need to include the collect
 `db.units_and_conversions.find({})`
 
 For further guidance on executing mongoDB queries, please see their [documentaion](https://docs.mongodb.com/mongodb-shell/run-commands/)
+
+# Updating a unit/conversions
+
+To find the units types available for a particular project:
+
+`db.projectData.find({}, {"units":1})`
+
+To see all of the units of a specific type:
+
+```
+db.units_and_conversions.find(
+    {"data.unit_type":"crop_name",
+    "formID": 'test_form',
+    "projectID": 'test_project'},
+    {"data.survey_value":1})
+```
+
+To find a specific conversion, you can use the following query:
+
+`db.units_and_conversions.find({"data.unit_type":"fertiliser_units", "data.survey_value":"kg"}, {"data.$":1})`
+
+To update the units for a particular project:
+
+```
+db.units_and_conversions.updateOne(
+    {
+        "conversionType": "crop_name",
+        "formID": 'test_form',
+        "projectID": 'test_project'
+    },
+    {$set:
+        {"data.$[element].conversion": "tea" }
+    },
+    { arrayFilters: [ {"element.survey_value":"tea"}] }
+)
+```

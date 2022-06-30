@@ -19,12 +19,12 @@ testthat::test_that("HDDS Calculations work", {
   expect_equal(actual_result, expected_result)
 
   actual_result <-hdds_calc(hdds_14_test)
-  expected_result <- structure(list(hdds_bad_season = c(0, 4, 0, 5, 5),
-                                    hdds_bad_season_bought = c(0, 4, 0, 3, 4),
-                                    hdds_bad_season_farm = c(0, 0, 0, 4, 4),
-                                    hdds_good_season = c(0, 5, 0, 4, 8),
-                                    hdds_good_season_bought = c(0, 5, 0, 2, 7),
-                                    hdds_good_season_farm = c(0, 0, 0, 3, 5),
+  expected_result <- structure(list(hdds_bad_season = c(NA, 4, NA, 5, 5),
+                                    hdds_bad_season_bought = c(NA, 4, NA, 3, 4),
+                                    hdds_bad_season_farm = c(NA, 0, NA, 4, 4),
+                                    hdds_good_season = c(NA, 5, NA, 4, 8),
+                                    hdds_good_season_bought = c(NA, 5, NA, 2, 7),
+                                    hdds_good_season_farm = c(NA, 0, NA, 3, 5),
                                     hdds_last_month = c(9, 6, 5, 4, 7),
                                     hdds_last_month_bought = c(6, 0, 3, 0, 0),
                                     hdds_last_month_farm = c(5, 0, 5, 0, 0),

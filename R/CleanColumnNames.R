@@ -145,13 +145,18 @@ modify_loop_name <- function(column_name, loop_type) {
 modify_loop_column_names <- function(column_names, loop_type) {
   repeat_columns <- grep(paste0(loop_type, "\\[.\\]"), column_names)
   double_repeat_columns <- grep(paste0(loop_type, "\\[..\\]"), column_names)
+  triple_repeat_columns <- grep(paste0(loop_type, "\\[...\\]"), column_names)
 
   if (length(repeat_columns) == 0) {
     repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]]\\."), column_names)
     double_repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]][[:digit:]]\\."), column_names)
+    triple_repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]][[:digit:]][[:digit:]]\\."), column_names)
   }
 
-
+  if (length(triple_repeat_columns) > 0) {
+    repeat_columns <- c(repeat_columns, triple_repeat_columns)
+    repeat_columns <- sort(repeat_columns)
+  }
   if (length(double_repeat_columns) > 0) {
     repeat_columns <- c(repeat_columns, double_repeat_columns)
     repeat_columns <- sort(repeat_columns)

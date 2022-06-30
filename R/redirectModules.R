@@ -431,11 +431,12 @@ value_gender_fa_calculations <- function(processed_data,
 #' @examples
 run_preliminary_calculations <- function(rhomis_data,
                                          gender_categories = pkg.env$gender_categories) {
-  results <- list()
-
+  
+  
   rhomis_data <- replace_crop_and_livestock_other(rhomis_data)
   indicator_data <- make_new_dataset(rhomis_data)
-
+  
+  results <- list()
   prices <- list()
   crop_outputs <- list()
   livestock_outputs <- list()
@@ -554,7 +555,7 @@ run_preliminary_calculations <- function(rhomis_data,
         dplyr::summarise_all(mean, na.rm = TRUE)
 
       crop_price <- crop_price %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
-
+      crop_price$unit_type <- "crop_price_lcu_per_kg"
       prices$mean_crop_price_lcu_per_kg <- crop_price
     }
 
@@ -589,7 +590,7 @@ run_preliminary_calculations <- function(rhomis_data,
   )
 
 
-  livestock_loop_columns <- c(
+    livestock_loop_columns <- c(
     "livestock_sold",
     "livestock_sale_income",
     "livestock_price_per_animal",
@@ -647,7 +648,7 @@ run_preliminary_calculations <- function(rhomis_data,
           dplyr::summarise_all(mean, na.rm = TRUE)
 
         mean_price_df <- mean_price_df %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
-
+        mean_price_df$unit_type<- paste0("mean_", price_data_set)
         prices[[paste0("mean_", price_data_set)]] <- mean_price_df
       }
     }
@@ -664,7 +665,16 @@ run_preliminary_calculations <- function(rhomis_data,
     warning("No extra outputs generated for livestock loops")
   }
 
+  # Livestock TLU
 
+  livestock_heads_columns <- grep("livestock_heads_", colnames(rhomis_data))
+
+  if (length(livestock_heads_columns) == 0) {
+    warning("Unable to calculate livestock TLU, no 'livestock_heads' columns")
+  } else {
+    data <- clean_tlu_column_names(rhomis_data, livestock_name_conversions, livestock_tlu_conversions)
+    indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, livestock_name_conversions, livestock_tlu_conversions)
+  }
 
   ###############
   # Demographics
@@ -731,8 +741,10 @@ run_preliminary_calculations <- function(rhomis_data,
   ###############
 
   hdds_data <- hdds_calc(rhomis_data)
+  if (ncol(hdds_data)>0 & nrow(hdds_data)==nrow(indicator_data))
+  {
   indicator_data <- dplyr::bind_cols(indicator_data, hdds_data)
-
+  }
   #---------------------------------------------------------------
   # Totals
   #---------------------------------------------------------------
@@ -748,7 +760,9 @@ run_preliminary_calculations <- function(rhomis_data,
   indicator_data$livestock_income_lcu_per_year <- total_livestock_income(rhomis_data)
 
 
-  if (!is.null(indicator_data$crop_income_lcu_per_year) & !is.null(indicator_data$livestock_income_lcu_per_year) & "offfarm_income_proportion" %in% colnames(rhomis_data)) {
+  if (!is.null(indicator_data$crop_income_lcu_per_year) & !is.null(indicator_data$livestock_income_lcu_per_year) &
+    "offfarm_income_proportion" %in% colnames(rhomis_data) &
+    "offfarm_incomes_any" %in% colnames(rhomis_data)) {
     total_and_off_farm_income <- total_and_off_farm_incomes(rhomis_data,
       total_crop_income = indicator_data$crop_income_lcu_per_year,
       total_livestock_income = indicator_data$livestock_income_lcu_per_year
@@ -766,7 +780,9 @@ run_preliminary_calculations <- function(rhomis_data,
   missing_off_farm_columns <- check_columns_in_data(rhomis_data,
     loop_columns = off_farm_columns
   )
-  if (length(missing_off_farm_columns) >= 0 & length(missing_off_farm_columns) < length(off_farm_columns) & "offfarm_income_name" %in% missing_off_farm_columns == F) {
+  if (length(missing_off_farm_columns) >= 0 &
+    length(missing_off_farm_columns) < length(off_farm_columns) &
+    "offfarm_income_name" %in% missing_off_farm_columns == F) {
     columns_to_widen <- off_farm_columns[off_farm_columns %in% missing_off_farm_columns == F]
     off_farm_data <- map_to_wide_format(
       data = rhomis_data,
@@ -781,7 +797,8 @@ run_preliminary_calculations <- function(rhomis_data,
     })
   }
 
-  if (length(missing_off_farm_columns) == length(off_farm_columns)) {
+  if (length(missing_off_farm_columns) == length(off_farm_columns) |
+    "offfarm_income_name" %in% missing_off_farm_columns) {
     off_farm_data <- NULL
     warning("No extra outputs generated for off-farm loops")
   }

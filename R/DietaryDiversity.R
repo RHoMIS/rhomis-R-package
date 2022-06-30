@@ -95,8 +95,8 @@ hdds_calc <- function(data) {
   ))
 
 
-  outputs <- c()
-
+  outputs_10 <- c()
+  outputs_14 <- c()
   # HDDS for fourteen food groups, looking at the bad season
   if (all(fourteen_groups_columns$bad_season %in% colnames(data))) {
     bad_season_14 <- switch_units(data[, fourteen_groups_columns$bad_season], unit_tibble = unit_conv_tibble, id_vector = rep("x", nrow(data)))
@@ -105,28 +105,43 @@ hdds_calc <- function(data) {
     HDDS_bad_season <- rowSums(bad_season_10, na.rm = T)
     HDDS_bad_season[rowSums(is.na(bad_season_10)) == ncol(bad_season_10)] <- NA
 
-    outputs$hdds_bad_season <- HDDS_bad_season
+    outputs_14$hdds_bad_season <- HDDS_bad_season
+
 
     # Looking at the sources of the food
     if (all(fourteen_groups_columns$source_bad %in% colnames(data))) {
       bad_season_source_14 <- data[, fourteen_groups_columns$source_bad]
       colnames(bad_season_source_14) <- gsub("source_bad", "", colnames(bad_season_14))
 
+       if (nrow(bad_season_source_14)>1){
       bad_season_bought_14 <- tibble::as_tibble(sapply(bad_season_source_14, function(x) as.numeric(grepl("bought", x))))
+      }
+      if (nrow(bad_season_source_14)==1){
+      bad_season_bought_14 <- tibble::as_tibble_row(sapply(bad_season_source_14, function(x) as.numeric(grepl("bought", x))))
+      }
       bad_season_bought_10 <- collapse_14_groups(bad_season_bought_14)
-      bad_season_bought_10[bad_season_10 == 0] <- 0
+      bad_season_bought_10[bad_season_10 == 0 & !is.na(bad_season_10)] <- 0
       HDDS_bad_season_bought <- rowSums(bad_season_bought_10, na.rm = T)
       HDDS_bad_season_bought[rowSums(is.na(bad_season_bought_10)) == ncol(bad_season_bought_10)] <- NA
 
-      outputs$hdds_bad_season_bought <- HDDS_bad_season_bought
 
+      outputs_14$hdds_bad_season_bought <- HDDS_bad_season_bought
+      outputs_14$hdds_bad_season_bought[is.na(outputs_14$hdds_bad_season)] <- NA
+
+       if (nrow(bad_season_source_14)>1){
       bad_season_farm_sourced_14 <- tibble::as_tibble(sapply(bad_season_source_14, function(x) as.numeric(grepl("on-farm", x))))
+      }
+      if (nrow(bad_season_source_14)==1){
+      bad_season_farm_sourced_14 <- tibble::as_tibble_row(sapply(bad_season_source_14, function(x) as.numeric(grepl("on-farm", x))))
+      }
       bad_season_farm_sourced_10 <- collapse_14_groups(bad_season_farm_sourced_14)
-      bad_season_farm_sourced_10[bad_season_10 == 0] <- 0
+      bad_season_farm_sourced_10[bad_season_10 == 0 & !is.na(bad_season_10)] <- 0
       HDDS_bad_season_farm <- rowSums(bad_season_farm_sourced_10, na.rm = T)
       HDDS_bad_season_farm[rowSums(is.na(bad_season_farm_sourced_10)) == ncol(bad_season_farm_sourced_10)] <- NA
+      HDDS_bad_season_farm[is.na(HDDS_bad_season)] <- NA 
 
-      outputs$hdds_bad_season_farm <- HDDS_bad_season_farm
+      outputs_14$hdds_bad_season_farm <- HDDS_bad_season_farm
+      outputs_14$hdds_bad_season_farm[is.na(outputs_14$hdds_bad_season)] <- NA
     }
   }
 
@@ -139,30 +154,40 @@ hdds_calc <- function(data) {
     HDDS_good_season <- rowSums(good_season_10, na.rm = T)
     HDDS_good_season[rowSums(is.na(good_season_10)) == ncol(good_season_10)] <- NA
 
-    outputs$hdds_good_season <- HDDS_good_season
+    outputs_14$hdds_good_season <- HDDS_good_season
 
     # Looking at the sources during the good season
     if (all(fourteen_groups_columns$source_good %in% colnames(data))) {
       good_season_source_14 <- data[, fourteen_groups_columns$source_good]
       colnames(good_season_source_14) <- gsub("source_good", "", colnames(good_season_14))
 
+        if (nrow(good_season_source_14)>1){
       good_season_bought_14 <- tibble::as_tibble(sapply(good_season_source_14, function(x) as.numeric(grepl("bought", x))))
+      }
+      if (nrow(good_season_source_14)==1){
+      good_season_bought_14 <- tibble::as_tibble_row(sapply(good_season_source_14, function(x) as.numeric(grepl("bought", x))))
+      }
       good_season_bought_10 <- collapse_14_groups(good_season_bought_14)
-      good_season_bought_10[good_season_10 == 0] <- 0
+      good_season_bought_10[good_season_10 == 0 & !is.na(good_season_10)] <- 0
       HDDS_good_season_bought <- rowSums(good_season_bought_10, na.rm = T)
       HDDS_good_season_bought[rowSums(is.na(good_season_bought_10)) == ncol(good_season_bought_10)] <- NA
 
-      outputs$hdds_good_season_bought <- HDDS_good_season_bought
-      outputs$hdds_good_season_bought[is.na(outputs$hdds_good_season)] <- NA
+      outputs_14$hdds_good_season_bought <- HDDS_good_season_bought
+      outputs_14$hdds_good_season_bought[is.na(outputs_14$hdds_good_season)] <- NA
 
+       if (nrow(good_season_source_14)>1){
       good_season_farm_sourced_14 <- tibble::as_tibble(sapply(good_season_source_14, function(x) as.numeric(grepl("on-farm", x))))
+      }
+      if (nrow(good_season_source_14)==1){
+      good_season_farm_sourced_14 <- tibble::as_tibble_row(sapply(good_season_source_14, function(x) as.numeric(grepl("on-farm", x))))
+      }
       good_season_farm_sourced_10 <- collapse_14_groups(good_season_farm_sourced_14)
-      good_season_farm_sourced_10[good_season_10 == 0] <- 0
+      good_season_farm_sourced_10[good_season_10 == 0 & !is.na(good_season_10)] <- 0
       HDDS_good_season_farm <- rowSums(good_season_farm_sourced_10, na.rm = T)
       HDDS_good_season_farm[rowSums(is.na(good_season_farm_sourced_10)) == ncol(good_season_farm_sourced_10)] <- NA
 
-      outputs$hdds_good_season_farm <- HDDS_good_season_farm
-      outputs$hdds_good_season_farm[is.na(outputs$hdds_good_season)] <- NA
+      outputs_14$hdds_good_season_farm <- HDDS_good_season_farm
+      outputs_14$hdds_good_season_farm[is.na(outputs_14$hdds_good_season)] <- NA
     }
   }
 
@@ -174,31 +199,40 @@ hdds_calc <- function(data) {
     HDDS_last_month <- rowSums(last_month_10, na.rm = T)
     HDDS_last_month[rowSums(is.na(last_month_10)) == ncol(last_month_10)] <- NA
 
-    outputs$hdds_last_month <- HDDS_last_month
+    outputs_14$hdds_last_month <- HDDS_last_month
 
     # Looking at the sources over the last month
     if (all(fourteen_groups_columns$source_last_month %in% colnames(data))) {
       last_month_source_14 <- data[, fourteen_groups_columns$source_last_month]
       colnames(last_month_source_14) <- gsub("source_last_month", "", colnames(last_month_14))
 
+       if (nrow(last_month_source_14)>1){
       last_month_bought_14 <- tibble::as_tibble(sapply(last_month_source_14, function(x) as.numeric(grepl("bought", x))))
+      }
+      if (nrow(last_month_source_14)==1){
+      last_month_bought_14 <- tibble::as_tibble_row(sapply(last_month_source_14, function(x) as.numeric(grepl("bought", x))))
+      }
       last_month_bought_10 <- collapse_14_groups(last_month_bought_14)
-      last_month_bought_10[last_month_10 == 0] <- 0
+      last_month_bought_10[last_month_10 == 0 & !is.na(last_month_10)] <- 0
       HDDS_last_month_bought <- rowSums(last_month_bought_10, na.rm = T)
       HDDS_last_month_bought[rowSums(is.na(last_month_bought_10)) == ncol(last_month_bought_10)] <- NA
 
-      outputs$hdds_last_month_bought <- HDDS_last_month_bought
-      outputs$hdds_last_month_bought[is.na(outputs$hdds_last_month)] <- NA
+      outputs_14$hdds_last_month_bought <- HDDS_last_month_bought
+      outputs_14$hdds_last_month_bought[is.na(outputs_14$hdds_last_month)] <- NA
 
-
+       if (nrow(last_month_source_14)>1){
       last_month_farm_sourced_14 <- tibble::as_tibble(sapply(last_month_source_14, function(x) as.numeric(grepl("on-farm", x))))
+      }
+      if (nrow(last_month_source_14)==1){
+      last_month_farm_sourced_14 <- tibble::as_tibble_row(sapply(last_month_source_14, function(x) as.numeric(grepl("on-farm", x))))
+      }
       last_month_farm_sourced_10 <- collapse_14_groups(last_month_farm_sourced_14)
-      last_month_farm_sourced_10[last_month_10 == 0] <- 0
+      last_month_farm_sourced_10[last_month_10 == 0 & !is.na(last_month_10)] <- 0
       HDDS_last_month_farm <- rowSums(last_month_farm_sourced_10, na.rm = T)
       HDDS_last_month_farm[rowSums(is.na(last_month_farm_sourced_10)) == ncol(last_month_farm_sourced_10)] <- NA
 
-      outputs$hdds_last_month_farm <- HDDS_last_month_farm
-      outputs$hdds_last_month_farm[is.na(outputs$hdds_last_month)] <- NA
+      outputs_14$hdds_last_month_farm <- HDDS_last_month_farm
+      outputs_14$hdds_last_month_farm[is.na(outputs_14$hdds_last_month)] <- NA
     }
   }
 
@@ -208,7 +242,7 @@ hdds_calc <- function(data) {
     HDDS_last_24hr <- rowSums(last_24hr_14, na.rm = T)
     HDDS_last_24hr[rowSums(is.na(last_24hr_14)) == ncol(last_24hr_14)] <- NA
 
-    outputs$hdds_last_24hr <- HDDS_last_24hr
+    outputs_14$hdds_last_24hr <- HDDS_last_24hr
   }
 
 
@@ -221,27 +255,38 @@ hdds_calc <- function(data) {
 
     HDDS_good_season <- rowSums(good_season_10, na.rm = T)
     HDDS_good_season[rowSums(is.na(good_season_10)) == ncol(good_season_10)] <- NA
-    outputs$hdds_good_season <- HDDS_good_season
+    outputs_10$hdds_good_season <- HDDS_good_season
 
     if (all(ten_groups_columns$source_good %in% colnames(data))) {
       good_season_source_10 <- data[, ten_groups_columns$source_good]
       colnames(good_season_source_10) <- gsub("source_good", "", colnames(good_season_10))
 
-      good_season_bought_10 <- tibble::as_tibble(sapply(good_season_source_10, function(x) as.numeric(grepl("bought", x))))
-      good_season_bought_10[good_season_10 == 0] <- 0
+      if (nrow(good_season_source_10)>1){
+        good_season_bought_10 <- tibble::as_tibble(sapply(good_season_source_10, function(x) as.numeric(grepl("bought", x))))
+      }
+      if (nrow(good_season_source_10)==1){
+        good_season_bought_10 <- tibble::as_tibble_row(sapply(good_season_source_10, function(x) as.numeric(grepl("bought", x))))
+      }
+      good_season_bought_10[good_season_10 == 0 & !is.na(good_season_10)] <- 0
+
       HDDS_good_season_bought <- rowSums(good_season_bought_10, na.rm = T)
       HDDS_good_season_bought[rowSums(is.na(good_season_bought_10)) == ncol(good_season_bought_10)] <- NA
 
-      outputs$hdds_good_season_bought <- HDDS_good_season_bought
-      outputs$hdds_good_season_bought[is.na(outputs$hdds_good_season)] <- NA
+      outputs_10$hdds_good_season_bought <- HDDS_good_season_bought
+      outputs_10$hdds_good_season_bought[is.na(outputs_10$hdds_good_season)] <- NA
 
+       if (nrow(good_season_source_10)>1){
       good_season_farm_sourced_10 <- tibble::as_tibble(sapply(good_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
-      good_season_farm_sourced_10[good_season_10 == 0] <- 0
+      }
+      if (nrow(good_season_source_10)==1){
+      good_season_farm_sourced_10 <- tibble::as_tibble_row(sapply(good_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
+      }
+      good_season_farm_sourced_10[good_season_10 == 0 & !is.na(good_season_10)] <- 0
       HDDS_good_season_farm <- rowSums(good_season_farm_sourced_10, na.rm = T)
       HDDS_good_season_farm[rowSums(is.na(good_season_farm_sourced_10)) == ncol(good_season_farm_sourced_10)] <- NA
 
-      outputs$hdds_good_season_farm <- HDDS_good_season_farm
-      outputs$hdds_good_season_farm[is.na(outputs$hdds_good_season)] <- NA
+      outputs_10$hdds_good_season_farm <- HDDS_good_season_farm
+      outputs_10$hdds_good_season_farm[is.na(outputs_10$hdds_good_season)] <- NA
     }
   }
 
@@ -251,27 +296,37 @@ hdds_calc <- function(data) {
     HDDS_bad_season <- rowSums(bad_season_10, na.rm = T)
     HDDS_bad_season[rowSums(is.na(bad_season_10)) == ncol(bad_season_10)] <- NA
 
-    outputs$hdds_bad_season <- HDDS_bad_season
+    outputs_10$hdds_bad_season <- HDDS_bad_season
 
     if (all(ten_groups_columns$source_bad %in% colnames(data))) {
       bad_season_source_10 <- data[, ten_groups_columns$source_bad]
       colnames(bad_season_source_10) <- gsub("source_bad", "", colnames(bad_season_10))
 
+          if (nrow(bad_season_source_10)>1){
       bad_season_bought_10 <- tibble::as_tibble(sapply(bad_season_source_10, function(x) as.numeric(grepl("bought", x))))
-      bad_season_bought_10[bad_season_10 == 0] <- 0
+      }
+      if (nrow(bad_season_source_10)==1){
+      bad_season_bought_10 <- tibble::as_tibble_row(sapply(bad_season_source_10, function(x) as.numeric(grepl("bought", x))))
+      }
+      bad_season_bought_10[bad_season_10 == 0 & !is.na(bad_season_10)] <- 0
       HDDS_bad_season_bought <- rowSums(bad_season_bought_10, na.rm = T)
       HDDS_bad_season_bought[rowSums(is.na(bad_season_bought_10)) == ncol(bad_season_bought_10)] <- NA
 
-      outputs$hdds_bad_season_bought <- HDDS_bad_season_bought
-      outputs$hdds_bad_season_bought[is.na(outputs$hdds_bad_season)] <- NA
+      outputs_10$hdds_bad_season_bought <- HDDS_bad_season_bought
+      outputs_10$hdds_bad_season_bought[is.na(outputs_10$hdds_bad_season)] <- NA
 
+          if (nrow(bad_season_source_10)>1){
       bad_season_farm_sourced_10 <- tibble::as_tibble(sapply(bad_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
-      bad_season_farm_sourced_10[bad_season_10 == 0] <- 0
+      }
+      if (nrow(bad_season_source_10)==1){
+      bad_season_farm_sourced_10 <- tibble::as_tibble_row(sapply(bad_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
+      }
+      bad_season_farm_sourced_10[bad_season_10 == 0 & !is.na(bad_season_10)] <- 0
       HDDS_bad_season_farm <- rowSums(bad_season_farm_sourced_10, na.rm = T)
       HDDS_bad_season_farm[rowSums(is.na(bad_season_farm_sourced_10)) == ncol(bad_season_farm_sourced_10)] <- NA
 
-      outputs$hdds_bad_season_farm <- HDDS_bad_season_farm
-      outputs$hdds_bad_season_farm[is.na(outputs$hdds_bad_season)] <- NA
+      outputs_10$hdds_bad_season_farm <- HDDS_bad_season_farm
+      outputs_10$hdds_bad_season_farm[is.na(outputs_10$hdds_bad_season)] <- NA
     }
   }
 
@@ -281,27 +336,37 @@ hdds_calc <- function(data) {
     HDDS_good_season <- rowSums(good_season_10, na.rm = T)
     HDDS_good_season[rowSums(is.na(good_season_10)) == ncol(good_season_10)] <- NA
 
-    outputs$hdds_good_season <- HDDS_good_season
+    outputs_10$hdds_good_season <- HDDS_good_season
 
     if (all(ten_groups_columns$source_good %in% colnames(data))) {
       good_season_source_10 <- data[, ten_groups_columns$source_good]
       colnames(good_season_source_10) <- gsub("source_good", "", colnames(good_season_10))
 
+              if (nrow(good_season_source_10)>1){
       good_season_bought_10 <- tibble::as_tibble(sapply(good_season_source_10, function(x) as.numeric(grepl("bought", x))))
-      good_season_bought_10[good_season_10 == 0] <- 0
+      }
+      if (nrow(good_season_source_10)==1){
+      good_season_bought_10 <- tibble::as_tibble_row(sapply(good_season_source_10, function(x) as.numeric(grepl("bought", x))))
+      }
+      good_season_bought_10[good_season_10 == 0 & !is.na(good_season_10)] <- 0
       HDDS_good_season_bought <- rowSums(good_season_bought_10, na.rm = T)
       HDDS_good_season_bought[rowSums(is.na(good_season_bought_10)) == ncol(good_season_bought_10)] <- NA
 
-      outputs$hdds_good_season_bought <- HDDS_good_season_bought
-      outputs$hdds_good_season_bought[is.na(outputs$hdds_good_season)] <- NA
+      outputs_10$hdds_good_season_bought <- HDDS_good_season_bought
+      outputs_10$hdds_good_season_bought[is.na(outputs_10$hdds_good_season)] <- NA
 
+                if (nrow(good_season_source_10)>1){
       good_season_farm_sourced_10 <- tibble::as_tibble(sapply(good_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
-      good_season_farm_sourced_10[good_season_10 == 0] <- 0
+      }
+      if (nrow(good_season_source_10)==1){
+      good_season_farm_sourced_10 <- tibble::as_tibble_row(sapply(good_season_source_10, function(x) as.numeric(grepl("on-farm", x))))
+      }
+      good_season_farm_sourced_10[good_season_10 == 0 & !is.na(good_season_10)] <- 0
       HDDS_good_season_farm <- rowSums(good_season_farm_sourced_10, na.rm = T)
       HDDS_good_season_farm[rowSums(is.na(good_season_farm_sourced_10)) == ncol(good_season_farm_sourced_10)] <- NA
 
-      outputs$hdds_good_season_farm <- HDDS_good_season_farm
-      outputs$hdds_good_season_farm[is.na(outputs$hdds_good_season)] <- NA
+      outputs_10$hdds_good_season_farm <- HDDS_good_season_farm
+      outputs_10$hdds_good_season_farm[is.na(outputs_10$hdds_good_season)] <- NA
     }
   }
 
@@ -312,27 +377,38 @@ hdds_calc <- function(data) {
     HDDS_last_month <- rowSums(last_month_10, na.rm = T)
     HDDS_last_month[rowSums(is.na(last_month_10)) == ncol(last_month_10)] <- NA
 
-    outputs$hdds_last_month <- HDDS_last_month
+    outputs_10$hdds_last_month <- HDDS_last_month
 
     if (all(ten_groups_columns$source_last_month %in% colnames(data))) {
       last_month_source_10 <- data[, ten_groups_columns$source_last_month]
       colnames(last_month_source_10) <- gsub("source_last_month", "", colnames(last_month_source_10))
 
+                 if (nrow(last_month_source_10)>1){
       last_month_bought_10 <- tibble::as_tibble(sapply(last_month_source_10, function(x) as.numeric(grepl("bought", x))))
-      last_month_bought_10[last_month_10 == 0] <- 0
+      }
+      if (nrow(last_month_source_10)==1){
+      last_month_bought_10 <- tibble::as_tibble_row(sapply(last_month_source_10, function(x) as.numeric(grepl("bought", x))))
+      }
+      last_month_bought_10[last_month_10 == 0 & !is.na(last_month_10)] <- 0
       HDDS_last_month_bought <- rowSums(last_month_bought_10, na.rm = T)
       HDDS_last_month_bought[rowSums(is.na(last_month_bought_10)) == ncol(last_month_bought_10)] <- NA
 
-      outputs$hdds_last_month_bought <- HDDS_last_month_bought
-      outputs$hdds_last_month_bought[is.na(outputs$hdds_last_month)] <- NA
+      outputs_10$hdds_last_month_bought <- HDDS_last_month_bought
+      outputs_10$hdds_last_month_bought[is.na(outputs_10$hdds_last_month)] <- NA
 
+
+      if (nrow(last_month_source_10)>1){
       last_month_farm_sourced_10 <- tibble::as_tibble(sapply(last_month_source_10, function(x) as.numeric(grepl("on-farm", x))))
-      last_month_farm_sourced_10[last_month_10 == 0] <- 0
+      }
+      if (nrow(last_month_source_10)==1){
+      last_month_farm_sourced_10 <- tibble::as_tibble_row(sapply(last_month_source_10, function(x) as.numeric(grepl("on-farm", x))))
+      }
+      last_month_farm_sourced_10[last_month_10 == 0 & !is.na(last_month_10)] <- 0
       HDDS_last_month_farm <- rowSums(last_month_farm_sourced_10, na.rm = T)
       HDDS_last_month_farm[rowSums(is.na(last_month_farm_sourced_10)) == ncol(last_month_farm_sourced_10)] <- NA
 
-      outputs$hdds_last_month_farm <- HDDS_last_month_farm
-      outputs$hdds_last_month_farm[is.na(outputs$hdds_last_month)] <- NA
+      outputs_10$hdds_last_month_farm <- HDDS_last_month_farm
+      outputs_10$hdds_last_month_farm[is.na(outputs_10$hdds_last_month)] <- NA
     }
   }
 
@@ -342,10 +418,35 @@ hdds_calc <- function(data) {
     HDDS_last_24hr <- rowSums(last_24hr_10, na.rm = T)
     HDDS_last_24hr[rowSums(is.na(last_24hr_10)) == ncol(last_24hr_10)] <- NA
 
-    outputs$hdds_last_24hr <- HDDS_last_24hr
+    outputs_10$hdds_last_24hr <- HDDS_last_24hr
   }
 
-  results <- tibble::as_tibble(outputs)
+
+  
+
+  if (length(names(outputs_10)) > 0) {
+    results <- outputs_10
+  }
+  if (length(names(outputs_14)) > 0) {
+    results <- outputs_14
+  }
+
+  if (length(names(outputs_10)) > 0 &
+    length(names(outputs_14)) > 0){
+        if (all(names(outputs_10) %in% names(outputs_14))){
+            results <- sapply(names(outputs_10), function(x){
+                pmax(outputs_10[[x]], outputs_14[[x]])
+            }, simplify=F)
+
+
+        }
+    }
+
+  if (length(outputs_10)==0 &
+  length(outputs_14)==0){
+    results <- tibble::as_tibble(c())
+  }
+  results <- tibble::as_tibble(results)
   return(results)
 }
 
@@ -353,7 +454,9 @@ hdds_calc <- function(data) {
 
 
 collapse_14_groups <- function(hdds_data) {
+  na_rows <- rowSums(is.na(hdds_data))==ncol(hdds_data)
   hdds_data$grainsrootstubers <- rowSums(data.frame(as.numeric(hdds_data$grains), as.numeric(hdds_data$roots_tubers)), na.rm = T)
+  hdds_data$grainsrootstubers[na_rows] <- NA
   hdds_data$grainsrootstubers <- as.numeric(gsub("2", 1, as.character(hdds_data$grainsrootstubers)))
   hdds_data$grains <- NULL
   hdds_data$roots_tubers <- NULL
@@ -368,6 +471,7 @@ collapse_14_groups <- function(hdds_data) {
   hdds_data$green_veg <- NULL
 
   hdds_data$vita_veg_fruit <- rowSums(data.frame(as.numeric(hdds_data$vita_veg), as.numeric(hdds_data$vita_fruits)), na.rm = T)
+  hdds_data$vita_veg_fruit[na_rows] <- NA
   hdds_data$vita_veg_fruit <- as.numeric(gsub("2", 1, as.character(hdds_data$vita_veg_fruit)))
   hdds_data$vita_veg <- NULL
   hdds_data$vita_fruits <- NULL
@@ -380,6 +484,7 @@ collapse_14_groups <- function(hdds_data) {
 
 
   hdds_data$meat <- rowSums(data.frame(as.numeric(hdds_data$meat_poultry), as.numeric(hdds_data$organ_meat), as.numeric(hdds_data$fish_seafood)), na.rm = T)
+  hdds_data$meat[na_rows] <- NA
   hdds_data$meat <- as.numeric(gsub("2", 1, as.character(hdds_data$meat)))
   hdds_data$meat <- as.numeric(gsub("3", 1, as.character(hdds_data$meat)))
   hdds_data$meat_poultry <- NULL
