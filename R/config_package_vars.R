@@ -48,12 +48,17 @@ set_local_units_file_list <- function() {
       "bees_honey_production_units" = "honey_unit_conversion",
       "eggs_units" = "eggs_unit_conversion",
       "eggs_sold_price_timeunits" = "eggs_price_unit_conversion",
-      "fertiliser_units" = "fertiliser_unit_conversion"
+      "fertiliser_units" = "fertiliser_unit_conversion",
+      "livestock_tlu" = "livestock_tlu_conversions"
     ),
     envir = pkg.env
   )
 
+  # Conversion from the file name
+  # to the name of the conversion
+  # within the R package.
 
+  # file = package_table
   assign("local_units_file_tibble_list",
     list(
       "country" = "country",
@@ -67,7 +72,8 @@ set_local_units_file_list <- function() {
       "bees_honey_production_units" = "honey_amount_units",
       "eggs_units" = "eggs_amount_units",
       "eggs_sold_price_timeunits" = "eggs_price_time_units",
-      "fertiliser_units" = "fertiliser_units"
+      "fertiliser_units" = "fertiliser_units",
+      "livestock_tlu" = "livestock_tlu"
     ),
     envir = pkg.env
   )

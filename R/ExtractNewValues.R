@@ -338,12 +338,18 @@ extract_new_core_units <- function(data) {
   )
   column_results <- sapply(individual_columns_to_extract, function(x) extract_new_values(data, loop_or_individual_column = "column", column_name = x), simplify = FALSE)
 
-
+  # Extracting livestock_heads values
+  livestock_heads_new_values <- grep("livestock_heads_", colnames(data), value = T)
+  livestock_heads_new_values <- livestock_heads_new_values[!grepl("other", livestock_heads_new_values)]
+  if (length(livestock_heads_new_values) > 0) {
+    livestock_heads_new_values <- gsub("livestock_heads_", "", livestock_heads_new_values)
+    column_results$livestock_heads <- livestock_heads_new_values
+  }
 
   categories_to_merge <- list(
     country = c("country"),
     crop_name = c("crop_name", "crops_other1", "crops_other2", "crops_other3"),
-    livestock_name = c("livestock_name", "livestock_other1", "livestock_other2", "livestock_other3"),
+    livestock_name = c("livestock_name", "livestock_other1", "livestock_other2", "livestock_other3", "livestock_heads"),
     crop_yield_units = c("crop_yield_units_other"),
     crop_sold_price_quantityunits = c("crop_price_quantityunits_other"),
     unitland = c("unitland", "unitland_owned", "unitland_rentin", "unitland_rentout", "areaunits_other_own", "areaunits_other_rent", "areaunits_other"),
@@ -365,14 +371,12 @@ extract_new_core_units <- function(data) {
 
 
 
-
   return(final_result)
 }
 
-
 #' Extract names of Values to Receive Calorie Conversions
 #'
-#' @param data The RHoMIS data set conta
+#' @param data The RHoMIS data set
 #'
 #' @return
 #' @export

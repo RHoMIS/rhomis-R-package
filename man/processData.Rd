@@ -15,7 +15,6 @@ processData(
   id_type = c("string", "column"),
   proj_id,
   form_id,
-  overwrite = F,
   uuid_local = pkg.env$identification_column_list$uuid_local,
   central_url = NULL,
   central_email = NULL,
@@ -56,8 +55,6 @@ ONLY RELEVANT IF "dataSource" WAS "local".}
 \item{proj_id}{An ID for your project}
 
 \item{form_id}{An ID for your form}
-
-\item{overwrite}{Whether or not to overwrite the converted values}
 
 \item{uuid_local}{The column in a local dataset containing uuids (usually _uuid)}
 

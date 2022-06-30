@@ -4,12 +4,14 @@
 \alias{write_list_of_df_to_folder}
 \title{Write a List of DataFrames to Folder}
 \usage{
-write_list_of_df_to_folder(list_of_df, folder)
+write_list_of_df_to_folder(list_of_df, folder, converted_values = F)
 }
 \arguments{
 \item{list_of_df}{The list of dataframes (must be a named list)}
 
 \item{folder}{The name of the folder where they are to be written}
+
+\item{converted_values}{Whether the file being written will contain}
 }
 \value{
 

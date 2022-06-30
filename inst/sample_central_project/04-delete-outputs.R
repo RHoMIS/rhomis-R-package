@@ -18,6 +18,13 @@ units_and_conversion_collection <- mongolite::mongo(collection = "units_and_conv
 units_and_conversion_collection$drop()
 units_and_conversion_collection$disconnect()
 
+units_and_conversion_collection <- mongolite::mongo(collection = "unmodified_units",
+                                            db = "rhomis-test",
+                                            url =  "mongodb://localhost")
+units_and_conversion_collection$drop()
+units_and_conversion_collection$disconnect()
+
 
 
 print("Database cleared")
+

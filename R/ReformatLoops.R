@@ -188,6 +188,7 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
 #' map_to_wide_format(data, name_column, column_prefixes, types)
 map_to_wide_format <- function(data, name_column, column_prefixes, types) {
   reformatted_variables <- lapply(c(1:length(column_prefixes)), function(x) {
+
     loop_to_column_conversion(
       data = data,
       name_column = name_column,
@@ -477,6 +478,9 @@ central_loops_to_rhomis_loops <- function(central_core, loop_data) {
   # The key for the core data is "KEY"
   regex_pattern <- paste0("\\[+\\d+\\]") # Finding columns which start with "column_pattern_Integer"
   repeat_numbers <- stringr::str_extract(loop_data$KEY, regex_pattern)
+  if (length(repeat_numbers)==0){
+    return(central_core)
+  }
   repeat_numbers <- as.numeric(gsub("[[:punct:]]", "", repeat_numbers))
   loop_data$rep_number <- repeat_numbers
   number_of_loops_max <- max(repeat_numbers)
