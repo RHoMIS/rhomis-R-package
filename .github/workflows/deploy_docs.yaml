@@ -58,15 +58,11 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      # - name: Install rmarkdown, bookdown, bslib, downlit, and xml2
-      #   run: Rscript -e 'install.packages(c("rmarkdown","bookdown", "bslib","downlit", "xml2", "devtools"))'
-
       - name: Render and build book
-        run: Rscript -e '
-            renv::restore()
-            # devtools::load_all()
-            bookdown::render_book("./book")
-        '
+        run: |
+          renv::restore()
+          bookdown::render_book("./book")
+        shell: Rscript {0}
       - name: Init new repo in book/_book folder and commit generated files
         run: |
           cd book/_book
