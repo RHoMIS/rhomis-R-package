@@ -61,7 +61,9 @@ jobs:
       - name: Render and build book
         run: |
           renv::restore()
-          bookdown::render_book("./book")
+          devtools::load_all()
+          setwd("./book")
+          bookdown::render_book(".")
         shell: Rscript {0}
       - name: Init new repo in book/_book folder and commit generated files
         run: |

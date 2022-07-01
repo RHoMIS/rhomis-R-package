@@ -1,550 +1,313 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="" xml:lang="">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Chapter 2 Hello bookdown | RHoMIS R-Package</title>
-<meta name="author" content="Léo Gorman">
-<meta name="description" content="All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (#) per .Rmd file.  2.1 A section All chapter...">
-<meta name="generator" content="bookdown 0.24 with bs4_book()">
-<meta property="og:title" content="Chapter 2 Hello bookdown | RHoMIS R-Package">
-<meta property="og:type" content="book">
-<meta property="og:url" content="https://l-gorman.github.io/rhomis-R-package/hello-bookdown.html">
-<meta property="og:description" content="All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (#) per .Rmd file.  2.1 A section All chapter...">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Chapter 2 Hello bookdown | RHoMIS R-Package">
-<meta name="twitter:description" content="All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (#) per .Rmd file.  2.1 A section All chapter...">
-<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/header-attrs-2.11/header-attrs.js"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
-<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
-<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><link rel="stylesheet" href="bs4_style.css">
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Hello bookdown | A Minimal Book Example</title>
+  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Hello bookdown | A Minimal Book Example" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Hello bookdown | A Minimal Book Example" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  
+
+<meta name="author" content="John Doe" />
+
+
+<meta name="date" content="2022-07-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="cross.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
 </head>
-<body data-spy="scroll" data-target="#toc">
 
-<div class="container-fluid">
-<div class="row">
-  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+<body>
 
-    <div class="d-flex align-items-start justify-content-between">
-      <h1>
-        <a href="index.html" title="">RHoMIS R-Package</a>
-      </h1>
-      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
-    </div>
 
-    <div id="main-nav" class="collapse-lg">
-      <form role="search">
-        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
-</form>
 
-      <nav aria-label="Table of contents"><h2>Table of contents</h2>
-        <ul class="book-toc list-unstyled">
-<li><a class="" href="index.html"><span class="header-section-number">1</span> About</a></li>
-<li><a class="active" href="hello-bookdown.html"><span class="header-section-number">2</span> Hello bookdown</a></li>
-<li><a class="" href="repo.html"><span class="header-section-number">3</span> Repo</a></li>
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#usage"><i class="fa fa-check"></i><b>1.1</b> Usage</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#render-book"><i class="fa fa-check"></i><b>1.2</b> Render book</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#preview-book"><i class="fa fa-check"></i><b>1.3</b> Preview book</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="hello-bookdown.html"><a href="hello-bookdown.html"><i class="fa fa-check"></i><b>2</b> Hello bookdown</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="hello-bookdown.html"><a href="hello-bookdown.html#a-section"><i class="fa fa-check"></i><b>2.1</b> A section</a>
+<ul>
+<li class="chapter" data-level="" data-path="hello-bookdown.html"><a href="hello-bookdown.html#an-unnumbered-section"><i class="fa fa-check"></i>An unnumbered section</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="cross.html"><a href="cross.html"><i class="fa fa-check"></i><b>3</b> Cross-references</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="cross.html"><a href="cross.html#chapters-and-sub-chapters"><i class="fa fa-check"></i><b>3.1</b> Chapters and sub-chapters</a></li>
+<li class="chapter" data-level="3.2" data-path="cross.html"><a href="cross.html#captioned-figures-and-tables"><i class="fa fa-check"></i><b>3.2</b> Captioned figures and tables</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="parts.html"><a href="parts.html"><i class="fa fa-check"></i><b>4</b> Parts</a></li>
+<li class="chapter" data-level="5" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html"><i class="fa fa-check"></i><b>5</b> Footnotes and citations</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#footnotes"><i class="fa fa-check"></i><b>5.1</b> Footnotes</a></li>
+<li class="chapter" data-level="5.2" data-path="footnotes-and-citations.html"><a href="footnotes-and-citations.html#citations"><i class="fa fa-check"></i><b>5.2</b> Citations</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="blocks.html"><a href="blocks.html"><i class="fa fa-check"></i><b>6</b> Blocks</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="blocks.html"><a href="blocks.html#equations"><i class="fa fa-check"></i><b>6.1</b> Equations</a></li>
+<li class="chapter" data-level="6.2" data-path="blocks.html"><a href="blocks.html#theorems-and-proofs"><i class="fa fa-check"></i><b>6.2</b> Theorems and proofs</a></li>
+<li class="chapter" data-level="6.3" data-path="blocks.html"><a href="blocks.html#callout-blocks"><i class="fa fa-check"></i><b>6.3</b> Callout blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sharing-your-book.html"><a href="sharing-your-book.html"><i class="fa fa-check"></i><b>7</b> Sharing your book</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sharing-your-book.html"><a href="sharing-your-book.html#publishing"><i class="fa fa-check"></i><b>7.1</b> Publishing</a></li>
+<li class="chapter" data-level="7.2" data-path="sharing-your-book.html"><a href="sharing-your-book.html#pages"><i class="fa fa-check"></i><b>7.2</b> 404 pages</a></li>
+<li class="chapter" data-level="7.3" data-path="sharing-your-book.html"><a href="sharing-your-book.html#metadata-for-sharing"><i class="fa fa-check"></i><b>7.3</b> Metadata for sharing</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
 </ul>
 
-        <div class="book-extra">
-          <p><a id="book-repo" href="https://github.com/rstudio/bookdown-demo">View book source <i class="fab fa-github"></i></a></p>
-        </div>
       </nav>
-</div>
-  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><div id="hello-bookdown" class="section level1" number="2">
-<h1>
-<span class="header-section-number">2</span> Hello bookdown<a class="anchor" aria-label="anchor" href="#hello-bookdown"><i class="fas fa-link"></i></a>
-</h1>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="hello-bookdown" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">Chapter 2</span> Hello bookdown<a href="hello-bookdown.html#hello-bookdown" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>All chapters start with a first-level heading followed by your chapter title, like the line above. There should be only one first-level heading (<code>#</code>) per .Rmd file.</p>
-<div id="a-section" class="section level2" number="2.1">
-<h2>
-<span class="header-section-number">2.1</span> A section<a class="anchor" aria-label="anchor" href="#a-section"><i class="fas fa-link"></i></a>
-</h2>
+<div id="a-section" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> A section<a href="hello-bookdown.html#a-section" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>All chapter sections start with a second-level (<code>##</code>) or higher heading followed by your section title, like the sections above and below here. You can have as many as you want within a chapter.</p>
-<div id="an-unnumbered-section" class="section level3 unnumbered">
-<h3>An unnumbered section<a class="anchor" aria-label="anchor" href="#an-unnumbered-section"><i class="fas fa-link"></i></a>
-</h3>
+<div id="an-unnumbered-section" class="section level3 unnumbered hasAnchor">
+<h3>An unnumbered section<a href="hello-bookdown.html#an-unnumbered-section" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Chapters and sections are numbered by default. To un-number a heading, add a <code>{.unnumbered}</code> or the shorter <code>{-}</code> at the end of the heading, like in this section.</p>
 
 </div>
 </div>
-<div id="setup" class="section level2" number="2.2">
-<h2>
-<span class="header-section-number">2.2</span> Setup<a class="anchor" aria-label="anchor" href="#setup"><i class="fas fa-link"></i></a>
-</h2>
-<p>Firstly, you will want to make sure that you have the most recent
-version of the RHoMIS R-package installed, along with the devtools
-library:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/l-gorman/rhomis-R-package"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>You should then ensure you have a folder containing the data
-you would like to process. If using Rstudio interactively, set
-your working directory to this folder using the <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> command.
-Your directory structure should look something like this:</p>
-<pre><code>📂 project
-   ┗📂 raw-data
-     ┗📜 sample_project.csv</code></pre>
-<p>In this case, your working directory should be the <code>project</code> folder.</p>
 </div>
-<div id="dealing-with-units" class="section level2" number="2.3">
-<h2>
-<span class="header-section-number">2.3</span> Dealing with Units<a class="anchor" aria-label="anchor" href="#dealing-with-units"><i class="fas fa-link"></i></a>
-</h2>
-<div id="extracting-units" class="section level3" number="2.3.1">
-<h3>
-<span class="header-section-number">2.3.1</span> Extracting Units<a class="anchor" aria-label="anchor" href="#extracting-units"><i class="fas fa-link"></i></a>
-</h3>
-<p>To extract new units from the data you are working with, run the
-code below. This code can also be found in the <code>01-extract-values-and-initial-cleaning.R</code> file, included
-alongside this Rmarkdown document.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rhomis</span><span class="op">)</span>
+            </section>
 
-<span class="va">new_units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rhomis/man/processData.html">processData</a></span><span class="op">(</span>
-   extractUnitsOnly <span class="op">=</span> <span class="cn">T</span>, <span class="co"># The stage of data processing</span>
-
-   <span class="co"># Arguments to indicate the type of processing being done (local or on server)</span>
-   dataSource <span class="op">=</span> <span class="st">"csv"</span>,
-   outputType <span class="op">=</span> <span class="st">"csv"</span>,
-
-   <span class="co"># Arguments used for processing local data sets</span>
-   dataFilePath <span class="op">=</span> <span class="st">"raw-data/sample_project.csv"</span>,
-   id_type <span class="op">=</span> <span class="st">"string"</span>,
-   proj_id <span class="op">=</span> <span class="st">"my_project_id"</span>,
-   form_id <span class="op">=</span> <span class="st">"my_form_id"</span>
-<span class="op">)</span></code></pre></div>
-<p>If you now go back to your <code>project</code> directory, you should be able
-to see that more files have been added:</p>
-<pre><code>📂 project
-   ┣📂 raw-data
-   ┃ ┗📜 sample_project.csv
-   ┣📂 original_units
-   ┃ ┣📜 crop_yield_units.csv
-   ┃ ┣📜 country.csv
-   ┃ ┗📜 ...
-   ┗📂 converted_units
-     ┣📜 country.csv
-     ┗📜 ...
-</code></pre>
-<p>The <code>original_units</code> folder includes the units directly calculated from the data.
-The <code>converted_units</code> folder should will include the units which you will
-verify and change.</p>
-</div>
-<div id="converting-units" class="section level3" number="2.3.2">
-<h3>
-<span class="header-section-number">2.3.2</span> Converting Units<a class="anchor" aria-label="anchor" href="#converting-units"><i class="fas fa-link"></i></a>
-</h3>
-<p><strong>Please note, while you do not <em>have</em> to convert units for the next step in
-the calculations to run, uncoverted units will be ignored and will lead to
-unnecessary missing values</strong></p>
-<p>In the <code>project/converted_units</code> directory, you will find a series of csv files
-with conversion factors that need to be filled in. Each file will look
-like the table below. The first column indicates a value which was
-found in the survey. The second column shows the conversion factor
-which ought to be used. Where the conversion factor is unknown, the column
-will display <code>NA</code>. Where the conversion factor is known it will be provided.
-Known conversion factors are already embedded in the R-package.</p>
-<div class="inline-table"><table class="table table-sm">
-<thead><tr class="header">
-<th align="left">id_rhomis_dataset</th>
-<th align="left">survey_value</th>
-<th align="left">conversion</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">x</td>
-<td align="left">foo</td>
-<td align="left">NA</td>
-</tr>
-<tr class="even">
-<td align="left">x</td>
-<td align="left">bar</td>
-<td align="left">NA</td>
-</tr>
-</tbody>
-</table></div>
-<p>There are a range of conversions to enter and it is important to be aware
-which units are needed. Each file is described in more detail below:</p>
-<div class="inline-table"><table style="width:100%;" class="table table-sm">
-<colgroup>
-<col width="14%">
-<col width="28%">
-<col width="28%">
-<col width="28%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">File</th>
-<th align="left">Description</th>
-<th align="left">Example Survey Value</th>
-<th align="left">Example Conversion</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">bees_honey_production_units.csv</td>
-<td align="left">The conversion factor should be used to convert to kilograms/litres.</td>
-<td align="left">buckets_12_litre</td>
-<td align="left">12</td>
-</tr>
-<tr class="even">
-<td align="left">country.csv</td>
-<td align="left">The conversion factor should be used to convert country names to <a href="https://www.iban.com/country-codes">two-letter ISO country codes</a>.</td>
-<td align="left">uganda</td>
-<td align="left">UG</td>
-</tr>
-<tr class="odd">
-<td align="left">crop_name.csv</td>
-<td align="left">The name of crops entered in the survey. Often enumerators may specify “other” crops in a free-text-entry field. Sometimes these crops can be mispelt, or in a language other than English. Here we correct mispellings and translations into standard forms (<strong>all lower case</strong>)</td>
-<td align="left">maze</td>
-<td align="left">maize</td>
-</tr>
-<tr class="even">
-<td align="left">crop_sold_price_quantityunits.csv</td>
-<td align="left">The price units for crops which were sold. Please note that only one unit will be converted into a string, “total_income_per_year” will be converted to “total_income_per_year” as this is treated as a special case in the analysis scripts.</td>
-<td align="left">price_per_50kg_sack</td>
-<td align="left">0.02</td>
-</tr>
-<tr class="odd">
-<td align="left">crop_yield_units.csv</td>
-<td align="left">The unit of crops which have been collected. This needs to be converted to kilograms</td>
-<td align="left">cart_250kg</td>
-<td align="left">250</td>
-</tr>
-<tr class="even">
-<td align="left">eggs_sold_price_timeunits.csv</td>
-<td align="left">The amount of money made per unit time for selling eggs. This needs to be converted into an income per year</td>
-<td align="left">income for 3 months</td>
-<td align="left">4</td>
-</tr>
-<tr class="odd">
-<td align="left">eggs_units.csv</td>
-<td align="left">The number of eggs collected per year</td>
-<td align="left">pieces/day</td>
-<td align="left">365</td>
-</tr>
-<tr class="even">
-<td align="left">fertiliser_units.csv</td>
-<td align="left">The amount of fertiliser in kg</td>
-<td align="left">sacks_25kg</td>
-<td align="left">25</td>
-</tr>
-<tr class="odd">
-<td align="left">livestock_name.csv</td>
-<td align="left">The names of livestock entered in the survey. As with crop names, enumerators can also enter extra livestock names which are in a different language or mispelt. This conversion is used to standardise livestock names entered in the survey</td>
-<td align="left">catel</td>
-<td align="left">cattle</td>
-</tr>
-<tr class="even">
-<td align="left">milk_sold_price_timeunits.csv</td>
-<td align="left">The amount of money made per unit volume or per unit time. For unit time, the options are “day”, “week”, “month”, “year”. These time units must be entered as strings. For the unit volume, numeric conversions must be entered</td>
-<td align="left">month</td>
-<td align="left">month</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left">0.3litre</td>
-<td align="left">0.3</td>
-</tr>
-<tr class="even">
-<td align="left">milk_units.csv</td>
-<td align="left">The amount of milk collected in litres per year. There are a number of exceptions which must be kept as text strings, and are dealt with in the analysis scripts (e.g. “per animal per day” and “l/animal/day”</td>
-<td align="left">l/day</td>
-<td align="left">365</td>
-</tr>
-<tr class="odd">
-<td align="left">unitland.csv</td>
-<td align="left">The amount of land in hectares</td>
-<td align="left">acres</td>
-<td align="left">0.4</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-</div>
-<div id="processing-the-data-part-1" class="section level2" number="2.4">
-<h2>
-<span class="header-section-number">2.4</span> Processing the Data (Part 1)<a class="anchor" aria-label="anchor" href="#processing-the-data-part-1"><i class="fas fa-link"></i></a>
-</h2>
-<p>As with unit extraction, ensure you are in the project directory.
-Then enter the commands below (or run the <code>02-calculate-initial-indicators.R</code> file):</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rhomis</span><span class="op">)</span>
-
-<span class="va">new_units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rhomis/man/processData.html">processData</a></span><span class="op">(</span>
-   extractUnitsOnly <span class="op">=</span> <span class="cn">F</span>, <span class="co"># The stage of data processing</span>
-   calculateInitialIndicatorsOnly <span class="op">=</span> <span class="cn">T</span>, <span class="co"># The stage of data processing</span>
-
-   <span class="co"># Arguments to indicate the type of processing being done (local or on server)</span>
-   dataSource <span class="op">=</span> <span class="st">"csv"</span>,
-   outputType <span class="op">=</span> <span class="st">"csv"</span>,
-
-   <span class="co"># Arguments used for processing local data sets</span>
-   dataFilePath <span class="op">=</span> <span class="st">"raw-data/sample_project.csv"</span>,
-   id_type <span class="op">=</span> <span class="st">"string"</span>,
-   proj_id <span class="op">=</span> <span class="st">"my_project_id"</span>,
-   form_id <span class="op">=</span> <span class="st">"my_form_id"</span>
-<span class="op">)</span></code></pre></div>
-<p>You will now see that the directory structure again looks quite different:</p>
-<pre><code>📂 project
-   ┣📂 raw-data
-   ┃ ┗📜 sample_project.csv
-   ┣📂 processed_data
-   ┃ ┗📜 processed_data.csv
-   ┣📂 original_units
-   ┃ ┣📜 bees_honey_production_units.csv
-   ┃ ┣📜 crop_name.csv
-   ┃ ┗📜 ...
-   ┗📂 converted_units
-   ┃ ┣📜 country.csv
-   ┃ ┗📜 ...
-   ┣📂 original_calorie_conversions
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┣📜 eggs_calories.csv
-   ┃ ┗📜 ...
-   ┗📂 completed_calorie_conversions
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┣📜 eggs_calories.csv
-   ┃ ┗📜 ...
-   ┗📂 converted_prices
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┗📜 ...
-   ┣📂 crop_data
-   ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┣📜 crop_harvest_kg_per_year.csv
-   ┃ ┗📜 ...
-   ┣📂 indicator_data
-   ┃ ┗📜 indicators.csv
-   ┣📂 livestock_data
-   ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_prices.csv
-   ┃ ┣📜 livestock_price_per_animal.csv
-   ┃ ┗📜 ...
-   ┣📂 off_farm_data
-   ┃ ┣📜 offfarm_income_name.csv
-   ┃ ┣📜 offfarm_who_control_revenue.csv
-   ┃ ┗📜 ...
-   ┗📂 processed_data
-     ┗📜 processed_data.csv
-   
-   </code></pre>
-<div id="converting-units-1" class="section level3" number="2.4.1">
-<h3>
-<span class="header-section-number">2.4.1</span> Converting Units<a class="anchor" aria-label="anchor" href="#converting-units-1"><i class="fas fa-link"></i></a>
-</h3>
-<p>As with the units which were extracted, you will also need to verify
-prices (in the <code>converted_prices</code> folder) and calorie values (in the
-<code>completed_calorie_conversions</code> folder). Prices will be in
-lcu/kg for crops, meat, and eggs (where lcu is local currency units).
-Prices will be in lcu/l for milk and honey. And prices will be in
-lcu/animal for whole livestock sales.</p>
-<p>For calorie values, conversions will be in kcal/kg or kcal/l.</p>
-</div>
-</div>
-<div id="processing-the-data-part-2" class="section level2" number="2.5">
-<h2>
-<span class="header-section-number">2.5</span> Processing the Data (Part 2)<a class="anchor" aria-label="anchor" href="#processing-the-data-part-2"><i class="fas fa-link"></i></a>
-</h2>
-<p>Using the calories and prices you have converted, you will then be able to produce
-the final indicators. Either run the code below, or run the <code>03-calculate-final-indicators.R</code>
-file.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rhomis</span><span class="op">)</span>
-
-<span class="va">new_units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rhomis/man/processData.html">processData</a></span><span class="op">(</span>
-   extractUnitsOnly <span class="op">=</span> <span class="cn">F</span>, <span class="co"># The stage of data processing</span>
-   calculateFinalIndicatorsOnly <span class="op">=</span> <span class="cn">T</span>, <span class="co"># The stage of data processing</span>
-
-   <span class="co"># Arguments to indicate the type of processing being done (local or on server)</span>
-   dataSource <span class="op">=</span> <span class="st">"csv"</span>,
-   outputType <span class="op">=</span> <span class="st">"csv"</span>,
-
-   <span class="co"># Arguments used for processing local data sets</span>
-   dataFilePath <span class="op">=</span> <span class="st">"raw-data/sample_project.csv"</span>,
-   id_type <span class="op">=</span> <span class="st">"string"</span>,
-   proj_id <span class="op">=</span> <span class="st">"my_project_id"</span>,
-   form_id <span class="op">=</span> <span class="st">"my_form_id"</span>
-<span class="op">)</span></code></pre></div>
-<p>You will now see the directory includes some
-extra folders:</p>
-<p>You will now see that the directory structure again looks quite different:</p>
-<pre><code>📂 project
-   ┣📂 raw-data
-   ┃ ┗📜 sample_project.csv
-   ┣📂 processed_data
-   ┃ ┗📜 processed_data.csv
-   ┣📂 original_units
-   ┃ ┣📜 bees_honey_production_units.csv
-   ┃ ┣📜 crop_name.csv
-   ┃ ┗📜 ...
-   ┗📂 converted_units
-   ┃ ┣📜 country.csv
-   ┃ ┗📜 ...
-   ┣📂 original_calorie_conversions
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┣📜 eggs_calories.csv
-   ┃ ┗📜 ...
-   ┗📂 completed_calorie_conversions
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┣📜 eggs_calories.csv
-   ┃ ┗📜 ...
-   ┗📂 converted_prices
-   ┃ ┣📜 crop_calories.csv
-   ┃ ┗📜 ...
-   ┣📂 crop_data
-   ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┣📜 crop_harvest_kg_per_year.csv
-   ┃ ┗📜 ...
-   ┣📂 indicator_data
-   ┃ ┗📜 indicators.csv
-   ┣📂 livestock_data
-   ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_prices.csv
-   ┃ ┣📜 livestock_price_per_animal.csv
-   ┃ ┗📜 ...
-   ┣📂 off_farm_data
-   ┃ ┣📜 offfarm_income_name.csv
-   ┃ ┣📜 offfarm_who_control_revenue.csv
-   ┃ ┗📜 ...
-   ┗📂 processed_data
-   ┃  ┗📜 processed_data.csv
-   ┣📂 consumption_calorie_values
-   ┃ ┣📜 crop_calories_consumed_kcal.csv
-   ┃ ┣📜 milk_calories_consumed_kcal.csv
-   ┃ ┗📜 ...
-   ┣📂 consumption_lcu_values
-   ┃ ┣📜 value_crop_consumed_lcu.csv
-   ┃ ┣📜 value_eggs_consumed_lcu.csv
-   ┃ ┗📜 ...  
-   ┗📂 gender_control
-     ┣📂 gender_control_amounts_consumed
-     ┣📂 gender_control_income
-     ┗📂 ... </code></pre>
-</div>
-<div id="outputs" class="section level2" number="2.6">
-<h2>
-<span class="header-section-number">2.6</span> Outputs<a class="anchor" aria-label="anchor" href="#outputs"><i class="fas fa-link"></i></a>
-</h2>
-<div id="indicators" class="section level3" number="2.6.1">
-<h3>
-<span class="header-section-number">2.6.1</span> Indicators<a class="anchor" aria-label="anchor" href="#indicators"><i class="fas fa-link"></i></a>
-</h3>
-<p>Indicators calculated whilst the data was being processed. These cover a range of
-topics, including incomes, dietary diversity, and household demographics. The indicators
-calculated depend on the columns present in the original <code>raw-data.csv</code> file.</p>
-</div>
-<div id="crop-data" class="section level3" number="2.6.2">
-<h3>
-<span class="header-section-number">2.6.2</span> Crop Data<a class="anchor" aria-label="anchor" href="#crop-data"><i class="fas fa-link"></i></a>
-</h3>
-<p>Found in the <code>crop_data</code> directory, in each of the csvs, a column represents the crops
-listed in the survey, each row represents one household (in the same row order as the original dataset)</p>
-</div>
-<div id="livestock-data" class="section level3" number="2.6.3">
-<h3>
-<span class="header-section-number">2.6.3</span> Livestock Data<a class="anchor" aria-label="anchor" href="#livestock-data"><i class="fas fa-link"></i></a>
-</h3>
-<p>Found in the <code>livestock_data</code> directory, in each of the csvs, a column represents the types of livestock listed in the survey,
-again each row represents a household.</p>
-</div>
-<div id="off-farm-data" class="section level3" number="2.6.4">
-<h3>
-<span class="header-section-number">2.6.4</span> Off-farm Data<a class="anchor" aria-label="anchor" href="#off-farm-data"><i class="fas fa-link"></i></a>
-</h3>
-<p>Found in the <code>off_farm_data</code> directory, in each of the csvs, a column represents an off-farm activity, and each row represents
-a household.</p>
-</div>
-<div id="consumption-calories" class="section level3" number="2.6.5">
-<h3>
-<span class="header-section-number">2.6.5</span> Consumption Calories<a class="anchor" aria-label="anchor" href="#consumption-calories"><i class="fas fa-link"></i></a>
-</h3>
-<p>Found in the <code>consumption_calorie_values</code> directory, in each of the csvs, a column represents the products listed in the survey, and each row represents
-a household.</p>
-</div>
-<div id="consumption-value" class="section level3" number="2.6.6">
-<h3>
-<span class="header-section-number">2.6.6</span> Consumption value<a class="anchor" aria-label="anchor" href="#consumption-value"><i class="fas fa-link"></i></a>
-</h3>
-<p>Found in the <code>consumption_lcu_values</code> directory, in each of the csvs, a column represents products listed in the survey, and each row represents
-a household.</p>
-</div>
-<div id="gender-control" class="section level3" number="2.6.7">
-<h3>
-<span class="header-section-number">2.6.7</span> Gender Control<a class="anchor" aria-label="anchor" href="#gender-control"><i class="fas fa-link"></i></a>
-</h3>
-<p>Found in the <code>gender_control</code> directory, in each of the csvs, a column represents products listed in the survey, and each row represents
-a household.</p>
-</div>
-</div>
-</div>
-  <div class="chapter-nav">
-<div class="prev"><a href="index.html"><span class="header-section-number">1</span> About</a></div>
-<div class="next"><a href="repo.html"><span class="header-section-number">3</span> Repo</a></div>
-</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
-    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
-      <ul class="nav navbar-nav">
-<li><a class="nav-link" href="#hello-bookdown"><span class="header-section-number">2</span> Hello bookdown</a></li>
-<li>
-<a class="nav-link" href="#a-section"><span class="header-section-number">2.1</span> A section</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#an-unnumbered-section">An unnumbered section</a></li></ul>
-</li>
-<li><a class="nav-link" href="#setup"><span class="header-section-number">2.2</span> Setup</a></li>
-<li>
-<a class="nav-link" href="#dealing-with-units"><span class="header-section-number">2.3</span> Dealing with Units</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#extracting-units"><span class="header-section-number">2.3.1</span> Extracting Units</a></li>
-<li><a class="nav-link" href="#converting-units"><span class="header-section-number">2.3.2</span> Converting Units</a></li>
-</ul>
-</li>
-<li>
-<a class="nav-link" href="#processing-the-data-part-1"><span class="header-section-number">2.4</span> Processing the Data (Part 1)</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#converting-units-1"><span class="header-section-number">2.4.1</span> Converting Units</a></li></ul>
-</li>
-<li><a class="nav-link" href="#processing-the-data-part-2"><span class="header-section-number">2.5</span> Processing the Data (Part 2)</a></li>
-<li>
-<a class="nav-link" href="#outputs"><span class="header-section-number">2.6</span> Outputs</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#indicators"><span class="header-section-number">2.6.1</span> Indicators</a></li>
-<li><a class="nav-link" href="#crop-data"><span class="header-section-number">2.6.2</span> Crop Data</a></li>
-<li><a class="nav-link" href="#livestock-data"><span class="header-section-number">2.6.3</span> Livestock Data</a></li>
-<li><a class="nav-link" href="#off-farm-data"><span class="header-section-number">2.6.4</span> Off-farm Data</a></li>
-<li><a class="nav-link" href="#consumption-calories"><span class="header-section-number">2.6.5</span> Consumption Calories</a></li>
-<li><a class="nav-link" href="#consumption-value"><span class="header-section-number">2.6.6</span> Consumption value</a></li>
-<li><a class="nav-link" href="#gender-control"><span class="header-section-number">2.6.7</span> Gender Control</a></li>
-</ul>
-</li>
-</ul>
-
-      <div class="book-extra">
-        <ul class="list-unstyled">
-<li><a id="book-source" href="https://github.com/rstudio/bookdown-demo/blob/master/01-intro.Rmd">View source <i class="fab fa-github"></i></a></li>
-          <li><a id="book-edit" href="https://github.com/rstudio/bookdown-demo/edit/master/01-intro.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
-        </ul>
-</div>
-    </nav>
-</div>
-
-</div>
-</div> <!-- .container -->
-
-<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
-
-  <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>RHoMIS R-Package</strong>" was written by Léo Gorman. It was last built on 2022-06-30.</p>
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="cross.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
   </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/01-intro.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
 
-  <div class="col-12 col-md-6 mt-3">
-    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
-  </div>
-
-</div></div>
-</footer>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
+
 </html>

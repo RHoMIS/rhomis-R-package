@@ -1,7 +1,3 @@
-book_filename: "book"
-new_session: true
-rmd_files: ["index.rmd", "01-installation.Rmd", "02-processing.Rmd", "03-issues.Rmd"]
-before_chapter_script: _common.R
 delete_merged_file: true
 language:
   ui:
