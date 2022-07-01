@@ -4,15 +4,12 @@ author: "Léo Gorman"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
-bibliography: [book.bib, packages.bib]
 url: https://l-gorman.github.io/rhomis-R-package
 description: |
   Documentation on how to use the RHoMIS R-package to process
   data collected with the Rural Household Multi-Indicator Survey.
   The HTML output format for this example is bookdown::bs4_book,
   set in the _output.yml file.
-biblio-style: apalike
-csl: chicago-fullnote-bibliography.csl
 ---
 
 # About

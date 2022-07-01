@@ -2,11 +2,10 @@ about
 key-concepts
 installation
 data-processing
-setup
 dealing-with-units
 extracting-units
 converting-units
-processing-the-data-part-1
+calculating-prices-and-preparing-calorie-conversions
 converting-units-1
 processing-the-data-part-2
 outputs
@@ -18,3 +17,4 @@ consumption-calories
 consumption-value
 gender-control
 reporting-issues
+reporting-issues-1

@@ -1,17 +1,5 @@
 # Data Processing
 
-## Setup
-
-Firstly, you will want to make sure that you have the most recent
-version of the RHoMIS R-package installed, along with the devtools 
-library:
-
-
-```r
-install.packages("devtools")
-devtools::install_github("https://github.com/l-gorman/rhomis-R-package", force = TRUE)
-```
-
 You should then ensure you have a folder containing the data
 you would like to process. If using Rstudio interactively, set
 your working directory to this folder using the `setwd()` command.
@@ -30,8 +18,8 @@ In this case, your working directory should be the `project` folder.
 ### Extracting Units
 
 To extract new units from the data you are working with, run the
-code below. This code can also be found in the `01-extract-values-and-initial-cleaning.R` file, included 
-alongside this Rmarkdown document.
+code below. Set the `dataFilePath` to the path of your RHoMIS 
+raw-data file.
 
 
 ```r
@@ -59,18 +47,19 @@ to see that more files have been added:
 📂 project
    ┣📂 raw-data
    ┃ ┗📜 sample_project.csv
-   ┣📂 original_units
+   ┣📂 .original_units
    ┃ ┣📜 crop_yield_units.csv
    ┃ ┣📜 country.csv
    ┃ ┗📜 ...
-   ┗📂 converted_units
+   ┗📂 units_and_conversions
      ┣📜 country.csv
      ┗📜 ...
 
 ```
 
-The `original_units` folder includes the units directly calculated from the data.
-The `converted_units` folder should will include the units which you will
+The `.original_units` folder includes the units directly calculated from the data.
+This folder will likely be hidden unless you change the settings on your file browser.
+The `units_and_conversions` folder should will include the units which you will
 verify and change.
 
 ### Converting Units
@@ -79,7 +68,7 @@ __Please note, while you do not _have_ to convert units for the next step in
 the calculations to run, uncoverted units will be ignored and will lead to 
 unnecessary missing values__
 
-In the `project/converted_units` directory, you will find a series of csv files 
+In the `project/units_and_conversions` directory, you will find a series of csv files 
 with conversion factors that need to be filled in. Each file will look 
 like the table below. The first column indicates a value which was 
 found in the survey. The second column shows the conversion factor 
@@ -114,10 +103,10 @@ which units are needed. Each file is described in more detail below:
 | unitland.csv  | The amount of land in hectares |  acres  | 0.4  |
 
 
-## Processing the Data (Part 1)
+## Calculating Prices and Preparing Calorie Conversions
 
 As with unit extraction, ensure you are in the project directory.
-Then enter the commands below (or run the `02-calculate-initial-indicators.R` file):
+Then enter the commands below:
 
 
 ```r
@@ -145,27 +134,25 @@ You will now see that the directory structure again looks quite different:
 📂 project
    ┣📂 raw-data
    ┃ ┗📜 sample_project.csv
-   ┣📂 processed_data
-   ┃ ┗📜 processed_data.csv
    ┣📂 original_units
    ┃ ┣📜 bees_honey_production_units.csv
    ┃ ┣📜 crop_name.csv
    ┃ ┗📜 ...
-   ┗📂 converted_units
+   ┗📂 units_and_conversions
    ┃ ┣📜 country.csv
    ┃ ┗📜 ...
-   ┣📂 original_calorie_conversions
+   ┣📂 .original_calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 completed_calorie_conversions
+   ┗📂 calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
-   ┣📂 original_prices
+   ┣📂 .original_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 converted_prices
+   ┗📂 mean_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
    ┣📂 crop_data
@@ -177,10 +164,6 @@ You will now see that the directory structure again looks quite different:
    ┣📂 livestock_data
    ┃ ┣📜 crop_consumed_kg_per_year.csv
    ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_prices.csv
-   ┃ ┣📜 livestock_price_per_animal.csv
    ┃ ┗📜 ...
    ┣📂 off_farm_data
    ┃ ┣📜 offfarm_income_name.csv
@@ -195,13 +178,15 @@ You will now see that the directory structure again looks quite different:
 ### Converting Units
 
 As with the units which were extracted, you will also need to verify
-prices (in the `converted_prices` folder) and calorie values (in the
-`completed_calorie_conversions` folder). Prices will be in 
+prices (in the `units_and_conversions` folder) and calorie values (in the
+`calorie_conversions` folder). Prices will be in 
 lcu/kg for crops, meat, and eggs (where lcu is local currency units).
 Prices will be in lcu/l for milk and honey. And prices will be in 
 lcu/animal for whole livestock sales.
 
 For calorie values, conversions will be in kcal/kg or kcal/l.
+
+_Please note any folder with a dot before it will not be visible by default in most file explorers_
 
 ## Processing the Data (Part 2)
 
@@ -240,25 +225,25 @@ You will now see that the directory structure again looks quite different:
    ┃ ┗📜 sample_project.csv
    ┣📂 processed_data
    ┃ ┗📜 processed_data.csv
-   ┣📂 original_units
+   ┣📂 .original_units
    ┃ ┣📜 bees_honey_production_units.csv
    ┃ ┣📜 crop_name.csv
    ┃ ┗📜 ...
-   ┗📂 converted_units
+   ┗📂 units_and_conversions
    ┃ ┣📜 country.csv
    ┃ ┗📜 ...
-   ┣📂 original_calorie_conversions
+   ┣📂 .original_calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 completed_calorie_conversions
+   ┗📂 calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
-   ┣📂 original_prices
+   ┣📂 .original_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 converted_prices
+   ┗📂 mean_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
    ┣📂 crop_data
@@ -270,10 +255,6 @@ You will now see that the directory structure again looks quite different:
    ┣📂 livestock_data
    ┃ ┣📜 crop_consumed_kg_per_year.csv
    ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_prices.csv
-   ┃ ┣📜 livestock_price_per_animal.csv
    ┃ ┗📜 ...
    ┣📂 off_farm_data
    ┃ ┣📜 offfarm_income_name.csv

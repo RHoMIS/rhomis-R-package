@@ -6,15 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Chapter 3 Data Processing | RHoMIS R-Package</title>
 <meta name="author" content="Léo Gorman">
-<meta name="description" content='3.1 Setup Firstly, you will want to make sure that you have the most recent version of the RHoMIS R-package installed, along with the devtools library: install.packages("devtools")...'>
+<meta name="description" content="You should then ensure you have a folder containing the data you would like to process. If using Rstudio interactively, set your working directory to this folder using the setwd() command. Your...">
 <meta name="generator" content="bookdown 0.27 with bs4_book()">
 <meta property="og:title" content="Chapter 3 Data Processing | RHoMIS R-Package">
 <meta property="og:type" content="book">
 <meta property="og:url" content="https://l-gorman.github.io/rhomis-R-package/data-processing.html">
-<meta property="og:description" content='3.1 Setup Firstly, you will want to make sure that you have the most recent version of the RHoMIS R-package installed, along with the devtools library: install.packages("devtools")...'>
+<meta property="og:description" content="You should then ensure you have a folder containing the data you would like to process. If using Rstudio interactively, set your working directory to this folder using the setwd() command. Your...">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Chapter 3 Data Processing | RHoMIS R-Package">
-<meta name="twitter:description" content='3.1 Setup Firstly, you will want to make sure that you have the most recent version of the RHoMIS R-package installed, along with the devtools library: install.packages("devtools")...'>
+<meta name="twitter:description" content="You should then ensure you have a folder containing the data you would like to process. If using Rstudio interactively, set your working directory to this folder using the setwd() command. Your...">
 <!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
 <script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.3.1/transition.js"></script><script src="libs/bs3compat-0.3.1/tabs.js"></script><script src="libs/bs3compat-0.3.1/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
@@ -59,16 +59,6 @@
 <h1>
 <span class="header-section-number">3</span> Data Processing<a class="anchor" aria-label="anchor" href="#data-processing"><i class="fas fa-link"></i></a>
 </h1>
-<div id="setup" class="section level2" number="3.1">
-<h2>
-<span class="header-section-number">3.1</span> Setup<a class="anchor" aria-label="anchor" href="#setup"><i class="fas fa-link"></i></a>
-</h2>
-<p>Firstly, you will want to make sure that you have the most recent
-version of the RHoMIS R-package installed, along with the devtools
-library:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/l-gorman/rhomis-R-package"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>You should then ensure you have a folder containing the data
 you would like to process. If using Rstudio interactively, set
 your working directory to this folder using the <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code> command.
@@ -77,19 +67,18 @@ Your directory structure should look something like this:</p>
    ┗📂 raw-data
      ┗📜 sample_project.csv</code></pre>
 <p>In this case, your working directory should be the <code>project</code> folder.</p>
-</div>
-<div id="dealing-with-units" class="section level2" number="3.2">
+<div id="dealing-with-units" class="section level2" number="3.1">
 <h2>
-<span class="header-section-number">3.2</span> Dealing with Units<a class="anchor" aria-label="anchor" href="#dealing-with-units"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.1</span> Dealing with Units<a class="anchor" aria-label="anchor" href="#dealing-with-units"><i class="fas fa-link"></i></a>
 </h2>
-<div id="extracting-units" class="section level3" number="3.2.1">
+<div id="extracting-units" class="section level3" number="3.1.1">
 <h3>
-<span class="header-section-number">3.2.1</span> Extracting Units<a class="anchor" aria-label="anchor" href="#extracting-units"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.1.1</span> Extracting Units<a class="anchor" aria-label="anchor" href="#extracting-units"><i class="fas fa-link"></i></a>
 </h3>
 <p>To extract new units from the data you are working with, run the
-code below. This code can also be found in the <code>01-extract-values-and-initial-cleaning.R</code> file, included
-alongside this Rmarkdown document.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+code below. Set the <code>dataFilePath</code> to the path of your RHoMIS
+raw-data file.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rhomis</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">new_units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rhomis/man/processData.html">processData</a></span><span class="op">(</span></span>
@@ -110,26 +99,27 @@ to see that more files have been added:</p>
 <pre><code>📂 project
    ┣📂 raw-data
    ┃ ┗📜 sample_project.csv
-   ┣📂 original_units
+   ┣📂 .original_units
    ┃ ┣📜 crop_yield_units.csv
    ┃ ┣📜 country.csv
    ┃ ┗📜 ...
-   ┗📂 converted_units
+   ┗📂 units_and_conversions
      ┣📜 country.csv
      ┗📜 ...
 </code></pre>
-<p>The <code>original_units</code> folder includes the units directly calculated from the data.
-The <code>converted_units</code> folder should will include the units which you will
+<p>The <code>.original_units</code> folder includes the units directly calculated from the data.
+This folder will likely be hidden unless you change the settings on your file browser.
+The <code>units_and_conversions</code> folder should will include the units which you will
 verify and change.</p>
 </div>
-<div id="converting-units" class="section level3" number="3.2.2">
+<div id="converting-units" class="section level3" number="3.1.2">
 <h3>
-<span class="header-section-number">3.2.2</span> Converting Units<a class="anchor" aria-label="anchor" href="#converting-units"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.1.2</span> Converting Units<a class="anchor" aria-label="anchor" href="#converting-units"><i class="fas fa-link"></i></a>
 </h3>
 <p><strong>Please note, while you do not <em>have</em> to convert units for the next step in
 the calculations to run, uncoverted units will be ignored and will lead to
 unnecessary missing values</strong></p>
-<p>In the <code>project/converted_units</code> directory, you will find a series of csv files
+<p>In the <code>project/units_and_conversions</code> directory, you will find a series of csv files
 with conversion factors that need to be filled in. Each file will look
 like the table below. The first column indicates a value which was
 found in the survey. The second column shows the conversion factor
@@ -253,13 +243,13 @@ which units are needed. Each file is described in more detail below:</p>
 </table></div>
 </div>
 </div>
-<div id="processing-the-data-part-1" class="section level2" number="3.3">
+<div id="calculating-prices-and-preparing-calorie-conversions" class="section level2" number="3.2">
 <h2>
-<span class="header-section-number">3.3</span> Processing the Data (Part 1)<a class="anchor" aria-label="anchor" href="#processing-the-data-part-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.2</span> Calculating Prices and Preparing Calorie Conversions<a class="anchor" aria-label="anchor" href="#calculating-prices-and-preparing-calorie-conversions"><i class="fas fa-link"></i></a>
 </h2>
 <p>As with unit extraction, ensure you are in the project directory.
-Then enter the commands below (or run the <code>02-calculate-initial-indicators.R</code> file):</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+Then enter the commands below:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rhomis</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">new_units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rhomis/man/processData.html">processData</a></span><span class="op">(</span></span>
@@ -280,27 +270,25 @@ Then enter the commands below (or run the <code>02-calculate-initial-indicators.
 <pre><code>📂 project
    ┣📂 raw-data
    ┃ ┗📜 sample_project.csv
-   ┣📂 processed_data
-   ┃ ┗📜 processed_data.csv
    ┣📂 original_units
    ┃ ┣📜 bees_honey_production_units.csv
    ┃ ┣📜 crop_name.csv
    ┃ ┗📜 ...
-   ┗📂 converted_units
+   ┗📂 units_and_conversions
    ┃ ┣📜 country.csv
    ┃ ┗📜 ...
-   ┣📂 original_calorie_conversions
+   ┣📂 .original_calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 completed_calorie_conversions
+   ┗📂 calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
-   ┣📂 original_prices
+   ┣📂 .original_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 converted_prices
+   ┗📂 mean_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
    ┣📂 crop_data
@@ -313,10 +301,6 @@ Then enter the commands below (or run the <code>02-calculate-initial-indicators.
    ┃ ┣📜 crop_consumed_kg_per_year.csv
    ┃ ┣📜 crop_consumed_kg_per_year.csv
    ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_prices.csv
-   ┃ ┣📜 livestock_price_per_animal.csv
-   ┃ ┗📜 ...
    ┣📂 off_farm_data
    ┃ ┣📜 offfarm_income_name.csv
    ┃ ┣📜 offfarm_who_control_revenue.csv
@@ -325,27 +309,28 @@ Then enter the commands below (or run the <code>02-calculate-initial-indicators.
      ┗📜 processed_data.csv
    
    </code></pre>
-<div id="converting-units-1" class="section level3" number="3.3.1">
+<div id="converting-units-1" class="section level3" number="3.2.1">
 <h3>
-<span class="header-section-number">3.3.1</span> Converting Units<a class="anchor" aria-label="anchor" href="#converting-units-1"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.2.1</span> Converting Units<a class="anchor" aria-label="anchor" href="#converting-units-1"><i class="fas fa-link"></i></a>
 </h3>
 <p>As with the units which were extracted, you will also need to verify
-prices (in the <code>converted_prices</code> folder) and calorie values (in the
-<code>completed_calorie_conversions</code> folder). Prices will be in
+prices (in the <code>units_and_conversions</code> folder) and calorie values (in the
+<code>calorie_conversions</code> folder). Prices will be in
 lcu/kg for crops, meat, and eggs (where lcu is local currency units).
 Prices will be in lcu/l for milk and honey. And prices will be in
 lcu/animal for whole livestock sales.</p>
 <p>For calorie values, conversions will be in kcal/kg or kcal/l.</p>
+<p><em>Please note any folder with a dot before it will not be visible by default in most file explorers</em></p>
 </div>
 </div>
-<div id="processing-the-data-part-2" class="section level2" number="3.4">
+<div id="processing-the-data-part-2" class="section level2" number="3.3">
 <h2>
-<span class="header-section-number">3.4</span> Processing the Data (Part 2)<a class="anchor" aria-label="anchor" href="#processing-the-data-part-2"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.3</span> Processing the Data (Part 2)<a class="anchor" aria-label="anchor" href="#processing-the-data-part-2"><i class="fas fa-link"></i></a>
 </h2>
 <p>Using the calories and prices you have converted, you will then be able to produce
 the final indicators. Either run the code below, or run the <code>03-calculate-final-indicators.R</code>
 file.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">rhomis</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">new_units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rhomis/man/processData.html">processData</a></span><span class="op">(</span></span>
@@ -370,25 +355,25 @@ extra folders:</p>
    ┃ ┗📜 sample_project.csv
    ┣📂 processed_data
    ┃ ┗📜 processed_data.csv
-   ┣📂 original_units
+   ┣📂 .original_units
    ┃ ┣📜 bees_honey_production_units.csv
    ┃ ┣📜 crop_name.csv
    ┃ ┗📜 ...
-   ┗📂 converted_units
+   ┗📂 units_and_conversions
    ┃ ┣📜 country.csv
    ┃ ┗📜 ...
-   ┣📂 original_calorie_conversions
+   ┣📂 .original_calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 completed_calorie_conversions
+   ┗📂 calorie_conversions
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
-   ┣📂 original_prices
+   ┣📂 .original_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┣📜 eggs_calories.csv
    ┃ ┗📜 ...
-   ┗📂 converted_prices
+   ┗📂 mean_prices
    ┃ ┣📜 crop_calories.csv
    ┃ ┗📜 ...
    ┣📂 crop_data
@@ -400,10 +385,6 @@ extra folders:</p>
    ┣📂 livestock_data
    ┃ ┣📜 crop_consumed_kg_per_year.csv
    ┃ ┣📜 crop_consumed_kg_per_year.csv
-   ┃ ┗📜 ...
-   ┣📂 original_prices
-   ┃ ┣📜 crop_prices.csv
-   ┃ ┣📜 livestock_price_per_animal.csv
    ┃ ┗📜 ...
    ┣📂 off_farm_data
    ┃ ┣📜 offfarm_income_name.csv
@@ -424,56 +405,56 @@ extra folders:</p>
      ┣📂 gender_control_income
      ┗📂 ... </code></pre>
 </div>
-<div id="outputs" class="section level2" number="3.5">
+<div id="outputs" class="section level2" number="3.4">
 <h2>
-<span class="header-section-number">3.5</span> Outputs<a class="anchor" aria-label="anchor" href="#outputs"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4</span> Outputs<a class="anchor" aria-label="anchor" href="#outputs"><i class="fas fa-link"></i></a>
 </h2>
-<div id="indicators" class="section level3" number="3.5.1">
+<div id="indicators" class="section level3" number="3.4.1">
 <h3>
-<span class="header-section-number">3.5.1</span> Indicators<a class="anchor" aria-label="anchor" href="#indicators"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.1</span> Indicators<a class="anchor" aria-label="anchor" href="#indicators"><i class="fas fa-link"></i></a>
 </h3>
 <p>Indicators calculated whilst the data was being processed. These cover a range of
 topics, including incomes, dietary diversity, and household demographics. The indicators
 calculated depend on the columns present in the original <code>raw-data.csv</code> file.</p>
 </div>
-<div id="crop-data" class="section level3" number="3.5.2">
+<div id="crop-data" class="section level3" number="3.4.2">
 <h3>
-<span class="header-section-number">3.5.2</span> Crop Data<a class="anchor" aria-label="anchor" href="#crop-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.2</span> Crop Data<a class="anchor" aria-label="anchor" href="#crop-data"><i class="fas fa-link"></i></a>
 </h3>
 <p>Found in the <code>crop_data</code> directory, in each of the csvs, a column represents the crops
 listed in the survey, each row represents one household (in the same row order as the original dataset)</p>
 </div>
-<div id="livestock-data" class="section level3" number="3.5.3">
+<div id="livestock-data" class="section level3" number="3.4.3">
 <h3>
-<span class="header-section-number">3.5.3</span> Livestock Data<a class="anchor" aria-label="anchor" href="#livestock-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.3</span> Livestock Data<a class="anchor" aria-label="anchor" href="#livestock-data"><i class="fas fa-link"></i></a>
 </h3>
 <p>Found in the <code>livestock_data</code> directory, in each of the csvs, a column represents the types of livestock listed in the survey,
 again each row represents a household.</p>
 </div>
-<div id="off-farm-data" class="section level3" number="3.5.4">
+<div id="off-farm-data" class="section level3" number="3.4.4">
 <h3>
-<span class="header-section-number">3.5.4</span> Off-farm Data<a class="anchor" aria-label="anchor" href="#off-farm-data"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.4</span> Off-farm Data<a class="anchor" aria-label="anchor" href="#off-farm-data"><i class="fas fa-link"></i></a>
 </h3>
 <p>Found in the <code>off_farm_data</code> directory, in each of the csvs, a column represents an off-farm activity, and each row represents
 a household.</p>
 </div>
-<div id="consumption-calories" class="section level3" number="3.5.5">
+<div id="consumption-calories" class="section level3" number="3.4.5">
 <h3>
-<span class="header-section-number">3.5.5</span> Consumption Calories<a class="anchor" aria-label="anchor" href="#consumption-calories"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.5</span> Consumption Calories<a class="anchor" aria-label="anchor" href="#consumption-calories"><i class="fas fa-link"></i></a>
 </h3>
 <p>Found in the <code>consumption_calorie_values</code> directory, in each of the csvs, a column represents the products listed in the survey, and each row represents
 a household.</p>
 </div>
-<div id="consumption-value" class="section level3" number="3.5.6">
+<div id="consumption-value" class="section level3" number="3.4.6">
 <h3>
-<span class="header-section-number">3.5.6</span> Consumption value<a class="anchor" aria-label="anchor" href="#consumption-value"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.6</span> Consumption value<a class="anchor" aria-label="anchor" href="#consumption-value"><i class="fas fa-link"></i></a>
 </h3>
 <p>Found in the <code>consumption_lcu_values</code> directory, in each of the csvs, a column represents products listed in the survey, and each row represents
 a household.</p>
 </div>
-<div id="gender-control" class="section level3" number="3.5.7">
+<div id="gender-control" class="section level3" number="3.4.7">
 <h3>
-<span class="header-section-number">3.5.7</span> Gender Control<a class="anchor" aria-label="anchor" href="#gender-control"><i class="fas fa-link"></i></a>
+<span class="header-section-number">3.4.7</span> Gender Control<a class="anchor" aria-label="anchor" href="#gender-control"><i class="fas fa-link"></i></a>
 </h3>
 <p>Found in the <code>gender_control</code> directory, in each of the csvs, a column represents products listed in the survey, and each row represents
 a household.</p>
@@ -488,26 +469,25 @@ a household.</p>
     <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
       <ul class="nav navbar-nav">
 <li><a class="nav-link" href="#data-processing"><span class="header-section-number">3</span> Data Processing</a></li>
-<li><a class="nav-link" href="#setup"><span class="header-section-number">3.1</span> Setup</a></li>
 <li>
-<a class="nav-link" href="#dealing-with-units"><span class="header-section-number">3.2</span> Dealing with Units</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#extracting-units"><span class="header-section-number">3.2.1</span> Extracting Units</a></li>
-<li><a class="nav-link" href="#converting-units"><span class="header-section-number">3.2.2</span> Converting Units</a></li>
+<a class="nav-link" href="#dealing-with-units"><span class="header-section-number">3.1</span> Dealing with Units</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#extracting-units"><span class="header-section-number">3.1.1</span> Extracting Units</a></li>
+<li><a class="nav-link" href="#converting-units"><span class="header-section-number">3.1.2</span> Converting Units</a></li>
 </ul>
 </li>
 <li>
-<a class="nav-link" href="#processing-the-data-part-1"><span class="header-section-number">3.3</span> Processing the Data (Part 1)</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#converting-units-1"><span class="header-section-number">3.3.1</span> Converting Units</a></li></ul>
+<a class="nav-link" href="#calculating-prices-and-preparing-calorie-conversions"><span class="header-section-number">3.2</span> Calculating Prices and Preparing Calorie Conversions</a><ul class="nav navbar-nav"><li><a class="nav-link" href="#converting-units-1"><span class="header-section-number">3.2.1</span> Converting Units</a></li></ul>
 </li>
-<li><a class="nav-link" href="#processing-the-data-part-2"><span class="header-section-number">3.4</span> Processing the Data (Part 2)</a></li>
+<li><a class="nav-link" href="#processing-the-data-part-2"><span class="header-section-number">3.3</span> Processing the Data (Part 2)</a></li>
 <li>
-<a class="nav-link" href="#outputs"><span class="header-section-number">3.5</span> Outputs</a><ul class="nav navbar-nav">
-<li><a class="nav-link" href="#indicators"><span class="header-section-number">3.5.1</span> Indicators</a></li>
-<li><a class="nav-link" href="#crop-data"><span class="header-section-number">3.5.2</span> Crop Data</a></li>
-<li><a class="nav-link" href="#livestock-data"><span class="header-section-number">3.5.3</span> Livestock Data</a></li>
-<li><a class="nav-link" href="#off-farm-data"><span class="header-section-number">3.5.4</span> Off-farm Data</a></li>
-<li><a class="nav-link" href="#consumption-calories"><span class="header-section-number">3.5.5</span> Consumption Calories</a></li>
-<li><a class="nav-link" href="#consumption-value"><span class="header-section-number">3.5.6</span> Consumption value</a></li>
-<li><a class="nav-link" href="#gender-control"><span class="header-section-number">3.5.7</span> Gender Control</a></li>
+<a class="nav-link" href="#outputs"><span class="header-section-number">3.4</span> Outputs</a><ul class="nav navbar-nav">
+<li><a class="nav-link" href="#indicators"><span class="header-section-number">3.4.1</span> Indicators</a></li>
+<li><a class="nav-link" href="#crop-data"><span class="header-section-number">3.4.2</span> Crop Data</a></li>
+<li><a class="nav-link" href="#livestock-data"><span class="header-section-number">3.4.3</span> Livestock Data</a></li>
+<li><a class="nav-link" href="#off-farm-data"><span class="header-section-number">3.4.4</span> Off-farm Data</a></li>
+<li><a class="nav-link" href="#consumption-calories"><span class="header-section-number">3.4.5</span> Consumption Calories</a></li>
+<li><a class="nav-link" href="#consumption-value"><span class="header-section-number">3.4.6</span> Consumption value</a></li>
+<li><a class="nav-link" href="#gender-control"><span class="header-section-number">3.4.7</span> Gender Control</a></li>
 </ul>
 </li>
 </ul>
@@ -527,7 +507,7 @@ a household.</p>
 <footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
 
   <div class="col-12 col-md-6 mt-3">
-    <p>"<strong>RHoMIS R-Package</strong>" was written by Léo Gorman. It was last built on 2022-06-30.</p>
+    <p>"<strong>RHoMIS R-Package</strong>" was written by Léo Gorman. It was last built on 2022-07-01.</p>
   </div>
 
   <div class="col-12 col-md-6 mt-3">
