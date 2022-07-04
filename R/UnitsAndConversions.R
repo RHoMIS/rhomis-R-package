@@ -182,8 +182,8 @@ save_initial_units <- function(database = "rhomis", url = "mongodb://localhost",
 load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_units", formID = "core_units", id_rhomis_dataset) {
 
 
-
-  # loop over the possible list of unit conversion csv file names
+  units_all <- list()
+  # loop over the possible list of unit conversion file names
   for (unit_name in names(pkg.env$local_units_file_list)) {
 
     if (unit_name %in% unit_list) {
@@ -221,12 +221,12 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
       }
     }
 
-
-    assign(pkg.env$local_units_file_list[[unit_name]], conversions, envir = .GlobalEnv)
+    units_all[[pkg.env$local_units_file_list[[unit_name]]]] <- conversions
+    # assign(, conversions, envir = pkg.env)
   }
 
 
-  return()
+  return(units_all)
 }
 
 #' Extract Units from database
@@ -438,6 +438,8 @@ write_units_to_folder <- function(list_of_df,
 #' @examples
 load_local_units <- function(units_folder, id_rhomis_dataset) {
 
+  units_all <- list()
+
   # get list of files stored in base_folder
   file_names <- list.files(units_folder)
 
@@ -479,11 +481,13 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
       }
     }
 
-    # assign conversion to global env
-    assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = .GlobalEnv)
+    # assign conversion to package env
+        units_all[[pkg.env$local_units_file_list[[unit_file]]]] <- conversions
+
+    # assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = pkg.env)
   }
 
-  return()
+  return(units_all)
 }
 
 
