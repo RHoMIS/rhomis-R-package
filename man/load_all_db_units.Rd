@@ -8,7 +8,8 @@ load_all_db_units(
   unit_list,
   database = "rhomis",
   projectID = "core_units",
-  formID = "core_units"
+  formID = "core_units",
+  id_rhomis_dataset
 )
 }
 \arguments{
@@ -19,15 +20,12 @@ load_all_db_units(
 \item{projectID}{The Name of the project}
 
 \item{formID}{The name of the form}
+
+\item{id_rhomis_dataset}{A vector of rhomis IDs for the project being processed.}
 }
 \value{
 
 }
 \description{
 Load all units from a local MongoDB databases
-}
-\examples{
-loop over the possible list of unit conversion csv file names
-evaluate the string denoting the variable name to be used
-make dummy tibble
 }

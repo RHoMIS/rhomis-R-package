@@ -27,5 +27,6 @@ get_xml_form_id_from_name(
 
 }
 \description{
-Sometimes it is necessary to get the form ID from the project name, in particular
+Sometimes it is necessary to get the form
+ID from the project name, in particular
 }

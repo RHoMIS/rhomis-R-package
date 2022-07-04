@@ -12,9 +12,13 @@ calculate_prices_and_indicator_local(
 )
 }
 \arguments{
+\item{data}{The dataset which is to be processed}
+
 \item{base_path}{Path to the project folder}
 
 \item{units_path}{Path to the folder of converted units}
+
+\item{gender_categories}{The gender categories used in this survey}
 }
 \value{
 

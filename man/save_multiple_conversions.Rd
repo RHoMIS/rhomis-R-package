@@ -10,7 +10,9 @@ save_multiple_conversions(
   projectID = "core_units",
   formID = "core_units",
   conversion_data,
-  conversion_types
+  conversion_types,
+  collection,
+  converted_values = F
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ save_multiple_conversions(
 \item{conversion_data}{A list of tibbles of the conversion factors to be used}
 
 \item{conversion_types}{Which types of conversion is being saves (e.g crop yield, PPI, HDDS etc...)}
+
+\item{collection}{The mongodb collection to save the units}
+
+\item{converted_values}{Whether saving values which user has already converted}
 }
 \value{
 

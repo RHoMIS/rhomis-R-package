@@ -19,5 +19,5 @@ by each person would be 0.5
 }
 \examples{
 item <- c("male_adult", "female_adult")
-prop_or_na(item) #should return 0.5
+prop_or_na(item) # should return 0.5
 }

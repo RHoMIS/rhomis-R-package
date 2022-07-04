@@ -11,11 +11,12 @@ submit_xml_data(
   central_password,
   projectID,
   formID,
-  draft
+  isDraft
 )
 }
 \arguments{
-\item{xml_string}{The XML string for the data submission you would like to make}
+\item{xml_string}{The XML string for the data submission you
+would like to make}
 
 \item{central_url}{The url of the ODK central server}
 
@@ -23,13 +24,14 @@ submit_xml_data(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 
 \item{formID}{The ID of the form containing the submissions you are looking at.
 To get the list of forms see the "get_forms" function.}
 
-\item{draft}{Whether the form you are submitting to is a draft or not}
+\item{isDraft}{Whether the form you are submitting to is a draft or not}
 }
 \value{
 

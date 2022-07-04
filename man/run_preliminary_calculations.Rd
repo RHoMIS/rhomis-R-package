@@ -11,6 +11,8 @@ run_preliminary_calculations(
 }
 \arguments{
 \item{rhomis_data}{A tibble of rhomis_data}
+
+\item{gender_categories}{The gender categories present in the data which is to be processed}
 }
 \value{
 

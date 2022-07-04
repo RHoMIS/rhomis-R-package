@@ -46,12 +46,14 @@ testthat::test_that("Can calculate total crop incomes",{
 })
 
 testthat::test_that("Can calculate total and off-farm incomes",{
-    data <- tibble::as_tibble(list(offfarm_income_proportion=c("little","half",NA,NA,"most")))
+    data <- tibble::as_tibble(list(
+        offfarm_incomes_any=c("y","y","n","n","y"),
+        offfarm_income_proportion=c("little","half",NA,NA,"most")))
     total_crop_income <- c(20,10,NA,NA,5)
     total_livestock_income <- c(NA,20,12,NA,10)
 
-    expected_result <- tibble::as_tibble(list(off_farm_income=c(2.22222,30,NA,NA,35),
-                                              total_income=c(22.22222,60,12,NA,50)))
+    expected_result <- tibble::as_tibble(list(off_farm_income=c(2.22222,30,0,0,35),
+                                              total_income=c(22.22222,60,12,0,50)))
     actual_result <- total_and_off_farm_incomes(data,total_crop_income,total_livestock_income)
     expect_equal(actual_result, expected_result, tolerance = 0.001)
 

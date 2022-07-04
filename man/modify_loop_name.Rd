@@ -2,7 +2,8 @@
 % Please edit documentation in R/CleanColumnNames.R
 \name{modify_loop_name}
 \alias{modify_loop_name}
-\title{Modify Loop Name}
+\title{Many of the variables in RHoMIS are
+collected through a looping structure}
 \usage{
 modify_loop_name(column_name, loop_type)
 }

@@ -23,5 +23,5 @@ Get a table of all of the projects on the ODK central server
 central_url <- "https://central.rhomis.cgiar.org"
 central_email <- "my_email"
 central_password <- "my_password"
-#get_projects(central_url,central_email,central_password)
+# get_projects(central_url,central_email,central_password)
 }

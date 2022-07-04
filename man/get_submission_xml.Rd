@@ -20,10 +20,12 @@ get_submission_xml(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 
-\item{formID}{The ID of the form containing the submissions you are looking at.
+\item{formID}{The ID of the form containing the submissions
+you are looking at.
 To get the list of forms see the "get_forms" function.}
 
 \item{submissionID}{The instance ID of the specific submission we want in XML}

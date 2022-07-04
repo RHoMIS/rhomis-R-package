@@ -231,4 +231,18 @@
 #' @source NA
 "meat_calories"
 
+#' Sample Raw Data Set
+#'
+#' A sample raw rhomis dataset
+#'
+#' @source NA
+"sample_raw_data_set"
 
+#' Livestock TLU Conversions
+#'
+#' A table to convert different
+#' types of livestock into
+#' tropical livestock units
+#'
+#' @source NA
+"livestock_tlu"

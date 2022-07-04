@@ -43,10 +43,16 @@ A function for extracting any new values from a survey
 # Example code for a crop loop
 column_pattern <- "crop_name"
 number_of_loops <- 2
-data <- tibble::tibble(crop_name_1=c("maize","cassava","millet"),
-               random_columns=c("maize","cassava","millet"),
-               crop_name_2=c("potato",NA,"cucumber"))
-result <- extract_new_values(data, loop_or_individual_column="loop",column_pattern="crop_name", number_of_loops=2)
+data <- tibble::tibble(
+  crop_name_1 = c("maize", "cassava", "millet"),
+  random_columns = c("maize", "cassava", "millet"),
+  crop_name_2 = c("potato", NA, "cucumber")
+)
+result <- extract_new_values(data,
+  loop_or_individual_column = "loop",
+  column_pattern = "crop_name",
+  number_of_loops = 2
+)
 # expected_result is: c("maize","cassava","millet","potato","cucumber")
 
 # Example code for an individual column

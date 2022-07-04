@@ -8,3 +8,5 @@
 ^doc$
 ^Meta$
 ^LICENSE\.md$
+^inst/projects$
+^book$

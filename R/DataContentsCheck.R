@@ -17,38 +17,41 @@
 #' @export
 #'
 #' @examples
-check_columns_in_data <- function(data, loop_columns=NULL,individual_columns=NULL, warning_message=NULL){
+check_columns_in_data <- function(data, loop_columns = NULL, individual_columns = NULL, warning_message = NULL) {
 
-        # data=data
-        # loop_columns = c(
-        # "bees_honey_sell_amount")
-        # warning_message = "Could not calculate honey amounts sold or consumed"
-        #
+  # data=data
+  # loop_columns = c(
+  # "bees_honey_sell_amount")
+  # warning_message = "Could not calculate honey amounts sold or consumed"
+  #
 
-    missing_loop_columns <-c()
-    missing_individual_columns <-c()
+  missing_loop_columns <- c()
+  missing_individual_columns <- c()
 
-    if (!is.null(loop_columns)){
-        # columns <- c("bees_honey_sell_amount")
-        missing_loop_columns <- check_columns_loop(data,loop_columns)
-    }
+  if (!is.null(loop_columns)) {
+    # columns <- c("bees_honey_sell_amount")
+    missing_loop_columns <- check_columns_loop(data, loop_columns)
+  }
 
-    if (!is.null(individual_columns)){
-        missing_individual_columns <- check_columns_individual(data,individual_columns)
-    }
+  if (!is.null(individual_columns)) {
+    missing_individual_columns <- check_columns_individual(data, individual_columns)
+  }
 
-    all_missing_columns <- c(missing_individual_columns,
-                             missing_loop_columns)
+  all_missing_columns <- c(
+    missing_individual_columns,
+    missing_loop_columns
+  )
 
-    if (length(all_missing_columns)>0)
-    {
-    warning(paste0("\n",
-                   warning_message,
-                   "\nThe following columns are missing from the dataset: \n",
-                   paste0("missing_variable: ",all_missing_columns,collapse = "\n"),
-                   "\n---------------------------------------------"))
-    }
-    return(all_missing_columns)
+  if (length(all_missing_columns) > 0) {
+    warning(paste0(
+      "\n",
+      warning_message,
+      "\nThe following columns are missing from the dataset: \n",
+      paste0("missing_variable: ", all_missing_columns, collapse = "\n"),
+      "\n---------------------------------------------"
+    ))
+  }
+  return(all_missing_columns)
 }
 
 #' Check Columns Loop
@@ -62,33 +65,32 @@ check_columns_in_data <- function(data, loop_columns=NULL,individual_columns=NUL
 #' @export
 #'
 #' @examples
-check_columns_loop <- function(data,columns){
-    loop_columns <- sapply(columns, function(x){
-        number_of_loops <- find_number_of_loops(data, x)
+check_columns_loop <- function(data, columns) {
+  loop_columns <- sapply(columns, function(x) {
+    number_of_loops <- find_number_of_loops(data, x)
 
-        if (number_of_loops>0)
-        {
-        loop_columns <- paste0(x,"_",1:number_of_loops)
-        }else{
-            loop_columns <- x
-        }
-        return(loop_columns)
-    }, simplify = F)
-
-    single_columns_mask <-sapply(loop_columns, function(x) length(x)==1)
-    single_columns <- unname(unlist(loop_columns[single_columns_mask]))
-
-    multiple_columns <- loop_columns[!single_columns_mask]
-
-    all_loop_columns <- unname(unlist(multiple_columns))
-
-    missing_columns <- all_loop_columns[all_loop_columns %in% colnames(data)==F]
-
-    if (length(single_columns)>0){
-        missing_columns <- append(missing_columns, single_columns)
+    if (number_of_loops > 0) {
+      loop_columns <- paste0(x, "_", 1:number_of_loops)
+    } else {
+      loop_columns <- x
     }
+    return(loop_columns)
+  }, simplify = F)
 
-    return(missing_columns)
+  single_columns_mask <- sapply(loop_columns, function(x) length(x) == 1)
+  single_columns <- unname(unlist(loop_columns[single_columns_mask]))
+
+  multiple_columns <- loop_columns[!single_columns_mask]
+
+  all_loop_columns <- unname(unlist(multiple_columns))
+
+  missing_columns <- all_loop_columns[all_loop_columns %in% colnames(data) == F]
+
+  if (length(single_columns) > 0) {
+    missing_columns <- append(missing_columns, single_columns)
+  }
+
+  return(missing_columns)
 }
 
 #' Check Columns Individual
@@ -103,10 +105,8 @@ check_columns_loop <- function(data,columns){
 #' @export
 #'
 #' @examples
-check_columns_individual <- function(data,columns){
+check_columns_individual <- function(data, columns) {
+  missing_columns <- columns[columns %in% colnames(data) == F]
 
-    missing_columns <- columns[columns %in% colnames(data)==F]
-
-    return(missing_columns)
-
+  return(missing_columns)
 }

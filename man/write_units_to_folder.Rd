@@ -4,11 +4,22 @@
 \alias{write_units_to_folder}
 \title{Write Units to Folder}
 \usage{
-write_units_to_folder(list_of_df, folder = "./unit_conversions")
+write_units_to_folder(
+  list_of_df,
+  folder = "./unit_conversions",
+  converted_folder = F
+)
 }
 \arguments{
 \item{list_of_df}{A list of dataframes, containing all
 of the units and conversions}
+
+\item{folder}{The folder for writing the units}
+
+\item{converted_folder}{A flag indicating whether the 
+units being over written have already been converted 
+by the user. In which case, preserve their previously 
+verified values.}
 }
 \value{
 

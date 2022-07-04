@@ -16,64 +16,61 @@
 #' @export
 #'
 #' @examples
-generate_mock_response <- function(survey, choices,metadata,survey_path=NULL){
-    if (!is.null(survey_path)){
-        survey <- readxl::read_excel(survey_path, sheet = "survey")
-        choices <- readxl::read_excel(survey_path, sheet = "choices")
+generate_mock_response <- function(survey, choices, metadata, survey_path = NULL) {
+  if (!is.null(survey_path)) {
+    survey <- readxl::read_excel(survey_path, sheet = "survey")
+    choices <- readxl::read_excel(survey_path, sheet = "choices")
+  }
+
+  submission_xml <- ""
+  xml_level <- 1
+  group_at_level <- c()
+
+  repeat_rows <- identify_repeat_locations(survey)
+  repeat_start_rows <- sapply(repeat_rows, function(x) x[1])
+
+
+
+  # Still need to do decimal
+  # integer
+  # deviceid
+  # calculate
+  # start (start time auto)
+  # end (end time auto)
+  # geopoint
+  # integer
+  # image
+  # text
+  #
+  # repeat
+  #
+  #
+  for (survey_row in 1:nrow(survey)) {
+    if (survey_row %in% unlist(repeat_rows) == F) {
+      response <- generate_random_row(submission_xml, survey, choices, survey_row, xml_level, group_at_level)
+      submission_xml <- response$submission_xml
+      xml_level <- response$xml_level
+      group_at_level <- response$group_at_level
     }
 
-    submission_xml <- ""
-    xml_level <- 1
-    group_at_level <- c()
-
-    repeat_rows <- identify_repeat_locations(survey)
-    repeat_start_rows <- sapply(repeat_rows,function(x)x[1])
-
-
-
-    # Still need to do decimal
-    # integer
-    # deviceid
-    # calculate
-    # start (start time auto)
-    # end (end time auto)
-    # geopoint
-    # integer
-    # image
-    # text
+    # if (survey_row %in% unlist(repeat_rows)==T)
+    # {
+    #     submission_xml <- paste0(submission_xml,"\n repeats")
     #
-    # repeat
-    #
-    #
-    for (survey_row in 1:nrow(survey)){
+    # }
 
-        if (survey_row %in% unlist(repeat_rows)==F)
-        {
-            response <- generate_random_row(submission_xml,survey,choices,survey_row,xml_level, group_at_level)
-            submission_xml <-response$submission_xml
-            xml_level <-response$xml_level
-            group_at_level <- response$group_at_level
-        }
-
-        # if (survey_row %in% unlist(repeat_rows)==T)
-        # {
-        #     submission_xml <- paste0(submission_xml,"\n repeats")
-        #
-        # }
-
-        # Dealing with loops and repeats --------------------------------
-        if (survey_row%in%repeat_start_rows){
-            loop_xml <- adding_looped_data(survey, choices,repeat_rows[[which(repeat_start_rows%in%survey_row)]])
-            loop_xml<- print_chunk_with_tab_spacing(loop_xml,xml_level)
-            submission_xml<-paste0(submission_xml,loop_xml)
-        }
-
+    # Dealing with loops and repeats --------------------------------
+    if (survey_row %in% repeat_start_rows) {
+      loop_xml <- adding_looped_data(survey, choices, repeat_rows[[which(repeat_start_rows %in% survey_row)]])
+      loop_xml <- print_chunk_with_tab_spacing(loop_xml, xml_level)
+      submission_xml <- paste0(submission_xml, loop_xml)
     }
+  }
 
 
-    submission_xml <- add_headers_and_footers(metadata,submission_xml)
+  submission_xml <- add_headers_and_footers(metadata, submission_xml)
 
-    return(submission_xml)
+  return(submission_xml)
 }
 
 
@@ -92,44 +89,43 @@ generate_mock_response <- function(survey, choices,metadata,survey_path=NULL){
 #' @export
 #'
 #' @examples
-adding_looped_data <- function(survey, choices,rows){
-
-    repeat_loop_xml <- "\n"
-    repeat_name <- survey$name[rows[1]]
-    number_of_loops <- sample(c(1:5),1)
-
-
-    repeat_loop_xml <- paste0(repeat_loop_xml,"<",repeat_name,"_count>",number_of_loops,"</",repeat_name,"_count>")
-
-    for (i in 1:number_of_loops){
-        repeat_loop_xml <- paste0(repeat_loop_xml,"\n<",repeat_name,">")
+adding_looped_data <- function(survey, choices, rows) {
+  repeat_loop_xml <- "\n"
+  repeat_name <- survey$name[rows[1]]
+  number_of_loops <- sample(c(1:5), 1)
 
 
-        loop_name <- survey$name[rows[2]]
-        repeat_loop_xml <- paste0(repeat_loop_xml,"\n    <",loop_name,">",i,"</",loop_name,">")
+  repeat_loop_xml <- paste0(repeat_loop_xml, "<", repeat_name, "_count>", number_of_loops, "</", repeat_name, "_count>")
 
-        repeat_group_row_start <- rows[3]
-        repeat_group_row_end <- which(survey$name==survey$name[rows[3]]& survey$type=="end group")
+  for (i in 1:number_of_loops) {
+    repeat_loop_xml <- paste0(repeat_loop_xml, "\n<", repeat_name, ">")
 
-        xml_level <- 2
-        group_at_level <- c("","")
-        for (repeat_row in c(repeat_group_row_start:repeat_group_row_end))
-        {
-            response <- generate_random_row(repeat_loop_xml,
-                                            survey,choices,
-                                            repeat_row,
-                                            xml_level=xml_level,
-                                            group_at_level=group_at_level)
-            repeat_loop_xml <- paste0(response$submission_xml)
-            xml_level <-response$xml_level
-            group_at_level <- response$group_at_level
-        }
 
-        repeat_loop_xml <- paste0(repeat_loop_xml,"\n</",repeat_name,">")
+    loop_name <- survey$name[rows[2]]
+    repeat_loop_xml <- paste0(repeat_loop_xml, "\n    <", loop_name, ">", i, "</", loop_name, ">")
 
+    repeat_group_row_start <- rows[3]
+    repeat_group_row_end <- which(survey$name == survey$name[rows[3]] & survey$type == "end group")
+
+    xml_level <- 2
+    group_at_level <- c("", "")
+    for (repeat_row in c(repeat_group_row_start:repeat_group_row_end))
+    {
+      response <- generate_random_row(repeat_loop_xml,
+        survey, choices,
+        repeat_row,
+        xml_level = xml_level,
+        group_at_level = group_at_level
+      )
+      repeat_loop_xml <- paste0(response$submission_xml)
+      xml_level <- response$xml_level
+      group_at_level <- response$group_at_level
     }
 
-    return(repeat_loop_xml)
+    repeat_loop_xml <- paste0(repeat_loop_xml, "\n</", repeat_name, ">")
+  }
+
+  return(repeat_loop_xml)
 }
 
 
@@ -148,12 +144,12 @@ adding_looped_data <- function(survey, choices,rows){
 #' @export
 #'
 #' @examples
-print_chunk_with_tab_spacing <- function(xml_string, xml_level){
-    spaces <- generate_tab_spaces(xml_level)
+print_chunk_with_tab_spacing <- function(xml_string, xml_level) {
+  spaces <- generate_tab_spaces(xml_level)
 
-    xml_string <- gsub("\n",paste0("\n",spaces),xml_string)
+  xml_string <- gsub("\n", paste0("\n", spaces), xml_string)
 
-    return(xml_string)
+  return(xml_string)
 }
 
 
@@ -169,21 +165,19 @@ print_chunk_with_tab_spacing <- function(xml_string, xml_level){
 #' @export
 #'
 #' @examples
-identify_repeat_locations <- function(survey){
+identify_repeat_locations <- function(survey) {
+  repeat_starts <- which(survey$type == "begin repeat")
+  repeat_ends <- which(survey$type == "end repeat")
 
-    repeat_starts <- which(survey$type=="begin repeat")
-    repeat_ends <- which(survey$type=="end repeat")
+  if (length(repeat_starts) != length(repeat_ends)) {
+    stop("There are not the same number of repeat starts and ends. Must be a problem")
+  }
 
-    if (length(repeat_starts)!=length(repeat_ends)){
-        stop("There are not the same number of repeat starts and ends. Must be a problem")
-    }
+  repeat_columns <- sapply(c(1:length(repeat_starts)), function(x) {
+    return(c(repeat_starts[x]:repeat_ends[x]))
+  })
 
-    repeat_columns <- sapply(c(1:length(repeat_starts)), function(x){
-        return(c(repeat_starts[x]:repeat_ends[x]))
-    })
-
-    return(repeat_columns)
-
+  return(repeat_columns)
 }
 
 #' Generate a Random Row
@@ -208,84 +202,82 @@ identify_repeat_locations <- function(survey){
 #' @export
 #'
 #' @examples
-generate_random_row <- function(submission_xml,survey,choices,survey_row, xml_level, group_at_level){
+generate_random_row <- function(submission_xml, survey, choices, survey_row, xml_level, group_at_level) {
+  spaces <- generate_tab_spaces(xml_level)
 
 
-    spaces <- generate_tab_spaces(xml_level)
+  # Dealing with the group outlines ---------------------------------
+  if (survey[[survey_row, "type"]] == "begin group") {
+    xml_level <- xml_level + 1
 
 
-    # Dealing with the group outlines ---------------------------------
-    if(survey[[survey_row,"type"]]=="begin group"){
-        xml_level <- xml_level+1
+    group <- survey[survey_row, "name"]
+    group_at_level[xml_level] <- group
+    submission_xml <- paste0(submission_xml, "\n", spaces, "<", group, ">")
+  }
+
+  if (survey[[survey_row, "type"]] == "end group") {
+    # group <- survey[survey_row,"name"]
+
+    spaces <- generate_tab_spaces(xml_level - 1)
+
+    group <- group_at_level[xml_level]
+
+    submission_xml <- paste0(submission_xml, "\n", spaces, "</", group, ">")
+    xml_level <- xml_level - 1
+  }
 
 
-        group <- survey[survey_row,"name"]
-        group_at_level[xml_level] <- group
-        submission_xml <- paste0(submission_xml,"\n",spaces,"<",group,">")
-    }
+  # Multiple choice ------------------------------------------------
+  question_type <- survey[[survey_row, "type"]]
+  if (unlist(strsplit(question_type, " "))[1] == "select_multiple") {
+    name <- survey[[survey_row, "name"]]
+    row_for_choices_sheet <- choices$list_name == unlist(strsplit(question_type, " "))[2]
 
-    if(survey[[survey_row,"type"]]=="end group"){
-        #group <- survey[survey_row,"name"]
+    question_options <- choices$name[row_for_choices_sheet]
+    selection <- select_multiple(question_options)
+    selection <- paste0(selection, collapse = " ")
 
-        spaces <- generate_tab_spaces(xml_level-1)
+    submission_xml <- paste0(submission_xml, "\n", spaces, "<", name, ">", selection, "</", name, ">")
+  }
 
-        group <- group_at_level[xml_level]
+  if (unlist(strsplit(question_type, " "))[1] == "select_one") {
+    name <- survey[[survey_row, "name"]]
+    row_for_choices_sheet <- choices$list_name == unlist(strsplit(question_type, " "))[2]
 
-        submission_xml <- paste0(submission_xml,"\n",spaces,"</",group,">")
-        xml_level <- xml_level-1
-    }
+    question_options <- choices$name[row_for_choices_sheet]
+    selection <- sample(question_options, 1)
 
-
-    # Multiple choice ------------------------------------------------
-    question_type <- survey[[survey_row,"type"]]
-    if (unlist(strsplit(question_type," "))[1]=="select_multiple"){
-        name <- survey[[survey_row,"name"]]
-        row_for_choices_sheet <- choices$list_name==unlist(strsplit(question_type," "))[2]
-
-        question_options <- choices$name[row_for_choices_sheet]
-        selection <- select_multiple(question_options)
-        selection <- paste0(selection,collapse = " ")
-
-        submission_xml <- paste0(submission_xml,"\n",spaces,"<",name,">",selection,"</",name,">")
-    }
-
-    if (unlist(strsplit(question_type," "))[1]=="select_one"){
-        name <- survey[[survey_row,"name"]]
-        row_for_choices_sheet <- choices$list_name==unlist(strsplit(question_type," "))[2]
-
-        question_options <- choices$name[row_for_choices_sheet]
-        selection <- sample(question_options,1)
-
-        submission_xml <- paste0(submission_xml,"\n",spaces,"<",name,">",selection,"</",name,">")
-    }
+    submission_xml <- paste0(submission_xml, "\n", spaces, "<", name, ">", selection, "</", name, ">")
+  }
 
 
 
 
 
-    #--- Dealing with easy types
-    if(survey[[survey_row,"type"]]=="integer"){
-        random_int <- sample(c(1:1000),1)
-        name <- survey[[survey_row,"name"]]
-        submission_xml <- paste0(submission_xml,"\n",spaces,"<",name,">",random_int,"</",name,">")
-    }
+  #--- Dealing with easy types
+  if (survey[[survey_row, "type"]] == "integer") {
+    random_int <- sample(c(1:1000), 1)
+    name <- survey[[survey_row, "name"]]
+    submission_xml <- paste0(submission_xml, "\n", spaces, "<", name, ">", random_int, "</", name, ">")
+  }
 
-    if(survey[[survey_row,"type"]]=="text"){
-        random_number_of_characters <- sample(c(1:100),1)
-        alphabet <- c(" ","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",".","!")
-        words <- paste0(sample(alphabet,random_number_of_characters, replace = T),collapse="")
+  if (survey[[survey_row, "type"]] == "text") {
+    random_number_of_characters <- sample(c(1:100), 1)
+    alphabet <- c(" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ".", "!")
+    words <- paste0(sample(alphabet, random_number_of_characters, replace = T), collapse = "")
 
-        name <- survey[[survey_row,"name"]]
-        submission_xml <- paste0(submission_xml,"\n",spaces,"<",name,">",words,"</",name,">")
-    }
+    name <- survey[[survey_row, "name"]]
+    submission_xml <- paste0(submission_xml, "\n", spaces, "<", name, ">", words, "</", name, ">")
+  }
 
-    if(survey[[survey_row,"type"]]=="decimal"){
-        random_decimal <- runif(1,min=0,max=500)
-        name <- survey[[survey_row,"name"]]
-        submission_xml <- paste0(submission_xml,"\n",spaces,"<",name,">",random_decimal,"</",name,">")
-    }
+  if (survey[[survey_row, "type"]] == "decimal") {
+    random_decimal <- runif(1, min = 0, max = 500)
+    name <- survey[[survey_row, "name"]]
+    submission_xml <- paste0(submission_xml, "\n", spaces, "<", name, ">", random_decimal, "</", name, ">")
+  }
 
-    return(list(submission_xml=submission_xml,xml_level=xml_level, group_at_level=group_at_level))
+  return(list(submission_xml = submission_xml, xml_level = xml_level, group_at_level = group_at_level))
 }
 
 
@@ -302,16 +294,16 @@ generate_random_row <- function(submission_xml,survey,choices,survey_row, xml_le
 #' @export
 #'
 #' @examples
-generate_tab_spaces <- function(form_level){
-    if (form_level==1){
-        spaces <- ""
-    }
-    if (form_level>1){
-        spaces <- rep("    ", form_level-1)
-        spaces <- paste0(spaces, collapse = "")
-    }
+generate_tab_spaces <- function(form_level) {
+  if (form_level == 1) {
+    spaces <- ""
+  }
+  if (form_level > 1) {
+    spaces <- rep("    ", form_level - 1)
+    spaces <- paste0(spaces, collapse = "")
+  }
 
-    return(spaces)
+  return(spaces)
 }
 
 #' Select Multiple
@@ -326,10 +318,10 @@ generate_tab_spaces <- function(form_level){
 #' @export
 #'
 #' @examples
-select_multiple <- function(list_to_sample){
-    number_to_choose_from <- sample(c(1:length(list_to_sample)), 1)
-    samples <- sample(list_to_sample, number_to_choose_from)
-    return(samples)
+select_multiple <- function(list_to_sample) {
+  number_to_choose_from <- sample(c(1:length(list_to_sample)), 1)
+  samples <- sample(list_to_sample, number_to_choose_from)
+  return(samples)
 }
 
 
@@ -348,29 +340,28 @@ select_multiple <- function(list_to_sample){
 #' @export
 #'
 #' @examples
-add_headers_and_footers <- function(metadata, xml_string,survey_path=NULL){
-    if (!is.null(survey_path))
-    {
-        metadata <- readxl::read_excel(survey_path, sheet="settings")
-    }
+add_headers_and_footers <- function(metadata, xml_string, survey_path = NULL) {
+  if (!is.null(survey_path)) {
+    metadata <- readxl::read_excel(survey_path, sheet = "settings")
+  }
 
 
-    id <- metadata$form_id[1]
-    version <- metadata$version[1]
-    header_1 <- '<?xml version="1.0" encoding="UTF-8"?>'
-    data_header <- paste0('<data version="',version,'" id="',id,'" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:odk="http://www.opendatakit.org/xforms" xmlns:orx="http://openrosa.org/xforms" xmlns:ev="http://www.w3.org/2001/xml-events">')
+  id <- metadata$form_id[1]
+  version <- metadata$version[1]
+  header_1 <- '<?xml version="1.0" encoding="UTF-8"?>'
+  data_header <- paste0('<data version="', version, '" id="', id, '" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jr="http://openrosa.org/javarosa" xmlns:h="http://www.w3.org/1999/xhtml" xmlns:odk="http://www.opendatakit.org/xforms" xmlns:orx="http://openrosa.org/xforms" xmlns:ev="http://www.w3.org/2001/xml-events">')
 
-    instance_id <- uuid::UUIDgenerate()
+  instance_id <- uuid::UUIDgenerate()
 
-    random_number_of_characters <- sample(c(1:100),1)
-    alphabet <- c(" ","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",".","!")
-    instance_name <- paste0(sample(alphabet,random_number_of_characters, replace = T),collapse="")
+  random_number_of_characters <- sample(c(1:100), 1)
+  alphabet <- c(" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ".", "!")
+  instance_name <- paste0(sample(alphabet, random_number_of_characters, replace = T), collapse = "")
 
-    metadata_footer <- paste0('    <meta>\n        <instanceID>uuid:',instance_id,'</instanceID>\n        <instanceName>',instance_name,'</instanceName>\n    </meta>')
-    footer <- '</data>'
+  metadata_footer <- paste0("    <meta>\n        <instanceID>uuid:", instance_id, "</instanceID>\n        <instanceName>", instance_name, "</instanceName>\n    </meta>")
+  footer <- "</data>"
 
-    xml_string <- print_chunk_with_tab_spacing(xml_string,2)
+  xml_string <- print_chunk_with_tab_spacing(xml_string, 2)
 
-    xml_string <- paste(header_1,data_header,xml_string,metadata_footer,footer,sep="\n")
-    return(xml_string)
+  xml_string <- paste(header_1, data_header, xml_string, metadata_footer, footer, sep = "\n")
+  return(xml_string)
 }

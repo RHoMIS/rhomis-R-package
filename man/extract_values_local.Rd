@@ -18,6 +18,8 @@ extract_values_local(
 )
 }
 \arguments{
+\item{base_folder}{The folder where all outputs will be written to}
+
 \item{file_path}{The path to the raw-data rhomis file}
 
 \item{country_column}{The column name for the variable "country".}
@@ -33,6 +35,8 @@ extract_values_local(
 \item{form_id}{Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)}
 
 \item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
+
+\item{repeat_column_names}{The prefixes for repeat columns (e.g. 'section/crop_repeat[1]/crop_name', the prefix would be crop_repeat)}
 }
 \value{
 

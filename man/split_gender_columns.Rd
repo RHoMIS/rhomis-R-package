@@ -8,6 +8,9 @@ split_gender_columns(column, gender_categories = pkg.env$gender_categories)
 }
 \arguments{
 \item{column}{The column that needs to be split}
+
+\item{gender_categories}{The gender categories to
+be examined in the rhomis dataset}
 }
 \value{
 

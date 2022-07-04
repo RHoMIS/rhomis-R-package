@@ -11,7 +11,7 @@ extract_form_metadata(
   projectID,
   formID,
   form_version = 1,
-  draft
+  isDraft
 )
 }
 \arguments{
@@ -21,7 +21,8 @@ extract_form_metadata(
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 
 \item{formID}{The XML form ID from a specific project}
@@ -29,7 +30,7 @@ extract_form_metadata(
 \item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 
-\item{draft}{Whether or not the form was a draft}
+\item{isDraft}{Whether or not the form was a draft}
 }
 \value{
 

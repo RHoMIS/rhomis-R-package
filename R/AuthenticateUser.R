@@ -1,4 +1,5 @@
-#' These functions are helpful for managing users onf the RHoMIS 2.0 authentication server.
+#' These functions are helpful for managing
+#' users onf the RHoMIS 2.0 authentication server.
 #' Found here: https://github.com/l-gorman/rhomis-authenticator
 
 
@@ -16,40 +17,30 @@
 #' @export
 #'
 #' @examples
-register_user <- function(url, username, email, password){
-    # url <- "http://localhost:3002/"
-    # username <- "test_user_1"
-    # email <- "test_user_1@domain.com"
-    # password <- "testpassword1"
+register_user <- function(url, username, email, password) {
+  data <- tibble::as_tibble(list(
+    "username" = username,
+    "email" = email,
+    "password" = password
+  ))
 
-    data <- tibble::as_tibble(list("username"=username,
-                                   "email"=email,
-                                   "password"=password))
+  json_body <- jsonlite::toJSON(unbox(data), pretty = T)
 
+  response <- httr::POST(
+    url = paste0(url, "api/user/register"),
+    body = json_body,
+    encode = "raw",
+    httr::add_headers("Content-Type" = "application/json")
+  )
 
+  content <- httr::content(response)
 
-    json_body <- jsonlite::toJSON(unbox(data),pretty = T)
+  if (grepl("Email already exists", content)) {
+    warning("Email already exists")
+    return()
+  }
 
-
-    response <- httr::POST(url = paste0(url, "api/user/register"),
-                                   body=json_body,
-                                   encode = "raw",
-                                   httr::add_headers("Content-Type" = "application/json")
-                                   #httr::add_headers("Authorization" = paste0(token))
-    )
-
-    content <- httr::content(response)
-
-    if (grepl("Email already exists", content))
-    {
-        warning("Email already exists")
-        return()
-
-    }
-
-    return(content$userID)
-
-
+  return(content$userID)
 }
 
 #' Login
@@ -65,63 +56,34 @@ register_user <- function(url, username, email, password){
 #' @export
 #'
 #' @examples
-login <- function(url, email, password){
+login <- function(url, email, password) {
+  data <- tibble::as_tibble(list(
+    "email" = email,
+    "password" = password
+  ))
 
-    # url <- "http://localhost:3002/"
-    # email <- "test_ser_1@domain.com"
-    # password <- "testpassword1"
+  json_body <- jsonlite::toJSON(unbox(data), pretty = T)
 
-    data <- tibble::as_tibble(list("email"=email,
-                                   "password"=password))
+  response <- httr::POST(
+    url = paste0(url, "api/user/login"),
+    body = json_body,
+    encode = "raw",
+    httr::add_headers("Content-Type" = "application/json")
+    # httr::add_headers("Authorization" = paste0(token))
+  )
 
+  content <- httr::content(response)
 
+  if (grepl("Incorrect password", content)) {
+    warning("Incorrect password")
+    return()
+  }
+  if (grepl("Email not found", content)) {
+    warning("Email not found")
+    return()
+  }
 
-    json_body <- jsonlite::toJSON(unbox(data),pretty = T)
-
-
-    response <- httr::POST(url = paste0(url, "api/user/login"),
-                           body=json_body,
-                           encode = "raw",
-                           httr::add_headers("Content-Type" = "application/json")
-                           #httr::add_headers("Authorization" = paste0(token))
-    )
-
-    content <- httr::content(response)
-
-    if (grepl("Incorrect password", content))
-    {
-        warning("Incorrect password")
-        return()
-
-    }
-    if (grepl("Email not found", content))
-    {
-        warning("Email not found")
-        return()
-
-    }
-
-        content<- gsub(".*<p>","",content)
-        content<- gsub("</p>.*","",content)
-       return(content)
-
-
+  content <- gsub(".*<p>", "", content)
+  content <- gsub("</p>.*", "", content)
+  return(content)
 }
-
-#' Delete User
-#'
-#' A function to delete a user from the RHoMIS authentication server
-#'
-#' @param url The URL of the authentication server
-#' @param email The email of the account being deleted
-#' @param password The password of the account being deleted
-#'
-#'
-#' @return
-#' @export
-#'
-#' @examples
-delete_user <- function(url, email, password){
-
-}
-

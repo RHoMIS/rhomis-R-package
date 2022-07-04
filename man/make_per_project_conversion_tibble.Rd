@@ -9,7 +9,8 @@ make_per_project_conversion_tibble(proj_id_vector, unit_conv_tibble)
 \arguments{
 \item{proj_id_vector}{A vector of project IDs}
 
-\item{unit_conv_tibble}{A conversion table containing columns "survey_value" and "conversion_factor"}
+\item{unit_conv_tibble}{A conversion table containing columns
+"survey_value" and "conversion_factor"}
 }
 \value{
 

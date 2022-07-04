@@ -1,8 +1,13 @@
-bookdown::bs4_book:
-  css: bs4_style.css
-  theme:
-    primary: "#096B72"
-  repo: https://github.com/rstudio/bookdown-demo
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">A Minimal Book Example</a></li>
+      after: |
+        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+    edit: https://github.com/USERNAME/REPO/edit/BRANCH/%s
+    download: ["pdf", "epub"]
 bookdown::pdf_book:
   includes:
     in_header: preamble.tex

@@ -19,10 +19,12 @@ A function to find all of the unique names for a particular looped variable (e.g
 }
 \examples{
 name_column <- "crop_name"
-data <- tibble::as_tibble(list(crop_name_1=c("banana", "cassava", NA, "millet"),
-                       crop_name_2=c("cassava",NA, "melon", "maize"),
-                       random_crop_name_2=c("blue", "green",  "red",NA),
-                       crop_name=c("orange", "purple", NA, "black")))
-expected_result <- c("banana","cassava","millet","melon","maize")
+data <- tibble::as_tibble(list(
+  crop_name_1 = c("banana", "cassava", NA, "millet"),
+  crop_name_2 = c("cassava", NA, "melon", "maize"),
+  random_crop_name_2 = c("blue", "green", "red", NA),
+  crop_name = c("orange", "purple", NA, "black")
+))
+expected_result <- c("banana", "cassava", "millet", "melon", "maize")
 find_unique_case(data, name_column)
 }

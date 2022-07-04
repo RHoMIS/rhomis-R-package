@@ -13,7 +13,8 @@ get_forms(central_url, central_email, central_password, projectID)
 
 \item{central_password}{The password to your ODK central account}
 
-\item{projectID}{The ID of the project you are looking at. To get a list of project, see the
+\item{projectID}{The ID of the project you are looking at.
+To get a list of project, see the
 "get_projects" function}
 }
 \value{
@@ -21,11 +22,4 @@ A table of the forms available for a specific project
 }
 \description{
 Get the forms for a specific ODK central project
-}
-\examples{
-central_url <- "https://central.rhomis.cgiar.org"
-central_email <- "my_email"
-central_password <- "my_password"
-#projects <- get_projects(central_url,central_email,central_password)
-#get_forms(central_url,central_email,central_password, projectID$id[3])
 }

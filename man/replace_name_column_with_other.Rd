@@ -12,13 +12,17 @@ replace_name_column_with_other(
 )
 }
 \arguments{
-\item{main_column}{The column you are searching for "other" values in (e.g. crop_name)}
+\item{main_column}{The column you are searching for "other"
+values in (e.g. crop_name)}
 
-\item{other_column1}{The first "other" column you are searching through, e.g. "crops_other1"}
+\item{other_column1}{The first "other" column you are searching
+through, e.g. "crops_other1"}
 
-\item{other_column2}{The second "other" column you are searching through, e.g. "crops_other2"}
+\item{other_column2}{The second "other" column you are searching
+through, e.g. "crops_other2"}
 
-\item{other_column3}{The third "other" column you are searching through, e.g. "crops_other3"}
+\item{other_column3}{The third "other" column you are searching
+through, e.g. "crops_other3"}
 }
 \value{
 

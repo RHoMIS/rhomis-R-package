@@ -11,17 +11,15 @@ switch_units(data_to_convert, unit_tibble, id_vector)
 
 \item{unit_tibble}{A tibble containing}
 
-\item{id_vector}{Column containing the RHoMIS id, used to subset the units by project data frame}
+\item{id_vector}{Column containing the RHoMIS id, used to subset the units
+by project data frame}
 }
 \value{
 Returns the data (in its original format) with the units in their numerical format
 }
 \description{
-In RHoMIS, sometimes lists or data frames contain units which need to be converted
-from a character format (e.g. "kg","sacks_100kg") into a numeric conversion (e.g. 1, 100).
+In RHoMIS, sometimes lists or data frames contain
+units which need to be converted from a character
+format (e.g. "kg","sacks_100kg") into a numeric conversion (e.g. 1, 100).
 This function does just that.
-}
-\examples{
-# Converting a list
-
 }

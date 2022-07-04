@@ -25,6 +25,8 @@ controlling a resource. Must include the values "male_adult","female_adult" etc.
 \item{loop_structure}{Indicating whether or not the controlled
 resource is located within a loop structure. So far all gender control
 columns are located within this looping structure}
+
+\item{gender_control_categories}{The gender control categories included in the survey.}
 }
 \value{
 
