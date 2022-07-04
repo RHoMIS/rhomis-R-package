@@ -535,7 +535,7 @@ processData <- function( # Arguments to indicate the stage of analysis
             #---------------------------------------------
             # Loading all of the unit conversions locally
             #---------------------------------------------
-            load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+            units <- load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
         }
          if (outputType == "mongodb") {
             unit_list <- find_db_units(
@@ -546,7 +546,7 @@ processData <- function( # Arguments to indicate the stage of analysis
                 database = database
             )
             # Not yet complete
-            load_all_db_units(unit_list,
+            units <- load_all_db_units(unit_list,
                 projectID = project_name,
                 formID = form_name,
                 database = database,
@@ -564,7 +564,8 @@ processData <- function( # Arguments to indicate the stage of analysis
             # indicator_data, and extra_outputs
             results <- run_preliminary_calculations(
                 rhomis_data = rhomis_data,
-                gender_categories = gender_categories
+                gender_categories = gender_categories,
+                units = units
             )
 
             # If the desired output format is csv,
@@ -725,7 +726,7 @@ processData <- function( # Arguments to indicate the stage of analysis
                 # Read in the processed csvs and check everything exists
                 processed_data <- read_folder_of_csvs(folder = paste0(base_path, "processed_data/"))[[1]]
                 indicator_data <- read_folder_of_csvs(folder = paste0(base_path, "indicator_data/"))[[1]]
-                load_local_units(paste0(base_path, "units_and_conversions/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
+                units <- load_local_units(paste0(base_path, "units_and_conversions/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
                 prices <- read_folder_of_csvs(folder = paste0(base_path, "mean_prices/"))
                 calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "calorie_conversions/"))
@@ -801,7 +802,8 @@ processData <- function( # Arguments to indicate the stage of analysis
                 indicator_data = indicator_data,
                 calorie_conversions = calorie_conversions,
                 prices = prices,
-                gender_categories = gender_categories
+                gender_categories = gender_categories,
+                units = units
             )
 
 

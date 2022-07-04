@@ -41,7 +41,7 @@ extract_values_central <- function(central_email,
 
 
 
-  colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
+  colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), units$repeat_columns)
   rhomis_data <- rhomis_data %>%
     remove_extra_central_columns()
 
@@ -228,13 +228,16 @@ make_new_dataset <- function(rhomis_data) {
 #' @param base_path Path to the project folder
 #' @param units_path Path to the folder of converted units
 #' @param gender_categories The gender categories used in this survey
+#' @param units A nested list containing all of the unit conversion tibbles
+
 #' @return
 #' @export
 #'
 #' @examples
 calculate_prices_and_indicator_local <- function(data,
                                                  base_path = "./", units_path = "converted_units/",
-                                                 gender_categories = pkg.env$gender_categories) {
+                                                 gender_categories = pkg.env$gender_categories,
+                                                 units) {
   load_local_units(paste0(base_path, units_path), id_rhomis_dataset = data[["id_rhomis_dataset"]])
 
   # load_calorie_conversions
@@ -296,6 +299,7 @@ calculate_prices_and_indicator_local <- function(data,
 #' @param staple_crop The main staple crop consumed in the area
 #' @param gender_categories The gender categories to include in
 #' the analysis
+#' @param units A nested list containing all of the unit conversion tibbles
 #'
 #' @return
 #' @export
@@ -308,7 +312,8 @@ calculate_values_gender_and_fa_local <- function(base_path = "./",
                                                  calories_path = "completed_calorie_conversions/",
                                                  prices_path = "converted_prices/",
                                                  staple_crop = "maize",
-                                                 gender_categories = pkg.env$gender_categories) {
+                                                 gender_categories = pkg.env$gender_categories,
+                                                 units) {
 
   # Load unit conversions into the global environment
 
@@ -359,6 +364,7 @@ calculate_values_gender_and_fa_local <- function(base_path = "./",
 #' @param calorie_conversions Calorie conversions list
 #' @param gender_categories Gender categories to convert
 #' @param prices A list of tibbles on mean prices
+#' @param units A list of units and conversion factors
 #'
 #' @return
 #' @export
@@ -368,7 +374,8 @@ value_gender_fa_calculations <- function(processed_data,
                                          indicator_data,
                                          calorie_conversions,
                                          prices,
-                                         gender_categories) {
+                                         gender_categories,
+                                         units) {
   extra_outputs <- list()
   value_calc_results <- value_calculations(
     processed_data,
@@ -425,12 +432,15 @@ value_gender_fa_calculations <- function(processed_data,
 #'
 #' @param rhomis_data A tibble of rhomis_data
 #' @param gender_categories The gender categories present in the data which is to be processed
+#' @param units A nested list containing all of the unit conversion tibbles
 #' @return
 #' @export
 #'
 #' @examples
 run_preliminary_calculations <- function(rhomis_data,
-                                         gender_categories = pkg.env$gender_categories) {
+                                         gender_categories = pkg.env$gender_categories,
+                                         units
+                                         ) {
   
   
   rhomis_data <- replace_crop_and_livestock_other(rhomis_data)
@@ -449,7 +459,7 @@ run_preliminary_calculations <- function(rhomis_data,
 
   if (length(crop_name_in_data) == 0) {
     rhomis_data[crop_loops] <- switch_units(rhomis_data[crop_loops],
-      unit_tibble = crop_name_conversions,
+      unit_tibble = units$crop_name_conversions,
       rhomis_data[["id_rhomis_dataset"]]
     )
   }
@@ -462,7 +472,7 @@ run_preliminary_calculations <- function(rhomis_data,
 
   if (length(livestock_name_in_data) == 0) {
     rhomis_data[livestock_loops] <- switch_units(rhomis_data[livestock_loops],
-      unit_tibble = livestock_name_conversions,
+      unit_tibble = units$livestock_name_conversions,
       id_vector = rhomis_data[["id_rhomis_dataset"]]
     )
   }
@@ -473,7 +483,7 @@ run_preliminary_calculations <- function(rhomis_data,
   if (exists("country_conversions")) {
     indicator_data$iso_country_code <- toupper(switch_units(
       data_to_convert = rhomis_data$country,
-      unit_tibble = country_conversions,
+      unit_tibble = units$country_conversions,
       id_vector = rhomis_data[["id_rhomis_dataset"]]
     ))
     if (all(is.na(country_conversions$conversion)) | all(is.na(indicator_data$iso_country_code))) {
@@ -519,8 +529,8 @@ run_preliminary_calculations <- function(rhomis_data,
   ###############
 
   rhomis_data <- crop_calculations_all(rhomis_data,
-    crop_yield_units_conv_tibble = crop_yield_unit_conversions,
-    crop_income_units_conv_tibble = crop_price_unit_conversions,
+    crop_yield_units_conv_tibble = units$crop_yield_unit_conversions,
+    crop_income_units_conv_tibble = units$crop_price_unit_conversions,
     gender_categories = gender_categories
   )
 
@@ -576,15 +586,14 @@ run_preliminary_calculations <- function(rhomis_data,
   # Livestock calculations
   ###############
 
-  livestock_weights <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = livestock_weights)
+  livestock_weights <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = units$livestock_weights)
 
   rhomis_data <- livestock_calculations_all(rhomis_data,
-    livestock_weights_conv_tibble = livestock_weights,
-    eggs_amount_unit_conv_tibble = eggs_unit_conversion,
-    eggs_price_time_units_conv_tibble = eggs_price_unit_conversion,
-    honey_amount_unit_conv_tibble = honey_unit_conversion,
-    milk_amount_unit_conv_tibble = milk_unit_conversion,
-    milk_price_time_unit_conv_tibble = milk_price_unit_conversion,
+    livestock_weights_conv_tibble = units$livestock_weights,
+    eggs_amount_unit_conv_tibble = units$eggs_unit_conversion,
+    honey_amount_unit_conv_tibble = units$honey_unit_conversion,
+    milk_amount_unit_conv_tibble = units$milk_unit_conversion,
+    milk_price_time_unit_conv_tibble = units$milk_price_unit_conversion,
     gender_categories = gender_categories
     # Need to add livestock weights to the conversions sheets
   )
@@ -672,8 +681,8 @@ run_preliminary_calculations <- function(rhomis_data,
   if (length(livestock_heads_columns) == 0) {
     warning("Unable to calculate livestock TLU, no 'livestock_heads' columns")
   } else {
-    data <- clean_tlu_column_names(rhomis_data, livestock_name_conversions, livestock_tlu_conversions)
-    indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, livestock_name_conversions, livestock_tlu_conversions)
+    data <- clean_tlu_column_names(rhomis_data, units$livestock_name_conversions, units$livestock_tlu_conversions)
+    indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units$livestock_name_conversions, units$livestock_tlu_conversions)
   }
 
   ###############
@@ -711,7 +720,7 @@ run_preliminary_calculations <- function(rhomis_data,
   ###############
 
 
-  indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = land_unit_conversion))
+  indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = units$land_unit_conversion))
   indicator_data <- dplyr::rename(indicator_data, land_cultivated_ha = land_cultivated)
   indicator_data <- dplyr::rename(indicator_data, land_owned_ha = land_owned)
 
