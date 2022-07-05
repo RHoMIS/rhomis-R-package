@@ -6,6 +6,8 @@
 #' function checks whether the columns are present, both
 #' for looped, and individual columns
 #'
+#' Rpackage file: DataContentsCheck.R
+#'
 #' @param data The dataset which needs checking
 #' @param loop_columns The columns which are contained in a loop
 #' @param individual_columns The columns which appear individually
@@ -58,6 +60,8 @@ check_columns_in_data <- function(data, loop_columns = NULL, individual_columns 
 #'
 #' Check whether columns are present in loop type data
 #'
+#' Rpackage file: DataContentsCheck.R
+#'
 #' @param data Data to be checked
 #' @param columns Column patterns that we are verifying
 #'
@@ -97,6 +101,8 @@ check_columns_loop <- function(data, columns) {
 #'
 #' Checking whether individual columns are present in the data
 #' we are examining
+#'
+#' Rpackage file: DataContentsCheck.R
 #'
 #' @param data The data we are checking
 #' @param columns The column names we are looking for

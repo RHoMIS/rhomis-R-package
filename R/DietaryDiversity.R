@@ -7,6 +7,8 @@
 #'
 #' HDDS calculations
 #'
+#' Rpackage file: DietaryDiversity.R
+#'
 #' @param data RHoMIS data with HDDS information
 #'
 #' @return

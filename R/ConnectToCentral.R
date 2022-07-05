@@ -3,6 +3,8 @@
 #'
 #' A function used to get the email token required to connext to ODK central
 #'
+#' Rpackage file: ConnectToCentral.R
+#' 
 #' @param central_url The url which points to an ODK Central sever
 #' @param central_email The email linked to your ODK central account
 #' @param central_password The password used for your central account
@@ -66,6 +68,8 @@ get_users <- function(central_url, central_email, central_password) {
 
 #' Get Project ID from name
 #'
+#' Rpackage file: ConnectToCentral.R
+#'
 #' @param project_name The name of the project from which you require the ID
 #' @param central_url The url which points to an ODK Central sever
 #' @param central_email The email linked to your ODK central account
@@ -94,6 +98,8 @@ get_project_id_from_name <- function(project_name,
 #'
 #' Sometimes it is necessary to get the form
 #' ID from the project name, in particular
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param form_name The name of the form for which you would like the ID
 #' @param central_url The url which points to an ODK Central sever
@@ -124,6 +130,8 @@ get_xml_form_id_from_name <- function(form_name,
 #'
 #' Get a table of all of the projects on the ODK central server
 #'
+#' Rpackage file: ConnectToCentral.R
+#'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
 #' @param central_password The password to your ODK central account
@@ -152,6 +160,8 @@ get_projects <- function(central_url, central_email, central_password) {
 #' Delete Project
 #'
 #' Delete a project from ODK central based on its ID
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
@@ -199,6 +209,8 @@ create_project <- function(central_url,
 #'
 #' Get the forms for a specific ODK central project
 #'
+#' Rpackage file: ConnectToCentral.R
+#'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
 #' @param central_password The password to your ODK central account
@@ -227,6 +239,8 @@ get_forms <- function(central_url, central_email, central_password, projectID) {
 #'
 #' Allows the user to get an ODK central xls form
 #' in order to extract any meta-data
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
@@ -278,6 +292,8 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
 #'
 #' A function for getting the xls survey from odk central,
 #' writing it to a file, and returning the file path
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
@@ -332,6 +348,8 @@ get_xls_survey_file <- function(central_url,
 #'
 #' Extract the metadata for a RHoMIS project
 #'
+#' Rpackage file: ConnectToCentral.R
+#'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
 #' @param central_password The password to your ODK central account
@@ -361,6 +379,8 @@ extract_form_metadata <- function(central_url, central_email, central_password, 
 #'
 #' A function for seeing which submissions have been made for
 #' a specific form, from a specific project
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
@@ -400,6 +420,8 @@ get_submissions_list <- function(central_url,
 #' Submission All
 #'
 #' Get a list of the submissions for a specific form
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
@@ -442,6 +464,8 @@ submissions_all <- function(central_url,
 #'
 #' Get the XML of an ODK submission
 #'
+#' Rpackage file: ConnectToCentral.R
+#'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
 #' @param central_password The password to your ODK central account
@@ -483,6 +507,8 @@ get_submission_xml <- function(central_url,
 
 
 #' Submit XML Data
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param xml_string The XML string for the data submission you
 #' would like to make
@@ -532,6 +558,8 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #' Get Submission Data
 #'
 #' A function for retrieving all of the ODK data as a zip file
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
@@ -639,6 +667,8 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 #' ODK central returns context in the form of a nested list. This converts
 #' this nested list into a more accessible tibble format
 #'
+#' Rpackage file: ConnectToCentral.R
+#'
 #' @param central_results The nested list returned from a central query
 #'
 #' @return A table of central results
@@ -688,6 +718,8 @@ central_results_to_df <- function(central_results) {
 #'
 #' Widening a single central result into a simple tibble
 #'
+#' Rpackage file: ConnectToCentral.R
+#'
 #' @param individual_central_item The individual list item subsetted
 #' from a central query
 #' @param column_headers The desired headers for the new table
@@ -720,6 +752,8 @@ widen_individual_result <- function(individual_central_item, column_headers) {
 #' with no additional information. These extra columns
 #' follow a particular pattern. This function removes these
 #' columns based on this pattern
+#'
+#' Rpackage file: ConnectToCentral.R
 #'
 #' @param data ODK central data with the excess columns
 #'

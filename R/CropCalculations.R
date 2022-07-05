@@ -4,6 +4,8 @@
 #' converts these to numeric and adds the new numeric units in an
 #' appropriate place for the dataset
 #'
+#' Rpackage file: CropCalculations.R
+#'
 #' @param data The data containing the units to convert
 #' @param unit_conv_tibble Unit tibble for crop yield,
 #' including individual idsfor projects. Crops to be coverted
@@ -69,6 +71,8 @@ convert_crop_yield_units <- function(data,
 #'
 #' Calculate crop yield based off of a single loop
 #'
+#' Rpackage file: CropCalculations.R
+#'
 #' @param data THe data containind crop yields, and numeric
 #' crop yield units
 #' @param loop_number which loop you are calculating crop yield for.
@@ -110,6 +114,8 @@ crop_harvest_single_loop <- function(data, loop_number) {
 #'
 #' Calculating the amount of each crop harvested per year
 #'
+#' Rpackage file: CropCalculations.R
+#'
 #' @param data RHoMIS data containing cropping information
 #' @param unit_conv_tibble Units and conversions to convert crop yields to kg
 #'
@@ -149,6 +155,8 @@ crop_harvest_calculations <- function(data, unit_conv_tibble = NULL) {
 #'
 #' A function for calculating the numeric proportions of crops which are sold or
 #' consumed
+#'
+#' Rpackage file: CropCalculations.R
 #'
 #' @param data A standard RHoMIS data set
 #'
@@ -202,6 +210,8 @@ crop_proportions_all <- function(data) {
 #'
 #' Convert crop income units into a numeric conversion factor
 #'
+#' Rpackage file: CropCalculations.R
+#'
 #' @param data RHoMIS data containing crop-looping information
 #' @param unit_conv_tibble A tibble of unit conversions.
 #'
@@ -250,6 +260,8 @@ convert_crop_sold_units <- function(data,
 #' previous functions have to have been run. The crops harvested has to have been
 #' calculated, as well as the proportions (numeric) which have been sold
 #' and consumed
+#'
+#' Rpackage file: CropCalculations.R
 #'
 #' @param data RHoMIS data which has been processed to include
 #' crops harvested (see above) and crop proportions sold/consumed.
@@ -318,6 +330,8 @@ crop_sold_and_consumed_calculation <- function(data) {
 #' A function for calculating crop incomes. Please note
 #' for this calculation to work. The amount of a crop harvested, and the amount
 #' of a crop sold also needs to have been calculated
+#'
+#' Rpackage file: CropCalculations.R
 #'
 #' @param data A RHoMIS dataset, including information on crop harvested,
 #' and crop sold
@@ -395,6 +409,8 @@ crop_income_calculations <- function(data, unit_conv_tibble = NULL) {
 #' Adding the gendered information for crop consumed
 #' crop sold, and crop income. These have to already have been
 #' calculated in the dataset being used
+#'
+#' Rpackage file: CropCalculations.R
 #'
 #' @param data RHoMIS data set conatining processed values for
 #' crop consumed, crop sold, and crop income
@@ -475,6 +491,7 @@ crop_gender_calculations <- function(data, gender_categories = pkg.env$gender_ca
 #'
 #' A single function for conducting all of the crop calculations
 #'
+#' Rpackage file: CropCalculations.R
 #'
 #' @param data RHoMIS crop loop data
 #' @param crop_yield_units_conv_tibble Conversion tibble of crop yield units

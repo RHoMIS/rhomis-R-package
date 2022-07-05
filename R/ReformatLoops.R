@@ -9,6 +9,8 @@
 #' The RHoMIS data is arranged in a looping structure.
 #' This function helps identify how many loops there are
 #' for example for a variable like "crop_name".
+#'  
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param data The data containing the loops
 #' @param name_column The "nam" column for the loops you are looking at, for example "crop_name"
@@ -36,6 +38,8 @@ find_number_of_loops <- function(data, name_column) {
 #' Find Unique Names
 #'
 #' A function to find all of the unique names for a particular looped variable (e.g. livestock, crops, off-farm incomes)
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param data The data-frame containing the loops of concern
 #' @param name_column The original name of the loop (e.g. "crop_name")
@@ -73,6 +77,8 @@ find_unique_case <- function(data, name_column) {
 #' Item Number to Column Row Conversion
 #'
 #' Converting from loop to a format that is easy to analyze.
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param data The data containing the loops you need to convert
 #' @param name_column The column containing the variable which will eventually
@@ -157,6 +163,8 @@ loop_to_column_conversion <- function(data, name_column, variable_to_convert, ty
 #' Map To Wide Format
 #'
 #' A function to convert RHoMIS loops into a wider named format
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param data The original dataframe containing the data to be reformatted
 #' @param column_prefixes The columns which need to be converted to the correct format
@@ -209,6 +217,8 @@ map_to_wide_format <- function(data, name_column, column_prefixes, types) {
 #' For a particular gender control item, e.g. "female_adult male_adult" this function
 #' works out whether to return NA or a proportion. In this case the proportion controlled
 #' by each person would be 0.5
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param item A list of the people controlling a particular resource
 #'
@@ -231,7 +241,8 @@ prop_or_na <- function(item) {
 #'
 #' For the RHoMIS gender columns, we ask who in the household collects each resource.
 #' This function is designed to be applied to each item (spicific row for specific column)
-#'
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param item The specific string, for which we want to count the
 #' number controlling the resource
@@ -261,6 +272,8 @@ proportion_control_per_person <- function(item) {
 #'
 #' In the case of the gender calculations, this function can check whether
 #' a particular gender category is found in a string.
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param item A list of gender control strings (see example)
 #' @param category The category you are trying to identify
@@ -290,6 +303,8 @@ check_val_in_list <- function(item, category) {
 #'
 #' Finds the gender control score for a single category (e.g. "male_adult").
 #' See example
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param genderdf A data frame of gender control strings in the wide format
 #' @param numberControllingDF A dataframe indicating the proportion of a resource
@@ -342,6 +357,8 @@ gender_control_props <- function(genderdf, numberControllingDF, category) {
 #' Split Gender Data
 #'
 #' For much of the RHoMIS data
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param genderdf A dataframe of gendered control produced
 #' by the "map_to_wide_format" (see example)
@@ -384,7 +401,8 @@ split_gender_data <- function(genderdf,
 #'
 #' A function to split gender columns into multiple
 #' columns based on the different groups
-#'
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param column The column that needs to be split
 #' @param gender_categories The gender categories to
@@ -409,6 +427,8 @@ split_gender_columns <- function(column,
 #'
 #' Splitting a particular column in the RHoMIS
 #' data by the genders groups which control that resource
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param data The original data set containing the numeric data
 #' and the gender control column used to split it
@@ -465,6 +485,8 @@ insert_gender_columns_in_core_data <- function(data,
 #' datasets. This function allows us to convert the ODK central
 #' loops into the format needed for the indicator calculations to properly
 #' function
+#' 
+#' Rpackage file: ReformatLoops.R
 #'
 #' @param central_core Core data downloaded from ODK central
 #' @param loop_data The sheet of loops which needs to be appended to the dataset

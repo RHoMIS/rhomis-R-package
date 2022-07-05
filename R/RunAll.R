@@ -11,6 +11,8 @@ load_data_odk <- function(url,
 #' Make ID Columns
 #'
 #' Make ID columns for form, project, and household
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param data The rhomis data set as a tibble
 #' @param country_column The name of the column containing the country string, as collected in the survey
@@ -108,6 +110,8 @@ make_id_columns <- function(data,
 #' Load Raw RHoMIS data from ODK central and
 #' convert the column names into a shortened, standardised
 #' version.
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param central_url The url of the ODK-central server you are using.
 #' ONLY RELEVANT IF "dataSource" WAS "central".
@@ -220,6 +224,8 @@ load_rhomis_central <- function(
 #' Load a Raw RHoMIS csv file, collected using ODK, and
 #' convert the column names into a shortened, standardised
 #' version.
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param file_path The filepath of the RHoMIS csv
 #' @param country_column The name of the column containing the country
@@ -276,6 +282,8 @@ load_rhomis_csv <- function(file_path,
 #'
 #' Extract all of the new values from a RHoMIS data frame,
 #' if they have unit conversions in the package, then convert them.
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param data A RHoMIS tibble
 #'
@@ -294,6 +302,8 @@ extract_all_new_values <- function(data) {
 #' Replace Infinite
 #'
 #' Replace infinite values with NA in a specific column
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param column The column where infinite values need to be replaced
 #'
@@ -321,6 +331,8 @@ replace_infinite <- function(column) {
 #' 2. Calculation of initial indicators
 #' 3. Calculation of final indicators, including food availability,
 #' gender, and value of products consumed
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param extractUnitsOnly Whether or not to only extract units (TRUE/FALSE)
 #' @param calculateInitialIndicatorsOnly Whether or not to only calculate
@@ -545,7 +557,6 @@ processData <- function( # Arguments to indicate the stage of analysis
                 collection = "projectData",
                 database = database
             )
-            # Not yet complete
             units <- load_all_db_units(unit_list,
                 projectID = project_name,
                 formID = form_name,
@@ -894,6 +905,8 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' Generate Data
 #'
 #' Generate fake data and submit it to a test project
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param central_url The URL of the central server holding the data
 #' @param central_email The email of the administrative user

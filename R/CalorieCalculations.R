@@ -5,6 +5,8 @@
 #'
 #' Conducting the calorie calculations
 #' for a whole project
+#' 
+#' Rpackage file: CalorieCalculations.R
 #'
 #' @param processed_data A processed dataset
 #' @param indicator_data An indicator dataset

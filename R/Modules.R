@@ -4,6 +4,8 @@
 #' Create a new RHoMIS module with Analysis scripts
 #'
 #' Create a module to save in the RHoMIS database
+#'   
+#' Rpackage file: Modules.R
 #'
 #' @param module_name The name of the module you would like to add
 #' @param module_type The type of module to add (e.g. core,optional_module, tailored)

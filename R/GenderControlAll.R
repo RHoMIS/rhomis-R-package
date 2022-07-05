@@ -5,6 +5,8 @@
 #' reformat the gender control variables into a more
 #' useable format
 #'
+#' Rpackage file: GenderControlAll.R
+#'
 #' @param processed_data A processed dataset, containing the gender columns
 #' @param gender_group Which gender group you're interested in
 #' @param column_pattern The pattern of the column you are processing (e.g. for "male_youth_crop_consumed_kg",
@@ -50,6 +52,8 @@ widen_gender_columns <- function(processed_data,
 #'
 #' Generate a summary of all of the gender controlled
 #' indicators
+#'
+#' Rpackage file: GenderControlAll.R
 #'
 #' @param processed_data A processed RHoMIS dataset
 #' @param indicator_data An indicator dataset, where you would like to append the result

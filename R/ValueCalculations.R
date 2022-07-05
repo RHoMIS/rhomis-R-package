@@ -2,6 +2,8 @@
 #'
 #' Calculate the value of an item in terms of calories or monetary value.
 #'
+#' Rpackage file: ValueCalculations.R
+#'
 #' @param data The whole processed rhomis dataset
 #' @param name_column The loop column containing the name pattern (e.g "crop_name_1", "crop_name_2", "crop_name_3" would be "crop_name")
 #' @param amount_consumed_column The loop column containing the consumed amount pattern (e.g. "crop_consumed_kg_per_year_1"... would be "crop_consumed_kg_per_year".)
@@ -80,6 +82,8 @@ value_or_calorie_calculations_item_consumed <- function(data,
 #' Value Calculations
 #'
 #' Calculations of the value of products consumed
+#'
+#' Rpackage file: ValueCalculations.R
 #'
 #' @param processed_data A processed rhomis dataset
 #' @param prices A list of tibbles including prices

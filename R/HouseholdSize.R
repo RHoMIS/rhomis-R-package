@@ -3,6 +3,9 @@
 
 #' Get household Size Conversions
 #'
+#'  
+#' Rpackage file: HouseholdSize.R
+#'
 #' @return
 #' @export
 #'
@@ -31,6 +34,8 @@ get_household_size_conversion <- function() {
 #'
 #' For the household roster, categories
 #' each person based on the MAE conversion information
+#'  
+#' Rpackage file: HouseholdSize.R
 #'
 #' @param age The age vector for the specific loop
 #' @param gender The gender vector for the specific loop
@@ -56,6 +61,8 @@ identify_person_category <- function(age, gender) {
 }
 
 #' Household roster to catgeries
+#'  
+#' Rpackage file: HouseholdSize.R
 #'
 #' @param data The dataset containing the household roster information
 #'
@@ -83,6 +90,8 @@ household_roster_to_categories <- function(data) {
 #' Household Roster to Wide
 #'
 #' Moving household roster size to wide
+#'  
+#' Rpackage file: HouseholdSize.R
 #'
 #' @param data RHoMIS data with household Roster information
 #'
@@ -104,6 +113,8 @@ household_roster_to_wide <- function(data) {
 #' Calculate MAE
 #'
 #' A function to calculate the male adult equivalent of household size
+#'  
+#' Rpackage file: HouseholdSize.R
 #'
 #' @param data The data containing all rhomis information
 #'
@@ -137,6 +148,8 @@ calculate_MAE <- function(data) {
 #'
 #' Calculate Household Size based on roster
 #' questions
+#'  
+#' Rpackage file: HouseholdSize.R
 #'
 #' @param data RHoMIS data with household roster
 #'

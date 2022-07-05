@@ -14,67 +14,27 @@
 #' }
 #'
 
-
-
-new_indicator <- function(indicator_name,
-                           format=c("column", "loop", "table"),
-                           individual_columns_required=c(),
-                           loop_columns_required=c(),
-                           conversion_tables_required=c(),
-                           api_data_required=c(),
-                           indicators_required=c(),
-                           file_located
-
-){
-    # Checking types
-    stopifnot(is.character(indicator_name))
-    format <- match.arg(format)
-    stopifnot(is.atomic(individual_columns_required))
-    stopifnot(is.atomic(individual_columns_required))
-    stopifnot(is.atomic(individual_columns_required))
-    stopifnot(is.character(file_located))
-
-
-    indicator <- list(
-        indicator_name=indicator_name,
-        format=format,
-        individual_columns_required=individual_columns_required,
-        loop_columns_required=loop_columns_required,
-        conversion_tables_required=conversion_tables_required,
-        api_data_required=api_data_required,
-        indicators_required=indicators_required,
-        file_located=file_located
-    )
-
-    class(indicator) <- "Indicator"
-
-    return(indicator)
-}
-
-add_indicator <- function(indicator_list, indicator){
-
-    stopifnot(class(indicator)=="Indicator")
-    if (indicator$indicator_name %in% names(indicator_list)){
-        stop("Indicator already exists in list")
-    }
-
-    temp_list <- list(
-        indicator=indicator
-    )
-    names(temp_list) <- indicator$indicator_name
-
-    return(
-        append(indicator_list, temp_list)
-    )
-}
+library(jsonlite)
 
 
 indicator_list <- list()
 
-iso_country_code <- new_indicator(indicator_name = "iso_country_code",format="column",individual_columns_required=c("country"), loop_columns_required=c(),conversion_tables_required=c("country_name_conversions"),api_data_required = c(),indicators_required=c(),file_located="redirectModules.R")
 
-indicator_list <- add_indicator(indicator_list = indicator_list,
-              indicator = iso_country_code)
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "iso_country_code",
+    output_format="column",
+    individual_columns_required=c("country"), 
+    loop_columns_required=c(),
+    conversion_tables_required=c("country_name_conversions"),
+    api_data_required = c(),
+    indicators_required=c(),
+    function_calculated="redirectModules.R"
+)
+
+
+
+
 
 
 

@@ -3,6 +3,8 @@
 
 #' fies score
 #'
+#' Rpackage file: FoodSecurity.R
+#'
 #' @param data The data set containing all of the RHoMIS data (or just the fies information)
 #'
 #' @return
@@ -84,6 +86,8 @@ row_wise_hfias <- function(hfias_row) {
 #' Calculate food security calculations
 #' based on whether HFIAS or FIES data were collected in the RHoMIS
 #' survey
+#'
+#' Rpackage file: FoodSecurity.R
 #'
 #' @param data Survey data containing either FIES or
 #' HFIAS data

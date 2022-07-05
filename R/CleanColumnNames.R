@@ -8,6 +8,9 @@
 #' column names come in the form "xxxx/xxxxx/xxxxx/important_name".
 #' This function helps to extract only the final value
 #' "important name".
+#' 
+#' Rpackage file: CleanColumnNames.R
+#'
 #'
 #' @param column_name The specific item which needs shortening
 #' @param seperator The character separating parts of the item
@@ -36,6 +39,8 @@ shorten_individual_column_name <- function(column_name, seperator) {
 #' in the for "xxxx/xxxxx/xxxxx/important_name".
 #' This function helps to extract only the final value
 #' "important name". It will do this for multiple column names
+#' 
+#' Rpackage file: CleanColumnNames.R
 #'
 #' @param long_names The list of column names which need to be shortened
 #' @param seperator  The string seperating parts of each column name
@@ -61,6 +66,8 @@ shorten_multiple_column_names <- function(long_names, seperator) {
 #"
 #' Many of the variables in RHoMIS are
 #' collected through a looping structure
+#' 
+#' Rpackage file: CleanColumnNames.R
 #'
 #' @param column_name The individual column name to be changed
 #' @param loop_type What is the loop type e.g. "crop"
@@ -120,6 +127,8 @@ modify_loop_name <- function(column_name, loop_type) {
 #' "crop_name_1",
 #' "crop_name_2",
 #' "crop_name_3" ...
+#' 
+#' Rpackage file: CleanColumnNames.R
 #'
 #' @param column_names A list of the column names which
 #' need to be shortened. This would generally be all of
@@ -181,6 +190,7 @@ modify_loop_column_names <- function(column_names, loop_type) {
 #' important to be modify all of these loops
 #' to have a simpler column name format for later analysis
 #'
+#' Rpackage file: CleanColumnNames.R
 #'
 #' @param column_names A list of all of the column names which
 #' @param repeat_columns A list of all of the types
@@ -224,6 +234,8 @@ modify_all_loop_column_names <- function(column_names, repeat_columns) {
 #'
 #' A single functions to shorten and
 #' clean all RHoMIS column names.
+#'
+#' Rpackage file: CleanColumnNames.R
 #'
 #' @param column_names A list of all of the column names
 #' @param repeat_columns A list of all of the repeat

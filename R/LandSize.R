@@ -6,6 +6,10 @@
 #' Calculate land sizes in hectares using
 #' RHoMIS data
 #'
+#'   
+#' Rpackage file: LandSize.R
+#'
+#' 
 #' @param data RHoMIS data
 #' @param unit_conv_tibble A tibble of land area units and
 #'

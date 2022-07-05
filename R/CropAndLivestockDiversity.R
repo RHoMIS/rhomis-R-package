@@ -3,6 +3,8 @@
 #'
 #' Calculating the number of crops kept by a household
 #'
+#' Rpackage file: CropAndLivestockDiversity.R
+#'
 #' @param data RHoMIS dataset
 #' @param indicator_data A tibble to store indicators, if crop diversity can be calculated, then the indicator will be appended.
 #'
@@ -29,6 +31,8 @@ crop_diversity <- function(data, indicator_data) {
 #' Livestock Diversity
 #'
 #' Calculating the number of livestock kept by a household
+#'
+#' Rpackage file: CropAndLivestockDiversity.R
 #'
 #' @param data RHoMIS dataset
 #' @param indicator_data A tibble to store indicators, if crop diversity can be calculated, then the indicator will be appended.

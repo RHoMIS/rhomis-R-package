@@ -7,6 +7,9 @@
 #'
 #' This is a function to generate a mock response based on
 #' the survey file alone
+#' 
+#' Rpackage file: GenerateMockResponses.R
+#'
 #' @param survey The "survey" tab of the survey xls file
 #' @param choices The "choices" tab of the survey xls file
 #' @param metadata The "settings" tab of the survey xls file
@@ -79,6 +82,8 @@ generate_mock_response <- function(survey, choices, metadata, survey_path = NULL
 #' Some of the survey questions in ODK central are asked in a
 #' repeat format. This function allows us to carry out these
 #' repeats for a randome number of loops (capped at 5)
+#' 
+#' Rpackage file: GenerateMockResponses.R
 #'
 #' @param survey The survey table as a tibble
 #' @param choices The choices table as a tibble
@@ -134,6 +139,8 @@ adding_looped_data <- function(survey, choices, rows) {
 #' When a xml chunk is created, say for a looped
 #' set of questions, we can add the required
 #' number of tabs at the beginning of each line
+#' 
+#' Rpackage file: GenerateMockResponses.R
 #'
 #' @param xml_string The string which needs extra tabs
 #' at the beginning
@@ -157,6 +164,8 @@ print_chunk_with_tab_spacing <- function(xml_string, xml_level) {
 #'
 #' Find the rows in the survey file
 #' where questions are in repeat loops
+#' 
+#' Rpackage file: GenerateMockResponses.R
 #'
 #' @param survey The survey sheet of the
 #' excel file as a tibble
@@ -184,6 +193,8 @@ identify_repeat_locations <- function(survey) {
 #'
 #' For each row in the survey file generate
 #' the xml row needed for submission.
+#' 
+#' Rpackage file: GenerateMockResponses.R
 #'
 #' @param submission_xml The previous xml which must be
 #' appended
@@ -286,6 +297,8 @@ generate_random_row <- function(submission_xml, survey, choices, survey_row, xml
 #'
 #' Make the necessary number of
 #' spaces based on the level of the xml form
+#' 
+#' Rpackage file: GenerateMockResponses.R
 #'
 #' @param form_level The level (amount of indentation)
 #' we need for a particular line in the xml response
@@ -330,6 +343,9 @@ select_multiple <- function(list_to_sample) {
 #' Submissions to ODK central have headers
 #' and footers so the forms can be managed and metadata included.
 #' This function adds the necessary headers and footer based on the survey file
+#'  
+#' Rpackage file: GenerateMockResponses.R
+#'
 #' @param metadata The "settings" sheet of the xls form
 #' @param xml_string The string which needs headers and
 #' footers added

@@ -10,6 +10,8 @@
 #' Find out PPP conversions based on the
 #' world bank statistics
 #'
+#' Rpackage file: CurrencyConversion.R
+#'
 #' @param year The year you are hoping to query
 #' @param country_code The two letter ISO country code
 #'
@@ -49,6 +51,8 @@ querywb_stats <- function(year, country_code) {
 #' based on world bank data. If we cannot find the current
 #' currency conversion factor, we will check for the most recent,
 #' going as far back as 10 years
+#'
+#' Rpackage file: CurrencyConversion.R
 #'
 #' @param year The year you are querying the conversion factors for
 #' @param country_code The country codes that you are querying for
@@ -103,6 +107,8 @@ currency_conversion_factor <- function(year, country_code) {
 #'
 #' A function for finding the relevant currency conversion
 #' factors for all household interviews
+#'
+#' Rpackage file: CurrencyConversion.R
 #'
 #' @param data The data containing a column of ISO country codes and
 #' a column of Years

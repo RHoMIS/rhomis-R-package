@@ -4,6 +4,8 @@
 #'
 #' Calculate total livestock income from
 #' processed RHoMIS data
+#'  
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data that has been processed using
 #' the "livestock_calculations_all" function
@@ -89,6 +91,8 @@ total_livestock_income <- function(data) {
 #'
 #' Calculate the total crop income from processed
 #' RHoMIS data
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data that has been processed using
 #' the "crop_calculations_all" function
@@ -129,6 +133,8 @@ total_crop_income <- function(data) {
 #' Calculating off-farm income
 #'
 #' Calculating off-farm income based on total income proportions
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data, including column of offfarm income
 #' @param total_crop_income Total income from crops list
@@ -190,6 +196,8 @@ off_farm_prop[off_farm_incomes_any=="n"] <- 0
 }
 
 #' Gendered Off-Farm Incomes Indicator
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data including off-farm income loops
 #' @param gender_categories The gender categories included in the survey
@@ -248,6 +256,8 @@ gendered_off_farm_income_indicator <- function(data, gender_categories = pkg.env
 #'
 #' Adding gender control columns for each of the specific
 #' sources of off-farm income
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data including off-farm income loops
 #' @param gender_categories Categories of gender we are interested in

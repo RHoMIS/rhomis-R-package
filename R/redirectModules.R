@@ -106,7 +106,9 @@ extract_values_central <- function(central_email,
 
 
 #' Extract values
-#'
+#'    
+#' Rpackage file: redirectModules.R
+#' 
 #' @param base_folder The folder where all outputs will be written to
 #' @param file_path The path to the raw-data rhomis file
 #' @param overwrite Whether or not you would like to overwrite your
@@ -182,7 +184,8 @@ extract_values_local <- function(base_folder = "./",
 #' Extract Project values
 #'
 #' Extract all of the values from an individual data set
-#'
+#'   
+#' Rpackage file: redirectModules.R
 #'
 #' @param rhomis_data A rhomis data set
 #'
@@ -199,6 +202,8 @@ extract_project_values <- function(rhomis_data) {
 
 
 #' Make new dataset
+#'   
+#' Rpackage file: redirectModules.R
 #'
 #' @param rhomis_data A rhomis_dataset including IDs
 #'
@@ -223,6 +228,8 @@ make_new_dataset <- function(rhomis_data) {
 #' Calculate prices and indicator Local
 #'
 #' Calculate prices and initial indicators locally
+#'  
+#' Rpackage file: redirectModules.R
 #'
 #' @param data The dataset which is to be processed
 #' @param base_path Path to the project folder
@@ -289,6 +296,8 @@ calculate_prices_and_indicator_local <- function(data,
 }
 
 #' Calculate Values, Gender and Food Availability
+#'  
+#' Rpackage file: redirectModules.R
 #'
 #' @param base_path Path to the project folder
 #' @param units_path Path to the folder of converted units
@@ -358,6 +367,8 @@ calculate_values_gender_and_fa_local <- function(base_path = "./",
 
 
 #' Value, Gender, and Food Availability Calculations
+#'  
+#' Rpackage file: redirectModules.R
 #'
 #' @param processed_data RHoMIS Processed Dataset
 #' @param indicator_data RHoMIS Indicator Data set
@@ -429,6 +440,8 @@ value_gender_fa_calculations <- function(processed_data,
 }
 
 #' Run preliminary calculations
+#'  
+#' Rpackage file: redirectModules.R
 #'
 #' @param rhomis_data A tibble of rhomis_data
 #' @param gender_categories The gender categories present in the data which is to be processed
@@ -826,6 +839,8 @@ run_preliminary_calculations <- function(rhomis_data,
 #' Read Folder of CSVs
 #'
 #' A function
+#'  
+#' Rpackage file: redirectModules.R
 #'
 #' @param folder The folder containing the tables to load
 #'

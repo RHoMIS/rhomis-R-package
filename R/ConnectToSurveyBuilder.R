@@ -8,6 +8,8 @@
 #' builder API to get the meta-data information from
 #' multiple projects
 #'
+#' Rpackage file: ConnectToSurveyBuilder.R
+#'
 #' @param survey_builder_url The URL of the survey builder application
 #' @param survey_builder_access_token The access toke to access the
 #' survey builder API
@@ -36,6 +38,8 @@ get_survey_builder_projects <- function(survey_builder_url, survey_builder_acces
 #' using RHoMIS 2.0. This function connects to the survey
 #' builder API to get the meta-data information from the
 #' individual projects
+#'
+#' Rpackage file: ConnectToSurveyBuilder.R
 #'
 #' @param survey_builder_url The URL of the survey builder application
 #' @param survey_builder_access_token The access toke to access the

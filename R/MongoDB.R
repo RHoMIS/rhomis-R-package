@@ -6,6 +6,8 @@
 #' Connect to db
 #'
 #' A simple function for connecting to a mongo database
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param collection Which collection you want to connect to
 #' @param database Which database you want to connect to
@@ -29,6 +31,8 @@ connect_to_db <- function(collection, database = "rhomis", url = "mongodb://loca
 #'
 #' To write objects to a mongoDB, they need to be in JSON format.
 #' This function converts data from a data frame to a JSON
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param data_to_change The data frame that needs to be converted
 #'
@@ -51,6 +55,8 @@ data_frame_to_json <- function(data_to_change) {
 #' Querying whole collection
 #'
 #' Returning all of the information from a mongoDB query in a tabular format
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param collection The collection you want to collect the information from
 #' @param database The database you are querying
@@ -70,6 +76,8 @@ find_collection <- function(collection, database = "rhomis", url = "mongodb://lo
 #' Count collection
 #'
 #' Count the number of documents in a collection
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param collection The collection you want to collect the information from
 #' @param database The database you are querying
@@ -91,6 +99,8 @@ count_collection <- function(collection, database = "rhomis", url = "mongodb://l
 #' Write a New Collection
 #'
 #' Write a new table to a RHoMIS db database
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param data_to_write The dataframe that you want to write to file
 #' @param collection The collection you want to collect the information from
@@ -133,6 +143,8 @@ update_collection <- function(data_to_write, collection, database = "rhomis", ur
 #'
 #' A method for submitting another project
 #' to a list of projects.
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param data Data to add
 #' @param collection Collection to add it to
@@ -171,6 +183,8 @@ add_data_to_project_list <- function(data, collection, database = "rhomis", url 
 
 
 #' Add data to db
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param data The tibble dataset that you would like to write
 #' @param collection The collection which you would like to add the data to
@@ -215,6 +229,8 @@ add_data_to_db <- function(data, collection = "data", data_type, database = "rho
 #' After conducting the main RHoMIS calculations, it is important to add the
 #' form ID and project ID to the list of projects in the database, to keep track of the
 #' projects using RHoMIS. This function allows us to do this.
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param database Database to add it to
 #' @param url URL of the database
@@ -246,7 +262,9 @@ adding_project_to_list <- function(database = "rhomis", url = "mongodb://localho
 #' prices verified. This function allows
 #' us to tick off these stages, letting
 #' the system know what has been verified and what has not.
-#' 
+#'    
+#' Rpackage file: MongoDB.R
+#'
 #' @param database Database to add it to
 #' @param url URL of the database
 #' @param projectID ID of the project you are adding
@@ -274,6 +292,8 @@ set_project_tag_to_true <- function(database = "rhomis", url = "mongodb://localh
 #' Save Dataset to DB
 #'
 #' Save a dataset to the MongoDB database
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param data The data to save
 #' @param data_type The type of data to save (e.g. cropData, indicatorData...)
@@ -353,6 +373,8 @@ save_data_set_to_db <- function(data,
 #'
 #' Take a list of output datasets and save them all to the
 #' RHoMIS mongoDB
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param list_of_df The list of dataframes
 #' @param projectID The name of the project
@@ -412,6 +434,8 @@ save_list_of_df_to_db <- function(list_of_df,
 #'
 #' This function can be useful for removing these unnecessary
 #' characters.
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param json_string The json string which needs to be cleaned
 #'
@@ -434,6 +458,8 @@ clean_json_string <- function(json_string) {
 #'
 #' A function for reading and unwinding
 #' data in the RHoMIS database.
+#'   
+#' Rpackage file: MongoDB.R
 #'
 #' @param collection The collection containing the data needed
 #' @param database The name of the database
