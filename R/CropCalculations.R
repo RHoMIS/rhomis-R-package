@@ -400,7 +400,8 @@ crop_income_calculations <- function(data, unit_conv_tibble = NULL) {
 
   crop_price <- crop_sold_income_per_year / crop_sold_amount
   colnames(crop_price) <- paste0("crop_price", "_", c(1:number_of_loops))
-
+  
+  # indicator_search_crop_price
   data <- add_column_after_specific_column(
     data = data,
     new_data = crop_price,

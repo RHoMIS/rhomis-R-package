@@ -246,3 +246,32 @@
 #'
 #' @source NA
 "livestock_tlu"
+
+
+#' Indicator List
+#'
+#' A list of the different
+#' indicators calculated in this
+#' package, along with the functions
+#' used to calculate them
+#'
+#' @source NA
+"indicator_list"
+
+#' Indicator List
+#'
+#' A list of the different
+#' indicators calculated in this
+#' package, along with the functions
+#' used to calculate them
+#'
+#' @source NA
+"indicator_list"
+
+#' Function List
+#' 
+#' A list of the functions used to
+#' calculate various RHoMIS indicators
+#' 
+#' @source NA
+"function_list"

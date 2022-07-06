@@ -426,7 +426,8 @@ find_d3_dependencies_network <- function(
 #' @examples
 plot_dependency_network <- function(
     indicator_name,
-    indicator_list
+    indicator_list,
+    type="horizontal"
     ){
 
     d3_network <- find_d3_dependencies_network(
@@ -435,7 +436,19 @@ plot_dependency_network <- function(
 
     )
 
-    networkD3::diagonalNetwork(List = d3_network)
+
+    if (type=="horizontal"){
+        plot <- networkD3::diagonalNetwork(List = d3_network)
+    }
+
+    if (type=="central"){
+        plot <- networkD3::radialNetwork(List = d3_network)
+    }
+
+
+    
+
+
 }
 
 
@@ -514,7 +527,8 @@ get_function_stack <- function(
 
 plot_function_dependency <- function(
     function_list,
-    function_name
+    function_name,
+    type="horizontal"
 ){
 
 
@@ -524,7 +538,13 @@ plot_function_dependency <- function(
 
         )
 
+    if (type=="horizontal"){
     networkD3::diagonalNetwork(List = d3_network)
+    }
+
+    if (type=="central"){
+        networkD3::radialNetwork(List = d3_network)
+    }
 
 
 

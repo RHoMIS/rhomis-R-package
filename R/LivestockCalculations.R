@@ -15,6 +15,7 @@
 #'
 #' @examples
 price_per_livestock <- function(data) {
+  # indicator_search_livestock_price_per_animal
   number_of_loops <- find_number_of_loops(data, name_column = "livestock_sold")
   sold_columns <- paste0("livestock_sold", "_", c(1:number_of_loops))
   income_columns <- paste0("livestock_sale_income", "_", c(1:number_of_loops))
@@ -62,6 +63,10 @@ price_per_livestock <- function(data) {
 #' @examples
 meat_amount_calculation <- function(data,
                                     unit_conv_tibble = NULL) {
+  
+  
+  # indicator_search_meat_kg_per_year
+
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
     stop("Missing the id_rhomis_dataset column in RHoMIS data")
   }
@@ -124,7 +129,8 @@ meat_uses <- function(data) {
     loop_columns = c(
       "meat_kg_per_year",
       "meat_sell_amount",
-      "livestock_name"
+      "livestock_name",
+      "meat_use"
     ),
     warning_message = "Could not calculate amounts of meat sold or consumed"
   )
@@ -148,7 +154,9 @@ meat_uses <- function(data) {
     loop_columns = c(
       "meat_kg_per_year",
       "meat_consumed_amount",
-      "livestock_name"
+      "livestock_name",
+      "meat_use"
+
     ),
     warning_message = "Could not calculate amounts of meat sold or consumed"
   )
@@ -184,6 +192,8 @@ meat_uses <- function(data) {
 #'
 #' @examples
 meat_sold_and_consumed_calculation <- function(data) {
+
+  # meat_sold_kg_per_year
   data <- meat_uses(data)
   number_of_loops <- find_number_of_loops(data, name_column = "livestock_name")
   amount_columns <- paste0("meat_kg_per_year", "_", c(1:number_of_loops))
@@ -208,7 +218,8 @@ meat_sold_and_consumed_calculation <- function(data) {
       loop_structure = T
     )
   }
-
+  
+  #meat_consumed_kg_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "livestock_name")
   amount_columns <- paste0("meat_kg_per_year", "_", c(1:number_of_loops))
   consumed_columns <- paste0("meat_consumed_props_numeric", "_", c(1:number_of_loops))
@@ -249,6 +260,7 @@ meat_sold_and_consumed_calculation <- function(data) {
 #'
 #' @examples
 meat_prices <- function(data) {
+  # indicator_search_meat_price_per_kg
   number_of_loops <- find_number_of_loops(data, "meat_sold_income")
   sold_income_columns <- paste0("meat_sold_income", "_", c(1:number_of_loops))
   sold_amount_columns <- paste0("meat_sold_kg_per_year", "_", c(1:number_of_loops))
@@ -304,6 +316,9 @@ milk_amount_calculations <- function(data,
       unit_conv_tibble = milk_amount_units
     )
   }
+
+  # indicator_search_milk_amount_good_season_litres_per_year
+  # indicator_search_milk_amount_bad_season_litres_per_year
 
   number_of_loops <- find_number_of_loops(data, "milk_amount_good_season")
 
@@ -374,6 +389,9 @@ milk_amount_calculations <- function(data,
     loop_structure = T
   )
   # Averaging for milk collected per year
+
+  # indicator_search_milk_collected_litres_per_year
+
   milk_collected_litres_per_year <- sapply(c(1:length(milk_amount_good_season_litres_per_year)), function(x) {
     average_good_and_bad_season(good_season_amount = milk_amount_good_season_litres_per_year[[x]], bad_season_amount = milk_amount_bad_season_litres_per_year[[x]])
   })
@@ -452,6 +470,7 @@ milk_proportions_all <- function(data) {
 #'
 #' @examples
 milk_sold_and_consumed_calculations <- function(data) {
+  # indicator_search_milk_sold_litres_per_year
   data <- milk_proportions_all(data)
   number_of_loops <- find_number_of_loops(data, name_column = "milk_sell_amount")
   amount_columns <- paste0("milk_collected_litres_per_year", "_", c(1:number_of_loops))
@@ -475,6 +494,8 @@ milk_sold_and_consumed_calculations <- function(data) {
       loop_structure = T
     )
   }
+
+  # indicator_search_milk_consumed_litres_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "milk_consumed_amount")
   amount_columns <- paste0("milk_collected_litres_per_year", "_", c(1:number_of_loops))
   consumed_columns <- paste0("milk_consumed_prop_numeric", "_", c(1:number_of_loops))
@@ -513,6 +534,9 @@ milk_sold_and_consumed_calculations <- function(data) {
 #'
 #' @examples
 milk_income_calculations <- function(data, unit_conv_tibble = NULL) {
+
+  # indicator_search_milk_sold_income_per_year
+
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
     stop("Missing the id_rhomis_dataset column in RHoMIS data")
   }
@@ -635,6 +659,7 @@ eggs_amount_calculations <- function(data, unit_conv_tibble = NULL) {
   eggs_amount_conversions_kg <- eggs_amount_conversions * egg_weight_kg
 
   # eggs amounts good and bad season
+  # indicator_search_eggs_amount_good_season_kg_per_year
   eggs_amount_good_season_kg_per_year <- tibble::as_tibble(eggs_amount_good_season_data * eggs_amount_conversions_kg)
   colnames(eggs_amount_good_season_kg_per_year) <- paste0("eggs_amount_good_season_kg_per_year", "_", c(1:number_of_loops))
 
@@ -646,6 +671,7 @@ eggs_amount_calculations <- function(data, unit_conv_tibble = NULL) {
     loop_structure = T
   )
 
+  # indicator_search_eggs_amount_bad_season_kg_per_year
   eggs_amount_bad_season_kg_per_year <- tibble::as_tibble(eggs_amount_bad_season_data * eggs_amount_conversions_kg)
   colnames(eggs_amount_bad_season_kg_per_year) <- paste0("eggs_amount_bad_season_kg_per_year", "_", c(1:number_of_loops))
 
@@ -657,6 +683,7 @@ eggs_amount_calculations <- function(data, unit_conv_tibble = NULL) {
     loop_structure = T
   )
   # Averaging for eggs collected per year
+  # indicator_search_eggs_collected_kg_per_year
   eggs_collected_kg_per_year <- sapply(c(1:length(eggs_amount_good_season_kg_per_year)), function(x) {
     average_good_and_bad_season(good_season_amount = eggs_amount_good_season_kg_per_year[[x]], bad_season_amount = eggs_amount_bad_season_kg_per_year[[x]])
   })
@@ -758,6 +785,8 @@ eggs_sold_and_consumed_calculations <- function(data) {
   if (all(amount_columns %in% colnames(data)) == F | all(sold_columns %in% colnames(data)) == F) {
     warning("Have not calculated the amount of eggs collected in kg or amounts sold. Calculate amounts collected before calculating amounts sold")
   }
+
+  # indicator_search_eggs_sold_kg_per_year
   if (all(amount_columns %in% colnames(data)) == T & all(sold_columns %in% colnames(data)) == T) {
     eggs_amount_data <- data[amount_columns]
     sold_prop_data <- data[sold_columns]
@@ -773,6 +802,8 @@ eggs_sold_and_consumed_calculations <- function(data) {
       loop_structure = T
     )
   }
+
+  # indicator_search_eggs_consumed_kg_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "eggs_consumed_amount")
   amount_columns <- paste0("eggs_collected_kg_per_year", "_", c(1:number_of_loops))
   consumed_columns <- paste0("eggs_consumed_prop_numeric", "_", c(1:number_of_loops))
@@ -814,6 +845,8 @@ eggs_sold_and_consumed_calculations <- function(data) {
 #' @examples
 egg_income_calculations <- function(data,
                                     unit_conv_tibble = NULL) {
+  
+  # indicator_search_eggs_income_per_year                                  
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
     stop("Missing the id_rhomis_dataset column in RHoMIS data")
   }
@@ -871,7 +904,7 @@ egg_income_calculations <- function(data,
     warning("Could not calculate egg prices, missing information on the amount of eggs sold")
   }
 
-
+  # indicator_search_eggs_price_per_kg
   if (all(amount_sold_columns %in% colnames(data))) {
     price_data <- total_income / amount_sold_data %>% tibble::as_tibble()
     colnames(price_data) <- paste0("eggs_price_per_kg", "_", c(1:number_of_loops))
@@ -1084,6 +1117,9 @@ average_good_and_bad_season <- function(good_season_amount, bad_season_amount) {
 #'
 #' @examples
 honey_amount_calculation <- function(data, unit_conv_tibble = NULL) {
+  
+  # indicator_search_bees_honey_kg_per_year
+
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
     stop("Missing the id_rhomis_dataset column in RHoMIS data")
   }
@@ -1196,7 +1232,7 @@ honey_proportions_all <- function(data) {
 honey_amount_sold_and_consumed_calculations <- function(data) {
   data <- honey_proportions_all(data)
   # Beginning with honey sold
-
+  # indicator_search_bees_honey_sold_kg_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "bees_honey_production")
   amount_columns <- paste0("bees_honey_kg_per_year", "_", c(1:number_of_loops))
   sold_columns <- paste0("bees_honey_sold_props_numeric", "_", c(1:number_of_loops))
@@ -1220,6 +1256,7 @@ honey_amount_sold_and_consumed_calculations <- function(data) {
     )
   }
   # Moving on to crops consumed
+  # indicator_search_bees_honey_consumed_kg_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "bees_honey_production")
   amount_columns <- paste0("bees_honey_kg_per_year", "_", c(1:number_of_loops))
   consumed_columns <- paste0("bees_honey_consumed_props_numeric", "_", c(1:number_of_loops))
@@ -1729,6 +1766,8 @@ livestock_calculations_all <- function(data,
 #'
 #' @examples
 honey_income_calculations <- function(data) {
+
+  # indicator_search_bees_honey_price_per_kg
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "bees_honey_sold_income",

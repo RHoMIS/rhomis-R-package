@@ -147,6 +147,18 @@ indicator_list <- add_indicator(
     function_calculated="crop_income_calculations",
     search_term="indicator_search_crop_income_per_year")
 
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "crop_price",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list(),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("crop_income_per_year","crop_sold_kg_per_year"),
+    function_calculated="crop_income_calculations",
+    search_term="indicator_search_crop_price")
+
 #-------------------------
 # Gender Crop Consumption
 #-------------------------
@@ -311,19 +323,289 @@ indicator_list <- add_indicator(
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "livestock_price_per_animal",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("livestock_sold","livestock_sale_income","livestock_price_per_animal"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="price_per_livestock",
+    search_term="indicator_search_livestock_price_per_animal")
 
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "meat_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("livestock_name","killed_for_meat"),
+    conversion_tables_required=list("livestock_weights"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="meat_amount_calculation",
+    search_term="indicator_search_meat_kg_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "meat_sold_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("meat_sell_amount","meat_use"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("meat_kg_per_year"),
+    function_calculated="meat_sold_and_consumed_calculation",
+    search_term="indicator_search_meat_sold_kg_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "meat_consumed_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("meat_consumed_amount","meat_use"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("meat_kg_per_year"),
+    function_calculated="meat_sold_and_consumed_calculation",
+    search_term="indicator_search_meat_consumed_kg_per_year")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "meat_price_per_kg",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("meat_sold_income"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("meat_sold_kg_per_year"),
+    function_calculated="meat_prices",
+    search_term="indicator_search_meat_price_per_kg")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "milk_amount_good_season_litres_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("milk_amount_good_season", "milk_units", "milk_number_animals_milked"),
+    conversion_tables_required=list("milk_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="milk_amount_calculations",
+    search_term="indicator_search_milk_amount_good_season_litres_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "milk_amount_bad_season_litres_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("milk_amount_bad_season", "milk_units", "milk_number_animals_milked"),
+    conversion_tables_required=list("milk_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="milk_amount_calculations",
+    search_term="indicator_search_milk_amount_bad_season_litres_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "milk_collected_litres_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list(),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("milk_amount_good_season_litres_per_year","milk_amount_bad_season_litres_per_year"),
+    function_calculated="milk_amount_calculations",
+    search_term="indicator_search_milk_collected_litres_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "milk_sold_litres_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("milk_sell_amount"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("milk_collected_litres_per_year"),
+    function_calculated="milk_sold_and_consumed_calculations",
+    search_term="indicator_search_milk_sold_litres_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "milk_consumed_litres_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("milk_consumed_amount"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("milk_collected_litres_per_year"),
+    function_calculated="milk_sold_and_consumed_calculations",
+    search_term="indicator_search_milk_consumed_litres_per_year")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "milk_sold_income_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("milk_sold_income", "milk_sold_price_timeunits"),
+    conversion_tables_required=list("milk_price_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list("milk_sold_litres_per_year"),
+    function_calculated="milk_income_calculations",
+    search_term="indicator_search_milk_sold_income_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "eggs_amount_good_season_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("eggs_amount_good", "eggs_units"),
+    conversion_tables_required=list("eggs_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="eggs_amount_calculations",
+    search_term="indicator_search_eggs_amount_good_season_kg_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "eggs_amount_bad_season_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("eggs_amount_good", "eggs_units"),
+    conversion_tables_required=list("eggs_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="eggs_amount_calculations",
+    search_term="indicator_search_eggs_amount_bad_season_kg_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "eggs_collected_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list(),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("eggs_amount_good_season_kg_per_year", "eggs_amount_bad_season_kg_per_year"),
+    function_calculated="eggs_amount_calculations",
+    search_term="c")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "eggs_sold_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("eggs_use", "eggs_sell_amount"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("eggs_collected_kg_per_year"),
+    function_calculated="eggs_sold_and_consumed_calculations",
+    search_term="indicator_search_eggs_sold_kg_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "eggs_consumed_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("eggs_use", "eggs_consumed_amount"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("eggs_collected_kg_per_year"),
+    function_calculated="eggs_sold_and_consumed_calculations",
+    search_term="indicator_search_eggs_consumed_kg_per_year")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "eggs_income_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("eggs_sold_income", "eggs_sold_price_timeunits"),
+    conversion_tables_required=list("eggs_price_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="egg_income_calculations",
+    search_term="indicator_search_eggs_income_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "eggs_price_per_kg",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list(),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("eggs_income_per_year", "eggs_sold_kg_per_year"),
+    function_calculated="egg_income_calculations",
+    search_term="indicator_search_eggs_price_per_kg")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "bees_honey_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("bees_honey_production", "bees_honey_production_units"),
+    conversion_tables_required=list("honey_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="honey_amount_calculation",
+    search_term="indicator_search_bees_honey_kg_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "bees_honey_sold_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("bees_honey_use","bees_honey_sell_amount"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("bees_honey_kg_per_year"),
+    function_calculated="honey_amount_sold_and_consumed_calculations",
+    search_term="indicator_search_bees_honey_sold_kg_per_year")
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "bees_honey_consumed_kg_per_year",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("bees_honey_consumed_amount","bees_honey_use"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("bees_honey_kg_per_year"),
+    function_calculated="honey_amount_sold_and_consumed_calculations",
+    search_term="indicator_search_bees_honey_consumed_kg_per_year")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "bees_honey_price_per_kg",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(), 
+    loop_columns_required=list("bees_honey_sold_income"),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list("bees_honey_sold_kg_per_year"),
+    function_calculated="honey_income_calculations",
+    search_term="indicator_search_bees_honey_price_per_kg")
 
 
 
 plot_dependency_network(
-     indicator_name="female_youth_crop_income_per_year", 
-     indicator_list=indicator_list
+     indicator_name="bees_honey_price_per_kg", 
+     indicator_list=indicator_list,
 )
 
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "",
-    output_format="column", #column, loop, #table
+    output_format="loop", #column, loop, #table
     individual_columns_required=list(), 
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -333,70 +615,9 @@ indicator_list <- add_indicator(
     search_term="indicator_search_")
 
     
-
-json_mapping <- '
-{
-        
+usethis::use_data(, overwrite = T)
 
 
-
-    "crop_sold_kg_per_year":{
-         "indicator_name":  "crop_sold_kg_per_year",
-         "format": "loop",
-         "individual_columns_required": [],
-         "loop_columns_required": ["crop_name",
-                                   "crop_yield",
-                                   "crop_yield_units",
-                                   "crop_yield_units_other",
-                                   "crop_use",
-                                   "crop_sold_prop"],
-         "conversion_tables_required": ["crop_name", "crop_yield_units","proportion_conversions"],
-         "api_data_required": [],
-         "indicators_required": ["crop_harvest_kg_per_year"],
-         "file_located":  "CropCalculations.R"
-    },
-
-    "crop_income_per_year":{
-         "indicator_name":  "crop_sold_kg_per_year",
-         "format": "loop",
-         "individual_columns_required": [],
-         "loop_columns_required": ["crop_name",
-                                   "crop_yield",
-                                   "crop_yield_units",
-                                   "crop_yield_units_other",
-                                   "crop_use",
-                                   "crop_sold_prop"],
-         "conversion_tables_required": ["crop_name",
-                                        "crop_yield_units",
-                                        "proportion_conversions",
-                                        "crop_price_units"
-                                       ],
-         "api_data_required": [],
-         "indicators_required": ["crop_harvest_kg_per_year", "crop_sold_kg_per_year"],
-         "file_located":  "CropCalculations.R"
-    },
-
-    "crop_price_per_kg":{
-         "indicator_name":  "crop_price_per_kg",
-         "format": "loop",
-         "individual_columns_required": [],
-         "loop_columns_required": ["crop_name",
-                                   "crop_yield",
-                                   "crop_yield_units",
-                                   "crop_yield_units_other",
-                                   "crop_use",
-                                   "crop_sold_prop",
-                                   "crop_sold_price_quantityunits",
-                                   "crop_price_quantityunits_other"],
-         "conversion_tables_required": ["crop_name",
-                                        "crop_yield_units",
-                                        "proportion_conversions"],
-         "api_data_required": [],
-         "indicators_required": ["crop_harvest_kg_per_year", "crop_sold_kg_per_year", "crop_income_per_year"],
-         "file_located":  "CropCalculations.R"
-    },
-}
-'
 
 #------------------------
 # Plotting Example
