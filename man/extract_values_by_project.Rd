@@ -9,10 +9,10 @@ extract_values_by_project(data)
 \arguments{
 \item{data}{A rhomis data frame}
 }
-\value{
-
-}
 \description{
 A function to extract all of the units alongside their
 individual form and project IDs.
+}
+\details{
+Rpackage file: ExtractNewValues.R
 }

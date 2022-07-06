@@ -38,6 +38,9 @@ A list of the individual values for that value (excluding NA values)
 \description{
 A function for extracting any new values from a survey
 }
+\details{
+Rpackage file: ExtractNewValues.R
+}
 \examples{
 
 # Example code for a crop loop

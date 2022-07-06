@@ -75,7 +75,7 @@ testthat::test_that("Can process a whole central dataset",{
     {
      result <- tryCatch({
         # Extract Units
-         ls
+         
         suppressWarnings(processData(
             extractUnitsOnly = T, # The stage of data processing
 
@@ -84,7 +84,8 @@ testthat::test_that("Can process a whole central dataset",{
             outputType = "mongodb",
 
             # Arguments used for processing local data sets
-            central_url = "https://github.com/l-gorman/rhomis-R-package/blob/end-to-end-example/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
+            
+            central_url = "https://github.com/l-gorman/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
             central_email = "test@domain.com",
             central_password = "testpassword",
             project_name = "test_project",
@@ -105,7 +106,7 @@ testthat::test_that("Can process a whole central dataset",{
             outputType="mongodb",
 
             # Arguments used for processing local data sets
-            central_url="https://github.com/l-gorman/rhomis-R-package/blob/end-to-end-example/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
+            central_url="https://github.com/l-gorman/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
             central_email="test@domain.com",
             central_password="testpassword",
             project_name="test_project",
@@ -127,7 +128,7 @@ testthat::test_that("Can process a whole central dataset",{
             outputType="mongodb",
 
             # Arguments used for processing local data sets
-            central_url="https://github.com/l-gorman/rhomis-R-package/blob/end-to-end-example/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
+            central_url="https://github.com/l-gorman/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
             central_email="test@domain.com",
             central_password="testpassword",
             project_name="test_project",
@@ -200,7 +201,7 @@ testthat::test_that("Can process a whole local dataset",{
 
             # Arguments used for processing local data sets
             base_path = "./", #' Path to the folder where the analysis needs to take place
-            dataFilePath="https://raw.githubusercontent.com/l-gorman/rhomis-R-package/dev/inst/sample_local_project/raw-data/raw-data.csv",
+            dataFilePath="https://raw.githubusercontent.com/l-gorman/rhomis-R-package/main/inst/sample_local_project/raw-data/raw-data.csv",
             id_type="string",
             proj_id="test_project",
             form_id="test_form"
@@ -218,7 +219,7 @@ testthat::test_that("Can process a whole local dataset",{
 
             # Arguments used for processing local data sets
             base_path = "./", #' Path to the folder where the analysis needs to take place
-            dataFilePath = "https://raw.githubusercontent.com/l-gorman/rhomis-R-package/dev/inst/sample_local_project/raw-data/raw-data.csv",
+            dataFilePath = "https://raw.githubusercontent.com/l-gorman/rhomis-R-package/main/inst/sample_local_project/raw-data/raw-data.csv",
             id_type = "string",
             proj_id = "test_project",
             form_id = "test_form"
@@ -384,7 +385,7 @@ testthat::test_that("Can process a whole central dataset",{
             outputType = "mongodb",
 
             # Arguments used for processing local data sets
-            central_url = "https://github.com/l-gorman/rhomis-R-package/blob/end-to-end-example/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
+            central_url = "https://github.com/l-gorman/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
             central_email = "test@domain.com",
             central_password = "testpassword",
             project_name = "test_project",
@@ -405,7 +406,7 @@ testthat::test_that("Can process a whole central dataset",{
             outputType="mongodb",
 
             # Arguments used for processing local data sets
-            central_url="https://github.com/l-gorman/rhomis-R-package/blob/end-to-end-example/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
+            central_url="https://github.com/l-gorman/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
             central_email="test@domain.com",
             central_password="testpassword",
             project_name="test_project",
@@ -427,7 +428,7 @@ testthat::test_that("Can process a whole central dataset",{
             outputType="mongodb",
 
             # Arguments used for processing local data sets
-            central_url="https://github.com/l-gorman/rhomis-R-package/blob/end-to-end-example/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
+            central_url="https://github.com/l-gorman/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true",
             central_email="test@domain.com",
             central_password="testpassword",
             project_name="test_project",

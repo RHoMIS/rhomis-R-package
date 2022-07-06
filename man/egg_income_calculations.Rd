@@ -11,9 +11,8 @@ egg_income_calculations(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{A tibble containing common su}
 }
-\value{
-
-}
 \description{
 Function to calculate egg income from livestock loops
+  
+Rpackage file: LivestockCalculations.R
 }

@@ -15,10 +15,10 @@ generate_mock_response(survey, choices, metadata, survey_path = NULL)
 
 \item{survey_path}{The path to the xls survey file}
 }
-\value{
-
-}
 \description{
 This is a function to generate a mock response based on
 the survey file alone
+}
+\details{
+Rpackage file: GenerateMockResponses.R
 }

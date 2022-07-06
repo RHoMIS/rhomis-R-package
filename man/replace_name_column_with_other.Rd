@@ -24,9 +24,6 @@ through, e.g. "crops_other2"}
 \item{other_column3}{The third "other" column you are searching
 through, e.g. "crops_other3"}
 }
-\value{
-
-}
 \description{
-Replace Name Column with Other
+Rpackage file: CleanRawData.R
 }

@@ -493,12 +493,17 @@ run_preliminary_calculations <- function(rhomis_data,
   # Make sure "other" units are considered
   rhomis_data <- replace_units_with_other_all(rhomis_data)
 
+  # Converting the country column
+  # into a two letter iso country code
+  # using a country conversion table
   if (exists("country_conversions")) {
+    # indicator_search_id_rhomis_dataset
     indicator_data$iso_country_code <- toupper(switch_units(
       data_to_convert = rhomis_data$country,
       unit_tibble = units$country_conversions,
       id_vector = rhomis_data[["id_rhomis_dataset"]]
     ))
+    # Provide this warning if the user has not converted their country names
     if (all(is.na(country_conversions$conversion)) | all(is.na(indicator_data$iso_country_code))) {
       warning(paste0(
         "\nHave not provided the ISO country codes for the survey. \nCheck the country names, and check that they are converted",
@@ -509,12 +514,14 @@ run_preliminary_calculations <- function(rhomis_data,
 
     if ("start_time_user" %in% colnames(rhomis_data)) {
       if ("year" %in% colnames(rhomis_data)) {
+        # indicator_search_year
         indicator_data$year <- rhomis_data$year
       } else {
         indicator_data$year <- substr(rhomis_data$start_time_user, start = 1, stop = 4)
       }
 
       if (any(!is.na(indicator_data$iso_country_code)) & any(!is.na(indicator_data$year))) {
+        # indicator_search_currency_conversion_lcu_to_ppp
         indicator_data <- convert_all_currencies(indicator_data, country_column = "iso_country_code", year_column = "year")
         indicator_data <- dplyr::rename(indicator_data, currency_conversion_lcu_to_ppp = conversion_factor)
         indicator_data <- dplyr::rename(indicator_data, currency_conversion_factor_year = conversion_year)

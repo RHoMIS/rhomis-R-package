@@ -11,10 +11,10 @@ split_string_categories_to_dummy(x, seperator)
 
 \item{seperator}{The separating character}
 }
-\value{
-
-}
 \description{
 Many RHoMIS columns come in the format c("cropA cropB cropC", "cropD cropA").
 This function helps split these into more interperatable dummy columns
+}
+\details{
+Rpackage file: DataReformatting.R
 }

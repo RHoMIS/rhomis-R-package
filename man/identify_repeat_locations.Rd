@@ -10,10 +10,10 @@ identify_repeat_locations(survey)
 \item{survey}{The survey sheet of the
 excel file as a tibble}
 }
-\value{
-
-}
 \description{
 Find the rows in the survey file
 where questions are in repeat loops
+}
+\details{
+Rpackage file: GenerateMockResponses.R
 }

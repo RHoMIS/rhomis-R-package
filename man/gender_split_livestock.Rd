@@ -12,11 +12,10 @@ of livestock sold and who sells this livestock}
 
 \item{gender_categories}{The categories you are interested in examining}
 }
-\value{
-
-}
 \description{
 Whole livestock, and products produced from livestock
 are divided among male and female farmers. This function
 determines how these values are split
+  
+Rpackage file: LivestockCalculations.R
 }

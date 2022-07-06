@@ -20,6 +20,9 @@ RHoMIS survey. Note that this function will not
 work on any dataset which has modified the core
 questions.
 }
+\details{
+Rpackage file: ExtractNewValues.R
+}
 \examples{
 
 

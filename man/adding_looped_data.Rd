@@ -14,11 +14,11 @@ adding_looped_data(survey, choices, rows)
 \item{rows}{The rows in the survey table which correspond
 to the looped questions}
 }
-\value{
-
-}
 \description{
 Some of the survey questions in ODK central are asked in a
 repeat format. This function allows us to carry out these
 repeats for a randome number of loops (capped at 5)
+}
+\details{
+Rpackage file: GenerateMockResponses.R
 }

@@ -13,9 +13,8 @@ count_collection(collection, database = "rhomis", url = "mongodb://localhost")
 
 \item{url}{The url of the database you are querying}
 }
-\value{
-
-}
 \description{
 Count the number of documents in a collection
+  
+Rpackage file: MongoDB.R
 }

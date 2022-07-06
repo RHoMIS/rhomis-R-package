@@ -14,13 +14,13 @@ apply_conversion_factor_to_columns(data, conversion_tibble, id_rhomis_dataset)
 \item{id_rhomis_dataset}{The id of the project to
 be converted}
 }
-\value{
-
-}
 \description{
 Sometimes it can be helpful to apply conversion
 factors to a series of columns, for example to
 get the calorie values of crops produced. This
 function allows us to apply conversion factors
 to an individual project.
+}
+\details{
+Rpackage file: DataReformatting.R
 }

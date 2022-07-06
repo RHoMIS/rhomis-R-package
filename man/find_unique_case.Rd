@@ -17,6 +17,9 @@ A list of all of the unique entries for the name column
 \description{
 A function to find all of the unique names for a particular looped variable (e.g. livestock, crops, off-farm incomes)
 }
+\details{
+Rpackage file: ReformatLoops.R
+}
 \examples{
 name_column <- "crop_name"
 data <- tibble::as_tibble(list(

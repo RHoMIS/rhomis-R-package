@@ -33,9 +33,6 @@ To get the list of forms see the "get_forms" function.}
 
 \item{isDraft}{Whether the form you are submitting to is a draft or not}
 }
-\value{
-
-}
 \description{
-Submit XML Data
+Rpackage file: ConnectToCentral.R
 }

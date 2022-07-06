@@ -15,11 +15,10 @@ footers added}
 \item{survey_path}{The path to the survey file where we
 obtain the metadata information}
 }
-\value{
-
-}
 \description{
 Submissions to ODK central have headers
 and footers so the forms can be managed and metadata included.
 This function adds the necessary headers and footer based on the survey file
+ 
+Rpackage file: GenerateMockResponses.R
 }

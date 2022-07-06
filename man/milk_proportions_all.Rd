@@ -9,10 +9,9 @@ milk_proportions_all(data)
 \arguments{
 \item{data}{Data containing livestock loops necessary to calculate milk sold and consumed proportions}
 }
-\value{
-
-}
 \description{
 A function to calculate the numeric proportions of milk
 sold and milk consumed
+  
+Rpackage file: LivestockCalculations.R
 }

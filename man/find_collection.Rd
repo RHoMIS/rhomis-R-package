@@ -18,4 +18,6 @@ A data frame of the data you are querying
 }
 \description{
 Returning all of the information from a mongoDB query in a tabular format
+  
+Rpackage file: MongoDB.R
 }

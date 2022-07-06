@@ -23,6 +23,9 @@ A cleaned list of all of the column names
 A single functions to shorten and
 clean all RHoMIS column names.
 }
+\details{
+Rpackage file: CleanColumnNames.R
+}
 \examples{
 
 repeat_columns <- c(

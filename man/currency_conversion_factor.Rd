@@ -11,12 +11,12 @@ currency_conversion_factor(year, country_code)
 
 \item{country_code}{The country codes that you are querying for}
 }
-\value{
-
-}
 \description{
 Identify the closest available currency conversion factor
 based on world bank data. If we cannot find the current
 currency conversion factor, we will check for the most recent,
 going as far back as 10 years
+}
+\details{
+Rpackage file: CurrencyConversion.R
 }

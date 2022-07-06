@@ -9,9 +9,6 @@ convert_new_values_to_tibble(new_values)
 \arguments{
 \item{new_values}{A list of lists containing the values to convert}
 }
-\value{
-
-}
 \description{
 The output of the "extract_new_core_units" function
 is a list of lists. With the names of the lists
@@ -20,6 +17,9 @@ contain all of the new values.
 This function converts all of these lists into tibbles.
 With a new column which has to be filled
 in by the user
+}
+\details{
+Rpackage file: ExtractNewValues.R
 }
 \examples{
 

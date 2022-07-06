@@ -11,9 +11,9 @@ crop_harvest_calculations(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{Units and conversions to convert crop yields to kg}
 }
-\value{
-
-}
 \description{
 Calculating the amount of each crop harvested per year
+}
+\details{
+Rpackage file: CropCalculations.R
 }

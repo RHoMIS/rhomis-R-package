@@ -26,9 +26,9 @@ value_or_calorie_calculations_item_consumed(
 
 \item{converted_column_name}{The name of the converted column you would like to give (e.g.value_crop_consumed_lcu)}
 }
-\value{
-
-}
 \description{
 Calculate the value of an item in terms of calories or monetary value.
+}
+\details{
+Rpackage file: ValueCalculations.R
 }

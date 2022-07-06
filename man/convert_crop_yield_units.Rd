@@ -13,11 +13,11 @@ convert_crop_yield_units(data, unit_conv_tibble = NULL)
 including individual idsfor projects. Crops to be coverted
 to kg amount}
 }
-\value{
-
-}
 \description{
 RHoMIS crop yields come in a character format. This function
 converts these to numeric and adds the new numeric units in an
 appropriate place for the dataset
+}
+\details{
+Rpackage file: CropCalculations.R
 }

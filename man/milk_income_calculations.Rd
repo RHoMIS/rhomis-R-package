@@ -2,7 +2,9 @@
 % Please edit documentation in R/LivestockCalculations.R
 \name{milk_income_calculations}
 \alias{milk_income_calculations}
-\title{Milk Income Calculations}
+\title{Milk Income Calculations
+  
+Rpackage file: LivestockCalculations.R}
 \usage{
 milk_income_calculations(data, unit_conv_tibble = NULL)
 }
@@ -11,9 +13,8 @@ milk_income_calculations(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{A tibble containing all of the milk income conversion factors}
 }
-\value{
-
-}
 \description{
 Milk Income Calculations
+  
+Rpackage file: LivestockCalculations.R
 }

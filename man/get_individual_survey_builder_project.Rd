@@ -19,12 +19,12 @@ survey builder API}
 \item{projectID}{The ID of the project you want to get
 individual information for}
 }
-\value{
-
-}
 \description{
 The survey builder contains meta-data about the people
 using RHoMIS 2.0. This function connects to the survey
 builder API to get the meta-data information from the
 individual projects
+}
+\details{
+Rpackage file: ConnectToSurveyBuilder.R
 }

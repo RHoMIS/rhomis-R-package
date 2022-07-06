@@ -9,10 +9,9 @@ milk_sold_and_consumed_calculations(data)
 \arguments{
 \item{data}{RHoMIS data including livestock loop information}
 }
-\value{
-
-}
 \description{
 Function to calculate the amounts of milk sold
 and consumed in litres.
+  
+Rpackage file: LivestockCalculations.R
 }

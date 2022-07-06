@@ -9,10 +9,10 @@ extract_calorie_values_by_project(data)
 \arguments{
 \item{data}{RHoMIS Dataset}
 }
-\value{
-
-}
 \description{
 A function to identify all of the crops and livestock
 for which calorie conversion values need to be included for
+}
+\details{
+Rpackage file: ExtractNewValues.R
 }

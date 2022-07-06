@@ -15,10 +15,10 @@ calorie_calculations(processed_data, indicator_data, calorie_conversions)
 
 \item{calorie_conversions}{A tibble of calorie conversions}
 }
-\value{
-
-}
 \description{
 Conducting the calorie calculations
 for a whole project
+}
+\details{
+Rpackage file: CalorieCalculations.R
 }

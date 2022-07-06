@@ -20,9 +20,9 @@ crop_calculations_all(
 
 \item{gender_categories}{The categories you are interested in examining}
 }
-\value{
-
-}
 \description{
 A single function for conducting all of the crop calculations
+}
+\details{
+Rpackage file: CropCalculations.R
 }

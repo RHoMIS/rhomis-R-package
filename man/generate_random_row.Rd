@@ -32,10 +32,10 @@ i.e, how many tabs to put at the start of this line}
 it easier to close the groups when the survey groups
 when they have ended.}
 }
-\value{
-
-}
 \description{
 For each row in the survey file generate
 the xml row needed for submission.
+}
+\details{
+Rpackage file: GenerateMockResponses.R
 }

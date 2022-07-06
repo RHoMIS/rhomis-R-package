@@ -31,10 +31,10 @@ we presume you are looking for the first version of the form}
 
 \item{isDraft}{Stating whether or not the form is a draft}
 }
-\value{
-
-}
 \description{
 Allows the user to get an ODK central xls form
 in order to extract any meta-data
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

@@ -10,9 +10,8 @@ eggs_sold_and_consumed_calculations(data)
 \item{data}{Data containing livestock loops to calculate the amounts of
 egg sold and consumed}
 }
-\value{
-
-}
 \description{
 Function for calculating the amounts of eggs sold and consumed
+  
+Rpackage file: LivestockCalculations.R
 }

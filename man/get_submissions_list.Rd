@@ -25,10 +25,10 @@ get_submissions_list(
 \item{formID}{The ID of the form containing the submissions you are looking at.
 To get the list of forms see the "get_forms" function.}
 }
-\value{
-
-}
 \description{
 A function for seeing which submissions have been made for
 a specific form, from a specific project
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

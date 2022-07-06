@@ -9,9 +9,9 @@ check_existing_calorie_conversions(data)
 \arguments{
 \item{data}{RHoMIS Dataset}
 }
-\value{
-
-}
 \description{
 Go through the common conversions stored in the R-package
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }

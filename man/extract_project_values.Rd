@@ -9,9 +9,8 @@ extract_project_values(rhomis_data)
 \arguments{
 \item{rhomis_data}{A rhomis data set}
 }
-\value{
-
-}
 \description{
 Extract all of the values from an individual data set
+  
+Rpackage file: redirectModules.R
 }

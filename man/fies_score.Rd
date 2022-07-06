@@ -9,9 +9,6 @@ fies_score(data)
 \arguments{
 \item{data}{The data set containing all of the RHoMIS data (or just the fies information)}
 }
-\value{
-
-}
 \description{
-fies score
+Rpackage file: FoodSecurity.R
 }

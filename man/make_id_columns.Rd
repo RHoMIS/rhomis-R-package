@@ -29,9 +29,8 @@ make_id_columns(
 
 \item{form_id}{Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)}
 }
-\value{
-
-}
 \description{
 Make ID columns for form, project, and household
+ 
+Rpackage file: RunAll.R
 }

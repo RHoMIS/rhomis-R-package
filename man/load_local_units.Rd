@@ -11,10 +11,10 @@ load_local_units(units_folder, id_rhomis_dataset)
 
 \item{id_rhomis_dataset}{A vector including the ID of the RHoMIS datasets being processed}
 }
-\value{
-
-}
 \description{
 Load units for a particular project from csv and
 load them into the global environment
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }

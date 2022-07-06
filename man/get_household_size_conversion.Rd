@@ -6,9 +6,6 @@
 \usage{
 get_household_size_conversion()
 }
-\value{
-
-}
 \description{
-Get household Size Conversions
+Rpackage file: HouseholdSize.R
 }

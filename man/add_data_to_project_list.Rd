@@ -29,10 +29,9 @@ add_data_to_project_list(
 
 \item{overwrite}{Whether or not to overwrite the project}
 }
-\value{
-
-}
 \description{
 A method for submitting another project
 to a list of projects.
+  
+Rpackage file: MongoDB.R
 }

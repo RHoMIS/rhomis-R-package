@@ -11,9 +11,9 @@ check_columns_loop(data, columns)
 
 \item{columns}{Column patterns that we are verifying}
 }
-\value{
-
-}
 \description{
 Check whether columns are present in loop type data
+}
+\details{
+Rpackage file: DataContentsCheck.R
 }

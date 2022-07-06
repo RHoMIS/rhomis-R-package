@@ -10,11 +10,11 @@ food_security_calculations(data)
 \item{data}{Survey data containing either FIES or
 HFIAS data}
 }
-\value{
-
-}
 \description{
 Calculate food security calculations
 based on whether HFIAS or FIES data were collected in the RHoMIS
 survey
+}
+\details{
+Rpackage file: FoodSecurity.R
 }

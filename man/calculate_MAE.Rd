@@ -9,9 +9,8 @@ calculate_MAE(data)
 \arguments{
 \item{data}{The data containing all rhomis information}
 }
-\value{
-
-}
 \description{
 A function to calculate the male adult equivalent of household size
+ 
+Rpackage file: HouseholdSize.R
 }

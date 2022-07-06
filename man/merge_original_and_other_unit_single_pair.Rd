@@ -11,12 +11,12 @@ merge_original_and_other_unit_single_pair(original_column, other_column)
 
 \item{other_column}{the other values that need to be brought into the main column}
 }
-\value{
-
-}
 \description{
 Many of the RHoMIS variables come from multiple
 select, with the option to specify "other" by
 free-text entry. This function allows you to bring
 the "other" category into the main column, for a single pair of columns.
+}
+\details{
+Rpackage file: DataReformatting.R
 }

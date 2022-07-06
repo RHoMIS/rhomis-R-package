@@ -16,15 +16,8 @@ modify_all_loop_column_names(column_names, repeat_columns)
 \item{repeat_columns}{A list of all of the types
 of repeat column which need to be changed}
 }
-\value{
-
-}
 \description{
-The RHoMIS survey is structured using
-a series of important loops. These are
-often labelled "crop_repeat[x]". It is
-important to be modify all of these loops
-to have a simpler column name format for later analysis
+Rpackage file: CleanColumnNames.R
 }
 \examples{
 repeat_columns <- c(

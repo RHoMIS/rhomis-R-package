@@ -11,10 +11,10 @@ find_loop_number_and_extract_values(data, column_pattern)
 
 \item{column_pattern}{The repeat column pattern e.g. "crop_repeat"}
 }
-\value{
-
-}
 \description{
 Find the number of loops for a looped RHoMIS data
 set.
+}
+\details{
+Rpackage file: ExtractNewValues.R
 }

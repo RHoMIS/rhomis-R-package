@@ -30,9 +30,9 @@ To get the list of forms see the "get_forms" function.}
 
 \item{submissionID}{The instance ID of the specific submission we want in XML}
 }
-\value{
-
-}
 \description{
 Get the XML of an ODK submission
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

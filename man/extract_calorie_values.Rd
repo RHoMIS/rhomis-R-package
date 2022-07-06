@@ -9,9 +9,6 @@ extract_calorie_values(data)
 \arguments{
 \item{data}{The RHoMIS data set}
 }
-\value{
-
-}
 \description{
-Extract names of Values to Receive Calorie Conversions
+Rpackage file: ExtractNewValues.R
 }

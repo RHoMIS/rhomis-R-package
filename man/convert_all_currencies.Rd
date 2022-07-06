@@ -14,10 +14,10 @@ a column of Years}
 
 \item{year_column}{The name of the year column}
 }
-\value{
-
-}
 \description{
 A function for finding the relevant currency conversion
 factors for all household interviews
+}
+\details{
+Rpackage file: CurrencyConversion.R
 }

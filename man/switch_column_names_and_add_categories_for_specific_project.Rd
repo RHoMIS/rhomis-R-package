@@ -18,11 +18,11 @@ switch_column_names_and_add_categories_for_specific_project(
 \item{id_rhomis_dataset}{The id of the rhomis dataset to
 be converted}
 }
-\value{
-
-}
 \description{
 A function for changing the column names
 e.g, where the column names represent crops,
 and merging categories.
+}
+\details{
+Rpackage file: DataReformatting.R
 }

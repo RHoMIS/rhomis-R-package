@@ -28,10 +28,10 @@ columns are located within this looping structure}
 
 \item{gender_control_categories}{The gender control categories included in the survey.}
 }
-\value{
-
-}
 \description{
 Splitting a particular column in the RHoMIS
 data by the genders groups which control that resource
+}
+\details{
+Rpackage file: ReformatLoops.R
 }

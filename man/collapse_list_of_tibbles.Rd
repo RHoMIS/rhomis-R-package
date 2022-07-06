@@ -9,10 +9,10 @@ collapse_list_of_tibbles(list_of_tibbles)
 \arguments{
 \item{list_of_tibbles}{A list of tibbles which need to be collapsed}
 }
-\value{
-
-}
 \description{
 A useful function for collapsing a list of tibbles,
 used predominantly for gender calculations
+}
+\details{
+Rpackage file: DataReformatting.R
 }

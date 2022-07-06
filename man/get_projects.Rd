@@ -19,6 +19,9 @@ A table of all of the projects and their details
 \description{
 Get a table of all of the projects on the ODK central server
 }
+\details{
+Rpackage file: ConnectToCentral.R
+}
 \examples{
 central_url <- "https://central.rhomis.cgiar.org"
 central_email <- "my_email"

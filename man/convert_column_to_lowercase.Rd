@@ -9,9 +9,6 @@ convert_column_to_lowercase(column)
 \arguments{
 \item{column}{Column to be converted.}
 }
-\value{
-
-}
 \description{
 Convert an individual column to lower case
 if it is a character column

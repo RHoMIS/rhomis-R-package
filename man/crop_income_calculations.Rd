@@ -13,11 +13,11 @@ and crop sold}
 \item{unit_conv_tibble}{Units for crop income calculations which
 need to be converted}
 }
-\value{
-
-}
 \description{
 A function for calculating crop incomes. Please note
 for this calculation to work. The amount of a crop harvested, and the amount
 of a crop sold also needs to have been calculated
+}
+\details{
+Rpackage file: CropCalculations.R
 }

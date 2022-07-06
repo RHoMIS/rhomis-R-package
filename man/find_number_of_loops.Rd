@@ -18,6 +18,8 @@ A single number, the number of loops for that variable
 The RHoMIS data is arranged in a looping structure.
 This function helps identify how many loops there are
 for example for a variable like "crop_name".
+ 
+Rpackage file: ReformatLoops.R
 }
 \examples{
 name_column <- "crop_name"

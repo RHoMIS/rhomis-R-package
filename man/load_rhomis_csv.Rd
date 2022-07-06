@@ -42,4 +42,6 @@ A tibble of RHoMIS data
 Load a Raw RHoMIS csv file, collected using ODK, and
 convert the column names into a shortened, standardised
 version.
+ 
+Rpackage file: RunAll.R
 }

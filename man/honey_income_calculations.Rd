@@ -2,16 +2,17 @@
 % Please edit documentation in R/LivestockCalculations.R
 \name{honey_income_calculations}
 \alias{honey_income_calculations}
-\title{Calculate the prices for honey}
+\title{Calculate the prices for honey
+  
+Rpackage file: LivestockCalculations.R}
 \usage{
 honey_income_calculations(data)
 }
 \arguments{
 \item{data}{RHoMIS dataset.}
 }
-\value{
-
-}
 \description{
 Calculate the prices for honey
+  
+Rpackage file: LivestockCalculations.R
 }

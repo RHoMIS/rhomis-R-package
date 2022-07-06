@@ -11,10 +11,10 @@ check_columns_individual(data, columns)
 
 \item{columns}{The column names we are looking for}
 }
-\value{
-
-}
 \description{
 Checking whether individual columns are present in the data
 we are examining
+}
+\details{
+Rpackage file: DataContentsCheck.R
 }

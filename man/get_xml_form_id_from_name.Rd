@@ -23,10 +23,10 @@ get_xml_form_id_from_name(
 
 \item{central_password}{The password used for your central account}
 }
-\value{
-
-}
 \description{
 Sometimes it is necessary to get the form
 ID from the project name, in particular
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

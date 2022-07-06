@@ -18,10 +18,10 @@ This could include "eat", "sell", "feed_livestock"}
 
 \item{loop_number}{The number of the loop which is being processed}
 }
-\value{
-
-}
 \description{
 A function for calculating the numeric proportions of crops which are sold,
 consumed, or fed to livestock
+}
+\details{
+Rpackage file: DataReformatting.R
 }

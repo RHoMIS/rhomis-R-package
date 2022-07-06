@@ -11,13 +11,12 @@ ppi_score(data, country_code_column)
 
 \item{country_code_column}{The country codes for the data-sets concerned}
 }
-\value{
-
-}
 \description{
 This function calculates the ppi score based off of a typical RHoMIS
 dataset. It relies on conversion sheets and information which can be found
 in the "data" folder of the package.
+  
+Rpackage file: ProgressOutOfPoverty.R
 }
 \examples{
 data <- tibble::as_tibble(list(

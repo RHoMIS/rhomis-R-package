@@ -21,9 +21,6 @@ the main item would be "crop_yield_units"}
 \item{categories_to_merge}{A named list of the categories
 which go together, please see example}
 }
-\value{
-
-}
 \description{
 When extracting new values from the
 RHoMIS dataset, some variables appear
@@ -36,6 +33,8 @@ to ensure they are aggregated appropriately.
 \details{
 This is heavily linked to the "extract_new_core_units"
 function.
+
+Rpackage file: ExtractNewValues.R
 }
 \examples{
 

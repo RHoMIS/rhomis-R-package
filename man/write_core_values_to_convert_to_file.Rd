@@ -14,14 +14,14 @@ extract all of the new files.}
 store all of the values you need to convert.
 Make sure the folder is correct and does not end in "/"}
 }
-\value{
-
-}
 \description{
 This function extracts all of the new units and
 names in a RHoMIS survey and writes them to a folder
 You can select the folder that you would like
 to write all of the files to.
+}
+\details{
+Rpackage file: ExtractNewValues.R
 }
 \examples{
 data <- tibble::tibble(

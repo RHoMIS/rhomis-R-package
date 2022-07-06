@@ -9,10 +9,9 @@ calculate_household_size_members(data)
 \arguments{
 \item{data}{RHoMIS data with household roster}
 }
-\value{
-
-}
 \description{
 Calculate Household Size based on roster
 questions
+ 
+Rpackage file: HouseholdSize.R
 }

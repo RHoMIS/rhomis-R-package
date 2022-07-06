@@ -12,12 +12,12 @@ get_survey_builder_projects(survey_builder_url, survey_builder_access_token)
 \item{survey_builder_access_token}{The access toke to access the
 survey builder API}
 }
-\value{
-
-}
 \description{
 The survey builder contains meta-data about the people
 using RHoMIS 2.0. This function connects to the survey
 builder API to get the meta-data information from
 multiple projects
+}
+\details{
+Rpackage file: ConnectToSurveyBuilder.R
 }

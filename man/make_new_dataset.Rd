@@ -2,16 +2,17 @@
 % Please edit documentation in R/redirectModules.R
 \name{make_new_dataset}
 \alias{make_new_dataset}
-\title{Make new dataset}
+\title{Make new dataset
+  
+Rpackage file: redirectModules.R}
 \usage{
 make_new_dataset(rhomis_data)
 }
 \arguments{
 \item{rhomis_data}{A rhomis_dataset including IDs}
 }
-\value{
-
-}
 \description{
 Make new dataset
+  
+Rpackage file: redirectModules.R
 }

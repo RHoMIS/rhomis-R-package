@@ -2,21 +2,25 @@
 % Please edit documentation in R/redirectModules.R
 \name{run_preliminary_calculations}
 \alias{run_preliminary_calculations}
-\title{Run preliminary calculations}
+\title{Run preliminary calculations
+ 
+Rpackage file: redirectModules.R}
 \usage{
 run_preliminary_calculations(
   rhomis_data,
-  gender_categories = pkg.env$gender_categories
+  gender_categories = pkg.env$gender_categories,
+  units
 )
 }
 \arguments{
 \item{rhomis_data}{A tibble of rhomis_data}
 
 \item{gender_categories}{The gender categories present in the data which is to be processed}
-}
-\value{
 
+\item{units}{A nested list containing all of the unit conversion tibbles}
 }
 \description{
 Run preliminary calculations
+ 
+Rpackage file: redirectModules.R
 }

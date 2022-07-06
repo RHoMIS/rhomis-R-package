@@ -24,46 +24,64 @@ indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "iso_country_code",
     output_format="column",
-    individual_columns_required=c("country"), 
-    loop_columns_required=c(),
-    conversion_tables_required=c("country_name_conversions"),
-    api_data_required = c(),
-    indicators_required=c(),
-    function_calculated="redirectModules.R"
+    individual_columns_required=list("country"), 
+    loop_columns_required=list(),
+    conversion_tables_required=list("country_name_conversions"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="run_preliminary_calculations",
+    search_term="indicator_search_id_rhomis_dataset"
+)
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "year",
+    output_format="column",
+    individual_columns_required=list("year", "start_time_user"), 
+    loop_columns_required=list(),
+    conversion_tables_required=list(),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="run_preliminary_calculations",
+    search_term="indicator_search_year")
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "currency_conversion_lcu_to_ppp",
+    output_format="column",
+    individual_columns_required=list(), 
+    loop_columns_required=list(),
+    conversion_tables_required=list(),
+    api_data_required = list("world_bank_api"),
+    indicators_required=list("year","iso_country_code"),
+    function_calculated=list("run_preliminary_calculations"),
+    search_term="indicator_search_currency_conversion_lcu_to_ppp")
+
+
+find_nested_dependencies_list(
+     indicator_name="currency_conversion_lcu_to_ppp", 
+     indicator_list=indicator_list, 
+     dependency_required="individual")
+
+
+dependency_network <- find_nested_dependencies_network(
+     indicator_name="currency_conversion_lcu_to_ppp", 
+     indicator_list=indicator_list
 )
 
 
 
 
 
+plot_dependency_network()
 
 
-
-
+jsonlite::toJSON(indicator_list, pretty=T)
 
 json_mapping <- '
 {
-    "iso_country_code":{
-         "indicator_name":  "iso_country_code",
-         "format": "column",
-         "individual_columns_required": ["country"],
-         "loop_columns_required": [],
-         "conversion_tables_required": ["country_name_conversions"],
-         "api_data_required": [],
-         "indicators_required": [],
-         "file_located": "redirectModules.R"
-    },
 
-    "year":{
-         "indicator_name":  "year",
-         "format": "column",
-         "individual_columns_required": ["start_time_user"],
-         "loop_columns_required": [],
-         "conversion_tables_required": [],
-         "api_data_required": [],
-         "indicators_required": [],
-         "file_located": "redirectModules.R"
-    },
 
      "currency_conversion_lcu_to_ppp":{
          "indicator_name":  "currency_conversion_lcu_to_ppp",

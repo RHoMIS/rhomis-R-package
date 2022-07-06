@@ -12,9 +12,9 @@ crop yield units}
 
 \item{loop_number}{which loop you are calculating crop yield for.}
 }
-\value{
-
-}
 \description{
 Calculate crop yield based off of a single loop
+}
+\details{
+Rpackage file: CropCalculations.R
 }

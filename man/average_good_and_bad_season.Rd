@@ -11,11 +11,10 @@ average_good_and_bad_season(good_season_amount, bad_season_amount)
 
 \item{bad_season_amount}{Vector of bad season yields}
 }
-\value{
-
-}
 \description{
 Averaging yield for the good season and bad season
 Where one season is NA, we only use information for the season available.
 Where both seasons are NA, the final is calculated as NA
+  
+Rpackage file: LivestockCalculations.R
 }

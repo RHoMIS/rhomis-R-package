@@ -2,7 +2,9 @@
 % Please edit documentation in R/redirectModules.R
 \name{extract_values_local}
 \alias{extract_values_local}
-\title{Extract values}
+\title{Extract values
+   
+Rpackage file: redirectModules.R}
 \usage{
 extract_values_local(
   base_folder = "./",
@@ -38,9 +40,8 @@ extract_values_local(
 
 \item{repeat_column_names}{The prefixes for repeat columns (e.g. 'section/crop_repeat[1]/crop_name', the prefix would be crop_repeat)}
 }
-\value{
-
-}
 \description{
 Extract values
+   
+Rpackage file: redirectModules.R
 }

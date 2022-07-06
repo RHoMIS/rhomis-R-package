@@ -9,9 +9,8 @@ replace_infinite(column)
 \arguments{
 \item{column}{The column where infinite values need to be replaced}
 }
-\value{
-
-}
 \description{
 Replace infinite values with NA in a specific column
+ 
+Rpackage file: RunAll.R
 }

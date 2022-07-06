@@ -15,9 +15,8 @@ create_module(module_name, module_type, processing_code, dependencies)
 
 \item{dependencies}{Which modules this module depends on}
 }
-\value{
-
-}
 \description{
 Create a module to save in the RHoMIS database
+  
+Rpackage file: Modules.R
 }

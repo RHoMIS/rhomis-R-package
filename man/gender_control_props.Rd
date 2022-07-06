@@ -15,12 +15,12 @@ to be divided up between household members}
 \item{category}{Which category we want to use to calculate the gender control
 scores (e.g. "male_adult")}
 }
-\value{
-
-}
 \description{
 Finds the gender control score for a single category (e.g. "male_adult").
 See example
+}
+\details{
+Rpackage file: ReformatLoops.R
 }
 \examples{
 
