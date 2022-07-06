@@ -378,6 +378,20 @@ find_d3_dependencies_network <- function(
           d3_list[["children"]] <- append(d3_list$children,new_children)
      }
 
+     if (length(indicator$conversion_tables_required)>0){
+        new_children <- lapply(indicator$conversion_tables_required, function(x){
+                return(list(name=x))
+            })
+          d3_list[["children"]] <- append(d3_list$children,new_children)
+     }
+
+       if (length(indicator$api_data_required)>0){
+        new_children <- lapply(indicator$api_data_required, function(x){
+                return(list(name=x))
+            })
+          d3_list[["children"]] <- append(d3_list$children,new_children)
+     }
+
      
 
     if (length(indicator$indicators_required)>0){
@@ -423,3 +437,100 @@ plot_dependency_network <- function(
 
     networkD3::diagonalNetwork(List = d3_network)
 }
+
+
+
+
+add_function_to_list <- function(
+        function_list,
+        function_name,
+        called_by){
+
+    stopifnot(
+        is.character(function_name),
+        is.character(called_by) | is.null(called_by)
+    )
+
+    if (function_name %in% names(function_list)){
+        stop("Funciton already exists in list")
+    }
+
+    if (called_by %in% names(function_list)==F & is.null(called_by)==F){
+        stop("Trying to say that it is called by a function that you have not added to this list")
+    }
+    
+    if (is.null(called_by)){
+        warning("Set called by to null, only do this in the case that this is a top level function")
+    }
+
+    new_function <- list(
+        name=function_name,
+        called_by=called_by    
+    )
+
+    function_list[[function_name]] <- new_function
+
+    return(
+        function_list
+    )
+}
+
+
+get_function_stack <- function(
+    function_list,
+    function_name,
+    d3_list=list()
+){
+
+    if (function_name %in% names(function_list)==F){
+        stop("Could not find function you were looking for")
+    }
+    
+    new_function <- function_list[[function_name]]
+    
+    d3_list[["name"]] <- new_function$name
+    d3_list[["children"]] <- c()
+
+    
+    
+    if (is.null(new_function$called_by)){
+        return(d3_list)
+    }
+
+    if (length(new_function$called_by)>0 & !is.null(new_function$called_by)){
+          children <-list(get_function_stack(
+                    function_list=function_list, 
+                    function_name=new_function$called_by,
+                    d3_list=d3_list))
+        }  
+        
+         d3_list$children <- append(d3_list[["children"]],children)
+
+    return(d3_list)
+
+     }
+    
+ 
+
+plot_function_dependency <- function(
+    function_list,
+    function_name
+){
+
+
+    d3_network <- get_function_stack(
+            function_list=function_list,
+            function_name=function_name,
+
+        )
+
+    networkD3::diagonalNetwork(List = d3_network)
+
+
+
+}
+
+
+
+
+

@@ -533,7 +533,7 @@ run_preliminary_calculations <- function(rhomis_data,
       warning_message = "Could not calculate length of survey"
     )
     if (length(missing_columns) == 0) {
-      # Survey
+      # indicator_search_survey_length_minutes
       indicator_data$survey_length_minutes <- as.POSIXct(rhomis_data[["end_time_user"]], optional = T) - as.POSIXct(rhomis_data[["start_time_user"]], optional = T)
       indicator_data$survey_length_minutes <- as.character(indicator_data$survey_length_minutes)
     }

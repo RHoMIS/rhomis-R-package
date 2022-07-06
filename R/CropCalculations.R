@@ -124,6 +124,8 @@ crop_harvest_single_loop <- function(data, loop_number) {
 #'
 #' @examples
 crop_harvest_calculations <- function(data, unit_conv_tibble = NULL) {
+
+  # indicator_search_crop_harvest_kg_per_year
   missing_columns <- check_columns_in_data(data,
     loop_columns = c("crop_name"),
     warning_message = "Tried to calculate crop yield, but some information was missing."
@@ -273,6 +275,7 @@ convert_crop_sold_units <- function(data,
 crop_sold_and_consumed_calculation <- function(data) {
   data <- crop_proportions_all(data)
   # Beginning with crops sold
+  # indicator_search_crop_sold_kg_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
   harvested_columns <- paste0("crop_harvest_kg_per_year", "_", c(1:number_of_loops))
   sold_columns <- paste0("crop_sold_prop_numeric", "_", c(1:number_of_loops))
@@ -299,6 +302,7 @@ crop_sold_and_consumed_calculation <- function(data) {
   )
 
   # Moving on to crops consumed
+  # indicator_search_crop_consumed_kg_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
   harvested_columns <- paste0("crop_harvest_kg_per_year", "_", c(1:number_of_loops))
   consumed_columns <- paste0("crop_consumed_prop_numeric", "_", c(1:number_of_loops))
@@ -343,6 +347,8 @@ crop_sold_and_consumed_calculation <- function(data) {
 #'
 #' @examples
 crop_income_calculations <- function(data, unit_conv_tibble = NULL) {
+
+  #indicator_search_crop_income_per_year
   data <- convert_crop_sold_units(data, unit_conv_tibble = unit_conv_tibble)
 
   number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
@@ -421,6 +427,8 @@ crop_income_calculations <- function(data, unit_conv_tibble = NULL) {
 #'
 #' @examples
 crop_gender_calculations <- function(data, gender_categories = pkg.env$gender_categories) {
+
+
   crop_columns_in_data <- check_columns_in_data(data,
     loop_columns = c(
       "crop_consumed_kg_per_year",
@@ -438,6 +446,12 @@ crop_gender_calculations <- function(data, gender_categories = pkg.env$gender_ca
       "crop_consume_control"
     )
   )
+
+  # indicator_search_male_youth_crop_consumed_kg_per_year
+  # indicator_search_male_adult_crop_consumed_kg_per_year
+  # indicator_search_female_youth_crop_consumed_kg_per_year
+  # indicator_search_female_adult_crop_consumed_kg_per_year
+
 
   if (length(crop_gender_columns_in_data) == 0) {
     # crop consumed calculations
@@ -458,6 +472,11 @@ crop_gender_calculations <- function(data, gender_categories = pkg.env$gender_ca
     )
   )
 
+  # indicator_search_male_youth_crop_sold_kg_per_year
+  # indicator_search_male_adult_crop_sold_kg_per_year
+  # indicator_search_female_youth_crop_sold_kg_per_year
+  # indicator_search_female_adult_crop_sold_kg_per_year
+
   if (length(crop_gender_columns_in_data) == 0) {
     data <- insert_gender_columns_in_core_data(data,
       original_column = "crop_sold_kg_per_year",
@@ -475,6 +494,11 @@ crop_gender_calculations <- function(data, gender_categories = pkg.env$gender_ca
     )
   )
 
+
+  # indicator_search_male_youth_crop_income_per_year
+  # indicator_search_male_adult_crop_income_per_year
+  # indicator_search_female_youth_crop_income_per_year
+  # indicator_search_female_adult_crop_income_per_year
   if (length(crop_gender_columns_in_data) == 0) {
     data <- insert_gender_columns_in_core_data(data,
       original_column = "crop_income_per_year",
