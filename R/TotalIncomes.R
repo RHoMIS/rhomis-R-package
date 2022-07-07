@@ -15,6 +15,9 @@
 #'
 #' @examples
 total_livestock_income <- function(data) {
+  
+  # indicator_search_livestock_income_lcu_per_year
+  
   number_of_loops <- find_number_of_loops(data, name_column = "livestock_name")
 
   whole_livestock_income_columns <- paste0("livestock_sale_income", "_", c(1:number_of_loops))
@@ -102,6 +105,7 @@ total_livestock_income <- function(data) {
 #'
 #' @examples
 total_crop_income <- function(data) {
+  # indicator_search_crop_income_lcu_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
 
   crop_income_columns <- paste0("crop_income_per_year", "_", c(1:number_of_loops))
@@ -159,7 +163,7 @@ total_and_off_farm_incomes <- function(data, total_crop_income, total_livestock_
 
   id_vector <- rep("x", nrow(data))
 
-  
+  # indicator_search_off_farm_income_lcu_per_year
   
   off_farm_prop <- data["offfarm_income_proportion"]
   off_farm_incomes_any <- data["offfarm_incomes_any"]
@@ -179,10 +183,13 @@ off_farm_prop[off_farm_incomes_any=="n"] <- 0
   off_farm_income <- (off_farm_prop[[1]] * (total_farm_income)) / (1 - off_farm_prop[[1]])
 
   off_farm_income[off_farm_prop==0] <- 0
+
+  # indicator_search_total_income_lcu_per_year
   total_income <- tibble::as_tibble(list(
     total_farm_income = total_farm_income,
     off_farm_income = off_farm_income
   ))
+
 
   total_income <- rowSums(total_income, na.rm = T)
   total_income[is.na(total_farm_income) & is.na(off_farm_income)] <- NA

@@ -1303,6 +1303,11 @@ gender_split_livestock <- function(data,
                                    gender_categories = pkg.env$gender_categories) {
   # Gender split whole livestock
 
+  # indicator_search_female_youth_livestock_sale_income
+  # indicator_search_female_adult_livestock_sale_income
+  # indicator_search_male_youth_livestock_sale_income
+  # indicator_search_male_adult_livestock_sale_income
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "livestock_sale_income",
@@ -1320,6 +1325,12 @@ gender_split_livestock <- function(data,
   }
 
   # Gender split meat
+
+  # indicator_search_female_youth_meat_sold_income
+  # indicator_search_female_adult_meat_sold_income
+  # indicator_search_male_youth_meat_sold_income
+  # indicator_search_male_adult_meat_sold_income
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "meat_sold_income",
@@ -1336,6 +1347,10 @@ gender_split_livestock <- function(data,
     )
   }
 
+  # indicator_search_female_youth_meat_sold_kg_per_year
+  # indicator_search_female_adult_meat_sold_kg_per_year
+  # indicator_search_male_youth_meat_sold_kg_per_year
+  # indicator_search_male_adult_meat_sold_kg_per_year
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "meat_sold_kg_per_year",
@@ -1352,6 +1367,10 @@ gender_split_livestock <- function(data,
     )
   }
 
+  # indicator_search_female_youth_meat_consumed_kg_per_year
+  # indicator_search_female_adult_meat_consumed_kg_per_year
+  # indicator_search_male_youth_meat_consumed_kg_per_year
+  # indicator_search_male_adult_meat_consumed_kg_per_year
 
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
@@ -1371,6 +1390,10 @@ gender_split_livestock <- function(data,
 
   # Gender split milk
 
+  # indicator_search_female_youth_milk_sold_litres_per_year
+  # indicator_search_female_adult_milk_sold_litres_per_year
+  # indicator_search_male_youth_milk_sold_litres_per_year
+  # indicator_search_male_adult_milk_sold_litres_per_year
 
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
@@ -1388,7 +1411,11 @@ gender_split_livestock <- function(data,
     )
   }
 
-
+  # indicator_search_female_youth_milk_sold_income_per_year
+  # indicator_search_female_adult_milk_sold_income_per_year
+  # indicator_search_male_youth_milk_sold_income_per_year
+  # indicator_search_male_adult_milk_sold_income_per_year
+  
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "milk_sold_income_per_year",
@@ -1404,6 +1431,12 @@ gender_split_livestock <- function(data,
       loop_structure = T, gender_control_categories = gender_categories
     )
   }
+
+  # indicator_search_female_youth_milk_consumed_litres_per_year
+  # indicator_search_female_adult_milk_consumed_litres_per_year
+  # indicator_search_male_youth_milk_consumed_litres_per_year
+  # indicator_search_male_adult_milk_consumed_litres_per_year
+  
 
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
@@ -1422,6 +1455,13 @@ gender_split_livestock <- function(data,
   }
 
   # Eggs gender split
+
+  # indicator_search_female_youth_eggs_sold_kg_per_year
+  # indicator_search_female_adult_eggs_sold_kg_per_year
+  # indicator_search_male_youth_eggs_sold_kg_per_year
+  # indicator_search_male_adult_eggs_sold_kg_per_year
+  
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "eggs_sold_kg_per_year",
@@ -1438,7 +1478,11 @@ gender_split_livestock <- function(data,
     )
   }
 
-
+  # indicator_search_female_youth_eggs_income_per_year
+  # indicator_search_female_adult_eggs_income_per_year
+  # indicator_search_male_youth_eggs_income_per_year
+  # indicator_search_male_adult_eggs_income_per_year
+  
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "eggs_income_per_year",
@@ -1455,7 +1499,11 @@ gender_split_livestock <- function(data,
     )
   }
 
-
+  # indicator_search_female_youth_eggs_consumed_kg_per_year
+  # indicator_search_female_adult_eggs_consumed_kg_per_year
+  # indicator_search_male_youth_eggs_consumed_kg_per_year
+  # indicator_search_male_adult_eggs_consumed_kg_per_year
+  
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "eggs_consumed_kg_per_year",
@@ -1474,6 +1522,11 @@ gender_split_livestock <- function(data,
 
   # Honey Gender split
 
+  # indicator_search_female_youth_bees_honey_sold_kg_per_year
+  # indicator_search_female_adult_bees_honey_sold_kg_per_year
+  # indicator_search_male_youth_bees_honey_sold_kg_per_year
+  # indicator_search_male_adult_bees_honey_sold_kg_per_year
+  
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "bees_honey_sold_kg_per_year",
@@ -1490,6 +1543,11 @@ gender_split_livestock <- function(data,
     )
   }
 
+  # indicator_search_female_youth_bees_honey_sold_income
+  # indicator_search_female_adult_bees_honey_sold_income
+  # indicator_search_male_youth_bees_honey_sold_income
+  # indicator_search_male_adult_bees_honey_sold_income
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "bees_honey_sold_income",
@@ -1505,6 +1563,12 @@ gender_split_livestock <- function(data,
       loop_structure = T, gender_control_categories = gender_categories
     )
   }
+
+  # indicator_search_female_youth_bees_honey_consumed_kg_per_year
+  # indicator_search_female_adult_bees_honey_consumed_kg_per_year
+  # indicator_search_male_youth_bees_honey_consumed_kg_per_year
+  # indicator_search_male_adult_bees_honey_consumed_kg_per_year
+
 
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
@@ -1825,6 +1889,8 @@ honey_income_calculations <- function(data) {
 livestock_tlu_calculations <- function(data,
                           livestock_name_conversion_tibble,
                           livestock_tlu_conversions) {
+
+  # indicator_search_livestock_tlu
   livestock_heads_columns <- grep("livestock_heads_", colnames(data), value = T)
 
   if (length(livestock_heads_columns) == 0) {

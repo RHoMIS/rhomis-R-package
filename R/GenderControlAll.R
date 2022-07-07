@@ -69,6 +69,12 @@ gender_control_summary <- function(processed_data,
   extra_outputs <- list()
 
 
+  # indicator_search_male_youth_control
+  # indicator_search_male_adult_control
+  # indicator_search_female_youth_control
+  # indicator_search_female_adult_control
+
+
   amount_consumed_prefixes <- c(
     "crop_consumed_kg_per_year",
     "meat_consumed_kg_per_year",

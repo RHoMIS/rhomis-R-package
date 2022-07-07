@@ -88,7 +88,6 @@ new_indicator <- function(indicator_name,
 #' @export
 #'
 #' @examples
-
 add_indicator <- function(indicator_list,
                         indicator_name,
                         output_format=c("column", "loop", "table"),
@@ -128,6 +127,58 @@ add_indicator <- function(indicator_list,
     return(
         indicator_list
     )
+}
+
+#' Add Gendered indicator
+#' 
+#' @param indicator_list The Existing list of indicators
+#' @param gendered_list List of gender categories
+#' @param indicator_name The name of the new indicator (without gender prefix)
+#' @param output_format The shape of the indicator (column, loop or table)
+#' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
+#' @param loop_columns_required Which looped columns are required
+#' @param conversion_tables_required Which conversion tables are required
+#' @param api_data_required Which api connection data is required
+#' @param indicators_required Other indicators which are required to calculate this one
+#' @param function_calculated The function where this indicator is calculated 
+#' 
+#' @return
+#' @export
+#'
+#' @examples
+add_gendered_indicator <- function(
+     indicator_list,
+     gendered_list=c("male_youth", "male_adult", "female_youth", "female_adult"),
+     indicator_name = "male_youth_crop_consumed_kg_per_year",
+     output_format, #column, loop, #table
+     individual_columns_required=list(), 
+     loop_columns_required=list(),
+     conversion_tables_required=list(),
+     api_data_required = list(),
+     indicators_required=list(),
+     function_calculated="crop_gender_calculations"
+){
+
+     for (gender in gendered_list){
+
+          gender_indicator_name <- paste0(gender, "_", indicator_name)
+          search_term <- paste0("indicator_search_", gender_indicator_name)
+
+          indicator_list
+
+          indicator_list <- add_indicator(
+               indicator_list,
+               indicator_name = gender_indicator_name,
+               output_format=output_format, #column, loop, #table
+               individual_columns_required=individual_columns_required, 
+               loop_columns_required=loop_columns_required,
+               conversion_tables_required=conversion_tables_required,
+               api_data_required = api_data_required,
+               indicators_required=indicators_required,
+               function_calculated=function_calculated,
+               search_term=search_term)
+     }
+     return(indicator_list)
 }
 
 

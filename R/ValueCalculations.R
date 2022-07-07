@@ -101,6 +101,7 @@ value_calculations <- function(processed_data,
   extra_outputs <- list()
 
   # Crop value calcs
+  # indicator_search_value_crop_consumed_lcu
   if ("mean_crop_price_lcu_per_kg" %in% names(prices)) {
 
     # processed_data <- remove_existing_loop_if_exists(processed_data, "value_crop_consumed_lcu")
@@ -121,6 +122,12 @@ value_calculations <- function(processed_data,
       ),
       warning_message = "Unable to calculate gendered control of crop consumption values"
     )
+
+    # indicator_search_female_youth_value_crop_consumed_lcu
+    # indicator_search_female_adult_value_crop_consumed_lcu
+    # indicator_search_male_youth_value_crop_consumed_lcu
+    # indicator_search_male_adult_value_crop_consumed_lcu
+
     if (length(missing_columns) == 0) {
       processed_data <- insert_gender_columns_in_core_data(
         data = processed_data,
@@ -142,6 +149,7 @@ value_calculations <- function(processed_data,
 
   # Meat value calcs
 
+  # indicator_search_value_meat_consumed_lcu
   if ("mean_meat_price_per_kg" %in% names(prices)) {
     processed_data <- value_or_calorie_calculations_item_consumed(
       data = processed_data,
@@ -160,6 +168,11 @@ value_calculations <- function(processed_data,
       warning_message = "Unable to calculate gendered control of meat consumption values"
     )
     if (length(missing_columns) == 0) {
+    # indicator_search_female_youth_value_meat_consumed_lcu
+    # indicator_search_female_adult_value_meat_consumed_lcu
+    # indicator_search_male_youth_value_meat_consumed_lcu
+    # indicator_search_male_adult_value_meat_consumed_lcu
+
       processed_data <- insert_gender_columns_in_core_data(
         data = processed_data,
         original_column = "value_meat_consumed_lcu",
@@ -179,7 +192,7 @@ value_calculations <- function(processed_data,
   }
 
   # Egg value calcs
-
+  # indicator_search_value_eggs_consumed_lcu
   if ("mean_eggs_price_per_kg" %in% names(prices)) {
     processed_data <- value_or_calorie_calculations_item_consumed(
       data = processed_data,
@@ -198,6 +211,12 @@ value_calculations <- function(processed_data,
       warning_message = "Unable to calculate gendered control of egg consumption values"
     )
     if (length(missing_columns) == 0) {
+
+    # indicator_search_female_youth_value_eggs_consumed_lcu
+    # indicator_search_female_adult_value_eggs_consumed_lcu
+    # indicator_search_male_youth_value_eggs_consumed_lcu
+    # indicator_search_male_adult_value_eggs_consumed_lcu
+
       processed_data <- insert_gender_columns_in_core_data(
         data = processed_data,
         original_column = "value_eggs_consumed_lcu",
@@ -218,7 +237,7 @@ value_calculations <- function(processed_data,
 
 
   # Milk value calcs
-
+ # indicator_search_value_milk_consumed_lcu
   if ("mean_milk_price_per_litre" %in% names(prices)) {
     processed_data <- value_or_calorie_calculations_item_consumed(
       data = processed_data,
@@ -237,6 +256,13 @@ value_calculations <- function(processed_data,
       warning_message = "Unable to calculate gendered control of milk consumption values"
     )
     if (length(missing_columns) == 0) {
+
+
+    # indicator_search_female_youth_value_milk_consumed_lcu
+    # indicator_search_female_adult_value_milk_consumed_lcu
+    # indicator_search_male_youth_value_milk_consumed_lcu
+    # indicator_search_male_adult_value_milk_consumed_lcu
+
       processed_data <- insert_gender_columns_in_core_data(
         data = processed_data,
         original_column = "value_milk_consumed_lcu",
@@ -257,8 +283,9 @@ value_calculations <- function(processed_data,
   }
 
 
-  # Milk value calcs
+  # Honey 
 
+  # indicator_search_value_bees_honey_consumed_lcu
   if ("mean_bees_honey_price_per_kg" %in% names(prices)) {
     processed_data <- value_or_calorie_calculations_item_consumed(
       data = processed_data,
@@ -277,6 +304,11 @@ value_calculations <- function(processed_data,
       warning_message = "Unable to calculate gendered control of honey consumption values"
     )
     if (length(missing_columns) == 0) {
+    # indicator_search_female_youth_value_bees_honey_consumed_lcu
+    # indicator_search_female_adult_value_bees_honey_consumed_lcu
+    # indicator_search_male_youth_value_bees_honey_consumed_lcu
+    # indicator_search_male_adult_value_bees_honey_consumed_lcu
+
       processed_data <- insert_gender_columns_in_core_data(
         data = processed_data,
         original_column = "value_bees_honey_consumed_lcu",
@@ -305,11 +337,12 @@ value_calculations <- function(processed_data,
 
     extra_outputs$calories_per_product_kcal_per_year <- total_value_consumed_by_category
 
-
+    # indicator_search_value_crop_consumed_lcu_per_hh_per_year
     if ("value_crop_consumed_lcu" %in% colnames(total_value_consumed_by_category)) {
       indicator_data$value_crop_consumed_lcu_per_hh_per_year <- total_value_consumed_by_category$value_crop_consumed_lcu
     }
 
+    # indicator_search_value_livestock_products_consumed_lcu_per_hh_per_year
     if (any(c("value_meat_consumed_lcu", "value_eggs_consumed_lcu", "value_milk_consumed_lcu", "value_bees_honey_consumed_lcu") %in% colnames(total_value_consumed_by_category))) {
       indicator_data$value_livestock_products_consumed_lcu_per_hh_per_year <- rowSums(total_value_consumed_by_category[colnames(total_value_consumed_by_category) %in%
         c(
@@ -321,6 +354,7 @@ value_calculations <- function(processed_data,
       na.rm = T
       )
     }
+    # indicator_search_value_farm_products_consumed_lcu_per_hh_per_year
     indicator_data$value_farm_products_consumed_lcu_per_hh_per_year <- rowSums(total_value_consumed_by_category, na.rm = T)
   }
 

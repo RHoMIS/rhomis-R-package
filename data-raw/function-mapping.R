@@ -41,6 +41,43 @@ function_list <- add_function_to_list(
     called_by="processData"
 )
 
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="value_gender_fa_calculations",
+    called_by="processData"
+)
+
+#---------------------------------------------------------
+# Functions_called by value_gender_fa_calculations
+#---------------------------------------------------------
+
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="value_calculations",
+    called_by="value_gender_fa_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="calorie_calculations",
+    called_by="value_gender_fa_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="gender_control_summary",
+    called_by="value_gender_fa_calculations"
+)
+
+
+#---------------------------------------------------------
+# Functions_called by calorie_calculations
+#---------------------------------------------------------
+
+
+
 #---------------------------------------------------------
 # Functions_called by run_preliminary_calculations
 #---------------------------------------------------------
@@ -56,6 +93,63 @@ function_list <- add_function_to_list(
     function_name="livestock_calculations_all",
     called_by="run_preliminary_calculations"
 )
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="livestock_tlu_calculations",
+    called_by="run_preliminary_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="clean_tlu_column_names",
+    called_by="run_preliminary_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="land_size_calculation",
+    called_by="run_preliminary_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="calculate_household_size_members",
+    called_by="run_preliminary_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="food_security_calculations",
+    called_by="run_preliminary_calculations"
+)
+
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="hdds_calc",
+    called_by="run_preliminary_calculations"
+)
+
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="total_crop_income",
+    called_by="run_preliminary_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="total_livestock_income",
+    called_by="run_preliminary_calculations"
+)
+
+function_list <- add_function_to_list(
+    function_list=function_list,
+    function_name="total_and_off_farm_income",
+    called_by="run_preliminary_calculations"
+)
+
 
 
 #---------------------------------------------------------
@@ -173,6 +267,9 @@ function_list <- add_function_to_list(
     function_name="honey_income_calculations",
     called_by="livestock_calculations_all"
 )
+
+
+
 
 
 

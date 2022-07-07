@@ -158,6 +158,8 @@ calculate_MAE <- function(data) {
 #'
 #' @examples
 calculate_household_size_members <- function(data) {
+  # calculate_household_size_members
+  # indicator_search_hh_size_members
   conversion_factors <- get_household_size_conversion()
   if (find_number_of_loops(data, name_column = "hh_pop_rep_num") > 1) {
     household_size_data <- household_roster_to_wide(data)
