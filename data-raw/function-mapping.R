@@ -24,7 +24,7 @@ function_list <- list()
 # Top Level Function
 #---------------------------------------------------------
 
-function_list <- add_function_to_list(  
+function_list <- add_function_to_list(
     function_list=function_list,
     function_name="processData",
     called_by=NULL
@@ -156,27 +156,27 @@ function_list <- add_function_to_list(
 # Functions called by crop_calculations_all
 #---------------------------------------------------------
 
-function_list <- add_function_to_list(  
+function_list <- add_function_to_list(
     function_list=function_list,
-    function_name="crop_harvest_calculationss",
+    function_name="crop_harvest_calculation",
     called_by="crop_calculations_all"
 )
 
-function_list <- add_function_to_list(  
+function_list <- add_function_to_list(
     function_list=function_list,
-    function_name="crop_sold_and_consumed_calculations",
+    function_name="crop_sold_and_consumed_calculation",
     called_by="crop_calculations_all"
 
 )
 
-function_list <- add_function_to_list(  
+function_list <- add_function_to_list(
     function_list=function_list,
     function_name="crop_income_calculations",
     called_by="crop_calculations_all"
 )
 
 
-function_list <- add_function_to_list(  
+function_list <- add_function_to_list(
     function_list=function_list,
     function_name="crop_gender_calculations",
     called_by="crop_calculations_all"
@@ -244,11 +244,6 @@ function_list <- add_function_to_list(
 )
 
 
-function_list <- add_function_to_list(
-    function_list=function_list,
-    function_name="eggs_sold_and_consumed_calculations",
-    called_by="livestock_calculations_all"
-)
 
 function_list <- add_function_to_list(
     function_list=function_list,
