@@ -8,7 +8,7 @@
 #' Saving Set of Conversions
 #'
 #' Save a single type of conversion factor into the conversion factor database
-#' 
+#'
 #' Rpackage file: UnitsAndConversions.R
 #'
 #' @param database The database which will store the units
@@ -19,7 +19,7 @@
 #' @param conversion_type Which type of conversion is being saves (e.g crop yield, PPI, HDDS etc...)
 #' @param collection The mongodb collection to save the units
 #' @param converted_values Whether saving values which user has already converted
-#' 
+#'
 #' @return
 #' @export
 #'
@@ -42,7 +42,7 @@ save_set_of_conversions <- function(database = "rhomis", url = "mongodb://localh
 
   if (converted_values==T){
 
-  
+
     old_conversions <- extract_units_from_db(database,
           url = url,
           projectID = projectID,
@@ -98,7 +98,7 @@ save_set_of_conversions <- function(database = "rhomis", url = "mongodb://localh
 #' @param conversion_types Which types of conversion is being saves (e.g crop yield, PPI, HDDS etc...)
 #' @param collection The mongodb collection to save the units
 #' @param converted_values Whether saving values which user has already converted
-#' 
+#'
 #'
 #'
 #' @return
@@ -182,7 +182,7 @@ save_initial_units <- function(database = "rhomis", url = "mongodb://localhost",
 #' @param projectID The Name of the project
 #' @param formID The name of the form
 #' @param unit_list The list of units which are to be queried and loaded into the global environment
-#' @param id_rhomis_dataset A vector of rhomis IDs for the project being processed. 
+#' @param id_rhomis_dataset A vector of rhomis IDs for the project being processed.
 #' @return
 #' @export
 #'
@@ -190,7 +190,7 @@ save_initial_units <- function(database = "rhomis", url = "mongodb://localhost",
 load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_units", formID = "core_units", id_rhomis_dataset) {
 
 
-  units_all <- list()
+  units_and_conversions <- list()
   # loop over the possible list of unit conversion file names
   for (unit_name in names(pkg.env$local_units_file_list)) {
 
@@ -206,7 +206,7 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
       )
 
       conversions[conversions$conversion=="NA" & !is.na(conversions$conversion),"conversion"] <- NA
-      
+
     } else {
       warning(paste("Tried to find ", unit_name, " conversions, but could not find records in projectData collection"))
 
@@ -229,12 +229,12 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
       }
     }
 
-    units_all[[pkg.env$local_units_file_list[[unit_name]]]] <- conversions
+      units_and_conversions[[pkg.env$local_units_file_list[[unit_name]]]] <- conversions
     # assign(, conversions, envir = pkg.env)
   }
 
 
-  return(units_all)
+  return(units_and_conversions)
 }
 
 #' Extract Units from database
@@ -396,11 +396,11 @@ check_existing_calorie_conversions <- function(data) {
 #' @param list_of_df A list of dataframes, containing all
 #' of the units and conversions
 #' @param folder The folder for writing the units
-#' @param converted_folder A flag indicating whether the 
-#' units being over written have already been converted 
-#' by the user. In which case, preserve their previously 
-#' verified values. 
-#' 
+#' @param converted_folder A flag indicating whether the
+#' units being over written have already been converted
+#' by the user. In which case, preserve their previously
+#' verified values.
+#'
 #'
 #'
 #' @return
@@ -456,7 +456,7 @@ write_units_to_folder <- function(list_of_df,
 #' @examples
 load_local_units <- function(units_folder, id_rhomis_dataset) {
 
-  units_all <- list()
+    units_and_conversions <- list()
 
   # get list of files stored in base_folder
   file_names <- list.files(units_folder)
@@ -500,12 +500,12 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
     }
 
     # assign conversion to package env
-        units_all[[pkg.env$local_units_file_list[[unit_file]]]] <- conversions
+      units_and_conversions[[pkg.env$local_units_file_list[[unit_file]]]] <- conversions
 
     # assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = pkg.env)
   }
 
-  return(units_all)
+  return(units_and_conversions)
 }
 
 
