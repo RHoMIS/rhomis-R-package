@@ -8,6 +8,8 @@
 #' Many RHoMIS columns come in the format c("cropA cropB cropC", "cropD cropA").
 #' This function helps split these into more interperatable dummy columns
 #'
+#' Rpackage file: DataReformatting.R
+#'
 #' @param x A vector which needs to be split
 #' @param seperator The separating character
 #'
@@ -46,6 +48,7 @@ create_nested_lest <- function(longer_list, shorter_list) {
 #' free-text entry. This function allows you to bring
 #' the "other" category into the main column, facilitating analysis.
 #'
+#' Rpackage file: DataReformatting.R
 #'
 #' @param data The data you would like to convert
 #' @param main_column The main column you would like to add the "other" options
@@ -87,6 +90,8 @@ merge_original_and_other_units <- function(data, main_column, other_column, loop
 #' free-text entry. This function allows you to bring
 #' the "other" category into the main column, for a single pair of columns.
 #'
+#' Rpackage file: DataReformatting.R
+#'
 #' @param original_column the original column you would like to change
 #' @param other_column the other values that need to be brought into the main column
 #'
@@ -109,6 +114,8 @@ merge_original_and_other_unit_single_pair <- function(original_column, other_col
 #' to be added, with unit conversions or newly calculated
 #' values. This function allows us to add those columns
 #' in specific locations to make analysis easier.
+#'
+#' Rpackage file: DataReformatting.R
 #'
 #' @param data The data containing the original columns
 #' @param new_data The new data which we want to include
@@ -161,6 +168,8 @@ add_column_after_specific_column <- function(data, new_data, new_column_name = N
 #' A function for changing the column names
 #' e.g, where the column names represent crops,
 #' and merging categories.
+#'
+#' Rpackage file: DataReformatting.R
 #'
 #' @param data Dataset with categories to be merged
 #' @param conversion_tibble A tibble of conversion factors
@@ -230,6 +239,8 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
 #' A function for changing the column names
 #' e.g, where the column names represent crops,
 #' and merging categories.
+#'
+#' Rpackage file: DataReformatting.R
 #'
 #' @param data Dataset with categories to be merged
 #' @param conversion_tibble A tibble of conversion factors
@@ -314,6 +325,8 @@ switch_column_names_and_merge_categories <- function(data,
 #' function allows us to apply conversion factors
 #' to an individual project.
 #'
+#' Rpackage file: DataReformatting.R
+#'
 #' @param data A tibble to be converted
 #' @param conversion_tibble The conversion tibble
 #' @param id_rhomis_dataset The id of the project to
@@ -387,6 +400,7 @@ apply_conversion_factor_to_columns <- function(data,
 #' function allows us to apply conversion factors
 #' to mulptiple projects.
 #'
+#' Rpackage file: DataReformatting.R
 #'
 #' @param data A tibble to be converted
 #' @param conversion_tibble The conversion tibble
@@ -454,6 +468,8 @@ apply_conversion_factor_to_columns_multiple_projects <- function(data, conversio
 #' A function for calculating the numeric proportions of crops which are sold,
 #' consumed, or fed to livestock
 #'
+#' Rpackage file: DataReformatting.R
+#'
 #' @param data A standard RHoMIS data set
 #' @param use The use of crops being examined
 #' This could include "eat", "sell", "feed_livestock"
@@ -511,6 +527,8 @@ proportions_calculation <- function(data, use, use_column, prop_column, loop_num
 #'
 #' A useful function for collapsing a list of tibbles,
 #' used predominantly for gender calculations
+#'
+#' Rpackage file: DataReformatting.R
 #'
 #' @param list_of_tibbles A list of tibbles which need to be collapsed
 #'

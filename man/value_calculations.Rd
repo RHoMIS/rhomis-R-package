@@ -15,9 +15,9 @@ value_calculations(processed_data, indicator_data, prices, gender_categories)
 
 \item{gender_categories}{The gender categories to examing}
 }
-\value{
-
-}
 \description{
 Calculations of the value of products consumed
+}
+\details{
+Rpackage file: ValueCalculations.R
 }

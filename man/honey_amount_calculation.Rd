@@ -11,9 +11,8 @@ honey_amount_calculation(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{A tibble of honey amount conversions}
 }
-\value{
-
-}
 \description{
 Calculating the amount of honey produced from RHoMIS data
+  
+Rpackage file: LivestockCalculations.R
 }

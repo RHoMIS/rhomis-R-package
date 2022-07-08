@@ -2,7 +2,9 @@
 % Please edit documentation in R/MongoDB.R
 \name{add_data_to_db}
 \alias{add_data_to_db}
-\title{Add data to db}
+\title{Add data to db
+  
+Rpackage file: MongoDB.R}
 \usage{
 add_data_to_db(
   data,
@@ -32,9 +34,8 @@ add_data_to_db(
 
 \item{overwrite}{Whether or not to overwrite a previously saved version of the project}
 }
-\value{
-
-}
 \description{
 Add data to db
+  
+Rpackage file: MongoDB.R
 }

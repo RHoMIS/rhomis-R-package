@@ -19,10 +19,9 @@ of conversions for livestock names}
 \item{livestock_tlu_conversions}{A tibble for converting 
 livestock names into TLUss}
 }
-\value{
-
-}
 \description{
 Calculate amount of livestock kept in
 tropical livestock units (TLU).
+  
+Rpackage file: LivestockCalculations.R
 }

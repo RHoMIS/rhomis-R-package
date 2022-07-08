@@ -32,9 +32,6 @@ save_multiple_conversions(
 
 \item{converted_values}{Whether saving values which user has already converted}
 }
-\value{
-
-}
 \description{
-Save Multiple conversions
+Rpackage file: UnitsAndConversions.R
 }

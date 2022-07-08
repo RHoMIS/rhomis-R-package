@@ -10,11 +10,10 @@ meat_sold_and_consumed_calculation(data)
 \item{data}{Data containing "livestock_name", "meat_kg_per_year",
 "meat_sold_props_numeric","meat_consumed_props_numeric".}
 }
-\value{
-
-}
 \description{
 Calculate the amount of meat sold and consumed in kg.
 Note this only works if you have calculated the meat collected
 in kg.
+  
+Rpackage file: LivestockCalculations.R
 }

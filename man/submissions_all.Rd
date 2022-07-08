@@ -26,9 +26,9 @@ To get a list of project, see the "get_projects" function}
 you are looking at.
 To get the list of forms see the "get_forms" function.}
 }
-\value{
-
-}
 \description{
 Get a list of the submissions for a specific form
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

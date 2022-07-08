@@ -12,10 +12,9 @@ milk_swap_per_animal_units(units_column, number_of_animals_milked_column)
 \item{number_of_animals_milked_column}{A column containing the number of animals
 milked.}
 }
-\value{
-
-}
 \description{
 Some of RHoMIS milk yields are based on yield per animal.
 This function converts yield per animal into a total milk yield.
+  
+Rpackage file: LivestockCalculations.R
 }

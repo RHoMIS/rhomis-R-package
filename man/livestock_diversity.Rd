@@ -11,9 +11,9 @@ livestock_diversity(data, indicator_data)
 
 \item{indicator_data}{A tibble to store indicators, if crop diversity can be calculated, then the indicator will be appended.}
 }
-\value{
-
-}
 \description{
 Calculating the number of livestock kept by a household
+}
+\details{
+Rpackage file: CropAndLivestockDiversity.R
 }

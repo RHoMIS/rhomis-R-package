@@ -20,11 +20,10 @@ adding_project_to_list(
 
 \item{formID}{The id of the form being you are adding}
 }
-\value{
-
-}
 \description{
 After conducting the main RHoMIS calculations, it is important to add the
 form ID and project ID to the list of projects in the database, to keep track of the
 projects using RHoMIS. This function allows us to do this.
+  
+Rpackage file: MongoDB.R
 }

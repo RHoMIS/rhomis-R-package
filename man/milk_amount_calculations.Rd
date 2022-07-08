@@ -11,9 +11,8 @@ milk_amount_calculations(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{The units for milk amounts in a conversion tibble}
 }
-\value{
-
-}
 \description{
 Calculating the amount of milk collected each year
+  
+Rpackage file: LivestockCalculations.R
 }

@@ -13,9 +13,9 @@ write_list_of_df_to_folder(list_of_df, folder, converted_values = F)
 
 \item{converted_values}{Whether the file being written will contain}
 }
-\value{
-
-}
 \description{
 Take a list of multiple outputs and write them all to a single folder
+}
+\details{
+Rpackage file: CleanRawData.R
 }

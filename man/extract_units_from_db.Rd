@@ -26,9 +26,9 @@ extract_units_from_db(
 
 \item{collection}{The collection where these units are found}
 }
-\value{
-
-}
 \description{
 Load all of the units from a local mongoDB
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }

@@ -10,10 +10,10 @@ total_crop_income(data)
 \item{data}{RHoMIS data that has been processed using
 the "crop_calculations_all" function}
 }
-\value{
-
-}
 \description{
 Calculate the total crop income from processed
 RHoMIS data
+}
+\details{
+Rpackage file: TotalIncomes.R
 }

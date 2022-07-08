@@ -17,12 +17,12 @@ integrate your values}
 \item{loop_structure}{Whether or not the "other" columns you are converting come
 in a loop, or whether it is simple a pair of columns}
 }
-\value{
-
-}
 \description{
 Many of the RHoMIS variables come from multiple
 select, with the option to specify "other" by
 free-text entry. This function allows you to bring
 the "other" category into the main column, facilitating analysis.
+}
+\details{
+Rpackage file: DataReformatting.R
 }

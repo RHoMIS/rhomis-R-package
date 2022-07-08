@@ -23,3 +23,6 @@ A table of the forms available for a specific project
 \description{
 Get the forms for a specific ODK central project
 }
+\details{
+Rpackage file: ConnectToCentral.R
+}

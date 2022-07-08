@@ -18,3 +18,6 @@ delete_project(central_url, central_email, central_password, projectID)
 \description{
 Delete a project from ODK central based on its ID
 }
+\details{
+Rpackage file: ConnectToCentral.R
+}

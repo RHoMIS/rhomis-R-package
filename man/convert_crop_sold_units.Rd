@@ -11,9 +11,9 @@ convert_crop_sold_units(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{A tibble of unit conversions.}
 }
-\value{
-
-}
 \description{
 Convert crop income units into a numeric conversion factor
+}
+\details{
+Rpackage file: CropCalculations.R
 }

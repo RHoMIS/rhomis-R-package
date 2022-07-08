@@ -32,10 +32,9 @@ livestock_calculations_all(
 
 \item{gender_categories}{The gender control catgeories included in the survey}
 }
-\value{
-
-}
 \description{
 Carrying out all calculations on RHoMIS
 livestock loops.
+  
+Rpackage file: LivestockCalculations.R
 }

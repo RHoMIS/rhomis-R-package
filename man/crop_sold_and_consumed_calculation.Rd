@@ -10,12 +10,12 @@ crop_sold_and_consumed_calculation(data)
 \item{data}{RHoMIS data which has been processed to include
 crops harvested (see above) and crop proportions sold/consumed.}
 }
-\value{
-
-}
 \description{
 Note that for this function to work,
 previous functions have to have been run. The crops harvested has to have been
 calculated, as well as the proportions (numeric) which have been sold
 and consumed
+}
+\details{
+Rpackage file: CropCalculations.R
 }

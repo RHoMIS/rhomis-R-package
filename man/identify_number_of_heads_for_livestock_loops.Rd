@@ -14,12 +14,11 @@ identify_number_of_heads_for_livestock_loops(
 
 \item{livestock_heads_df}{A tibble of livestock head nunbers}
 }
-\value{
-
-}
 \description{
 Livestock heads information is collected seperately
 the livestock loops. Howver in some cases, for example in
 the eggs_amount calculations, it is useful to know the livestock heads
 during the loops. This function allows us to do so
+  
+Rpackage file: LivestockCalculations.R
 }

@@ -9,10 +9,10 @@ crop_proportions_all(data)
 \arguments{
 \item{data}{A standard RHoMIS data set}
 }
-\value{
-
-}
 \description{
 A function for calculating the numeric proportions of crops which are sold or
 consumed
+}
+\details{
+Rpackage file: CropCalculations.R
 }

@@ -2,7 +2,9 @@
 % Please edit documentation in R/redirectModules.R
 \name{calculate_values_gender_and_fa_local}
 \alias{calculate_values_gender_and_fa_local}
-\title{Calculate Values, Gender and Food Availability}
+\title{Calculate Values, Gender and Food Availability
+ 
+Rpackage file: redirectModules.R}
 \usage{
 calculate_values_gender_and_fa_local(
   base_path = "./",
@@ -12,7 +14,8 @@ calculate_values_gender_and_fa_local(
   calories_path = "completed_calorie_conversions/",
   prices_path = "converted_prices/",
   staple_crop = "maize",
-  gender_categories = pkg.env$gender_categories
+  gender_categories = pkg.env$gender_categories,
+  units
 )
 }
 \arguments{
@@ -32,10 +35,11 @@ calculate_values_gender_and_fa_local(
 
 \item{gender_categories}{The gender categories to include in
 the analysis}
-}
-\value{
 
+\item{units}{A nested list containing all of the unit conversion tibbles}
 }
 \description{
 Calculate Values, Gender and Food Availability
+ 
+Rpackage file: redirectModules.R
 }

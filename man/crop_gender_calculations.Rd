@@ -12,11 +12,11 @@ crop consumed, crop sold, and crop income}
 
 \item{gender_categories}{The categories you are interested in examining}
 }
-\value{
-
-}
 \description{
 Adding the gendered information for crop consumed
 crop sold, and crop income. These have to already have been
 calculated in the dataset being used
+}
+\details{
+Rpackage file: CropCalculations.R
 }

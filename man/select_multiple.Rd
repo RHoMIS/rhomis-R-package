@@ -10,9 +10,6 @@ select_multiple(list_to_sample)
 \item{list_to_sample}{The list of objects which need to be
 sampled}
 }
-\value{
-
-}
 \description{
 A function for selecting multiple choices
 from a list at random

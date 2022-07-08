@@ -4,6 +4,8 @@
 #'
 #' A function to find the unique values for all of a given tibble.
 #'
+#' Rpackage file: ExtractNewValues.R
+#'
 #' @param data A tibble for which we hope to find all of the unique values
 #'
 #' @return A list of the unique values, NAs excluded
@@ -35,6 +37,8 @@ find_unique_values <- function(data) {
 #' Extract New Units
 #'
 #' A function for extracting any new values from a survey
+#'
+#' Rpackage file: ExtractNewValues.R
 #'
 #' @param data The whole data-set from which the units are to
 #' be extracted from
@@ -107,6 +111,8 @@ extract_new_values <- function(data, loop_or_individual_column = "loop", column_
 #' Find the number of loops for a looped RHoMIS data
 #' set.
 #'
+#' Rpackage file: ExtractNewValues.R
+#'
 #' @param data The dataset to extract the new values from
 #' @param column_pattern The repeat column pattern e.g. "crop_repeat"
 #'
@@ -144,6 +150,8 @@ find_loop_number_and_extract_values <- function(data, column_pattern) {
 #' RHoMIS survey. Note that this function will not
 #' work on any dataset which has modified the core
 #' questions.
+#'
+#' Rpackage file: ExtractNewValues.R
 #'
 #' @param data The RHoMIS core dataset for
 #' which we are hoping to extract the new values
@@ -376,6 +384,8 @@ extract_new_core_units <- function(data) {
 
 #' Extract names of Values to Receive Calorie Conversions
 #'
+#' Rpackage file: ExtractNewValues.R
+#'
 #' @param data The RHoMIS data set
 #'
 #' @return
@@ -416,6 +426,8 @@ extract_calorie_values <- function(data) {
 #' A function to extract all of the units alongside their
 #' individual form and project IDs.
 #'
+#' Rpackage file: ExtractNewValues.R
+#'
 #' @param data A rhomis data frame
 #'
 #' @return
@@ -455,6 +467,8 @@ extract_values_by_project <- function(data) {
 #'
 #' A function to identify all of the crops and livestock
 #' for which calorie conversion values need to be included for
+#'
+#' Rpackage file: ExtractNewValues.R
 #'
 #' @param data RHoMIS Dataset
 #'
@@ -501,6 +515,7 @@ extract_calorie_values_by_project <- function(data) {
 #' This is heavily linked to the "extract_new_core_units"
 #' function.
 #'
+#' Rpackage file: ExtractNewValues.R
 #'
 #' @param list_of_unique_core_values A nested list of new values
 #' from a RHoMIS survey
@@ -600,6 +615,8 @@ merge_and_simplify_core_values <- function(list_of_unique_core_values, main_item
 #' You can select the folder that you would like
 #' to write all of the files to.
 #'
+#' Rpackage file: ExtractNewValues.R
+#'
 #' @param data The data for which you want to
 #' extract all of the new files.
 #' @param folder The folder where you want to
@@ -665,6 +682,8 @@ write_core_values_to_convert_to_file <- function(data, folder) {
 
 #' Extract Units to DataFrame
 #'
+#' Rpackage file: ExtractNewValues.R
+#'
 #' @param data The core RHoMIS dataset which we are extracting units from
 #'
 #' @return A list of data frames
@@ -680,6 +699,8 @@ extract_units_data_frames <- function(data) {
 
 
 #' Extract Units to DataFrame
+#'
+#' Rpackage file: ExtractNewValues.R
 #'
 #' @param data The core RHoMIS dataset which we are extracting units from
 #'
@@ -704,6 +725,8 @@ extract_calorie_conversion_data_frames <- function(data) {
 #' This function converts all of these lists into tibbles.
 #' With a new column which has to be filled
 #' in by the user
+#'
+#' Rpackage file: ExtractNewValues.R
 #'
 #' @param new_values A list of lists containing the values to convert
 #'
@@ -733,6 +756,8 @@ convert_new_values_to_tibble <- function(new_values) {
 #' Write units tibble to csv
 #'
 #' Write the specific tibble to a csv.
+#'
+#' Rpackage file: ExtractNewValues.R
 #'
 #' @param specific_value Which attribute are you
 #' hoping to write to csv (e.g. "crop_yield_units")

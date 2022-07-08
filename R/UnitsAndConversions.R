@@ -9,6 +9,8 @@
 #'
 #' Save a single type of conversion factor into the conversion factor database
 #'
+#' Rpackage file: UnitsAndConversions.R
+#'
 #' @param database The database which will store the units
 #' @param url The url of the database storing the units
 #' @param projectID The name of the project the units are related to
@@ -17,7 +19,7 @@
 #' @param conversion_type Which type of conversion is being saves (e.g crop yield, PPI, HDDS etc...)
 #' @param collection The mongodb collection to save the units
 #' @param converted_values Whether saving values which user has already converted
-#' 
+#'
 #' @return
 #' @export
 #'
@@ -40,7 +42,7 @@ save_set_of_conversions <- function(database = "rhomis", url = "mongodb://localh
 
   if (converted_values==T){
 
-  
+
     old_conversions <- extract_units_from_db(database,
           url = url,
           projectID = projectID,
@@ -86,6 +88,8 @@ save_set_of_conversions <- function(database = "rhomis", url = "mongodb://localh
 
 #' Save Multiple conversions
 #'
+#' Rpackage file: UnitsAndConversions.R
+#'
 #' @param database The database which will store the units
 #' @param url The url of the database storing the units
 #' @param projectID The name of the project the units are related to
@@ -94,7 +98,7 @@ save_set_of_conversions <- function(database = "rhomis", url = "mongodb://localh
 #' @param conversion_types Which types of conversion is being saves (e.g crop yield, PPI, HDDS etc...)
 #' @param collection The mongodb collection to save the units
 #' @param converted_values Whether saving values which user has already converted
-#' 
+#'
 #'
 #'
 #' @return
@@ -127,6 +131,8 @@ save_multiple_conversions <- function(database = "rhomis", url = "mongodb://loca
 
 
 #' Save Initial Units
+#'
+#' Rpackage file: UnitsAndConversions.R
 #'
 #' @param database The database where units are to be saved
 #' @param url The URL of the database where units are to be saved, the default mongoDB url is set as default argument.
@@ -170,11 +176,13 @@ save_initial_units <- function(database = "rhomis", url = "mongodb://localhost",
 #'
 #' Load all units from a local MongoDB databases
 #'
+#' Rpackage file: UnitsAndConversions.R
+#'
 #' @param database The database you are querying units from
 #' @param projectID The Name of the project
 #' @param formID The name of the form
 #' @param unit_list The list of units which are to be queried and loaded into the global environment
-#' @param id_rhomis_dataset A vector of rhomis IDs for the project being processed. 
+#' @param id_rhomis_dataset A vector of rhomis IDs for the project being processed.
 #' @return
 #' @export
 #'
@@ -182,8 +190,8 @@ save_initial_units <- function(database = "rhomis", url = "mongodb://localhost",
 load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_units", formID = "core_units", id_rhomis_dataset) {
 
 
-
-  # loop over the possible list of unit conversion csv file names
+  units_and_conversions <- list()
+  # loop over the possible list of unit conversion file names
   for (unit_name in names(pkg.env$local_units_file_list)) {
 
     if (unit_name %in% unit_list) {
@@ -198,7 +206,7 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
       )
 
       conversions[conversions$conversion=="NA" & !is.na(conversions$conversion),"conversion"] <- NA
-      
+
     } else {
       warning(paste("Tried to find ", unit_name, " conversions, but could not find records in projectData collection"))
 
@@ -221,17 +229,19 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
       }
     }
 
-
-    assign(pkg.env$local_units_file_list[[unit_name]], conversions, envir = .GlobalEnv)
+      units_and_conversions[[pkg.env$local_units_file_list[[unit_name]]]] <- conversions
+    # assign(, conversions, envir = pkg.env)
   }
 
 
-  return()
+  return(units_and_conversions)
 }
 
 #' Extract Units from database
 #'
 #' Load all of the units from a local mongoDB
+#'
+#' Rpackage file: UnitsAndConversions.R
 #'
 #' @param database The name of the database
 #' @param url The url of the database
@@ -305,6 +315,8 @@ extract_units_from_db <- function(database = "rhomis",
 #'
 #' Go through the common conversions stored in the R-package
 #'
+#' Rpackage file: UnitsAndConversions.R
+#'
 #' @param list_of_df A list of dataframes, containing all
 #' of the units and conversions
 #'
@@ -348,6 +360,8 @@ check_existing_conversions <- function(list_of_df) {
 #'
 #' Go through the common conversions stored in the R-package
 #'
+#' Rpackage file: UnitsAndConversions.R
+#'
 #' @param data RHoMIS Dataset
 #'
 #' @return
@@ -377,14 +391,16 @@ check_existing_calorie_conversions <- function(data) {
 #' Write all of the units and new names to a
 #' folder where they can be checked and converted locally
 #'
+#' Rpackage file: UnitsAndConversions.R
+#'
 #' @param list_of_df A list of dataframes, containing all
 #' of the units and conversions
 #' @param folder The folder for writing the units
-#' @param converted_folder A flag indicating whether the 
-#' units being over written have already been converted 
-#' by the user. In which case, preserve their previously 
-#' verified values. 
-#' 
+#' @param converted_folder A flag indicating whether the
+#' units being over written have already been converted
+#' by the user. In which case, preserve their previously
+#' verified values.
+#'
 #'
 #'
 #' @return
@@ -429,6 +445,8 @@ write_units_to_folder <- function(list_of_df,
 #' Load units for a particular project from csv and
 #' load them into the global environment
 #'
+#' Rpackage file: UnitsAndConversions.R
+#'
 #' @param id_rhomis_dataset A vector including the ID of the RHoMIS datasets being processed
 #' @param units_folder The path to the folder containing the units to load
 #'
@@ -437,6 +455,8 @@ write_units_to_folder <- function(list_of_df,
 #'
 #' @examples
 load_local_units <- function(units_folder, id_rhomis_dataset) {
+
+    units_and_conversions <- list()
 
   # get list of files stored in base_folder
   file_names <- list.files(units_folder)
@@ -479,11 +499,13 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
       }
     }
 
-    # assign conversion to global env
-    assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = .GlobalEnv)
+    # assign conversion to package env
+      units_and_conversions[[pkg.env$local_units_file_list[[unit_file]]]] <- conversions
+
+    # assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = pkg.env)
   }
 
-  return()
+  return(units_and_conversions)
 }
 
 
@@ -494,6 +516,8 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
 #'
 #' Load units for a particular project from csv and
 #' load them into the global environment
+#'
+#' Rpackage file: UnitsAndConversions.R
 #'
 #' @param id_rhomis_dataset A vector including the ID of the RHoMIS datasets being processed
 #' @param base_folder The path to the folder containing the units to load
@@ -550,6 +574,7 @@ load_calorie_conversions <- function(base_folder, id_rhomis_dataset) {
 #' function lets you query which types of units were found
 #' for a particular project
 #'
+#' Rpackage file: UnitsAndConversions.R
 #'
 #' @param url The URL of the mongoDB you are querying
 #' @param collection The collection storing administrative project information

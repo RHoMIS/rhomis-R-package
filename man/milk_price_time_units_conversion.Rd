@@ -20,10 +20,9 @@ milk_price_time_units_conversion(
 
 \item{unit_conv_tibble}{A table with all of the information to convert price time units}
 }
-\value{
-
-}
 \description{
 RHoMIS milk price units can come in both times and per
 litre units. This function goes
+  
+Rpackage file: LivestockCalculations.R
 }

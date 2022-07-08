@@ -20,9 +20,6 @@ get_project_id_from_name(
 
 \item{central_password}{The password used for your central account}
 }
-\value{
-
-}
 \description{
-Get Project ID from name
+Rpackage file: ConnectToCentral.R
 }

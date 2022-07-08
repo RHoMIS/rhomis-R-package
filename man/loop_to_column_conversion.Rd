@@ -17,11 +17,11 @@ column header (see example)}
 \item{type}{What is the type of variable you are expecting? "chr" for character,
 "num" for numeric, "int" for interger, and "fct" for factor.}
 }
-\value{
-
-}
 \description{
 Converting from loop to a format that is easy to analyze.
+}
+\details{
+Rpackage file: ReformatLoops.R
 }
 \examples{
 

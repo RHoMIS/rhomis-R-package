@@ -23,6 +23,9 @@ column names come in the form "xxxx/xxxxx/xxxxx/important_name".
 This function helps to extract only the final value
 "important name".
 }
+\details{
+Rpackage file: CleanColumnNames.R
+}
 \examples{
 
 long_name <- "xxxx/xxxxx/xxxxx/important_name"

@@ -18,11 +18,11 @@ be converted}
 
 \item{by_project}{Should}
 }
-\value{
-
-}
 \description{
 A function for changing the column names
 e.g, where the column names represent crops,
 and merging categories.
+}
+\details{
+Rpackage file: DataReformatting.R
 }

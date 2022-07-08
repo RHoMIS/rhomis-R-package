@@ -3,6 +3,8 @@
 
 #' fies score
 #'
+#' Rpackage file: FoodSecurity.R
+#'
 #' @param data The data set containing all of the RHoMIS data (or just the fies information)
 #'
 #' @return
@@ -85,6 +87,8 @@ row_wise_hfias <- function(hfias_row) {
 #' based on whether HFIAS or FIES data were collected in the RHoMIS
 #' survey
 #'
+#' Rpackage file: FoodSecurity.R
+#'
 #' @param data Survey data containing either FIES or
 #' HFIAS data
 #'
@@ -98,12 +102,14 @@ food_security_calculations <- function(data) {
 
   if (all(hfias_columns %in% colnames(data)) & all(fies_columns %in% colnames(data)) == F) {
     column_name <- "hfias_status"
+    # indicator_search_hfias_status
     score <- hfias_score(data)
     data_to_return <- tibble::as_tibble(score)
     colnames(data_to_return) <- column_name
     return(data_to_return)
   }
   if (all(fies_columns %in% colnames(data)) & all(hfias_columns %in% colnames(data)) == F) {
+    # indicator_search_fies_score
     column_name <- "fies_score"
     score <- fies_score(data)
     data_to_return <- tibble::as_tibble(score)
@@ -112,6 +118,8 @@ food_security_calculations <- function(data) {
   }
 
   if (all(fies_columns %in% colnames(data)) & all(hfias_columns %in% colnames(data))) {
+    # indicator_search_hfias_status
+    # indicator_search_fies_score
     fies_score_result <- fies_score(data)
     hfias_score_result <- hfias_score(data)
     data_to_return <- tibble::as_tibble(list(

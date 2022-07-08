@@ -5,6 +5,8 @@
 #' This function calculates the ppi score based off of a typical RHoMIS
 #' dataset. It relies on conversion sheets and information which can be found
 #' in the "data" folder of the package.
+#'   
+#' Rpackage file: ProgressOutOfPoverty.R
 #'
 #' @param data The data set containing the PPI columns
 #' @param country_code_column The country codes for the data-sets concerned

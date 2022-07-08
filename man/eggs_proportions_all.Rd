@@ -10,10 +10,9 @@ eggs_proportions_all(data)
 \item{data}{The RHoMIS data including livestock loops and
 livestock heads data}
 }
-\value{
-
-}
 \description{
 A function for calculating the proportions of
 eggs and consumed
+  
+Rpackage file: LivestockCalculations.R
 }

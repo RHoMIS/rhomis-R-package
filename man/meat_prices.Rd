@@ -9,9 +9,8 @@ meat_prices(data)
 \arguments{
 \item{data}{RHoMIS data including columns "meat_sold_kg_per_year" and "meat_sold_income".}
 }
-\value{
-
-}
 \description{
 Calculating the price of meat which was sold.
+  
+Rpackage file: LivestockCalculations.R
 }

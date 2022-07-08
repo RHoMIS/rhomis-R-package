@@ -9,9 +9,6 @@ clean_json_string(json_string)
 \arguments{
 \item{json_string}{The json string which needs to be cleaned}
 }
-\value{
-
-}
 \description{
 The strings produced from "json::stringify", when
 processed, can contain some unnecessary characters.
@@ -19,4 +16,6 @@ processed, can contain some unnecessary characters.
 \details{
 This function can be useful for removing these unnecessary
 characters.
+  
+Rpackage file: MongoDB.R
 }

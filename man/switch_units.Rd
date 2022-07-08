@@ -23,3 +23,6 @@ units which need to be converted from a character
 format (e.g. "kg","sacks_100kg") into a numeric conversion (e.g. 1, 100).
 This function does just that.
 }
+\details{
+Rpackage file: CleanRawData.R
+}

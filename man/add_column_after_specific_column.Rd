@@ -26,12 +26,12 @@ where we want to add the new data}
 \item{loop_structure}{A boolean indicating whether this information is
 in a loop format (TRUE) or a single pair of variables (FALSE)}
 }
-\value{
-
-}
 \description{
 During the data processing, some new columns need
 to be added, with unit conversions or newly calculated
 values. This function allows us to add those columns
 in specific locations to make analysis easier.
+}
+\details{
+Rpackage file: DataReformatting.R
 }

@@ -34,10 +34,10 @@ include the file name and the extension. Must make sure the directory exists}
 \item{form_version}{The version of the form you are examining. For now
 we presume you are looking for the first version of the form}
 }
-\value{
-
-}
 \description{
 A function for getting the xls survey from odk central,
 writing it to a file, and returning the file path
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

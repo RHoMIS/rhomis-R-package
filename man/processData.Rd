@@ -78,7 +78,7 @@ ONLY RELEVANT IF "dataSource" WAS "central".}
 
 \item{database}{The name of the database you would like to save results to}
 
-\item{isDraft}{Whether or not the ODK for you war working with is a draft
+\item{isDraft}{Whether or not the ODK form you are working with is a draft
 or a final version. Only relevant if you are processing a project from ODK central}
 
 \item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
@@ -86,9 +86,6 @@ or a final version. Only relevant if you are processing a project from ODK centr
 \item{repeat_columns}{The columns which are looped in the datasets being processed}
 
 \item{gender_categories}{The gender categories present in the data which is to be processed}
-}
-\value{
-
 }
 \description{
 A main function that can be used to process rhomis
@@ -102,4 +99,6 @@ RHoMIS datasets go through 4 stages of processing:
 2. Calculation of initial indicators
 3. Calculation of final indicators, including food availability,
 gender, and value of products consumed
+ 
+Rpackage file: RunAll.R
 }

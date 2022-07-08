@@ -2,7 +2,9 @@
 #' 
 #' Authenticate user for interacting with the
 #' RHoMIS data api and authentication AP
-#' 
+#'  
+#' Rpackage file: rhomisApiConnection.R
+#'
 #' @param base_url The URL for the api you are interacting with
 #' @param email The email address of your account
 #' @param password The password for your account
@@ -39,7 +41,9 @@ rhomis_authenticate <- function(base_url, email, password){
 #' Create Project
 #' 
 #' Create a project in the RHoMIS database
-#' 
+#'   
+#' Rpackage file: rhomisApiConnection.R
+#'
 #' @param api_url The url of the rhomis data api
 #' @param auth_url The url of the rhomis authentication api
 #' @param email The users email

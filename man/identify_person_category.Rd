@@ -11,10 +11,9 @@ identify_person_category(age, gender)
 
 \item{gender}{The gender vector for the specific loop}
 }
-\value{
-
-}
 \description{
 For the household roster, categories
 each person based on the MAE conversion information
+ 
+Rpackage file: HouseholdSize.R
 }

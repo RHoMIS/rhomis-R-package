@@ -10,9 +10,8 @@ honey_amount_sold_and_consumed_calculations(data)
 \item{data}{Data containing RHoMIS
 livestock loops}
 }
-\value{
-
-}
 \description{
 Calculating the amounts of honey sold and consumed
+  
+Rpackage file: LivestockCalculations.R
 }

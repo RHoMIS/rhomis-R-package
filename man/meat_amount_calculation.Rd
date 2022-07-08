@@ -11,13 +11,12 @@ meat_amount_calculation(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{A conversion table for animal names and their weights}
 }
-\value{
-
-}
 \description{
 A function to calculate the amount of meat
 produced based on the number of animals killed,
 and some conversion factors which can calculate
 how much meat can be collected from an animal which
 has been killed.
+  
+Rpackage file: LivestockCalculations.R
 }

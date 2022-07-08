@@ -10,6 +10,9 @@
 #' If no conversion table is provided, construct
 #' a conversion tibble, including project IDs, from the
 #' the in built conversion tables
+#' 
+#' Rpackage file: CleanRawData.R
+#'
 #'
 #' @param proj_id_vector A vector of project IDs
 #' @param unit_conv_tibble A conversion table containing columns
@@ -40,6 +43,9 @@ make_per_project_conversion_tibble <- function(proj_id_vector,
 #' format (e.g. "kg","sacks_100kg") into a numeric conversion (e.g. 1, 100).
 #' This function does just that.
 #'
+#' Rpackage file: CleanRawData.R
+#'
+#' 
 #' @param unit_tibble A tibble containing
 #' @param data_to_convert This list or data frame which needs to be converted
 #' @param id_vector Column containing the RHoMIS id, used to subset the units
@@ -111,6 +117,8 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector) {
 #' Convert all character columns in the data set
 #' to lower case
 #'
+#' Rpackage file: CleanRawData.R
+#' 
 #' @param data A tibble to be converted to lower case
 #'
 #' @return
@@ -145,7 +153,9 @@ convert_column_to_lowercase <- function(column) {
 #'
 #' Replace "other1", "other2", and "other3" text
 #' entries in the crop and livestock names
-#'
+#' 
+#' Rpackage file: CleanRawData.R
+#' 
 #' @param data A whole rhomis dataset
 #'
 #' @return
@@ -210,6 +220,8 @@ replace_crop_and_livestock_other <- function(data) {
 
 #' Replace Name Column with Other
 #'
+#' Rpackage file: CleanRawData.R
+#' 
 #' @param main_column The column you are searching for "other"
 #' values in (e.g. crop_name)
 #' @param other_column1 The first "other" column you are searching
@@ -253,6 +265,8 @@ replace_name_column_with_other <- function(main_column,
 #' "other" is written, and replace
 #' it with th appropriate text entry
 #'
+#' Rpackage file: CleanRawData.R
+#' 
 #' @param unit_column The main unit column
 #' @param unit_other_column The column containing the free text entry
 #'
@@ -280,6 +294,8 @@ replace_unit_column_with_other_single <- function(unit_column,
 #' This can be problematic for analysis. This function brings
 #' the "other" units into where they are needed.
 #'
+#' Rpackage file: CleanRawData.R
+#' 
 #' @param data The whole rhomis dataset
 #'
 #' @return
@@ -362,6 +378,8 @@ replace_units_with_other_all <- function(data) {
 #'
 #' Take a list of multiple outputs and write them all to a single folder
 #'
+#' Rpackage file: CleanRawData.R
+#' 
 #' @param list_of_df The list of dataframes (must be a named list)
 #' @param folder The name of the folder where they are to be written
 #' @param converted_values Whether the file being written will contain

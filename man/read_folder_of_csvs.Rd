@@ -9,9 +9,8 @@ read_folder_of_csvs(folder = "./")
 \arguments{
 \item{folder}{The folder containing the tables to load}
 }
-\value{
-
-}
 \description{
 A function
+ 
+Rpackage file: redirectModules.R
 }

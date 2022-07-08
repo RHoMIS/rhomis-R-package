@@ -12,11 +12,11 @@ from a central query}
 
 \item{column_headers}{The desired headers for the new table}
 }
-\value{
-
-}
 \description{
 Widening a single central result into a simple tibble
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }
 \examples{
 central_results <- list(

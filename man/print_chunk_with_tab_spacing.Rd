@@ -13,11 +13,11 @@ at the beginning}
 \item{xml_level}{The number of tabs to be added at
 the beginning of all lines}
 }
-\value{
-
-}
 \description{
 When a xml chunk is created, say for a looped
 set of questions, we can add the required
 number of tabs at the beginning of each line
+}
+\details{
+Rpackage file: GenerateMockResponses.R
 }

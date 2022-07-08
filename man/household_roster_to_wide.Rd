@@ -9,9 +9,8 @@ household_roster_to_wide(data)
 \arguments{
 \item{data}{RHoMIS data with household Roster information}
 }
-\value{
-
-}
 \description{
 Moving household roster size to wide
+ 
+Rpackage file: HouseholdSize.R
 }

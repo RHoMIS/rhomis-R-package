@@ -11,12 +11,12 @@ check_val_in_list(item, category)
 
 \item{category}{The category you are trying to identify}
 }
-\value{
-
-}
 \description{
 In the case of the gender calculations, this function can check whether
 a particular gender category is found in a string.
+}
+\details{
+Rpackage file: ReformatLoops.R
 }
 \examples{
 

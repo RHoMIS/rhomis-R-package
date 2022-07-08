@@ -12,11 +12,11 @@ make_per_project_conversion_tibble(proj_id_vector, unit_conv_tibble)
 \item{unit_conv_tibble}{A conversion table containing columns
 "survey_value" and "conversion_factor"}
 }
-\value{
-
-}
 \description{
 If no conversion table is provided, construct
 a conversion tibble, including project IDs, from the
 the in built conversion tables
+}
+\details{
+Rpackage file: CleanRawData.R
 }

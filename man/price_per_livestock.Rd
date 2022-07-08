@@ -9,9 +9,8 @@ price_per_livestock(data)
 \arguments{
 \item{data}{Dataset containing livestock sold and livestock sale income}
 }
-\value{
-
-}
 \description{
 Calculate the prices of whole livestock sold
+  
+Rpackage file: LivestockCalculations.R
 }

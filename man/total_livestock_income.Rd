@@ -10,10 +10,9 @@ total_livestock_income(data)
 \item{data}{RHoMIS data that has been processed using
 the "livestock_calculations_all" function}
 }
-\value{
-
-}
 \description{
 Calculate total livestock income from
 processed RHoMIS data
+ 
+Rpackage file: TotalIncomes.R
 }

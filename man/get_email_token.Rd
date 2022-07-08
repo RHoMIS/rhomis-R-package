@@ -19,3 +19,6 @@ This function will return a token. This token is useful for
 \description{
 A function used to get the email token required to connext to ODK central
 }
+\details{
+Rpackage file: ConnectToCentral.R
+}

@@ -25,3 +25,6 @@ Will return the user ID from the database
 Register a user on the RHoMIS 2.0
 authentication server
 }
+\details{
+Rpackage file: AuthenticateUser.R
+}

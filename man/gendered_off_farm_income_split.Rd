@@ -11,10 +11,10 @@ gendered_off_farm_income_split(data, gender_categories)
 
 \item{gender_categories}{Categories of gender we are interested in}
 }
-\value{
-
-}
 \description{
 Adding gender control columns for each of the specific
 sources of off-farm income
+}
+\details{
+Rpackage file: TotalIncomes.R
 }

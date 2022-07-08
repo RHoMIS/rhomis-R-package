@@ -11,10 +11,10 @@ land_size_calculation(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{A tibble of land area units and}
 }
-\value{
-
-}
 \description{
 Calculate land sizes in hectares using
 RHoMIS data
+}
+\details{
+Rpackage file: LandSize.R
 }

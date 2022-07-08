@@ -13,10 +13,9 @@ rhomis_authenticate(base_url, email, password)
 
 \item{password}{The password for your account}
 }
-\value{
-
-}
 \description{
 Authenticate user for interacting with the
 RHoMIS data api and authentication AP
+ 
+Rpackage file: rhomisApiConnection.R
 }

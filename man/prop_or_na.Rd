@@ -9,13 +9,13 @@ prop_or_na(item)
 \arguments{
 \item{item}{A list of the people controlling a particular resource}
 }
-\value{
-
-}
 \description{
 For a particular gender control item, e.g. "female_adult male_adult" this function
 works out whether to return NA or a proportion. In this case the proportion controlled
 by each person would be 0.5
+}
+\details{
+Rpackage file: ReformatLoops.R
 }
 \examples{
 item <- c("male_adult", "female_adult")

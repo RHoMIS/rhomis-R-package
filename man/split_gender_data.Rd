@@ -12,11 +12,11 @@ by the "map_to_wide_format" (see example)}
 
 \item{gender_categories}{The categories in the dataset to split by (e.g. "male_youth", "male_adult"...)}
 }
-\value{
-
-}
 \description{
 For much of the RHoMIS data
+}
+\details{
+Rpackage file: ReformatLoops.R
 }
 \examples{
 data <- tibble::as_tibble(list(

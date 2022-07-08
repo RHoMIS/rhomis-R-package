@@ -32,9 +32,9 @@ we presume you are looking for the first version of the form}
 
 \item{isDraft}{Whether or not the form was a draft}
 }
-\value{
-
-}
 \description{
 Extract the metadata for a RHoMIS project
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

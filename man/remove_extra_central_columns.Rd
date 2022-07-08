@@ -9,12 +9,12 @@ remove_extra_central_columns(data)
 \arguments{
 \item{data}{ODK central data with the excess columns}
 }
-\value{
-
-}
 \description{
 Data downloaded from ODK central has extra columns
 with no additional information. These extra columns
 follow a particular pattern. This function removes these
 columns based on this pattern
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

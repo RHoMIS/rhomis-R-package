@@ -9,9 +9,9 @@ hdds_calc(data)
 \arguments{
 \item{data}{RHoMIS data with HDDS information}
 }
-\value{
-
-}
 \description{
 HDDS calculations
+}
+\details{
+Rpackage file: DietaryDiversity.R
 }

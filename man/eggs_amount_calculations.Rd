@@ -11,9 +11,8 @@ eggs_amount_calculations(data, unit_conv_tibble = NULL)
 
 \item{unit_conv_tibble}{A tibble of units and conversion factor, and project IDs}
 }
-\value{
-
-}
 \description{
 Calculate the amount of eggs harvested
+  
+Rpackage file: LivestockCalculations.R
 }

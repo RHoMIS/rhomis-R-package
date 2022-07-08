@@ -11,8 +11,7 @@ get_submission_data(
   projectID,
   formID,
   isDraft,
-  file_destination = NULL,
-  central_test_case = F
+  file_destination = NULL
 )
 }
 \arguments{
@@ -33,13 +32,10 @@ To get the list of forms see the "get_forms" function.}
 \item{isDraft}{Whether or not the form is a draft or whether it is finalized}
 
 \item{file_destination}{The location to store temporary files}
-
-\item{central_test_case}{Whether or not you are running a test
-example to show how data downloads from ODK central work}
-}
-\value{
-
 }
 \description{
 A function for retrieving all of the ODK data as a zip file
+}
+\details{
+Rpackage file: ConnectToCentral.R
 }

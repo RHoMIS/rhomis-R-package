@@ -20,3 +20,6 @@ A token
 A function for logging in to the RHoMIS 2.0
 token based authenticator
 }
+\details{
+Rpackage file: AuthenticateUser.R
+}

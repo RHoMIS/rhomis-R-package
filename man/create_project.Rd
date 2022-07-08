@@ -19,4 +19,6 @@ create_project(api_url, auth_url, email, password, name)
 }
 \description{
 Create a project in the RHoMIS database
+  
+Rpackage file: rhomisApiConnection.R
 }

@@ -11,11 +11,11 @@ replace_unit_column_with_other_single(unit_column, unit_other_column)
 
 \item{unit_other_column}{The column containing the free text entry}
 }
-\value{
-
-}
 \description{
 For two columns, identify where
 "other" is written, and replace
 it with th appropriate text entry
+}
+\details{
+Rpackage file: CleanRawData.R
 }

@@ -2,14 +2,17 @@
 % Please edit documentation in R/redirectModules.R
 \name{value_gender_fa_calculations}
 \alias{value_gender_fa_calculations}
-\title{Value, Gender, and Food Availability Calculations}
+\title{Value, Gender, and Food Availability Calculations
+ 
+Rpackage file: redirectModules.R}
 \usage{
 value_gender_fa_calculations(
   processed_data,
   indicator_data,
   calorie_conversions,
   prices,
-  gender_categories
+  gender_categories,
+  units
 )
 }
 \arguments{
@@ -22,10 +25,11 @@ value_gender_fa_calculations(
 \item{prices}{A list of tibbles on mean prices}
 
 \item{gender_categories}{Gender categories to convert}
-}
-\value{
 
+\item{units}{A list of units and conversion factors}
 }
 \description{
 Value, Gender, and Food Availability Calculations
+ 
+Rpackage file: redirectModules.R
 }

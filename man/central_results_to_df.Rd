@@ -16,6 +16,9 @@ A table of central results
 ODK central returns context in the form of a nested list. This converts
 this nested list into a more accessible tibble format
 }
+\details{
+Rpackage file: ConnectToCentral.R
+}
 \examples{
 central_results <- list(
   list("id" = 1, "name" = "name1", "email" = "email1"),

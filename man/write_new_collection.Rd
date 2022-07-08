@@ -20,9 +20,8 @@ write_new_collection(
 
 \item{url}{The url of the database you are querying}
 }
-\value{
-
-}
 \description{
 Write a new table to a RHoMIS db database
+  
+Rpackage file: MongoDB.R
 }

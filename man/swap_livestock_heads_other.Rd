@@ -9,12 +9,11 @@ swap_livestock_heads_other(data)
 \arguments{
 \item{data}{A rhomis dataset}
 }
-\value{
-
-}
 \description{
 TLU column names include options for
 "other", this is not interperatable or
 easy to use for analysis. This function addresses
 this
+   
+Rpackage file: LivestockCalculations.R
 }

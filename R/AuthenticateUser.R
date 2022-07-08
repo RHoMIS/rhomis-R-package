@@ -7,6 +7,8 @@
 #'
 #' Register a user on the RHoMIS 2.0
 #' authentication server
+#' 
+#' Rpackage file: AuthenticateUser.R
 #'
 #' @param url The url of the server we are using for authentication
 #' @param username The username of the user to be registered
@@ -47,7 +49,9 @@ register_user <- function(url, username, email, password) {
 #'
 #' A function for logging in to the RHoMIS 2.0
 #' token based authenticator
-#'
+#' 
+#' Rpackage file: AuthenticateUser.R
+#' 
 #' @param url The URL of the authentication server
 #' @param email The email of the account being authenticated
 #' @param password The password of the account being authenticated

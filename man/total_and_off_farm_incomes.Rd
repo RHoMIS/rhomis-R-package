@@ -14,9 +14,9 @@ total_and_off_farm_incomes(data, total_crop_income, total_livestock_income)
 \item{total_livestock_income}{Total income from livestock list
 proportions}
 }
-\value{
-
-}
 \description{
 Calculating off-farm income based on total income proportions
+}
+\details{
+Rpackage file: TotalIncomes.R
 }

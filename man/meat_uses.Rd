@@ -9,10 +9,9 @@ meat_uses(data)
 \arguments{
 \item{data}{The RHoMIS data containing livestock loops}
 }
-\value{
-
-}
 \description{
 Calculating the numeric proportions of meat used for
 eating and selling
+  
+Rpackage file: LivestockCalculations.R
 }

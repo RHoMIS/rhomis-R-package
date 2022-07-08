@@ -15,6 +15,9 @@ A list of the unique values, NAs excluded
 \description{
 A function to find the unique values for all of a given tibble.
 }
+\details{
+Rpackage file: ExtractNewValues.R
+}
 \examples{
 data <- tibble::tibble(
   crop_name_1 = c("maize", "cassava", "millet"),

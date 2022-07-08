@@ -9,10 +9,10 @@ convert_all_columns_to_lower_case(data)
 \arguments{
 \item{data}{A tibble to be converted to lower case}
 }
-\value{
-
-}
 \description{
 Convert all character columns in the data set
 to lower case
+}
+\details{
+Rpackage file: CleanRawData.R
 }

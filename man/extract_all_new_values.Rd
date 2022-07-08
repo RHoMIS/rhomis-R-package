@@ -9,10 +9,9 @@ extract_all_new_values(data)
 \arguments{
 \item{data}{A RHoMIS tibble}
 }
-\value{
-
-}
 \description{
 Extract all of the new values from a RHoMIS data frame,
 if they have unit conversions in the package, then convert them.
+ 
+Rpackage file: RunAll.R
 }

@@ -18,12 +18,11 @@ livestock names}
 
 \item{livestock_tlu_conversions}{A conversions table for TLU}
 }
-\value{
-
-}
 \description{
 TLU column names include options for
 "other", this is not interperatable or
 easy to use for analysis. This function addresses
 this
+  
+Rpackage file: LivestockCalculations.R
 }

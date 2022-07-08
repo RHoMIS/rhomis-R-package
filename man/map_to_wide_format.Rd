@@ -22,6 +22,9 @@ a list of data frames for each of the variables
 \description{
 A function to convert RHoMIS loops into a wider named format
 }
+\details{
+Rpackage file: ReformatLoops.R
+}
 \examples{
 
 name_column <- "crop_name"

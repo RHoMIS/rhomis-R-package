@@ -10,9 +10,9 @@ check_existing_conversions(list_of_df)
 \item{list_of_df}{A list of dataframes, containing all
 of the units and conversions}
 }
-\value{
-
-}
 \description{
 Go through the common conversions stored in the R-package
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }

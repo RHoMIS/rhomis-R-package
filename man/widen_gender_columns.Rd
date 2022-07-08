@@ -14,11 +14,11 @@ widen_gender_columns(processed_data, gender_group, column_pattern)
 \item{column_pattern}{The pattern of the column you are processing (e.g. for "male_youth_crop_consumed_kg",
 the pattern would be "crop_consumed_kg"}
 }
-\value{
-
-}
 \description{
 Take gender categories and a processed dataset,
 reformat the gender control variables into a more
 useable format
+}
+\details{
+Rpackage file: GenderControlAll.R
 }

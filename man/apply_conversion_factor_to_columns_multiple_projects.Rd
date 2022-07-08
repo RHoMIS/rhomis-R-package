@@ -19,13 +19,13 @@ apply_conversion_factor_to_columns_multiple_projects(
 conversion factors by project
 be converted}
 }
-\value{
-
-}
 \description{
 Sometimes it can be helpful to apply conversion
 factors to a series of columns, for example to
 get the calorie values of crops produced. This
 function allows us to apply conversion factors
 to mulptiple projects.
+}
+\details{
+Rpackage file: DataReformatting.R
 }

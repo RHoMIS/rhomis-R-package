@@ -8,7 +8,8 @@ calculate_prices_and_indicator_local(
   data,
   base_path = "./",
   units_path = "converted_units/",
-  gender_categories = pkg.env$gender_categories
+  gender_categories = pkg.env$gender_categories,
+  units
 )
 }
 \arguments{
@@ -19,10 +20,11 @@ calculate_prices_and_indicator_local(
 \item{units_path}{Path to the folder of converted units}
 
 \item{gender_categories}{The gender categories used in this survey}
-}
-\value{
 
+\item{units}{A nested list containing all of the unit conversion tibbles}
 }
 \description{
 Calculate prices and initial indicators locally
+ 
+Rpackage file: redirectModules.R
 }

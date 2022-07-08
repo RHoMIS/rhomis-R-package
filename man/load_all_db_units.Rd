@@ -23,9 +23,9 @@ load_all_db_units(
 
 \item{id_rhomis_dataset}{A vector of rhomis IDs for the project being processed.}
 }
-\value{
-
-}
 \description{
 Load all units from a local MongoDB databases
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }

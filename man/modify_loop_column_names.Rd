@@ -36,6 +36,8 @@ user-friendly format:
 "crop_name_1",
 "crop_name_2",
 "crop_name_3" ...
+
+Rpackage file: CleanColumnNames.R
 }
 \examples{
 original_columns <- c(

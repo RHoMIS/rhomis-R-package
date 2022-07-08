@@ -6,6 +6,10 @@
 #' Calculate land sizes in hectares using
 #' RHoMIS data
 #'
+#'   
+#' Rpackage file: LandSize.R
+#'
+#' 
 #' @param data RHoMIS data
 #' @param unit_conv_tibble A tibble of land area units and
 #'
@@ -15,6 +19,9 @@
 #' @examples
 land_size_calculation <- function(data,
                                   unit_conv_tibble = NULL) {
+
+  # indicator_search_land_cultivated_ha
+  # indicator_search_land_owned_ha
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
     stop("Missing the id_rhomis_dataset column in RHoMIS data")
   }
@@ -52,9 +59,6 @@ land_size_calculation <- function(data,
       land_df$land_owned <- land_owned[[1]]
     }
   }
-
-
-
 
   return(land_df)
 }

@@ -17,6 +17,9 @@ A proportion (0-1) for the people controlling resource
 For the RHoMIS gender columns, we ask who in the household collects each resource.
 This function is designed to be applied to each item (spicific row for specific column)
 }
+\details{
+Rpackage file: ReformatLoops.R
+}
 \examples{
 
 column <- c("male_adult female_adult", "male_adult", NA, "female_youth")

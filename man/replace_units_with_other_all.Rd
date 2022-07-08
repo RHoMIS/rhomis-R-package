@@ -9,12 +9,12 @@ replace_units_with_other_all(data)
 \arguments{
 \item{data}{The whole rhomis dataset}
 }
-\value{
-
-}
 \description{
 In the rhomis survey text entries are recorded
 as "other". The actual text is stored in another variable.
 This can be problematic for analysis. This function brings
 the "other" units into where they are needed.
+}
+\details{
+Rpackage file: CleanRawData.R
 }

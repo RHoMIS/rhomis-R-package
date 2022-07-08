@@ -14,9 +14,6 @@ gendered_off_farm_income_indicator(
 
 \item{gender_categories}{The gender categories included in the survey}
 }
-\value{
-
-}
 \description{
-Gendered Off-Farm Incomes Indicator
+Rpackage file: TotalIncomes.R
 }

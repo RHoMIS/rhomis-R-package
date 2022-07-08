@@ -11,6 +11,8 @@ load_data_odk <- function(url,
 #' Make ID Columns
 #'
 #' Make ID columns for form, project, and household
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param data The rhomis data set as a tibble
 #' @param country_column The name of the column containing the country string, as collected in the survey
@@ -50,7 +52,7 @@ make_id_columns <- function(data,
 
     # make sure that the unique_id_col does indeed contain unique values
     if (any(duplicated(data[unique_id_col]))) {
-        stop("The unique_id_col you provided exists in the data, but contains duplicate entries")
+        stop("The unique_id_col you provided `",unique_id_col,"` exists in the data, but contains duplicate entries.")
     }
 
     # if form and proj ids are provided as strings, create new columns filled with these string values
@@ -64,7 +66,7 @@ make_id_columns <- function(data,
 
             # confirm that these columns exist in the dataset, otherwise bail and print error
             if (!(cname %in% colnames(data))) {
-                stop(paste0("Expected id column", cname, "does not exist in the dataset provided"))
+                stop(paste0("Expected column", cname, "does not exist in the input dataset."))
             }
         }
 
@@ -101,11 +103,129 @@ make_id_columns <- function(data,
 }
 
 
+
+
+#' Load RHoMIS Central
+#'
+#' Load Raw RHoMIS data from ODK central and
+#' convert the column names into a shortened, standardised
+#' version.
+#'  
+#' Rpackage file: RunAll.R
+#'
+#' @param central_url The url of the ODK-central server you are using.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param central_email The email of the ODK-central account you are using.
+#' ONLY RELEVANT IF "dataSource" WAS "central"
+#' @param central_password The password of the ODK-central account you are using.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param project_name The name of the ODK-central project you are processing.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param form_name The name of the ODK-central form you are processing.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param form_version The version of the ODK-central form you are processing.
+#' ONLY RELEVANT IF "dataSource" WAS "central".
+#' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
+#' @param database The name of the database you would like to save results to
+#' @param isDraft Whether or not the ODK form you are working with is a draft
+#' or a final version. Only relevant if you are processing a project from ODK central
+#' @param repeat_columns The columns which are looped in the datasets being processed
+#' @return
+#' @export
+#'
+#' @examples
+
+load_rhomis_central <- function(
+                                central_url=NULL,
+                                central_email=NULL,
+                                central_password=NULL,
+                                project_name=NULL,
+                                form_name=NULL,
+                                form_version=NULL,
+                                database=NULL,
+                                isDraft=NULL,
+                                central_test_case=FALSE,
+                                repeat_columns=pkg.env$repeat_columns
+                                ){
+
+
+    # Checking if the right arguments are supplied to obtain data from ODK central
+    items_to_test <- list("central_email",
+                          "central_password",
+                          "project_name",
+                          "form_name",
+                          "form_version",
+                          "database",
+                          "isDraft")
+    null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
+    if(any(null_variables)){
+        error_message <- paste(items_to_test[null_variables], collapse="\n")
+        stop(paste0('You specified the data was coming from a ODK central. You need to define: \n',error_message))
+    }
+
+    if ( !(central_test_case) ){
+
+        # Getting project and formID
+        projectID <- get_project_id_from_name( project_name, central_url, central_email, central_password )
+
+        # Finding form information from the API
+        formID <- get_xml_form_id_from_name( form_name, projectID, central_url, central_email, central_password )
+
+    } else {
+
+        # Set empty strings for testing purposes
+        projectID <- ""
+        formID <- ""
+    }
+
+    rhomis_data <- get_submission_data(
+        central_url,
+        central_email,
+        central_password,
+        projectID,
+        formID,
+        isDraft )
+
+
+    # Cleaning the column names
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
+    # There are some extra central columns
+    # which are problematic, these need to be removed
+    rhomis_data <- rhomis_data %>%
+        remove_extra_central_columns()
+
+    rhomis_data <- make_id_columns(
+        data = rhomis_data,
+        country_column = pkg.env$identification_column_list$country,
+        unique_id_col = "key",
+        hh_id_col = NULL,
+        id_type = "string",
+        proj_id = project_name,
+        form_id = form_name)
+
+    # Convert the IDs to lower case
+    rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
+
+    # An extra step to ensure all -999 values are set to NA,
+    # This wasn't always happening with ODK central datasets.
+    rhomis_data <- sapply(rhomis_data, function(x){
+        x[as.numeric(x)==-999]<-NA
+        x
+    }, simplify = F) %>% tibble::as_tibble()
+
+    return(rhomis_data)
+
+}
+
+
+
 #' Load RHoMIS CSV
 #'
 #' Load a Raw RHoMIS csv file, collected using ODK, and
 #' convert the column names into a shortened, standardised
 #' version.
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param file_path The filepath of the RHoMIS csv
 #' @param country_column The name of the column containing the country
@@ -130,7 +250,9 @@ load_rhomis_csv <- function(file_path,
                             proj_id = NULL,
                             form_id = NULL,
                             overwrite = FALSE,
-                            repeat_columns = pkg.env$repeat_columns) {
+                            repeat_columns = pkg.env$repeat_columns)
+{
+
 
 
     # read in the input csv file
@@ -160,6 +282,8 @@ load_rhomis_csv <- function(file_path,
 #'
 #' Extract all of the new values from a RHoMIS data frame,
 #' if they have unit conversions in the package, then convert them.
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param data A RHoMIS tibble
 #'
@@ -178,6 +302,8 @@ extract_all_new_values <- function(data) {
 #' Replace Infinite
 #'
 #' Replace infinite values with NA in a specific column
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param column The column where infinite values need to be replaced
 #'
@@ -205,6 +331,8 @@ replace_infinite <- function(column) {
 #' 2. Calculation of initial indicators
 #' 3. Calculation of final indicators, including food availability,
 #' gender, and value of products consumed
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param extractUnitsOnly Whether or not to only extract units (TRUE/FALSE)
 #' @param calculateInitialIndicatorsOnly Whether or not to only calculate
@@ -236,7 +364,7 @@ replace_infinite <- function(column) {
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
 #' @param database The name of the database you would like to save results to
-#' @param isDraft Whether or not the ODK for you war working with is a draft
+#' @param isDraft Whether or not the ODK form you are working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
 #' @param repeat_columns The columns which are looped in the datasets being processed
 #' @param uuid_local The column in a local dataset containing uuids (usually _uuid)
@@ -281,40 +409,6 @@ processData <- function( # Arguments to indicate the stage of analysis
     outputType <- match.arg(outputType)
     dataSource <- match.arg(dataSource)
 
-    if (dataSource == "central"){
-        id_type <- "string"
-        proj_id <- project_name
-        form_id <- form_name
-    }
-
-
-    # If the user specified a csv, then they must provide a file path
-    # for the dataset they are loading
-    if (dataSource == "csv" & calculateFinalIndicatorsOnly==F) {
-        if (is.null(dataFilePath)) {
-            stop('You specified the data was coming from a local csv but have not specified a "dataFilePath"')
-        }
-    }
-
-    # Checking if the right arguments are supplied to obtain data from ODK central
-    if (dataSource == "central") {
-        items_to_test <- list(
-            "central_email",
-            "central_password",
-            "project_name",
-            "form_name",
-            "form_version",
-            "database",
-            "isDraft"
-        )
-        null_variables <- sapply(items_to_test, function(x) is.null(get(x)))
-        if (any(null_variables)) {
-            error_message <- paste(items_to_test[null_variables], collapse = "\n")
-            stop(paste0("You specified the data was coming from a ODK central. You need to define: \n", error_message))
-        }
-    }
-
-
     #---------------------------------------------------------------
     # Loading Submission Data
     #---------------------------------------------------------------
@@ -322,7 +416,14 @@ processData <- function( # Arguments to indicate the stage of analysis
     # If local csv specified, load the csv
     # add some identification columns and
     # clean the column names
-    if (dataSource == "csv" & calculateFinalIndicatorsOnly==F) {
+    if (dataSource == "csv" & !calculateFinalIndicatorsOnly) {
+
+        # If the user specified a csv, then they must provide a file path
+        # for the dataset they are loading
+        if(is.null(dataFilePath)){
+            stop('You specified the data was coming from a local csv but have not specified a "dataFilePath"')
+        }
+
         rhomis_data <- load_rhomis_csv(
             file_path = dataFilePath,
             country_column = pkg.env$identification_column_list$country,
@@ -340,76 +441,23 @@ processData <- function( # Arguments to indicate the stage of analysis
     # and load the zip files.
     # add some identification columns and
     # clean the column names
-    if (dataSource == "central" & calculateFinalIndicatorsOnly==F) {
-        if (central_test_case == F) {
-            # Getting project and formID
-            projectID <- get_project_id_from_name(
-                project_name,
-                central_url,
-                central_email,
-                central_password
-            )
+    if(dataSource == "central")
+    {
 
-            # Finding form information from the API
-            formID <- get_xml_form_id_from_name(
-                form_name,
-                projectID,
-                central_url,
-                central_email,
-                central_password
-            )
-
-
-            # Getting the submission data from ODK central
-            rhomis_data <- get_submission_data(
-                central_url,
-                central_email,
-                central_password,
-                projectID,
-                formID,
-                isDraft
-            )
-        }
-
-        if (central_test_case == T) {
-            rhomis_data <- get_submission_data(
-                central_url,
-                central_email,
-                central_password,
-                projectID,
-                formID,
-                isDraft,
-                central_test_case = central_test_case
-            )
-        }
-
-        # Cleaning the column names
-        colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
-        # There are some extra central columns
-        # which are problematic, these need to be removed
-        rhomis_data <- rhomis_data %>%
-            remove_extra_central_columns()
-
-        rhomis_data <- make_id_columns(
-            data = rhomis_data,
-            country_column = pkg.env$identification_column_list$country,
-            unique_id_col = "key",
-            hh_id_col = NULL,
-            id_type = id_type,
-            proj_id = project_name,
-            form_id = form_name
+        rhomis_data <- load_rhomis_central(
+            central_url,
+            central_email,
+            central_password,
+            project_name,
+            form_name,
+            form_version,
+            database,
+            isDraft,
+            central_test_case,
+            repeat_columns
         )
-
-        # Convert the IDs to lower case
-        rhomis_data <- convert_all_columns_to_lower_case(rhomis_data)
-
-        # An extra step to ensure all -999 values are set to NA,
-        # This wasn't always happening with ODK central datasets.
-        rhomis_data <- sapply(rhomis_data, function(x) {
-            x[as.numeric(x) == -999] <- NA
-            x
-        }, simplify = F) %>% tibble::as_tibble()
     }
+
 
 
     # Make an empty indicator dataset with
@@ -439,13 +487,11 @@ processData <- function( # Arguments to indicate the stage of analysis
 
             new_units_dest <- paste0(base_path, "units_and_conversions")
 
+
             write_units_to_folder(
                 list_of_df = units_and_conversions,
-                folder = new_units_dest,
-                converted_folder=T
+                folder = new_units_dest
             )
-            
-     
 
             return(units_and_conversions)
         }
@@ -472,17 +518,17 @@ processData <- function( # Arguments to indicate the stage of analysis
                 converted_values=T
 
             )
-            set_project_tag_to_true(database = database, 
-                url = url, 
-                projectID=project_name, 
-                formID=form_name, 
+            set_project_tag_to_true(database = database,
+                url = url,
+                projectID=project_name,
+                formID=form_name,
                 project_tag="unitsExtracted")
         }
     } else {
 
 
 
-       
+
 
 
         if (calculateInitialIndicatorsOnly == T) {
@@ -493,14 +539,15 @@ processData <- function( # Arguments to indicate the stage of analysis
         if (outputType == "csv") {
             units_folder <- paste0(base_path, "units_and_conversions/")
 
-            if (!dir.exists(units_folder)) {
-                stop('Specified that the units were stored locally but the path "units_and_conversions" does not exist')
+            if (!dir.exists(units_folder))
+            {
+                stop('Specified that the units were stored locally but the path ',units_folder,' does not exist')
             }
 
             #---------------------------------------------
             # Loading all of the unit conversions locally
             #---------------------------------------------
-            load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+            units <- load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
         }
          if (outputType == "mongodb") {
             unit_list <- find_db_units(
@@ -510,8 +557,7 @@ processData <- function( # Arguments to indicate the stage of analysis
                 collection = "projectData",
                 database = database
             )
-            # Not yet complete
-            load_all_db_units(unit_list,
+            units <- load_all_db_units(unit_list,
                 projectID = project_name,
                 formID = form_name,
                 database = database,
@@ -529,7 +575,8 @@ processData <- function( # Arguments to indicate the stage of analysis
             # indicator_data, and extra_outputs
             results <- run_preliminary_calculations(
                 rhomis_data = rhomis_data,
-                gender_categories = gender_categories
+                gender_categories = gender_categories,
+                units = units
             )
 
             # If the desired output format is csv,
@@ -561,7 +608,7 @@ processData <- function( # Arguments to indicate the stage of analysis
                         readr::write_csv(data_to_write, path)
                         return()
                     }
-                    
+
                     write_list_of_df_to_folder(list_of_df = data_to_write, folder = new_folder)
                 }
 
@@ -619,15 +666,15 @@ processData <- function( # Arguments to indicate the stage of analysis
                         database = database,
                         url = "mongodb://localhost"
                     )
-                    set_project_tag_to_true(database = database, 
-                url = url, 
-                projectID=project_name, 
-                formID=form_name, 
+                    set_project_tag_to_true(database = database,
+                url = url,
+                projectID=project_name,
+                formID=form_name,
                 project_tag="pricesCalculated")
                     return()
                 }
 
-                
+
             })
 
 
@@ -643,10 +690,10 @@ processData <- function( # Arguments to indicate the stage of analysis
                 if (outputType == "csv") {
                     original_calorie_values_folder <- paste0(base_path, ".original_calorie_conversions")
                     write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = original_calorie_values_folder)
-                    
+
                     converted_calorie_conversions_folder <- paste0(base_path, "calorie_conversions")
                     write_list_of_df_to_folder(list_of_df = calorie_conversions_dfs, folder = converted_calorie_conversions_folder,converted_values=T)
-                    
+
 
                     data_to_write <- results[["original_prices"]]
                     original_mean_prices_folder <- paste0(base_path, ".original_mean_prices_conversions")
@@ -690,7 +737,7 @@ processData <- function( # Arguments to indicate the stage of analysis
                 # Read in the processed csvs and check everything exists
                 processed_data <- read_folder_of_csvs(folder = paste0(base_path, "processed_data/"))[[1]]
                 indicator_data <- read_folder_of_csvs(folder = paste0(base_path, "indicator_data/"))[[1]]
-                load_local_units(paste0(base_path, "units_and_conversions/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
+                units <- load_local_units(paste0(base_path, "units_and_conversions/"), id_rhomis_dataset = processed_data[["id_rhomis_dataset"]])
 
                 prices <- read_folder_of_csvs(folder = paste0(base_path, "mean_prices/"))
                 calorie_conversions <- read_folder_of_csvs(folder = paste0(base_path, "calorie_conversions/"))
@@ -766,7 +813,8 @@ processData <- function( # Arguments to indicate the stage of analysis
                 indicator_data = indicator_data,
                 calorie_conversions = calorie_conversions,
                 prices = prices,
-                gender_categories = gender_categories
+                gender_categories = gender_categories,
+                units = units
             )
 
 
@@ -829,10 +877,10 @@ processData <- function( # Arguments to indicate the stage of analysis
                             url = "mongodb://localhost"
                         )
                     }
-                    set_project_tag_to_true(database = database, 
-                        url = url, 
-                        projectID=project_name, 
-                        formID=form_name, 
+                    set_project_tag_to_true(database = database,
+                        url = url,
+                        projectID=project_name,
+                        formID=form_name,
                         project_tag="finalIndicators")
                 }
             })
@@ -857,6 +905,8 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' Generate Data
 #'
 #' Generate fake data and submit it to a test project
+#'  
+#' Rpackage file: RunAll.R
 #'
 #' @param central_url The URL of the central server holding the data
 #' @param central_email The email of the administrative user

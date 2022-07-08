@@ -21,10 +21,10 @@ units being over written have already been converted
 by the user. In which case, preserve their previously 
 verified values.}
 }
-\value{
-
-}
 \description{
 Write all of the units and new names to a
 folder where they can be checked and converted locally
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }

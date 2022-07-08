@@ -23,10 +23,9 @@ read_in_db_dataset(
 
 \item{data_set_name}{The name of the dataset.}
 }
-\value{
-
-}
 \description{
 A function for reading and unwinding
 data in the RHoMIS database.
+  
+Rpackage file: MongoDB.R
 }

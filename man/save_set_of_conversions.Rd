@@ -32,9 +32,9 @@ save_set_of_conversions(
 
 \item{converted_values}{Whether saving values which user has already converted}
 }
-\value{
-
-}
 \description{
 Save a single type of conversion factor into the conversion factor database
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }

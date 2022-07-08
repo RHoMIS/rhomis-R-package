@@ -9,10 +9,9 @@ honey_proportions_all(data)
 \arguments{
 \item{data}{The data containing livestock loops}
 }
-\value{
-
-}
 \description{
 Can correctly calculate the numeric proportions of honey
 and its uses
+  
+Rpackage file: LivestockCalculations.R
 }

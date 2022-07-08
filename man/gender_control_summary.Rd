@@ -17,10 +17,10 @@ gender_control_summary(
 
 \item{gender_categories}{A vector of the gender categories in the dataset.}
 }
-\value{
-
-}
 \description{
 Generate a summary of all of the gender controlled
 indicators
+}
+\details{
+Rpackage file: GenderControlAll.R
 }

@@ -4,6 +4,8 @@
 #'
 #' Calculate total livestock income from
 #' processed RHoMIS data
+#'  
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data that has been processed using
 #' the "livestock_calculations_all" function
@@ -13,6 +15,9 @@
 #'
 #' @examples
 total_livestock_income <- function(data) {
+  
+  # indicator_search_livestock_income_lcu_per_year
+  
   number_of_loops <- find_number_of_loops(data, name_column = "livestock_name")
 
   whole_livestock_income_columns <- paste0("livestock_sale_income", "_", c(1:number_of_loops))
@@ -89,6 +94,8 @@ total_livestock_income <- function(data) {
 #'
 #' Calculate the total crop income from processed
 #' RHoMIS data
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data that has been processed using
 #' the "crop_calculations_all" function
@@ -98,6 +105,7 @@ total_livestock_income <- function(data) {
 #'
 #' @examples
 total_crop_income <- function(data) {
+  # indicator_search_crop_income_lcu_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "crop_name")
 
   crop_income_columns <- paste0("crop_income_per_year", "_", c(1:number_of_loops))
@@ -129,6 +137,8 @@ total_crop_income <- function(data) {
 #' Calculating off-farm income
 #'
 #' Calculating off-farm income based on total income proportions
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data, including column of offfarm income
 #' @param total_crop_income Total income from crops list
@@ -153,7 +163,7 @@ total_and_off_farm_incomes <- function(data, total_crop_income, total_livestock_
 
   id_vector <- rep("x", nrow(data))
 
-  
+  # indicator_search_off_farm_income_lcu_per_year
   
   off_farm_prop <- data["offfarm_income_proportion"]
   off_farm_incomes_any <- data["offfarm_incomes_any"]
@@ -173,10 +183,13 @@ off_farm_prop[off_farm_incomes_any=="n"] <- 0
   off_farm_income <- (off_farm_prop[[1]] * (total_farm_income)) / (1 - off_farm_prop[[1]])
 
   off_farm_income[off_farm_prop==0] <- 0
+
+  # indicator_search_total_income_lcu_per_year
   total_income <- tibble::as_tibble(list(
     total_farm_income = total_farm_income,
     off_farm_income = off_farm_income
   ))
+
 
   total_income <- rowSums(total_income, na.rm = T)
   total_income[is.na(total_farm_income) & is.na(off_farm_income)] <- NA
@@ -190,6 +203,8 @@ off_farm_prop[off_farm_incomes_any=="n"] <- 0
 }
 
 #' Gendered Off-Farm Incomes Indicator
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data including off-farm income loops
 #' @param gender_categories The gender categories included in the survey
@@ -248,6 +263,8 @@ gendered_off_farm_income_indicator <- function(data, gender_categories = pkg.env
 #'
 #' Adding gender control columns for each of the specific
 #' sources of off-farm income
+#' 
+#' Rpackage file: TotalIncomes.R
 #'
 #' @param data RHoMIS data including off-farm income loops
 #' @param gender_categories Categories of gender we are interested in

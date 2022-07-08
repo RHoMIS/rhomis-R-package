@@ -11,10 +11,10 @@ querywb_stats(year, country_code)
 
 \item{country_code}{The two letter ISO country code}
 }
-\value{
-
-}
 \description{
 Find out PPP conversions based on the
 world bank statistics
+}
+\details{
+Rpackage file: CurrencyConversion.R
 }

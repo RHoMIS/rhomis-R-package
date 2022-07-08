@@ -12,10 +12,10 @@ split_gender_columns(column, gender_categories = pkg.env$gender_categories)
 \item{gender_categories}{The gender categories to
 be examined in the rhomis dataset}
 }
-\value{
-
-}
 \description{
 A function to split gender columns into multiple
 columns based on the different groups
+}
+\details{
+Rpackage file: ReformatLoops.R
 }

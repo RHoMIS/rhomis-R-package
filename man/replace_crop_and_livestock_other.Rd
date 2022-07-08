@@ -9,10 +9,10 @@ replace_crop_and_livestock_other(data)
 \arguments{
 \item{data}{A whole rhomis dataset}
 }
-\value{
-
-}
 \description{
 Replace "other1", "other2", and "other3" text
 entries in the crop and livestock names
+}
+\details{
+Rpackage file: CleanRawData.R
 }

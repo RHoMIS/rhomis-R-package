@@ -26,9 +26,8 @@ save_data_set_to_db(
 
 \item{formID}{The ID of the form}
 }
-\value{
-
-}
 \description{
 Save a dataset to the MongoDB database
+  
+Rpackage file: MongoDB.R
 }

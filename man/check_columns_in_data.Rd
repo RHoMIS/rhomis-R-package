@@ -22,12 +22,12 @@ check_columns_in_data(
 to indicate where the problem may be happening. A warning message will already be included
 if the data is missing. This warning information can be supplied to give some context}
 }
-\value{
-
-}
 \description{
 For many of the functions to work, we need to ensure that
 the correct columns are present in the tibble. This
 function checks whether the columns are present, both
 for looped, and individual columns
+}
+\details{
+Rpackage file: DataContentsCheck.R
 }

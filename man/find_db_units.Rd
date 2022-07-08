@@ -17,12 +17,12 @@ find_db_units(projectID, formID, url, collection, database)
 
 \item{database}{The name of the database containing the information}
 }
-\value{
-
-}
 \description{
 The names of the units stored in the RHoMIS data base
 are stored within the "projectData" collection. This
 function lets you query which types of units were found
 for a particular project
+}
+\details{
+Rpackage file: UnitsAndConversions.R
 }
