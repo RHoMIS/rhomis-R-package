@@ -1592,9 +1592,9 @@ jsonlite::toJSON(indicator_list, pretty=T)
 
 
 find_nested_dependencies_list(
-     indicator_name="currency_conversion_lcu_to_ppp",
+     indicator_name="crop_sold_kg_per_year",
      indicator_list=indicator_list,
-     dependency_required="individual")
+     dependency_required="loop")
 
 
 find_nested_dependencies_network(

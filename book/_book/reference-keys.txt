@@ -16,5 +16,7 @@ off-farm-data
 consumption-calories
 consumption-value
 gender-control
+indicators-explained
+where-to-start
 reporting-issues
 reporting-issues-1
