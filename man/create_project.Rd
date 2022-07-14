@@ -4,7 +4,7 @@
 \alias{create_project}
 \title{Create Project}
 \usage{
-create_project(api_url, auth_url, email, password, name)
+create_project(central_url, central_email, central_password, project_name)
 }
 \arguments{
 \item{api_url}{The url of the rhomis data api}

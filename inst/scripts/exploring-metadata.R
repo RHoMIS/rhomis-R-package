@@ -39,7 +39,7 @@ find_nested_dependencies_list(
 
 
 plot_dependency_network(
-    indicator_name="crop_income_per_year",
+    indicator_name="crop_sold_kg_per_year",
     indicator_list=indicator_list
 )
 

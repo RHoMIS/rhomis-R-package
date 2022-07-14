@@ -17,7 +17,28 @@ add_indicator(
   search_term
 )
 }
+\arguments{
+\item{indicator_list}{The Existing list of indicators}
+
+\item{indicator_name}{The name of the new indicator}
+
+\item{output_format}{The shape of the indicator (column, loop or table)}
+
+\item{individual_columns_required}{Which individual columns are required (directly) for the RHoMIS dataset}
+
+\item{loop_columns_required}{Which looped columns are required}
+
+\item{conversion_tables_required}{Which conversion tables are required}
+
+\item{api_data_required}{Which api connection data is required}
+
+\item{indicators_required}{Other indicators which are required to calculate this one}
+
+\item{function_calculated}{The function where this indicator is calculated}
+
+\item{search_term}{The search term you can use to find where this indicator is calculated}
+}
 \description{
-Add an indicator for 
+Add an indicator metadata entry for
 the RHoMIS dataset
 }
