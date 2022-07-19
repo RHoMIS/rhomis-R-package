@@ -16,7 +16,7 @@ load_rhomis_csvs <- function(
 
 
 
-#' Load RHoMIS CSV
+#' Load Survey CSV
 #'
 #' Load a Raw or processed RHoMIS survey csv file, collected using ODK, 
 #' and convert the column names into a shortened, standardised
