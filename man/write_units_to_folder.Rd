@@ -16,9 +16,9 @@ of the units and conversions}
 
 \item{folder}{The folder for writing the units}
 
-\item{converted_folder}{A flag indicating whether the 
-units being over written have already been converted 
-by the user. In which case, preserve their previously 
+\item{converted_folder}{A flag indicating whether the
+units being over written have already been converted
+by the user. In which case, preserve their previously
 verified values.}
 }
 \description{
