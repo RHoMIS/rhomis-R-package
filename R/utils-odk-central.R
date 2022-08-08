@@ -4,7 +4,7 @@
 #' Load Raw RHoMIS data from ODK central and
 #' convert the column names into a shortened, standardised
 #' version.
-#'  
+#'
 #' Rpackage file: utils-odk-central.R
 #'
 #' @param central_url The url of the ODK-central server you are using.
@@ -45,7 +45,6 @@ load_rhomis_central <- function(
                           "central_password",
                           "project_name",
                           "form_name",
-                          "form_version",
                           "database",
                           "isDraft")
     null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
@@ -115,7 +114,7 @@ load_rhomis_central <- function(
 #' A function used to get the email token required to connext to ODK central
 #'
 #' Rpackage file: utils-odk-central.R
-#' 
+#'
 #' @param central_url The url which points to an ODK Central sever
 #' @param central_email The email linked to your ODK central account
 #' @param central_password The password used for your central account
@@ -156,7 +155,7 @@ get_email_token <- function(central_url, central_email, central_password) {
 #' Get a table of users from the ODK central database
 #'
 #' Rpackage file: utils-odk-central.R
-#' 
+#'
 #' @param central_url The url of the ODK central server
 #' @param central_email The email of your ODK central account
 #' @param central_password The password to your ODK central account

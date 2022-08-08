@@ -1,7 +1,7 @@
 #' Make ID Columns
 #'
 #' Make ID columns for form, project, and household
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param data The rhomis data set as a tibble
@@ -96,7 +96,7 @@ make_id_columns <- function(data,
 #' Load a Raw RHoMIS csv file, collected using ODK, and
 #' convert the column names into a shortened, standardised
 #' version.
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param file_path The filepath of the RHoMIS csv
@@ -154,7 +154,7 @@ load_rhomis_csv <- function(file_path,
 #'
 #' Extract all of the new values from a RHoMIS data frame,
 #' if they have unit conversions in the package, then convert them.
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param data A RHoMIS tibble
@@ -174,7 +174,7 @@ extract_all_new_values <- function(data) {
 #' Replace Infinite
 #'
 #' Replace infinite values with NA in a specific column
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param column The column where infinite values need to be replaced
@@ -203,7 +203,7 @@ replace_infinite <- function(column) {
 #' 2. Calculation of initial indicators
 #' 3. Calculation of final indicators, including food availability,
 #' gender, and value of products consumed
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param extractUnitsOnly Whether or not to only extract units (TRUE/FALSE)
@@ -231,8 +231,6 @@ replace_infinite <- function(column) {
 #' @param project_name The name of the ODK-central project you are processing.
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param form_name The name of the ODK-central form you are processing.
-#' ONLY RELEVANT IF "dataSource" WAS "central".
-#' @param form_version The version of the ODK-central form you are processing.
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
 #' @param database The name of the database you would like to save results to
@@ -265,7 +263,6 @@ processData <- function( # Arguments to indicate the stage of analysis
                         central_password = NULL,
                         project_name = NULL,
                         form_name = NULL,
-                        form_version = NULL,
                         database = NULL,
                         isDraft = NULL,
                         central_test_case = FALSE,
@@ -317,16 +314,15 @@ processData <- function( # Arguments to indicate the stage of analysis
     {
 
         rhomis_data <- load_rhomis_central(
-            central_url,
-            central_email,
-            central_password,
-            project_name,
-            form_name,
-            form_version,
-            database,
-            isDraft,
-            central_test_case,
-            repeat_columns
+            central_url=central_url,
+            central_email=central_email,
+            central_password=central_password,
+            project_name=project_name,
+            form_name=form_name,
+            database=database,
+            isDraft=isDraft,
+            central_test_case=central_test_case,
+            repeat_columns=repeat_columns
         )
     }
 
@@ -777,7 +773,7 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' Generate Data
 #'
 #' Generate fake data and submit it to a test project
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param central_url The URL of the central server holding the data
@@ -786,7 +782,6 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' @param project_name The name of the project to generate data for
 #' @param form_name The name of the form to generate data for
 #' @param number_of_responses The number of responses to generate
-#' @param form_version The version of the form to upload
 #' @param isDraft Whether or not the form is a draft or finalized
 #'
 #' @return
@@ -799,7 +794,6 @@ generateData <- function(central_url,
                          project_name,
                          form_name,
                          number_of_responses,
-                         form_version,
                          isDraft = T) {
 
 
@@ -821,16 +815,7 @@ generateData <- function(central_url,
     )
     formID <- forms$xmlFormId[forms$name == form_name]
 
-    xls_form <- rhomis::get_xls_form(
-        central_url = central_url,
-        central_email = central_email,
-        central_password = central_password,
-        projectID = projectID,
-        formID = formID,
-        # file_destination=form_destination,
-        form_version = form_version,
-        isDraft = isDraft
-    )
+
 
 
     # Get number of responses to generate

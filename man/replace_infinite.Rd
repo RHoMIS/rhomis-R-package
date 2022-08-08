@@ -11,6 +11,7 @@ replace_infinite(column)
 }
 \description{
 Replace infinite values with NA in a specific column
- 
+}
+\details{
 Rpackage file: RunAll.R
 }
