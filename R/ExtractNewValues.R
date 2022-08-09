@@ -456,7 +456,7 @@ extract_values_by_project <- function(data) {
 
   units_by_project_merged_df <- dplyr::bind_rows(units_by_project_merged)
   final_units_list <- sapply(unique(units_by_project_merged_df$unit_type), function(unit_type) {
-    units_by_project_merged_df[units_by_project_merged_df$unit_type == unit_type, ]
+    return(units_by_project_merged_df[units_by_project_merged_df$unit_type == unit_type, ])
   }, simplify = F)
 
   return(final_units_list)
