@@ -1,6 +1,6 @@
 # RHoMIS R-package for Data Processing
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/l-gorman/rhomis-R-package/workflows/R-CMD-check/badge.svg)](https://github.com/l-gorman/rhomis-R-package/actions)
@@ -56,6 +56,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/rfrelat"><img src="https://avatars.githubusercontent.com/u/15328277?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Romain Frelat</b></sub></a><br /><a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3Arfrelat" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/JimHam"><img src="https://avatars.githubusercontent.com/u/8358392?v=4?s=100" width="100px;" alt=""/><br /><sub><b>JimHam</b></sub></a><br /><a href="#projectManagement-JimHam" title="Project Management">📆</a> <a href="#mentoring-JimHam" title="Mentoring">🧑‍🏫</a> <a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3AJimHam" title="Bug reports">🐛</a> <a href="#ideas-JimHam" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/gemmanewbold"><img src="https://avatars.githubusercontent.com/u/110897106?v=4?s=100" width="100px;" alt=""/><br /><sub><b>gemmanewbold</b></sub></a><br /><a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3Agemmanewbold" title="Bug reports">🐛</a> <a href="https://github.com/l-gorman/rhomis-R-package/commits?author=gemmanewbold" title="Code">💻</a></td>
   </tr>
 </table>
 
