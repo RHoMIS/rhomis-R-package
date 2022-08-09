@@ -35,6 +35,23 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "ekuw",
+      "name": "ekuw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76116294?v=4",
+      "profile": "https://github.com/ekuw",
+      "contributions": [
+        "bug",
+        "code",
+        "data",
+        "doc",
+        "ideas",
+        "maintenance",
+        "mentoring",
+        "review",
+        "tutorial"
+      ]
     }
   ],
   "contributorsPerLine": 7,
