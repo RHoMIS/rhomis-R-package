@@ -52,6 +52,17 @@
         "review",
         "tutorial"
       ]
+    },
+    {
+      "login": "chryswoods",
+      "name": "Christopher Woods",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3694698?v=4",
+      "profile": "https://chryswoods.com",
+      "contributions": [
+        "ideas",
+        "mentoring",
+        "projectManagement"
+      ]
     }
   ],
   "contributorsPerLine": 7,
