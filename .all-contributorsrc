@@ -25,6 +25,16 @@
         "bug",
         "ideas"
       ]
+    },
+    {
+      "login": "gemmanewbold",
+      "name": "gemmanewbold",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110897106?v=4",
+      "profile": "https://github.com/gemmanewbold",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
