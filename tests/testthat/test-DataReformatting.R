@@ -133,10 +133,10 @@ testthat::test_that("Can add new loop columns in the correct place", {
 
 testthat::test_that("Can conduct proportions swap to numeric", {
     data <- tibble::as_tibble(list(
-        "crop_use_1" = c("eat", "eat sell", "sell feed_livestock"),
-        "crop_consumed_prop_1" = c(NA, "most", NA),
-        "crop_sold_prop_1" = c(NA, "little", "little"),
-        "crop_feed_lstk_prop_1" = c(NA, NA, "little")
+        "crop_use_1" = c("eat", "eat sell", "sell feed_livestock", "eat"),
+        "crop_consumed_prop_1" = c(NA, "most", NA, "most"),
+        "crop_sold_prop_1" = c(NA, "little", "little", NA),
+        "crop_feed_lstk_prop_1" = c(NA, NA, "little", NA)
     ))
 
 
@@ -147,7 +147,7 @@ testthat::test_that("Can conduct proportions swap to numeric", {
         prop_column = "crop_consumed_prop",
         loop_number = 1
     )
-    expected_result <- c(1, 0.7, 0)
+    expected_result <- c(1, 0.7, 0, 0.7)
 
     expect_equal(actual_result, expected_result)
 
@@ -158,7 +158,7 @@ testthat::test_that("Can conduct proportions swap to numeric", {
         use_column = "crop_use_1",
         prop_column = "crop_consumed_prop_1"
     )
-    expected_result <- c(1, 0.7, 0)
+    expected_result <- c(1, 0.7, 0, 0.7)
 
 
     expect_equal(actual_result, actual_result)
