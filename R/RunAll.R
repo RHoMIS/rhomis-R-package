@@ -274,6 +274,8 @@ processData <- function( # Arguments to indicate the stage of analysis
     # Checking the validity of the Arguments
     #----------------------------------------
 
+
+
     # Check validity of OutputTypes and print error if unknown OutputType is supplied
     outputType <- match.arg(outputType)
     dataSource <- match.arg(dataSource)

@@ -8,6 +8,8 @@
 #' then verify prices and calories
 #' for products in the
 #'
+#' Rpackage file: 03-calculate-indicators.R
+#'
 #' @param rhomis_data a rhomis dataset
 #' @param units_and_conversions A list of units and conversions
 #' @param prices A list of price conversions (mean price per kg)

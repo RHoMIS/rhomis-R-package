@@ -118,6 +118,16 @@ get_price_calorie_and_tlu_conversions <- function(
 
 
 
+#' Calculate Prices CSV
+#'
+#' Rpackage file: 02-calculate-prices.R
+#'ß
+#' @param project_folder
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_prices_csv <- function(
         project_folder="./"
 ){
@@ -125,6 +135,14 @@ calculate_prices_csv <- function(
 }
 
 
+#' Calculate_prices_server
+#'
+#' Rpackage file: 02-calculate-prices.R
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_prices_server <- function(){
 
 
