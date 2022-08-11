@@ -2,7 +2,7 @@
 % Please edit documentation in R/01-extract-units.R
 \name{extract_units_and_conversions_server}
 \alias{extract_units_and_conversions_server}
-\title{Extract Units and Conversions CSV}
+\title{Extract Units and Conversions from Server}
 \usage{
 extract_units_and_conversions_server(
   central_url,
@@ -35,8 +35,6 @@ or a final version. Only relevant if you are processing a project from ODK centr
 \item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
 
 \item{repeat_columns}{ODK has a "repeat loop" structure to ask repeated questions.}
-
-\item{form_version}{The version of the ODK-central form being processed}
 }
 \description{
 Rpackage file: 01-extract-units.R

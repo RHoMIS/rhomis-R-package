@@ -34,6 +34,30 @@ set_gender_categories <- function() {
 }
 
 
+set_conversion_file_names <- function(){
+    assign("unit_file_names",
+           list(
+               "country" = "country_to_iso2",
+               "crop_name" = "crop_name_to_std",
+               "livestock_name" = "livestock_name_to_std",
+               "crop_yield_units" = "crop_amount_to_kg",
+               "crop_sold_price_quantityunits" = "crop_price_to_lcu_per_kg",
+               "unitland" = "land_area_to_ha",
+               "milk_units" = "milk_amount_to_l",
+               "milk_sold_price_timeunits" = "milk_price_to_lcu_per_l",
+               "bees_honey_production_units" = "honey_amount_to_l",
+               "eggs_units" = "eggs_amount_to_pieces_per_year",
+               "eggs_sold_price_timeunits" = "eggs_price_to_lcu_per_year",
+               "fertiliser_units" = "fertiliser_amount_to_kg",
+               "livestock_tlu" = "livestock_count_to_tlu",
+               "livestock_weight_kg" = "livestock_weight_kg" #Isn't collected in data but needs to be converted
+           ),
+           envir = pkg.env
+    )
+
+}
+
+
 set_local_units_file_list <- function() {
   assign("local_units_file_list",
     list(

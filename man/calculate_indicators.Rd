@@ -31,3 +31,6 @@ first extracted units. That you
 then verify prices and calories
 for products in the
 }
+\details{
+Rpackage file: 03-calculate-indicators.R
+}

@@ -192,7 +192,7 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
 
   units_and_conversions <- list()
   # loop over the possible list of unit conversion file names
-  for (unit_name in names(pkg.env$local_units_file_list)) {
+  for (unit_name in pkg.env$unit_file_names) {
 
     if (unit_name %in% unit_list) {
       conversions <- extract_units_from_db(database,
@@ -223,13 +223,13 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
         )
         conversions$unit_type <- unit_name
 
-        if (!(unit_name == "country")) {
+        if (!(unit_name == "country_to_iso2")) {
           colnames(conversions) <- c("survey_value", "conversion", "id_rhomis_dataset", "unit_type")
         }
       }
     }
 
-      units_and_conversions[[pkg.env$local_units_file_list[[unit_name]]]] <- conversions
+      units_and_conversions[[unit_name]] <- conversions
     # assign(, conversions, envir = pkg.env)
   }
 
@@ -326,7 +326,7 @@ extract_units_from_db <- function(database = "rhomis",
 #' @examples
 check_existing_conversions <- function(list_of_df) {
   new_list <- sapply(names(list_of_df), function(x) {
-    if (x %in% c("crop_name", "livestock_name")) {
+    if (x %in% c("crop_name_to_std", "livestock_name_to_std")) {
       conversion <- tibble::as_tibble(list(
         "survey_value" = eval(parse(text = x)),
         "conversion" = eval(parse(text = x))
@@ -340,7 +340,7 @@ check_existing_conversions <- function(list_of_df) {
         dplyr::rename("conversion" = "conversion.y")
     } else {
       df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
-        eval(parse(text = pkg.env$local_units_file_tibble_list[[x]])),
+        eval(parse(text = x)),
         by = ("survey_value" <- "survey_value")
       ) %>%
         dplyr::select("unit_type", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
@@ -462,7 +462,7 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
   file_names <- list.files(units_folder)
 
   # loop over the possible list of unit conversion csv file names
-  for (unit_file in names(pkg.env$local_units_file_list)) {
+  for (unit_file in pkg.env$unit_file_names) {
 
     # check that this list of files exists in the base_folder
     if (paste0(unit_file, ".csv") %in% file_names) {
@@ -477,10 +477,10 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
       warning(paste0("Could not locate  ", unit_file, " in ", units_folder))
 
       # need a catch for these two files, because of the extra step in creating a dummy table
-      if (unit_file %in% c("crop_name", "livestock_name")) {
+      if (unit_file %in% c("crop_name_to_std", "livestock_name_to_std")) {
 
         # evaluate the string denoting the variable name to be used
-        var <- eval(parse(text = pkg.env$local_units_file_tibble_list[[unit_file]]))
+        var <- eval(parse(text = unit_file))
 
         # make dummy tibble
         conversions <- tibble::as_tibble(list("survey_value" = var, "conversion" = var))
@@ -489,7 +489,7 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
           unit_conv_tibble = conversions
         )
       } else {
-                var <- eval(parse(text = pkg.env$local_units_file_tibble_list[[unit_file]]))
+                var <- eval(parse( text = unit_file))
 
         # make dummy tibble
         conversions <- make_per_project_conversion_tibble(
@@ -500,7 +500,7 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
     }
 
     # assign conversion to package env
-      units_and_conversions[[pkg.env$local_units_file_list[[unit_file]]]] <- conversions
+      units_and_conversions[[unit_file]] <- conversions
 
     # assign(pkg.env$local_units_file_list[[unit_file]], conversions, envir = pkg.env)
   }

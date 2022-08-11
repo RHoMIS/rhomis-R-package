@@ -10,8 +10,8 @@ extract_units_and_conversions(rhomis_data)
 \item{rhomis_data}{A "raw" rhomis dataset}
 }
 \description{
-A function to extract units and 
-conversion factors from the 
+A function to extract units and
+conversion factors from the
 RHoMIS dataset
 }
 \details{

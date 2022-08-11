@@ -106,9 +106,9 @@ extract_values_central <- function(central_email,
 
 
 #' Extract values
-#'    
+#'
 #' Rpackage file: redirectModules.R
-#' 
+#'
 #' @param base_folder The folder where all outputs will be written to
 #' @param file_path The path to the raw-data rhomis file
 #' @param overwrite Whether or not you would like to overwrite your
@@ -184,7 +184,7 @@ extract_values_local <- function(base_folder = "./",
 #' Extract Project values
 #'
 #' Extract all of the values from an individual data set
-#'   
+#'
 #' Rpackage file: redirectModules.R
 #'
 #' @param rhomis_data A rhomis data set
@@ -202,7 +202,7 @@ extract_project_values <- function(rhomis_data) {
 
 
 #' Make new dataset
-#'   
+#'
 #' Rpackage file: redirectModules.R
 #'
 #' @param rhomis_data A rhomis_dataset including IDs
@@ -228,7 +228,7 @@ make_new_dataset <- function(rhomis_data) {
 #' Calculate prices and indicator Local
 #'
 #' Calculate prices and initial indicators locally
-#'  
+#'
 #' Rpackage file: redirectModules.R
 #'
 #' @param data The dataset which is to be processed
@@ -296,7 +296,7 @@ calculate_prices_and_indicator_local <- function(data,
 }
 
 #' Calculate Values, Gender and Food Availability
-#'  
+#'
 #' Rpackage file: redirectModules.R
 #'
 #' @param base_path Path to the project folder
@@ -367,7 +367,7 @@ calculate_values_gender_and_fa_local <- function(base_path = "./",
 
 
 #' Value, Gender, and Food Availability Calculations
-#'  
+#'
 #' Rpackage file: redirectModules.R
 #'
 #' @param processed_data RHoMIS Processed Dataset
@@ -440,7 +440,7 @@ value_gender_fa_calculations <- function(processed_data,
 }
 
 #' Run preliminary calculations
-#'  
+#'
 #' Rpackage file: redirectModules.R
 #'
 #' @param rhomis_data A tibble of rhomis_data
@@ -454,11 +454,11 @@ run_preliminary_calculations <- function(rhomis_data,
                                          gender_categories = pkg.env$gender_categories,
                                          units
                                          ) {
-  
-  
+
+
   rhomis_data <- replace_crop_and_livestock_other(rhomis_data)
   indicator_data <- make_new_dataset(rhomis_data)
-  
+
   results <- list()
   prices <- list()
   crop_outputs <- list()
@@ -472,7 +472,7 @@ run_preliminary_calculations <- function(rhomis_data,
 
   if (length(crop_name_in_data) == 0) {
     rhomis_data[crop_loops] <- switch_units(rhomis_data[crop_loops],
-      unit_tibble = units$crop_name_conversions,
+      unit_tibble = units$crop_name_to_std,
       rhomis_data[["id_rhomis_dataset"]]
     )
   }
@@ -485,7 +485,7 @@ run_preliminary_calculations <- function(rhomis_data,
 
   if (length(livestock_name_in_data) == 0) {
     rhomis_data[livestock_loops] <- switch_units(rhomis_data[livestock_loops],
-      unit_tibble = units$livestock_name_conversions,
+      unit_tibble = units$livestock_name_to_std,
       id_vector = rhomis_data[["id_rhomis_dataset"]]
     )
   }
@@ -496,15 +496,15 @@ run_preliminary_calculations <- function(rhomis_data,
   # Converting the country column
   # into a two letter iso country code
   # using a country conversion table
-  if (exists("country_conversions")) {
+  if ("country_to_iso2" %in% names(units)) {
     # indicator_search_id_rhomis_dataset
     indicator_data$iso_country_code <- toupper(switch_units(
       data_to_convert = rhomis_data$country,
-      unit_tibble = units$country_conversions,
+      unit_tibble = units$country_to_iso2,
       id_vector = rhomis_data[["id_rhomis_dataset"]]
     ))
     # Provide this warning if the user has not converted their country names
-    if (all(is.na(country_conversions$conversion)) | all(is.na(indicator_data$iso_country_code))) {
+    if (all(is.na(units$country_to_iso2)) | all(is.na(indicator_data$iso_country_code))) {
       warning(paste0(
         "\nHave not provided the ISO country codes for the survey. \nCheck the country names, and check that they are converted",
         "\n---------------------------------------------"
@@ -549,8 +549,8 @@ run_preliminary_calculations <- function(rhomis_data,
   ###############
 
   rhomis_data <- crop_calculations_all(rhomis_data,
-    crop_yield_units_conv_tibble = units$crop_yield_unit_conversions,
-    crop_income_units_conv_tibble = units$crop_price_unit_conversions,
+    crop_yield_units_conv_tibble = units$crop_amount_to_kg,
+    crop_income_units_conv_tibble = units$crop_price_to_lcu_per_kg,
     gender_categories = gender_categories
   )
 
@@ -606,14 +606,15 @@ run_preliminary_calculations <- function(rhomis_data,
   # Livestock calculations
   ###############
 
-  livestock_weights <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = units$livestock_weights)
+  livestock_weight_kg <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = units$livestock_weight_kg)
 
   rhomis_data <- livestock_calculations_all(rhomis_data,
-    livestock_weights_conv_tibble = units$livestock_weights,
-    eggs_amount_unit_conv_tibble = units$eggs_unit_conversion,
-    honey_amount_unit_conv_tibble = units$honey_unit_conversion,
-    milk_amount_unit_conv_tibble = units$milk_unit_conversion,
-    milk_price_time_unit_conv_tibble = units$milk_price_unit_conversion,
+    livestock_weights_conv_tibble = units$livestock_weight_kg,
+    eggs_amount_unit_conv_tibble = units$eggs_amount_to_pieces_per_year,
+    #Why is egg price not included
+    honey_amount_unit_conv_tibble = units$honey_amount_to_l,
+    milk_amount_unit_conv_tibble = units$milk_amount_to_l,
+    milk_price_time_unit_conv_tibble = units$milk_price_to_lcu_per_l,
     gender_categories = gender_categories
     # Need to add livestock weights to the conversions sheets
   )
@@ -702,8 +703,8 @@ run_preliminary_calculations <- function(rhomis_data,
     warning("Unable to calculate livestock TLU, no 'livestock_heads' columns")
   } else {
     #indicator_search_livestock_tlu
-    data <- clean_tlu_column_names(rhomis_data, units$livestock_name_conversions, units$livestock_tlu_conversions)
-    indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units$livestock_name_conversions, units$livestock_tlu_conversions)
+    data <- clean_tlu_column_names(rhomis_data, units$livestock_name_to_std, units$livestock_count_to_tlu)
+    indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units$livestock_name_to_std, units$livestock_count_to_tlu)
   }
 
   ###############
@@ -741,7 +742,7 @@ run_preliminary_calculations <- function(rhomis_data,
   ###############
 
 
-  indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = units$land_unit_conversion))
+  indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = units$land_area_to_ha))
   indicator_data <- dplyr::rename(indicator_data, land_cultivated_ha = land_cultivated)
   indicator_data <- dplyr::rename(indicator_data, land_owned_ha = land_owned)
 
@@ -847,7 +848,7 @@ run_preliminary_calculations <- function(rhomis_data,
 #' Read Folder of CSVs
 #'
 #' A function
-#'  
+#'
 #' Rpackage file: redirectModules.R
 #'
 #' @param folder The folder containing the tables to load

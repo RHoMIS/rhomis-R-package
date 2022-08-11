@@ -1,0 +1,5 @@
+unit_type,id_rhomis_dataset,survey_value,conversion
+milk_price_to_lcu_per_l,6e982919815018fb4540099f74cb968c,day,day
+milk_price_to_lcu_per_l,06cd96468e74bda49a55ba14145ef9ec,day,day
+milk_price_to_lcu_per_l,9ec32b0ca09a4443ebcf11115f2a6f42,day,day
+milk_price_to_lcu_per_l,9ec32b0ca09a4443ebcf11115f2a6f42,year,year

@@ -1,0 +1,9 @@
+unit_type,id_rhomis_dataset,survey_value,conversion
+crop_calories,6e982919815018fb4540099f74cb968c,maize,3650
+crop_calories,6e982919815018fb4540099f74cb968c,cassava,1600
+crop_calories,6e982919815018fb4540099f74cb968c,tomato,210
+crop_calories,6e982919815018fb4540099f74cb968c,irish_potato,580
+crop_calories,06cd96468e74bda49a55ba14145ef9ec,maize,3650
+crop_calories,06cd96468e74bda49a55ba14145ef9ec,cassava,1600
+crop_calories,9ec32b0ca09a4443ebcf11115f2a6f42,maize,3650
+crop_calories,9ec32b0ca09a4443ebcf11115f2a6f42,tomato,210

@@ -20,17 +20,17 @@
 find_unique_values <- function(data) {
 
 
-  # Finding all of the unique values
-  all_values <- as.character(unlist(lapply(data, function(x) unique(x))))
-  # Removing NA column
-  all_values <- all_values[!is.na(all_values)]
-  all_values <- all_values[all_values != "other"]
-  all_values <- all_values[all_values != "other1"]
-  all_values <- all_values[all_values != "other2"]
-  all_values <- all_values[all_values != "other3"]
-  # Finding unique values from all the columns
-  unique_values <- unique(all_values)
-  return(unique_values)
+    # Finding all of the unique values
+    all_values <- as.character(unlist(lapply(data, function(x) unique(x))))
+    # Removing NA column
+    all_values <- all_values[!is.na(all_values)]
+    all_values <- all_values[all_values != "other"]
+    all_values <- all_values[all_values != "other1"]
+    all_values <- all_values[all_values != "other2"]
+    all_values <- all_values[all_values != "other3"]
+    # Finding unique values from all the columns
+    unique_values <- unique(all_values)
+    return(unique_values)
 }
 
 
@@ -77,33 +77,33 @@ find_unique_values <- function(data) {
 #'
 #' # Example code for an individual column
 extract_new_values <- function(data, loop_or_individual_column = "loop", column_name = NA, column_pattern = NA, number_of_loops = NA) {
-  # Extracting new values for a RHoMIS tibble
-  if (loop_or_individual_column == "loop") {
-    if (is.na(column_pattern)) {
-      stop("You have selected to extract new values from loops. Please specify a 'column_pattern' for those loop.")
-    }
-    if (is.na(number_of_loops)) {
-      stop("You have selected to extract new values from loops. Please specify a 'number_of_loops' for those loops.")
-    }
-    relevant_data <- data[, paste0(column_pattern, "_", 1:number_of_loops)]
-    unique_values <- find_unique_values(relevant_data)
-    return(unique_values)
-  }
-
-  if (loop_or_individual_column == "column") {
-    if (is.na(column_name)) {
-      stop("You have selected to extract new values from a specific column. Please specify a 'column_name'.")
+    # Extracting new values for a RHoMIS tibble
+    if (loop_or_individual_column == "loop") {
+        if (is.na(column_pattern)) {
+            stop("You have selected to extract new values from loops. Please specify a 'column_pattern' for those loop.")
+        }
+        if (is.na(number_of_loops)) {
+            stop("You have selected to extract new values from loops. Please specify a 'number_of_loops' for those loops.")
+        }
+        relevant_data <- data[, paste0(column_pattern, "_", 1:number_of_loops)]
+        unique_values <- find_unique_values(relevant_data)
+        return(unique_values)
     }
 
-    if (column_name %in% colnames(data)) {
-      relevant_data <- data[, column_name]
-      unique_values <- find_unique_values(relevant_data)
+    if (loop_or_individual_column == "column") {
+        if (is.na(column_name)) {
+            stop("You have selected to extract new values from a specific column. Please specify a 'column_name'.")
+        }
+
+        if (column_name %in% colnames(data)) {
+            relevant_data <- data[, column_name]
+            unique_values <- find_unique_values(relevant_data)
+        }
+        if (column_name %in% colnames(data) == F) {
+            return(c(NA))
+        }
+        return(unique_values)
     }
-    if (column_name %in% colnames(data) == F) {
-      return(c(NA))
-    }
-    return(unique_values)
-  }
 }
 
 #' Find the Number of Loops and Extract new values
@@ -123,23 +123,23 @@ extract_new_values <- function(data, loop_or_individual_column = "loop", column_
 find_loop_number_and_extract_values <- function(data, column_pattern) {
 
 
-  # Creating a pattern to search through the column names of the data
-  regex_pattern <- paste0("^", column_pattern, "_[[:digit:]]") # Finding columns which start with "column_pattern_Integer"
+    # Creating a pattern to search through the column names of the data
+    regex_pattern <- paste0("^", column_pattern, "_[[:digit:]]") # Finding columns which start with "column_pattern_Integer"
 
-  # Finding the relevant column names
-  relevant_columns <- grep(regex_pattern, colnames(data), value = T)
-  # The number of loops for this column
-  number_of_loops <- length(relevant_columns)
+    # Finding the relevant column names
+    relevant_columns <- grep(regex_pattern, colnames(data), value = T)
+    # The number of loops for this column
+    number_of_loops <- length(relevant_columns)
 
 
-  if (number_of_loops == 0) {
-    return(c(NA))
-  }
+    if (number_of_loops == 0) {
+        return(c(NA))
+    }
 
-  if (number_of_loops > 0) {
-    new_values <- extract_new_values(data, loop_or_individual_column = "loop", column_pattern = column_pattern, number_of_loops = number_of_loops)
-  }
-  return(new_values)
+    if (number_of_loops > 0) {
+        new_values <- extract_new_values(data, loop_or_individual_column = "loop", column_pattern = column_pattern, number_of_loops = number_of_loops)
+    }
+    return(new_values)
 }
 
 
@@ -303,83 +303,89 @@ find_loop_number_and_extract_values <- function(data, column_pattern) {
 #'   )
 #' ))
 extract_new_core_units <- function(data) {
-  loop_values_to_extract <- c(
-    "crop_name",
-    "livestock_name",
-    "crop_yield_units",
-    "crop_yield_units_other",
-    "crop_sold_price_quantityunits",
-    "crop_price_quantityunits_other",
-    "milk_units",
-    "milk_amount_units_other",
-    "milk_sold_price_timeunits",
-    "milk_amount_time_units_other",
-    "bees_honey_production_units",
-    "bees_honey_production_units_other",
-    "eggs_units",
-    "eggs_amount_units_other",
-    "eggs_sold_price_timeunits",
-    "eggs_sold_price_timeunits_other"
-  )
+    loop_values_to_extract <- c(
+        "crop_name",
+        "livestock_name",
+        "crop_yield_units",
+        "crop_yield_units_other",
+        "crop_sold_price_quantityunits",
+        "crop_price_quantityunits_other",
+        "milk_units",
+        "milk_amount_units_other",
+        "milk_sold_price_timeunits",
+        "milk_amount_time_units_other",
+        "bees_honey_production_units",
+        "bees_honey_production_units_other",
+        "eggs_units",
+        "eggs_amount_units_other",
+        "eggs_sold_price_timeunits",
+        "eggs_sold_price_timeunits_other"
+    )
 
 
-  # Return a named list when applying the function
-  loop_results <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data, x), simplify = FALSE)
+    # Return a named list when applying the function
+    loop_results <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data, x), simplify = FALSE)
 
-  individual_columns_to_extract <- c(
-    "country",
-    "crops_other1",
-    "crops_other2",
-    "crops_other3",
-    "livestock_other1",
-    "livestock_other2",
-    "livestock_other3",
-    "unitland",
-    "areaunits_other",
-    "areaunits_other_own",
-    "areaunits_other_rent",
-    "unitland_owned",
-    "unitland_rentin",
-    "unitland_rentout",
-    "fertiliser_units",
-    "fertiliser_units_other"
-  )
-  column_results <- sapply(individual_columns_to_extract, function(x) extract_new_values(data, loop_or_individual_column = "column", column_name = x), simplify = FALSE)
+    individual_columns_to_extract <- c(
+        "country",
+        "crops_other1",
+        "crops_other2",
+        "crops_other3",
+        "livestock_other1",
+        "livestock_other2",
+        "livestock_other3",
+        "unitland",
+        "areaunits_other",
+        "areaunits_other_own",
+        "areaunits_other_rent",
+        "unitland_owned",
+        "unitland_rentin",
+        "unitland_rentout",
+        "fertiliser_units",
+        "fertiliser_units_other"
+    )
+    column_results <- sapply(individual_columns_to_extract, function(x) extract_new_values(data, loop_or_individual_column = "column", column_name = x), simplify = FALSE)
 
-  # Extracting livestock_heads values
-  livestock_heads_new_values <- grep("livestock_heads_", colnames(data), value = T)
-  livestock_heads_new_values <- livestock_heads_new_values[!grepl("other", livestock_heads_new_values)]
-  if (length(livestock_heads_new_values) > 0) {
-    livestock_heads_new_values <- gsub("livestock_heads_", "", livestock_heads_new_values)
-    column_results$livestock_heads <- livestock_heads_new_values
-  }
+    # Extracting livestock_heads values
+    livestock_heads_new_values <- grep("livestock_heads_", colnames(data), value = T)
+    livestock_heads_new_values <- livestock_heads_new_values[!grepl("other", livestock_heads_new_values)]
+    if (length(livestock_heads_new_values) > 0) {
+        livestock_heads_new_values <- gsub("livestock_heads_", "", livestock_heads_new_values)
+        column_results$livestock_heads <- livestock_heads_new_values
+    }
 
-  categories_to_merge <- list(
-    country = c("country"),
-    crop_name = c("crop_name", "crops_other1", "crops_other2", "crops_other3"),
-    livestock_name = c("livestock_name", "livestock_other1", "livestock_other2", "livestock_other3", "livestock_heads"),
-    crop_yield_units = c("crop_yield_units_other"),
-    crop_sold_price_quantityunits = c("crop_price_quantityunits_other"),
-    unitland = c("unitland", "unitland_owned", "unitland_rentin", "unitland_rentout", "areaunits_other_own", "areaunits_other_rent", "areaunits_other"),
-    milk_units = c("milk_amount_units_other"),
-    milk_sold_price_timeunits = c("milk_amount_time_units_other"),
-    bees_honey_production_units = c("bees_honey_production_units_other"),
-    eggs_units = c("eggs_amount_units_other"),
-    eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
-    fertiliser_units = c("fertiliser_units_other")
-  )
-
-
-
-  final_result <- c(loop_results, column_results)
+    categories_to_merge <- list(
+        country = c("country"),
+        crop_name = c("crop_name", "crops_other1", "crops_other2", "crops_other3"),
+        livestock_name = c("livestock_name", "livestock_other1", "livestock_other2", "livestock_other3", "livestock_heads"),
+        crop_yield_units = c("crop_yield_units_other"),
+        crop_sold_price_quantityunits = c("crop_price_quantityunits_other"),
+        unitland = c("unitland", "unitland_owned", "unitland_rentin", "unitland_rentout", "areaunits_other_own", "areaunits_other_rent", "areaunits_other"),
+        milk_units = c("milk_amount_units_other"),
+        milk_sold_price_timeunits = c("milk_amount_time_units_other"),
+        bees_honey_production_units = c("bees_honey_production_units_other"),
+        eggs_units = c("eggs_amount_units_other"),
+        eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
+        fertiliser_units = c("fertiliser_units_other")
+    )
 
 
-
-  final_result <- sapply(names(categories_to_merge), function(x) merge_and_simplify_core_values(final_result, main_item = x, categories_to_merge), simplify = FALSE)
+    final_result <- c(loop_results, column_results)
 
 
 
-  return(final_result)
+    final_result <- sapply(names(categories_to_merge), function(x) merge_and_simplify_core_values(final_result, main_item = x, categories_to_merge), simplify = FALSE)
+
+    name_conversions <- pkg.env$unit_file_names
+
+    names(final_result) <- lapply(names(final_result), function(unit_name){
+        if (unit_name %in% names(name_conversions)){
+            return(as.character(name_conversions[names(name_conversions)==unit_name]))
+        }
+    }) %>% unlist()
+
+
+    return(final_result)
 }
 
 #' Extract names of Values to Receive Calorie Conversions
@@ -393,31 +399,31 @@ extract_new_core_units <- function(data) {
 #'
 #' @examples
 extract_calorie_values <- function(data) {
-  loop_values_to_extract <- c(
-    "crop_name",
-    "livestock_name"
-  )
+    loop_values_to_extract <- c(
+        "crop_name",
+        "livestock_name"
+    )
 
-  # Return a named list when applying the function
-  final_result <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data, x), simplify = FALSE)
+    # Return a named list when applying the function
+    final_result <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data, x), simplify = FALSE)
 
-  if ("crop_name" %in% names(final_result)) {
-    final_result$crop_calories <- final_result[["crop_name"]]
-  }
+    if ("crop_name" %in% names(final_result)) {
+        final_result$crop_calories <- final_result[["crop_name"]]
+    }
 
-  if ("livestock_name" %in% names(final_result)) {
-    final_result$milk_calories <- final_result[["livestock_name"]]
+    if ("livestock_name" %in% names(final_result)) {
+        final_result$milk_calories <- final_result[["livestock_name"]]
 
-    final_result$eggs_calories <- final_result[["livestock_name"]]
-    final_result$honey_calories <- final_result[["livestock_name"]]
+        final_result$eggs_calories <- final_result[["livestock_name"]]
+        final_result$honey_calories <- final_result[["livestock_name"]]
 
-    final_result$meat_calories <- final_result[["livestock_name"]]
-  }
+        final_result$meat_calories <- final_result[["livestock_name"]]
+    }
 
-  final_result <- final_result[names(final_result) %in% c("livestock_name", "crop_name") == F]
+    final_result <- final_result[names(final_result) %in% c("livestock_name", "crop_name") == F]
 
 
-  return(final_result)
+    return(final_result)
 }
 
 
@@ -435,31 +441,31 @@ extract_calorie_values <- function(data) {
 #'
 #' @examples
 extract_values_by_project <- function(data) {
-  if ("id_rhomis_dataset" %in% colnames(data) == F) {
-    stop("Could not find the individual project ID generated for this project")
-  }
+    if ("id_rhomis_dataset" %in% colnames(data) == F) {
+        stop("Could not find the individual project ID generated for this project")
+    }
 
-  # isolate list of unique project ids
-  projects <- unique(data$id_rhomis_dataset)
+    # isolate list of unique project ids
+    projects <- unique(data$id_rhomis_dataset)
 
-  # create a list of units dataframes, one per project id
-  units_by_project_by_unit_type <- sapply(projects, function(x) extract_units_data_frames(data[data$id_rhomis_dataset == x, ]), simplify = F)
+    # create a list of units dataframes, one per project id
+    units_by_project_by_unit_type <- sapply(projects, function(x) extract_units_data_frames(data[data$id_rhomis_dataset == x, ]), simplify = F)
 
-  units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project) {
-    lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type) {
-      conversion_table <- units_by_project_by_unit_type[[project]][[conversion_type]]
-      conversion_table$unit_type <- conversion_type
-      conversion_table$id_rhomis_dataset <- project
-      return(conversion_table)
+    units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project) {
+        lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type) {
+            conversion_table <- units_by_project_by_unit_type[[project]][[conversion_type]]
+            conversion_table$unit_type <- conversion_type
+            conversion_table$id_rhomis_dataset <- project
+            return(conversion_table)
+        })
     })
-  })
 
-  units_by_project_merged_df <- dplyr::bind_rows(units_by_project_merged)
-  final_units_list <- sapply(unique(units_by_project_merged_df$unit_type), function(unit_type) {
-    return(units_by_project_merged_df[units_by_project_merged_df$unit_type == unit_type, ])
-  }, simplify = F)
+    units_by_project_merged_df <- dplyr::bind_rows(units_by_project_merged)
+    final_units_list <- sapply(unique(units_by_project_merged_df$unit_type), function(unit_type) {
+        return(units_by_project_merged_df[units_by_project_merged_df$unit_type == unit_type, ])
+    }, simplify = F)
 
-  return(final_units_list)
+    return(final_units_list)
 }
 
 
@@ -477,27 +483,27 @@ extract_values_by_project <- function(data) {
 #'
 #' @examples
 extract_calorie_values_by_project <- function(data) {
-  if ("id_rhomis_dataset" %in% colnames(data) == F) {
-    stop("Could not find the individual project ID generated for this project")
-  }
-  projects <- unique(data$id_rhomis_dataset)
-  units_by_project_by_unit_type <- sapply(projects, function(x) extract_calorie_conversion_data_frames(data[data$id_rhomis_dataset == x, ]), simplify = F)
+    if ("id_rhomis_dataset" %in% colnames(data) == F) {
+        stop("Could not find the individual project ID generated for this project")
+    }
+    projects <- unique(data$id_rhomis_dataset)
+    units_by_project_by_unit_type <- sapply(projects, function(x) extract_calorie_conversion_data_frames(data[data$id_rhomis_dataset == x, ]), simplify = F)
 
-  units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project) {
-    lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type) {
-      conversion_table <- units_by_project_by_unit_type[[project]][[conversion_type]]
-      conversion_table$unit_type <- conversion_type
-      conversion_table$id_rhomis_dataset <- project
-      return(conversion_table)
+    units_by_project_merged <- lapply(names(units_by_project_by_unit_type), function(project) {
+        lapply(names(units_by_project_by_unit_type[[project]]), function(conversion_type) {
+            conversion_table <- units_by_project_by_unit_type[[project]][[conversion_type]]
+            conversion_table$unit_type <- conversion_type
+            conversion_table$id_rhomis_dataset <- project
+            return(conversion_table)
+        })
     })
-  })
 
-  units_by_project_merged_df <- dplyr::bind_rows(units_by_project_merged)
-  final_units_list <- sapply(unique(units_by_project_merged_df$unit_type), function(unit_type) {
-    units_by_project_merged_df[units_by_project_merged_df$unit_type == unit_type, ]
-  }, simplify = F)
+    units_by_project_merged_df <- dplyr::bind_rows(units_by_project_merged)
+    final_units_list <- sapply(unique(units_by_project_merged_df$unit_type), function(unit_type) {
+        units_by_project_merged_df[units_by_project_merged_df$unit_type == unit_type, ]
+    }, simplify = F)
 
-  return(final_units_list)
+    return(final_units_list)
 }
 
 
@@ -597,15 +603,15 @@ extract_calorie_values_by_project <- function(data) {
 #'   categories_to_merge
 #' )
 merge_and_simplify_core_values <- function(list_of_unique_core_values, main_item, categories_to_merge) {
-  extras_categories_merge <- categories_to_merge[[main_item]]
-  extra_values_to_merge <- list_of_unique_core_values[extras_categories_merge]
-  extra_values_to_merge <- unlist(extra_values_to_merge)
-  extra_values_to_merge <- unique(extra_values_to_merge)
+    extras_categories_merge <- categories_to_merge[[main_item]]
+    extra_values_to_merge <- list_of_unique_core_values[extras_categories_merge]
+    extra_values_to_merge <- unlist(extra_values_to_merge)
+    extra_values_to_merge <- unique(extra_values_to_merge)
 
-  list_of_unique_core_values[[main_item]] <- c(list_of_unique_core_values[[main_item]], extra_values_to_merge)
-  list_of_unique_core_values[[main_item]] <- unique(list_of_unique_core_values[[main_item]])
+    list_of_unique_core_values[[main_item]] <- c(list_of_unique_core_values[[main_item]], extra_values_to_merge)
+    list_of_unique_core_values[[main_item]] <- unique(list_of_unique_core_values[[main_item]])
 
-  return(list_of_unique_core_values[[main_item]])
+    return(list_of_unique_core_values[[main_item]])
 }
 
 #' Write Core Values to File
@@ -675,8 +681,8 @@ merge_and_simplify_core_values <- function(list_of_unique_core_values, main_item
 #'
 #' # write_core_values_to_convert_to_file(data, "My/Folder)
 write_core_values_to_convert_to_file <- function(data, folder) {
-  new_units <- extract_units_data_frames(data)
-  sapply(names(new_units), function(x) write_new_values_to_file(specific_value = x, list_of_tibbles = new_units, folder = folder), simplify = FALSE)
+    new_units <- extract_units_data_frames(data)
+    sapply(names(new_units), function(x) write_new_values_to_file(specific_value = x, list_of_tibbles = new_units, folder = folder), simplify = FALSE)
 }
 
 
@@ -691,10 +697,10 @@ write_core_values_to_convert_to_file <- function(data, folder) {
 #'
 #' @examples
 extract_units_data_frames <- function(data) {
-  new_units <- extract_new_core_units(data)
-  new_units <- sapply(new_units, function(x) convert_new_values_to_tibble(x), simplify = FALSE)
+    new_units <- extract_new_core_units(data)
+    new_units <- sapply(new_units, function(x) convert_new_values_to_tibble(x), simplify = FALSE)
 
-  return(new_units)
+    return(new_units)
 }
 
 
@@ -709,10 +715,10 @@ extract_units_data_frames <- function(data) {
 #'
 #' @examples
 extract_calorie_conversion_data_frames <- function(data) {
-  new_units <- extract_calorie_values(data)
-  new_units <- sapply(new_units, function(x) convert_new_values_to_tibble(x), simplify = FALSE)
+    new_units <- extract_calorie_values(data)
+    new_units <- sapply(new_units, function(x) convert_new_values_to_tibble(x), simplify = FALSE)
 
-  return(new_units)
+    return(new_units)
 }
 
 
@@ -745,10 +751,10 @@ extract_calorie_conversion_data_frames <- function(data) {
 convert_new_values_to_tibble <- function(new_values) {
 
 
-  # new_values <- c("x","y","z")
-  data_to_return <- tibble::as_tibble(list("survey_value" = new_values, "conversion" = rep(NA, length(new_values))))
+    # new_values <- c("x","y","z")
+    data_to_return <- tibble::as_tibble(list("survey_value" = new_values, "conversion" = rep(NA, length(new_values))))
 
-  return(data_to_return)
+    return(data_to_return)
 }
 
 
@@ -784,6 +790,6 @@ convert_new_values_to_tibble <- function(new_values) {
 #'
 #' # write_new_values_to_file(specific_value,list_of_tibbles,folder)
 write_new_values_to_file <- function(specific_value, list_of_tibbles, folder) {
-  data <- list_of_tibbles[[specific_value]]
-  readr::write_csv(data, paste0(folder, "/", specific_value, ".csv"))
+    data <- list_of_tibbles[[specific_value]]
+    readr::write_csv(data, paste0(folder, "/", specific_value, ".csv"))
 }
