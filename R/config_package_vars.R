@@ -48,62 +48,72 @@ set_conversion_file_names <- function(){
                "bees_honey_production_units" = "honey_amount_to_l",
                "eggs_units" = "eggs_amount_to_pieces_per_year",
                "eggs_sold_price_timeunits" = "eggs_price_to_lcu_per_year",
-               "fertiliser_units" = "fertiliser_amount_to_kg",
-               "livestock_tlu" = "livestock_count_to_tlu",
-               "livestock_weight_kg" = "livestock_weight_kg" #Isn't collected in data but needs to be converted
+               "fertiliser_units" = "fertiliser_amount_to_kg"
+
            ),
            envir = pkg.env
     )
 
 }
 
+set_secondary_units <- function(){
+    assign("secondary_units",
+           list(
+              "livestock_count_to_tlu"="livestock_name_to_std",
 
-set_local_units_file_list <- function() {
-  assign("local_units_file_list",
-    list(
-      "country" = "country_conversions",
-      "crop_name" = "crop_name_conversions",
-      "livestock_name" = "livestock_name_conversions",
-      "crop_yield_units" = "crop_yield_unit_conversions",
-      "crop_sold_price_quantityunits" = "crop_price_unit_conversions",
-      "unitland" = "land_unit_conversion",
-      "milk_units" = "milk_unit_conversion",
-      "milk_sold_price_timeunits" = "milk_price_unit_conversion",
-      "bees_honey_production_units" = "honey_unit_conversion",
-      "eggs_units" = "eggs_unit_conversion",
-      "eggs_sold_price_timeunits" = "eggs_price_unit_conversion",
-      "fertiliser_units" = "fertiliser_unit_conversion",
-      "livestock_tlu" = "livestock_tlu_conversions"
-    ),
-    envir = pkg.env
-  )
-
-  # Conversion from the file name
-  # to the name of the conversion
-  # within the R package.
-
-  # file = package_table
-  assign("local_units_file_tibble_list",
-    list(
-      "country" = "country",
-      "crop_name" = "crop_name",
-      "livestock_name" = "livestock_name",
-      "crop_yield_units" = "crop_yield_units",
-      "crop_sold_price_quantityunits" = "crop_price_units",
-      "unitland" = "land_area_units",
-      "milk_units" = "milk_amount_units",
-      "milk_sold_price_timeunits" = "milk_price_time_units",
-      "bees_honey_production_units" = "honey_amount_units",
-      "eggs_units" = "eggs_amount_units",
-      "eggs_sold_price_timeunits" = "eggs_price_time_units",
-      "fertiliser_units" = "fertiliser_units",
-      "livestock_tlu" = "livestock_tlu"
-    ),
-    envir = pkg.env
-  )
-
-  return()
+              "livestock_weight_kg"="livestock_name_to_std" #Isn't collected in data but needs to be converted
+           ),
+           envir = pkg.env
+    )
 }
+
+
+# set_local_units_file_list <- function() {
+#   assign("local_units_file_list",
+#     list(
+#       "country" = "country_conversions",
+#       "crop_name" = "crop_name_conversions",
+#       "livestock_name" = "livestock_name_conversions",
+#       "crop_yield_units" = "crop_yield_unit_conversions",
+#       "crop_sold_price_quantityunits" = "crop_price_unit_conversions",
+#       "unitland" = "land_unit_conversion",
+#       "milk_units" = "milk_unit_conversion",
+#       "milk_sold_price_timeunits" = "milk_price_unit_conversion",
+#       "bees_honey_production_units" = "honey_unit_conversion",
+#       "eggs_units" = "eggs_unit_conversion",
+#       "eggs_sold_price_timeunits" = "eggs_price_unit_conversion",
+#       "fertiliser_units" = "fertiliser_unit_conversion",
+#       "livestock_tlu" = "livestock_tlu_conversions"
+#     ),
+#     envir = pkg.env
+#   )
+#
+#   # Conversion from the file name
+#   # to the name of the conversion
+#   # within the R package.
+#
+#   # file = package_table
+#   assign("local_units_file_tibble_list",
+#     list(
+#       "country" = "country",
+#       "crop_name" = "crop_name",
+#       "livestock_name" = "livestock_name",
+#       "crop_yield_units" = "crop_yield_units",
+#       "crop_sold_price_quantityunits" = "crop_price_units",
+#       "unitland" = "land_area_units",
+#       "milk_units" = "milk_amount_units",
+#       "milk_sold_price_timeunits" = "milk_price_time_units",
+#       "bees_honey_production_units" = "honey_amount_units",
+#       "eggs_units" = "eggs_amount_units",
+#       "eggs_sold_price_timeunits" = "eggs_price_time_units",
+#       "fertiliser_units" = "fertiliser_units",
+#       "livestock_tlu" = "livestock_tlu"
+#     ),
+#     envir = pkg.env
+#   )
+#
+#   return()
+# }
 
 
 set_produce_list <- function() {

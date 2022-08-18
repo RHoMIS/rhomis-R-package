@@ -1625,7 +1625,7 @@ livestock_calculations_all <- function(data,
   if (is.null(livestock_weights_conv_tibble)) {
     livestock_weights_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = livestock_weights
+      unit_conv_tibble = livestock_weight_kg
     )
   }
 

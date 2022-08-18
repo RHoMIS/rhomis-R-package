@@ -703,8 +703,9 @@ run_preliminary_calculations <- function(rhomis_data,
     warning("Unable to calculate livestock TLU, no 'livestock_heads' columns")
   } else {
     #indicator_search_livestock_tlu
-    data <- clean_tlu_column_names(rhomis_data, units$livestock_name_to_std, units$livestock_count_to_tlu)
-    indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units$livestock_name_to_std, units$livestock_count_to_tlu)
+    livestock_tlu_conv <- make_per_project_conversion_tibble(rhomis_data[["id_rhomis_dataset"]],livestock_count_to_tlu)
+    data <- clean_tlu_column_names(rhomis_data, units$livestock_name_to_std,livestock_tlu_conv)
+    indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units$livestock_name_to_std, livestock_tlu_conv)
   }
 
   ###############

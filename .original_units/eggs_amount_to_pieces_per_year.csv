@@ -1,6 +1,0 @@
-unit_type,id_rhomis_dataset,survey_value,conversion
-eggs_amount_to_pieces_per_year,6e982919815018fb4540099f74cb968c,pieces/day,365
-eggs_amount_to_pieces_per_year,6e982919815018fb4540099f74cb968c,pieces/animal/day,pieces/animal/day
-eggs_amount_to_pieces_per_year,06cd96468e74bda49a55ba14145ef9ec,pieces/animal/day,pieces/animal/day
-eggs_amount_to_pieces_per_year,06cd96468e74bda49a55ba14145ef9ec,pieces/day,365
-eggs_amount_to_pieces_per_year,9ec32b0ca09a4443ebcf11115f2a6f42,pieces/month,13.0357142857143

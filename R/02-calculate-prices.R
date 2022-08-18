@@ -28,6 +28,7 @@ get_secondary_conversions <- function(
     crop_outputs <- list()
     livestock_outputs <- list()
 
+
     # Check for the number of crop loops
     # and identify the "crop_name" columns
     number_crop_loops <- find_number_of_loops(rhomis_data, "crop_name")
@@ -38,9 +39,9 @@ get_secondary_conversions <- function(
 
     # If there are no "crop_name" columns missing. Take the entries
     # in crop_name and replace them using crop_name conversions
-    if (length(crop_name_in_data) == 0 & "crop_name_conversions" %in% names(units_and_conversions)) {
+    if (length(crop_name_in_data) == 0 & "crop_name_to_std" %in% names(units_and_conversions)) {
         rhomis_data[crop_loops] <- switch_units(rhomis_data[crop_loops],
-                                                unit_tibble = units_and_conversions$crop_name_conversions,
+                                                unit_tibble = units_and_conversions$crop_name_to_std,
                                                 rhomis_data[["id_rhomis_dataset"]]
         )
     }
@@ -52,12 +53,14 @@ get_secondary_conversions <- function(
     # Checks if columns are missing, if columns do not exist then they are returned
     livestock_name_in_data <- check_columns_in_data(rhomis_data, loop_columns = "livestock_name")
 
-    if (length(livestock_name_in_data) == 0) {
+    if (length(livestock_name_in_data) == 0 & "livestock_name_to_std" %in% names(units_and_conversions)) {
+
         rhomis_data[livestock_loops] <- switch_units(rhomis_data[livestock_loops],
-                                                     unit_tibble = units_and_conversions$livestock_name_conversions,
+                                                     unit_tibble = units_and_conversions$livestock_name_to_std,
                                                      id_vector = rhomis_data[["id_rhomis_dataset"]]
         )
     }
+
 
     # Make sure "other" units are considered
     rhomis_data <- replace_units_with_other_all(rhomis_data)
@@ -69,8 +72,8 @@ get_secondary_conversions <- function(
 
     rhomis_data <- crop_calculations_all(
         rhomis_data,
-        crop_yield_units_conv_tibble = units$crop_yield_unit_conversions,
-        crop_income_units_conv_tibble = units$crop_price_unit_conversions,
+        crop_yield_units_conv_tibble = units_and_conversions$crop_amount_to_kg,
+        crop_income_units_conv_tibble = units_and_conversions$crop_price_to_lcu_per_kg,
         gender_categories = gender_categories
     )
 
@@ -113,14 +116,17 @@ get_secondary_conversions <- function(
     #         )
 
 
-    livestock_weights <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = units$livestock_weights)
+    livestock_weights <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = units_and_conversions$livestock_weights)
+
+
 
     rhomis_data <- livestock_calculations_all(rhomis_data,
-                                              livestock_weights_conv_tibble = units$livestock_weights,
-                                              eggs_amount_unit_conv_tibble = units$eggs_unit_conversion,
-                                              honey_amount_unit_conv_tibble = units$honey_unit_conversion,
-                                              milk_amount_unit_conv_tibble = units$milk_unit_conversion,
-                                              milk_price_time_unit_conv_tibble = units$milk_price_unit_conversion,
+                                              livestock_weights_conv_tibble =  make_per_project_conversion_tibble(rhomis_data[["id_rhomis_dataset"]],livestock_weight_kg),
+                                              eggs_amount_unit_conv_tibble = units_and_conversions$eggs_amount_to_pieces_per_year,
+                                              eggs_price_time_units_conv_tibble = units_and_conversions$eggs_price_to_lcu_per_year,
+                                              honey_amount_unit_conv_tibble = units_and_conversions$honey_amount_to_l,
+                                              milk_amount_unit_conv_tibble = units_and_conversions$milk_amount_to_l,
+                                              milk_price_time_unit_conv_tibble = units_and_conversions$milk_price_to_lcu_per_l,
                                               gender_categories = gender_categories
                                               # Need to add livestock weights to the conversions sheets
     )
@@ -137,13 +143,23 @@ get_secondary_conversions <- function(
     )
 
     missing_livestock_columns <- check_columns_in_data(rhomis_data,
-                                                       loop_columns = livestock_loop_columns,
-                                                       warning_message = "Could not write extra outputs for these columns"
+                                                       loop_columns = price_datasets,
+                                                       warning_message = "Could not get prices for these products"
     )
 
 
 
     for (price_data_set in price_datasets) {
+
+        if (price_data_set %in% missing_livestock_columns==T){
+            next()
+        }
+        livestock_data <- map_to_wide_format(
+            data = rhomis_data,
+            name_column = "livestock_name",
+            column_prefixes = price_data_set,
+            types = rep("num")
+        )
         if (price_data_set %in% names(livestock_data)) {
             price_df <- livestock_data[[price_data_set]]
             price_df$id_rhomis_dataset <- rhomis_data[["id_rhomis_dataset"]]
@@ -156,14 +172,37 @@ get_secondary_conversions <- function(
             mean_price_df$unit_type<- paste0("mean_", price_data_set)
             prices[[paste0("mean_", price_data_set)]] <- mean_price_df
         }
+
     }
 
 
 
     # Adding Extra units to convert
     # TLU Conversions
-    # Livestock Weights
     # Calorie Conversions
+
+    calorie_conversions_dfs <- check_existing_calorie_conversions(rhomis_data)
+    calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = list(
+        "staple_crop" = c("maize")
+    ))
+
+
+    # Livestock Weights, TLU conversions, and anything
+    # else that relies
+    secondary_units <- extract_secondary_units(
+        units_and_conversions
+
+    )
+
+
+    # Assemble all outputs ready to write to file
+    results <- list(
+        prices=prices,
+        calorie_conversions=calorie_conversions_dfs,
+        secondary_conversions=secondary_units
+    )
+
+
 
 
 
