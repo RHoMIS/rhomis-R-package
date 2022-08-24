@@ -545,12 +545,13 @@ write_units_to_folder <- function(list_of_df,
 #'
 #' @param id_rhomis_dataset A vector including the ID of the RHoMIS datasets being processed
 #' @param units_folder The path to the folder containing the units to load
+#' @param unit_type Whether you are reading "primary" or "secondary" units.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-load_local_units <- function(units_folder, id_rhomis_dataset) {
+load_local_units <- function(units_folder, id_rhomis_dataset, unit_type="primary") {
 
     units_and_conversions <- list()
 
@@ -558,6 +559,14 @@ load_local_units <- function(units_folder, id_rhomis_dataset) {
     file_names <- list.files(units_folder)
 
     # loop over the possible list of unit conversion csv file names
+    if (unit_type=="primary"){
+        unit_list <- as.character(pkg.env$unit_file_names)
+    }
+
+    if (unit_type=="secondary"){
+        unit_list <- names(pkg.env$secondary_units)
+    }
+
     for (unit_file in pkg.env$unit_file_names) {
 
         # check that this list of files exists in the base_folder

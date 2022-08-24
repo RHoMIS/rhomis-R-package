@@ -784,7 +784,6 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' @param project_name The name of the project to generate data for
 #' @param form_name The name of the form to generate data for
 #' @param number_of_responses The number of responses to generate
-#' @param isDraft Whether or not the form is a draft or finalized
 #'
 #' @return
 #' @export
@@ -817,6 +816,13 @@ generateData <- function(central_url,
     )
     formID <- forms$xmlFormId[forms$name == form_name]
 
+
+    xls_form <- get_xls_form(central_url,
+                             central_email,
+                             central_password,
+                             projectID,
+                             formID,
+                             isDraft)
 
 
 

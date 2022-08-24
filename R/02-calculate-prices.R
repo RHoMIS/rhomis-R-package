@@ -221,17 +221,61 @@ get_secondary_conversions <- function(
 
 #' Calculate Prices CSV
 #'
+#' @param file_path Filepath to a RHoMIS Survey CSV
+#' @param base_path The folder where you want to save any outputs, usually your current working directory ("./")
+#' @param id_type RHoMIS surveys have form and project IDs. Sometimes the form and project IDs are included as a column in the dataset (id_type="column"), or the IDs are specified by the user at the point of processing (id_type="string")
+#' @param proj_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing project IDs
+#' @param form_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs
+#' @param repeat_columns The types of repeat column name
+#'
 #' Rpackage file: 02-calculate-prices.R
-#'ß
-#' @param project_folder
 #'
 #' @return
 #' @export
 #'
 #' @examples
 calculate_prices_csv <- function(
-        project_folder="./"
+        base_path="./",
+        file_path,
+        id_type=c("string", "column"),
+        proj_id,
+        form_id,
+        repeat_columns = pkg.env$repeat_columns
 ){
+
+    rhomis_data <- load_rhomis_csv(
+        file_path = file_path,
+        id_type = id_type,
+        proj_id = proj_id,
+        form_id = form_id,
+        repeat_columns=repeat_columns
+    )
+
+    units <- load_local_units(paste0( "./units_and_conversions/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+
+    secondary_units <- get_secondary_conversions(
+        rhomis_data=rhomis_data,
+        units_and_conversions=units,
+        gender_categories = pkg.env$gender_categories)
+
+
+    write_list_of_df_to_folder(list_of_df = secondary_units$calorie_conversions,
+                               folder = paste0(base_path, ".original_calorie_conversions"))
+    write_list_of_df_to_folder(list_of_df = secondary_units$calorie_conversions,
+                               folder = paste0(base_path, "calorie_conversions"))
+
+    write_list_of_df_to_folder(list_of_df = secondary_units$prices,
+                               folder = paste0(base_path, ".original_mean_prices_conversions"))
+    write_list_of_df_to_folder(list_of_df = secondary_units$prices,
+                               folder = paste0(base_path, "mean_prices"))
+
+    write_list_of_df_to_folder(list_of_df = secondary_units$secondary_conversions,
+                               folder = paste0(base_path, ".original_second_stage_conversions"))
+    write_list_of_df_to_folder(list_of_df = secondary_units$secondary_conversions,
+                               folder = paste0(base_path, "stage_2_conversions"))
+
+    return(secondary_units)
+
 
 }
 
@@ -240,11 +284,118 @@ calculate_prices_csv <- function(
 #'
 #' Rpackage file: 02-calculate-prices.R
 #'
+#' @param central_url The url of the ODK-central
+#' @param central_email The email of the ODK-central account being used
+#' @param central_password The password of the ODK-central account being used
+#' @param project_name The name of the ODK-central project being processed
+#' @param form_name The name of the ODK-central form being processed
+#' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
+#' @param database The name of the database you would like to save results to
+#' @param isDraft Whether or not the ODK form you are working with is a draft
+#' or a final version. Only relevant if you are processing a project from ODK central
+#' @param repeat_columns ODK has a "repeat loop" structure to ask repeated questions.
+#'
 #' @return
 #' @export
 #'
 #' @examples
-calculate_prices_server <- function(){
+calculate_prices_server <- function(
+        central_url,
+        central_email,
+        central_password,
+        project_name,
+        form_name,
+        database,
+        isDraft,
+        central_test_case = FALSE,
+        repeat_columns = pkg.env$repeat_columns
+        ){
 
 
+    # Load the RHoMIS Dataset from ODK central
+    rhomis_data <- load_rhomis_central(
+        central_url=central_url,
+        central_email=central_email,
+        central_password=central_password,
+        project_name=project_name,
+        form_name=form_name,
+        database=database,
+        isDraft=isDraft,
+        central_test_case=central_test_case,
+        repeat_columns=repeat_columns
+    )
+
+    units <- load_local_units(paste0( "./units_and_conversions/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+
+    secondary_units <- get_secondary_conversions(
+        rhomis_data=rhomis_data,
+        units_and_conversions=units,
+        gender_categories = pkg.env$gender_categories)
+
+    save_multiple_conversions(
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name,
+        conversion_data = secondary_units$prices,
+        conversion_types = names(secondary_units$prices),
+        collection="units_and_conversions",
+        converted_values=T
+    )
+
+    save_multiple_conversions(
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name,
+        conversion_data = secondary_units$prices,
+        conversion_types = names(secondary_units$prices),
+        collection = "unmodified_units"
+    )
+
+    save_multiple_conversions(
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name,
+        conversion_data = secondary_units$calorie_conversions,
+        conversion_types = names(secondary_units$calorie_conversions),
+        collection="units_and_conversions",
+        converted_values=T
+
+    )
+
+    save_multiple_conversions(
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name,
+        conversion_data = secondary_units$calorie_conversions,
+        conversion_types = names(secondary_units$calorie_conversions),
+        collection = "unmodified_units"
+    )
+
+
+    save_multiple_conversions(
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name,
+        conversion_data = secondary_units$secondary_conversions,
+        conversion_types = names(secondary_units$secondary_conversions),
+        collection="units_and_conversions",
+        converted_values=T
+
+    )
+
+    save_multiple_conversions(
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name,
+        conversion_data = secondary_units$secondary_conversions,
+        conversion_types = names(secondary_units$secondary_conversions),
+        collection = "unmodified_units"
+    )
+    return(secondary_units)
 }

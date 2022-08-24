@@ -368,14 +368,12 @@ get_forms <- function(central_url, central_email, central_password, projectID) {
 #' @export
 #'
 #' @examples
-get_xls_form <- function(central_url, central_email, central_password, projectID, formID, form_version = 1, isDraft = T) {
+get_xls_form <- function(central_url, central_email, central_password, projectID, formID,  isDraft = T) {
   if (isDraft) {
     url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft.xlsx")
   } else {
-    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/versions/", form_version, ".xlsx")
+    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, ".xlsx")
   }
-
-
 
   file_destination <- tempfile(fileext = ".xls")
   email_token <- get_email_token(central_url, central_email, central_password)
