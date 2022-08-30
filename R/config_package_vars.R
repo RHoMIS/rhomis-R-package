@@ -3,34 +3,34 @@
 #' to set the default list of repeated columns
 #' when reading in a new rhomis dataset.
 set_repeat_column_names <- function() {
-  assign("repeat_columns",
-    c(
-      "crop_repeat",
-      "livestock_repeat",
-      "offfarm_repeat",
-      "offfarm_income_repeat",
-      "hh_pop_repeat",
-      "hh_rep"
-    ),
-    envir = pkg.env
-  )
+    assign("repeat_columns",
+           c(
+               "crop_repeat",
+               "livestock_repeat",
+               "offfarm_repeat",
+               "offfarm_income_repeat",
+               "hh_pop_repeat",
+               "hh_rep"
+           ),
+           envir = pkg.env
+    )
 
-  return()
+    return()
 
 }
 
 set_gender_categories <- function() {
-  assign("gender_categories",
-    c(
-      "female_youth",
-      "female_adult",
-      "male_youth",
-      "male_adult"
-    ),
-    envir = pkg.env
-  )
+    assign("gender_categories",
+           c(
+               "female_youth",
+               "female_adult",
+               "male_youth",
+               "male_adult"
+           ),
+           envir = pkg.env
+    )
 
-  return()
+    return()
 }
 
 
@@ -59,9 +59,9 @@ set_conversion_file_names <- function(){
 set_secondary_units <- function(){
     assign("secondary_units",
            list(
-              "livestock_count_to_tlu"="livestock_name_to_std",
+               "livestock_count_to_tlu"="livestock_name_to_std",
 
-              "livestock_weight_kg"="livestock_name_to_std" #Isn't collected in data but needs to be converted
+               "livestock_weight_kg"="livestock_name_to_std" #Isn't collected in data but needs to be converted
            ),
            envir = pkg.env
     )
@@ -117,70 +117,70 @@ set_secondary_units <- function(){
 
 
 set_produce_list <- function() {
-  assign("produce_group_list",
-    c(
-      "crop",
-      "eggs",
-      "milk",
-      "honey",
-      "meat"
-    ),
-    envir = pkg.env
-  )
+    assign("produce_group_list",
+           c(
+               "crop",
+               "eggs",
+               "milk",
+               "honey",
+               "meat"
+           ),
+           envir = pkg.env
+    )
 
-  return()
+    return()
 }
 
 set_identification_columns <- function() {
-  assign("identification_column_list",
-    list(
-      # The usual name of the "country" column
-      "country" = "country",
-      # The usual column with unique ids for local datasets
-      "uuid_local" = "_uuid",
-      # The usual column with unique ids for datasets obtained form ODK central
-      "uuid_central" = "KEY"
-    ),
-    envir = pkg.env
-  )
+    assign("identification_column_list",
+           list(
+               # The usual name of the "country" column
+               "country" = "country",
+               # The usual column with unique ids for local datasets
+               "uuid_local" = "_uuid",
+               # The usual column with unique ids for datasets obtained form ODK central
+               "uuid_central" = "KEY"
+           ),
+           envir = pkg.env
+    )
 }
 
 
 set_local_processing_paths <- function() {
-  assign("local_processing_paths",
-    list(
-      "default_base_path" = "./",
-      "original_units" = "original_units",
-      "converted_units" = "converted_units"
-    ),
-    envir = pkg.env
-  )
+    assign("local_processing_paths",
+           list(
+               "default_base_path" = "./",
+               "original_units" = "original_units",
+               "converted_units" = "converted_units"
+           ),
+           envir = pkg.env
+    )
 }
 
 
 set_prices_list <- function() {
-  assign("price_conversion_list",
-    c(
-      "mean_crop_price_lcu_per_kg",
-      "mean_livestock_price_per_animal",
-      "mean_meat_price_per_kg",
-      "mean_milk_price_per_litre",
-      "mean_eggs_price_per_kg",
-      "mean_bees_honey_price_per_kg"
-    ),
-    envir = pkg.env
-  )
+    assign("price_conversion_list",
+           c(
+               "mean_crop_price_lcu_per_kg",
+               "mean_livestock_price_per_animal",
+               "mean_meat_price_per_kg",
+               "mean_milk_price_per_litre",
+               "mean_eggs_price_per_kg",
+               "mean_bees_honey_price_per_kg"
+           ),
+           envir = pkg.env
+    )
 }
 
 set_calories_list <- function() {
-  assign("calorie_conversion_list",
-    c(
-      "crop_calories",
-      "milk_calories",
-      "eggs_calories",
-      "honey_calories",
-      "meat_calories"
-    ),
-    envir = pkg.env
-  )
+    assign("calorie_conversion_list",
+           c(
+               "crop_calories",
+               "milk_calories",
+               "eggs_calories",
+               "honey_calories",
+               "meat_calories"
+           ),
+           envir = pkg.env
+    )
 }

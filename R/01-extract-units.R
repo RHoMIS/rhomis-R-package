@@ -67,13 +67,13 @@ extract_units_and_conversions_csv <- function(
     )
     units_and_conversions <- extract_units_and_conversions(rhomis_data)
 
-    units_folder_dest <- paste0(base_path, ".original_units")
+    units_folder_dest <- paste0(base_path, ".original_stage_1_conversions")
     write_units_to_folder(
         list_of_df = units_and_conversions,
         folder = units_folder_dest
     )
 
-    new_units_dest <- paste0(base_path, "units_and_conversions")
+    new_units_dest <- paste0(base_path, "conversions_stage_1")
 
 
     write_units_to_folder(

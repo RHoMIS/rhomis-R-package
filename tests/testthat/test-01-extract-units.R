@@ -35,8 +35,8 @@ test_that("Checking that can extract units from a csv dataset", {
 
         base_path <- "./"
         directories <- c(
-            ".original_units/",
-            "units_and_conversions/"
+            ".original_stage_1_conversions/",
+            "conversions_stage_1/"
         )
 
         directories_to_remove <- paste0(base_path, directories)

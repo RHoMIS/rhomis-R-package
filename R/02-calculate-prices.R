@@ -1,14 +1,5 @@
-#' Get Secondary Conversions
-#'
-#' Rpackage file: 02-calculate-prices.R
-#'
-#' @param rhomis_data A "raw" rhomis dataset
-#'
-#' @return
-#' @export
-#'
-#' @examples
-get_secondary_conversions <- function(
+
+crop_and_livestock_calcs_all <- function(
         rhomis_data,
         units_and_conversions,
         gender_categories = pkg.env$gender_categories
@@ -18,7 +9,6 @@ get_secondary_conversions <- function(
     # in the survey with their actual values.
     # We will then replace mispelt values
     # using the conversions tables
-
     # Replace all livestock names with "other"
     rhomis_data <- replace_crop_and_livestock_other(rhomis_data)
 
@@ -197,6 +187,7 @@ get_secondary_conversions <- function(
 
     # Assemble all outputs ready to write to file
     results <- list(
+        rhomis_data=rhomis_data,
         prices=prices,
         calorie_conversions=calorie_conversions_dfs,
         secondary_conversions=secondary_units
@@ -210,6 +201,34 @@ get_secondary_conversions <- function(
 
 
     return(results)
+}
+
+
+#' Get Secondary Conversions
+#'
+#' Rpackage file: 02-calculate-prices.R
+#'
+#' @param rhomis_data A "raw" rhomis dataset
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_secondary_conversions <- function(
+        rhomis_data,
+        units_and_conversions,
+        gender_categories = pkg.env$gender_categories
+){
+
+    results <- crop_and_livestock_calcs_all(
+        rhomis_data=rhomis_data,
+        units_and_conversions=units_and_conversions,
+        gender_categories = gender_categories)
+
+    return(results)
+
+
+
 }
 
 
@@ -251,7 +270,7 @@ calculate_prices_csv <- function(
         repeat_columns=repeat_columns
     )
 
-    units <- load_local_units(paste0( "./units_and_conversions/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+    units <- load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
     secondary_units <- get_secondary_conversions(
         rhomis_data=rhomis_data,
@@ -260,19 +279,19 @@ calculate_prices_csv <- function(
 
 
     write_list_of_df_to_folder(list_of_df = secondary_units$calorie_conversions,
-                               folder = paste0(base_path, ".original_calorie_conversions"))
+                               folder = paste0(base_path, ".original_stage_2_conversions"))
     write_list_of_df_to_folder(list_of_df = secondary_units$calorie_conversions,
-                               folder = paste0(base_path, "calorie_conversions"))
+                               folder = paste0(base_path, "conversions_stage_2"))
 
     write_list_of_df_to_folder(list_of_df = secondary_units$prices,
-                               folder = paste0(base_path, ".original_mean_prices_conversions"))
+                               folder = paste0(base_path, ".original_stage_2_conversions"))
     write_list_of_df_to_folder(list_of_df = secondary_units$prices,
-                               folder = paste0(base_path, "mean_prices"))
+                               folder = paste0(base_path, "conversions_stage_2"))
 
     write_list_of_df_to_folder(list_of_df = secondary_units$secondary_conversions,
-                               folder = paste0(base_path, ".original_second_stage_conversions"))
+                               folder = paste0(base_path, ".original_stage_2_conversions"))
     write_list_of_df_to_folder(list_of_df = secondary_units$secondary_conversions,
-                               folder = paste0(base_path, "stage_2_conversions"))
+                               folder = paste0(base_path, "conversions_stage_2"))
 
     return(secondary_units)
 
@@ -325,7 +344,19 @@ calculate_prices_server <- function(
         repeat_columns=repeat_columns
     )
 
-    units <- load_local_units(paste0( "./units_and_conversions/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+    unit_list <- find_db_units(
+        projectID = project_name,
+        formID = form_name,
+        url = "mongodb://localhost",
+        collection = "projectData",
+        database = database
+    )
+    units <- load_all_db_units(unit_list,
+                               projectID = project_name,
+                               formID = form_name,
+                               database = database,
+                               id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
+    )
 
     secondary_units <- get_secondary_conversions(
         rhomis_data=rhomis_data,
