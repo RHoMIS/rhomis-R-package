@@ -2,9 +2,7 @@
 % Please edit documentation in R/redirectModules.R
 \name{run_preliminary_calculations}
 \alias{run_preliminary_calculations}
-\title{Run preliminary calculations
- 
-Rpackage file: redirectModules.R}
+\title{Run preliminary calculations}
 \usage{
 run_preliminary_calculations(
   rhomis_data,
@@ -20,7 +18,5 @@ run_preliminary_calculations(
 \item{units}{A nested list containing all of the unit conversion tibbles}
 }
 \description{
-Run preliminary calculations
- 
 Rpackage file: redirectModules.R
 }

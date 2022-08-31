@@ -326,7 +326,6 @@ calculate_indicators_local <- function(
         id_type=c("string", "column"),
         proj_id,
         form_id,
-        repeat_columns = pkg.env$repeat_columns,
         gender_categories = pkg.env$gender_categories
 
 ){
@@ -337,8 +336,7 @@ calculate_indicators_local <- function(
         file_path = file_path,
         id_type = id_type,
         proj_id = proj_id,
-        form_id = form_id,
-        repeat_columns=repeat_columns
+        form_id = form_id
     )
 
     units_and_conversions <- load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
@@ -383,12 +381,47 @@ calculate_indicators_local <- function(
 
     # Read in calories
 
-    result <- calculate_indicators(
+    results <- calculate_indicators(
         rhomis_data,
         units_and_conversions,
         prices,
         calories,
         gender_categories)
+
+    lapply(names(results), function(x) {
+        data_to_write <- results[[x]]
+        if(length(data_to_write)==0){
+            return()
+        }
+        if (x == "processed_data" | x == "indicator_data") {
+            new_folder <- paste0(base_path, x)
+            dir.create(new_folder, showWarnings = F)
+
+            path <- paste0(new_folder, "/", x, ".csv")
+            readr::write_csv(data_to_write, path)
+            return()
+        }
+
+
+        if (x == "extra_outputs" |
+            x == "crop_data" |
+            x == "livestock_data" |
+            x == "off_farm_data" ) {
+            new_folder <- paste0(base_path, x)
+
+            write_list_of_df_to_folder(list_of_df = data_to_write, folder = new_folder)
+        }
+
+
+
+
+
+
+    })
+
+
+
+
 
 
 
@@ -406,7 +439,6 @@ calculate_indicators_server <- function(
         database,
         isDraft,
         central_test_case = FALSE,
-        repeat_columns = pkg.env$repeat_columns,
         gender_categories = pkg.env$gender_categories
 ){
     rhomis_data <- load_rhomis_central(
@@ -417,8 +449,7 @@ calculate_indicators_server <- function(
         form_name=form_name,
         database=database,
         isDraft=isDraft,
-        central_test_case=central_test_case,
-        repeat_columns=repeat_columns
+        central_test_case=central_test_case
     )
 
     unit_list <- find_db_units(
@@ -429,10 +460,10 @@ calculate_indicators_server <- function(
         database = database
     )
     units_and_conversions <- load_all_db_units(unit_list,
-                               projectID = project_name,
-                               formID = form_name,
-                               database = database,
-                               id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
+                                               projectID = project_name,
+                                               formID = form_name,
+                                               database = database,
+                                               id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
     )
 
     prices <- sapply(pkg.env$price_conversion_list, function(unit_name){
@@ -477,7 +508,7 @@ calculate_indicators_server <- function(
 
     # Read in calories
 
-    result <- calculate_indicators(
+    results <- calculate_indicators(
         rhomis_data,
         units_and_conversions,
         secondary_units,
@@ -488,7 +519,65 @@ calculate_indicators_server <- function(
 
     )
 
-    return(result)
+
+    lapply(names(results), function(x) {
+        data_to_write <- results[[x]]
+        if(length(data_to_write)==0){
+            return()
+        }
+
+        if (x == "processed_data") {
+            save_data_set_to_db(
+                data = data_to_write,
+                data_type = "processedData",
+                database = database,
+                url = "mongodb://localhost",
+                projectID = project_name,
+                formID = form_name
+            )
+
+
+            return()
+        }
+
+        if (x == "indicator_data") {
+            save_data_set_to_db(
+                data = data_to_write,
+                data_type = "indicatorData",
+                database = database,
+                url = "mongodb://localhost",
+                projectID = project_name,
+                formID = form_name
+            )
+            return()
+        }
+
+
+        if (x == "extra_outputs" |
+            x == "crop_data" |
+            x == "livestock_data" |
+            x == "off_farm_data" ) {
+            save_list_of_df_to_db(
+                list_of_df = data_to_write,
+                projectID = project_name,
+                formID = form_name,
+                database = database,
+                url = "mongodb://localhost"
+            )
+        }
+        set_project_tag_to_true(database = database,
+                                url = url,
+                                projectID=project_name,
+                                formID=form_name,
+                                project_tag="finalIndicators")
+
+    })
+
+
+
+
+
+    return(results)
 
 
 }

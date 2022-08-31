@@ -12,6 +12,7 @@ milk_proportions_all(data)
 \description{
 A function to calculate the numeric proportions of milk
 sold and milk consumed
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

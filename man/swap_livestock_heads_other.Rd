@@ -14,6 +14,7 @@ TLU column names include options for
 "other", this is not interperatable or
 easy to use for analysis. This function addresses
 this
-   
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

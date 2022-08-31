@@ -13,6 +13,7 @@ eggs_amount_calculations(data, unit_conv_tibble = NULL)
 }
 \description{
 Calculate the amount of eggs harvested
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

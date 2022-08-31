@@ -29,7 +29,7 @@ RHoMIS R-package</p>" />
 <meta name="author" content="Léo Gorman" />
 
 
-<meta name="date" content="2022-07-08" />
+<meta name="date" content="2022-08-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -37,7 +37,7 @@ RHoMIS R-package</p>" />
   
   
 
-<link rel="next" href="installation.html"/>
+<link rel="next" href="data-processing.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -142,41 +142,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">RHoMIS R-Package</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a></li>
+<li class="chapter" data-level="2" data-path="data-processing.html"><a href="data-processing.html"><i class="fa fa-check"></i><b>2</b> Data Processing</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#key-concepts"><i class="fa fa-check"></i><b>1.1</b> Key Concepts</a></li>
+<li class="chapter" data-level="2.1" data-path="data-processing.html"><a href="data-processing.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="data-processing.html"><a href="data-processing.html#initial-setup"><i class="fa fa-check"></i><b>2.2</b> Initial Setup</a></li>
+<li class="chapter" data-level="2.3" data-path="data-processing.html"><a href="data-processing.html#stage-1-unit-extraction"><i class="fa fa-check"></i><b>2.3</b> Stage 1: Unit Extraction</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="data-processing.html"><a href="data-processing.html#extracting-units"><i class="fa fa-check"></i><b>2.3.1</b> Extracting Units</a></li>
+<li class="chapter" data-level="2.3.2" data-path="data-processing.html"><a href="data-processing.html#converting-units"><i class="fa fa-check"></i><b>2.3.2</b> Converting Units</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>2</b> Installation</a></li>
-<li class="chapter" data-level="3" data-path="data-processing.html"><a href="data-processing.html"><i class="fa fa-check"></i><b>3</b> Data Processing</a>
+<li class="chapter" data-level="2.4" data-path="data-processing.html"><a href="data-processing.html#stage-2-calculating-prices-preparing-calorie-conversions-and-extracting-secondary-units"><i class="fa fa-check"></i><b>2.4</b> Stage 2: Calculating Prices, Preparing Calorie Conversions, and Extracting Secondary Units</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="data-processing.html"><a href="data-processing.html#dealing-with-units"><i class="fa fa-check"></i><b>3.1</b> Dealing with Units</a>
-<ul>
-<li class="chapter" data-level="3.1.1" data-path="data-processing.html"><a href="data-processing.html#extracting-units"><i class="fa fa-check"></i><b>3.1.1</b> Extracting Units</a></li>
-<li class="chapter" data-level="3.1.2" data-path="data-processing.html"><a href="data-processing.html#converting-units"><i class="fa fa-check"></i><b>3.1.2</b> Converting Units</a></li>
+<li class="chapter" data-level="2.4.1" data-path="data-processing.html"><a href="data-processing.html#converting-calories-prices-and-other-units"><i class="fa fa-check"></i><b>2.4.1</b> Converting Calories, Prices, and Other Units</a></li>
 </ul></li>
-<li class="chapter" data-level="3.2" data-path="data-processing.html"><a href="data-processing.html#calculating-prices-and-preparing-calorie-conversions"><i class="fa fa-check"></i><b>3.2</b> Calculating Prices and Preparing Calorie Conversions</a>
+<li class="chapter" data-level="2.5" data-path="data-processing.html"><a href="data-processing.html#stage-3-calculating-indicators"><i class="fa fa-check"></i><b>2.5</b> Stage 3: Calculating Indicators</a></li>
+<li class="chapter" data-level="2.6" data-path="data-processing.html"><a href="data-processing.html#outputs"><i class="fa fa-check"></i><b>2.6</b> Outputs</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="data-processing.html"><a href="data-processing.html#converting-units-1"><i class="fa fa-check"></i><b>3.2.1</b> Converting Units</a></li>
-</ul></li>
-<li class="chapter" data-level="3.3" data-path="data-processing.html"><a href="data-processing.html#processing-the-data-part-2"><i class="fa fa-check"></i><b>3.3</b> Processing the Data (Part 2)</a></li>
-<li class="chapter" data-level="3.4" data-path="data-processing.html"><a href="data-processing.html#outputs"><i class="fa fa-check"></i><b>3.4</b> Outputs</a>
-<ul>
-<li class="chapter" data-level="3.4.1" data-path="data-processing.html"><a href="data-processing.html#indicators"><i class="fa fa-check"></i><b>3.4.1</b> Indicators</a></li>
-<li class="chapter" data-level="3.4.2" data-path="data-processing.html"><a href="data-processing.html#crop-data"><i class="fa fa-check"></i><b>3.4.2</b> Crop Data</a></li>
-<li class="chapter" data-level="3.4.3" data-path="data-processing.html"><a href="data-processing.html#livestock-data"><i class="fa fa-check"></i><b>3.4.3</b> Livestock Data</a></li>
-<li class="chapter" data-level="3.4.4" data-path="data-processing.html"><a href="data-processing.html#off-farm-data"><i class="fa fa-check"></i><b>3.4.4</b> Off-farm Data</a></li>
-<li class="chapter" data-level="3.4.5" data-path="data-processing.html"><a href="data-processing.html#consumption-calories"><i class="fa fa-check"></i><b>3.4.5</b> Consumption Calories</a></li>
-<li class="chapter" data-level="3.4.6" data-path="data-processing.html"><a href="data-processing.html#consumption-value"><i class="fa fa-check"></i><b>3.4.6</b> Consumption value</a></li>
-<li class="chapter" data-level="3.4.7" data-path="data-processing.html"><a href="data-processing.html#gender-control"><i class="fa fa-check"></i><b>3.4.7</b> Gender Control</a></li>
+<li class="chapter" data-level="2.6.1" data-path="data-processing.html"><a href="data-processing.html#indicators"><i class="fa fa-check"></i><b>2.6.1</b> Indicators</a></li>
+<li class="chapter" data-level="2.6.2" data-path="data-processing.html"><a href="data-processing.html#crop-data"><i class="fa fa-check"></i><b>2.6.2</b> Crop Data</a></li>
+<li class="chapter" data-level="2.6.3" data-path="data-processing.html"><a href="data-processing.html#livestock-data"><i class="fa fa-check"></i><b>2.6.3</b> Livestock Data</a></li>
+<li class="chapter" data-level="2.6.4" data-path="data-processing.html"><a href="data-processing.html#off-farm-data"><i class="fa fa-check"></i><b>2.6.4</b> Off-farm Data</a></li>
+<li class="chapter" data-level="2.6.5" data-path="data-processing.html"><a href="data-processing.html#consumption-calories"><i class="fa fa-check"></i><b>2.6.5</b> Consumption Calories</a></li>
+<li class="chapter" data-level="2.6.6" data-path="data-processing.html"><a href="data-processing.html#consumption-value"><i class="fa fa-check"></i><b>2.6.6</b> Consumption value</a></li>
+<li class="chapter" data-level="2.6.7" data-path="data-processing.html"><a href="data-processing.html#gender-control"><i class="fa fa-check"></i><b>2.6.7</b> Gender Control</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="indicators-explained.html"><a href="indicators-explained.html"><i class="fa fa-check"></i><b>4</b> Indicators Explained</a>
+<li class="chapter" data-level="3" data-path="indicators-explained.html"><a href="indicators-explained.html"><i class="fa fa-check"></i><b>3</b> Indicators Explained</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="indicators-explained.html"><a href="indicators-explained.html#where-to-start"><i class="fa fa-check"></i><b>4.1</b> Where to start</a></li>
+<li class="chapter" data-level="3.1" data-path="indicators-explained.html"><a href="indicators-explained.html#outputs-1"><i class="fa fa-check"></i><b>3.1</b> Outputs</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="indicators-explained.html"><a href="indicators-explained.html#indicators-1"><i class="fa fa-check"></i><b>3.1.1</b> Indicators</a></li>
+<li class="chapter" data-level="3.1.2" data-path="indicators-explained.html"><a href="indicators-explained.html#crop-data-1"><i class="fa fa-check"></i><b>3.1.2</b> Crop Data</a></li>
+<li class="chapter" data-level="3.1.3" data-path="indicators-explained.html"><a href="indicators-explained.html#livestock-data-1"><i class="fa fa-check"></i><b>3.1.3</b> Livestock Data</a></li>
+<li class="chapter" data-level="3.1.4" data-path="indicators-explained.html"><a href="indicators-explained.html#off-farm-data-1"><i class="fa fa-check"></i><b>3.1.4</b> Off-farm Data</a></li>
+<li class="chapter" data-level="3.1.5" data-path="indicators-explained.html"><a href="indicators-explained.html#consumption-calories-1"><i class="fa fa-check"></i><b>3.1.5</b> Consumption Calories</a></li>
+<li class="chapter" data-level="3.1.6" data-path="indicators-explained.html"><a href="indicators-explained.html#consumption-value-1"><i class="fa fa-check"></i><b>3.1.6</b> Consumption value</a></li>
+<li class="chapter" data-level="3.1.7" data-path="indicators-explained.html"><a href="indicators-explained.html#gender-control-1"><i class="fa fa-check"></i><b>3.1.7</b> Gender Control</a></li>
 </ul></li>
+<li class="chapter" data-level="3.2" data-path="indicators-explained.html"><a href="indicators-explained.html#where-to-start"><i class="fa fa-check"></i><b>3.2</b> Where to start</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="using-rhomis-r-package-to-explore-data.html"><a href="using-rhomis-r-package-to-explore-data.html"><i class="fa fa-check"></i><b>4</b> Using RHoMIS R-package to explore Data</a></li>
 <li class="chapter" data-level="5" data-path="reporting-issues.html"><a href="reporting-issues.html"><i class="fa fa-check"></i><b>5</b> Reporting Issues</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="reporting-issues.html"><a href="reporting-issues.html#reporting-issues-1"><i class="fa fa-check"></i><b>5.1</b> Reporting Issues</a></li>
@@ -204,25 +213,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">RHoMIS Book</h1>
 <p class="author"><em>Léo Gorman</em></p>
-<p class="date"><em>2022-07-08</em></p>
+<p class="date"><em>2022-08-31</em></p>
 </div>
 <div id="about" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<h1><span class="header-section-number">1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>The Rural Household Multi-Indicator Survey (RHoMIS) is designed to collect data on smallholder farmers.
 The survey is rich in information, covering a range of topics from dietary diversity to livelihoods.
 With so much information available, it can often be difficult to extract,
-This is a book documentating how to use the RHoMIS R-package to process
-data collected with the Rural Household Multi-Indicator Survey.</p>
-<div id="key-concepts" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Key Concepts<a href="index.html#key-concepts" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Data processing occurs in three main steps:</p>
+This is a book documenting how to use the RHoMIS R-package. We cover
+3 main topics:</p>
 <ol style="list-style-type: decimal">
-<li>Verification of units</li>
-<li>Verification of prices and calorie conversions</li>
-<li>Calculation of final indicators</li>
+<li>How to process data collected RHoMIS</li>
+<li>The logic of the calculations, and an overview of key indicators/outputs</li>
+<li>How to use the R-package to extract useful information</li>
 </ol>
 
-</div>
 </div>
             </section>
 
@@ -230,7 +235,7 @@ data collected with the Rural Household Multi-Indicator Survey.</p>
         </div>
       </div>
 
-<a href="installation.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-processing.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -246,14 +251,15 @@ gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
-"facebook": true,
-"twitter": true,
+"facebook": false,
+"twitter": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
 "whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"],
+"share": false
 },
 "fontsettings": {
 "theme": "white",
@@ -261,7 +267,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"link": "https://github.com/l-gorman/rhomis-R-package/edit/main/book/index.Rmd",
 "text": "Edit"
 },
 "history": {

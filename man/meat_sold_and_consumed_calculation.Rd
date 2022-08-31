@@ -14,6 +14,7 @@ meat_sold_and_consumed_calculation(data)
 Calculate the amount of meat sold and consumed in kg.
 Note this only works if you have calculated the meat collected
 in kg.
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

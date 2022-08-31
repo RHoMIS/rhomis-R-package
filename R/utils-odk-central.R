@@ -21,7 +21,6 @@
 #' @param database The name of the database you would like to save results to
 #' @param isDraft Whether or not the ODK form you are working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
-#' @param repeat_columns The columns which are looped in the datasets being processed
 #' @return
 #' @export
 #'
@@ -35,8 +34,7 @@ load_rhomis_central <- function(
                                 form_name=NULL,
                                 database=NULL,
                                 isDraft=NULL,
-                                central_test_case=FALSE,
-                                repeat_columns=pkg.env$repeat_columns
+                                central_test_case=FALSE
                                 ){
 
 
@@ -74,11 +72,12 @@ load_rhomis_central <- function(
         central_password,
         projectID,
         formID,
+        form_name,
         isDraft )
 
 
     # Cleaning the column names
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data))
     # There are some extra central columns
     # which are problematic, these need to be removed
     rhomis_data <- rhomis_data %>%
@@ -680,6 +679,7 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #' "get_projects" function
 #' @param formID The ID of the form containing the
 #' submissions you are looking at.
+#' @param form_name The name of the form you are downloading
 #' To get the list of forms see the "get_forms" function.
 #' @param isDraft Whether or not the form is a draft or whether it is finalized
 #' @param file_destination The location to store temporary files
@@ -690,11 +690,12 @@ submit_xml_data <- function(xml_string, central_url, central_email, central_pass
 #' @examples
 
 
-get_submission_data <- function(central_url, central_email, central_password, projectID, formID, isDraft, file_destination=NULL){
+get_submission_data <- function(central_url, central_email, central_password, projectID, formID, form_name, isDraft, file_destination=NULL){
 
     # Test case:
     # (If running a test case then the formID and projectID will be empty strings)
     if (formID=="" & projectID==""){
+        form_name <- "dec-demo"
         file_destination <- tempfile(fileext=".zip")
         central_response <- download.file(url = central_url, destfile = file_destination)
 
@@ -726,37 +727,42 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     }
 
     # unzip
-    files <- unzip(file_destination)
+    files_names <- unzip(file_destination)
 
-    # extract a list of file names corresponding to core data (i.e. non-repeat-columns)
-    core_data_file_name <- files[grepl("repeat",files)==F]
+    files <-sapply(files_names, function(x){
+        readr::read_csv(x, col_types = readr::cols(), na = c("n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
+    }, simplify=F)
+
+
+
 
     # read in the core data file list
-    main_data_set <- readr::read_csv(core_data_file_name, col_types = readr::cols())
+    main_df_file_name <- paste0("./",form_name, ".csv")
+    main_data_set <- files[[main_df_file_name]]
+
+    remaining_files <- files[names(files)!=main_df_file_name]
 
     # loop over the repeat columns to download the data files individually
     # these files can be formatted in a non-standard way, hence they are downloaded separately and then combined with the core data
-    for (rep_col in pkg.env$repeat_columns){
+    for (remaining_file in remaining_files){
 
-        # get list of files matching string of repeat column name
-        fname <- files[grepl(rep_col, files)]
 
-        # skip if there are no matching files found
-        if(length(fname)<1){ next }
 
         # read in repeat files
-        repeat_df <- readr::read_csv(fname, col_types = readr::cols())
 
         # reformat the loop column names from the ODK files to match with rhomis dataset syntax and join with core data
-        main_data_set <- central_loops_to_rhomis_loops(main_data_set, repeat_df)
+        main_data_set <- central_loops_to_rhomis_loops(main_data_set, remaining_file)
 
-        # clean up the local file
-        unlink(fname)
     }
+    for (file_to_delete in files_names){
+        unlink(file_to_delete)
+
+    }
+
 
     # clean up column names in core, but no need to pass repeat column names here
     # (as they are reformated in central_loops_to_rhomis and require a different treatment when retrieved from ODK in this way)
-    colnames(main_data_set) <- clean_column_names(colnames(main_data_set), repeat_columns = c(""))
+    colnames(main_data_set) <- clean_column_names(colnames(main_data_set))
 
     # Removing duplicate "deviceid" column
     if (sum(colnames(main_data_set) == "deviceid") > 1) {

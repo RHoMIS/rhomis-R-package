@@ -66,8 +66,7 @@ test_that("Can take a dataset from an ODK central server and process",{
             form_name="test_form",
             database="rhomis-test",
             isDraft = F,
-            central_test_case=T,
-            repeat_columns = pkg.env$repeat_columns
+            central_test_case=T
         ))
 
         TRUE

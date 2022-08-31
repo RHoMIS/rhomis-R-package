@@ -77,8 +77,7 @@ test_that("Can run second calculation stage locally", {
             file_path,
              id_type=id_type,
             proj_id,
-            form_id,
-            repeat_columns = pkg.env$repeat_columns
+            form_id
         ))
 
 
@@ -130,7 +129,6 @@ test_that("Can run second calculation stage on server", {
         database <- "rhomis-test"
         isDraft <- F
         central_test_case <- T
-        repeat_columns <- pkg.env$repeat_columns
 
         suppressWarnings(extract_units_and_conversions_server(
             central_url = central_url,
@@ -140,8 +138,7 @@ test_that("Can run second calculation stage on server", {
             form_name = form_name,
             database = database,
             isDraft = isDraft,
-            central_test_case = central_test_case,
-            repeat_columns = repeat_columns
+            central_test_case = central_test_case
         ))
         suppressWarnings(calculate_prices_server(
             central_url = central_url,
@@ -151,8 +148,7 @@ test_that("Can run second calculation stage on server", {
             form_name = form_name,
             database = database,
             isDraft = isDraft,
-            central_test_case = central_test_case,
-            repeat_columns = repeat_columns
+            central_test_case = central_test_case
         ))
 
 

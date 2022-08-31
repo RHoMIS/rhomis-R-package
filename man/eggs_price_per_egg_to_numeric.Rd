@@ -14,6 +14,7 @@ eggs_price_per_egg_to_numeric(units_column, amount_sold_column)
 \description{
 A function to make sure that price per egg can be converted
 for the correct calculations to be made
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

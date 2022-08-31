@@ -35,6 +35,7 @@ livestock_calculations_all(
 \description{
 Carrying out all calculations on RHoMIS
 livestock loops.
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

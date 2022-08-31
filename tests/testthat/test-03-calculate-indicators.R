@@ -15,8 +15,7 @@ test_that("Can run final indicator calcalutaions", {
             file_path,
             id_type=id_type,
             proj_id,
-            form_id,
-            repeat_columns = pkg.env$repeat_columns
+            form_id
         ))
 
         # indicator_data <- read_folder_of_csvs(folder = paste0(base_path, "indicator_data/"))[[1]]
@@ -25,14 +24,13 @@ test_that("Can run final indicator calcalutaions", {
             file_path = file_path,
             id_type = id_type,
             proj_id = proj_id,
-            form_id = form_id,
-            repeat_columns=repeat_columns
+            form_id = form_id
         )
 
         units_and_conversions <- suppressWarnings(load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]))
 
         secondary_units <- sapply(names(pkg.env$secondary_units), function(unit_name){
-            file_name <- paste0(base_path,"conversions_stage_2/",unit_name,".csv")
+            file_name <- paste0("./","conversions_stage_2/",unit_name,".csv")
 
             if (file.exists(file_name)){
                 return(readr::read_csv(file_name))
@@ -42,7 +40,7 @@ test_that("Can run final indicator calcalutaions", {
         units_and_conversions <- c(units_and_conversions, secondary_units)
 
         prices <- sapply(pkg.env$price_conversion_list, function(unit_name){
-            file_name <- paste0(base_path,"conversions_stage_2/",unit_name,".csv")
+            file_name <- paste0("./","conversions_stage_2/",unit_name,".csv")
 
             if (file.exists(file_name)){
                 return(readr::read_csv(file_name))
@@ -50,7 +48,7 @@ test_that("Can run final indicator calcalutaions", {
         }, simplify = F)
 
         calorie_conversions <- sapply(pkg.env$calorie_conversion_list, function(unit_name){
-            file_name <- paste0(base_path,"conversions_stage_2/",unit_name,".csv")
+            file_name <- paste0("./","conversions_stage_2/",unit_name,".csv")
 
             if (file.exists(file_name)){
                 return(readr::read_csv(file_name))
@@ -62,8 +60,8 @@ test_that("Can run final indicator calcalutaions", {
             rhomis_data,
             units_and_conversions,
             prices,
-            calories,
-            gender_categories))
+            calorie_conversions,
+            gender_categories=pkg.env$gender_categories))
 
         TRUE
 
@@ -129,8 +127,7 @@ test_that("Can run final indicator calcalutaions locally", {
             file_path,
             id_type=id_type,
             proj_id,
-            form_id,
-            repeat_columns = pkg.env$repeat_columns
+            form_id
         ))
 
         # indicator_data <- read_folder_of_csvs(folder = paste0(base_path, "indicator_data/"))[[1]]
@@ -143,7 +140,6 @@ test_that("Can run final indicator calcalutaions locally", {
             id_type="string",
             proj_id,
             form_id,
-            repeat_columns = pkg.env$repeat_columns,
             gender_categories = pkg.env$gender_categories))
 
         TRUE
@@ -165,7 +161,16 @@ test_that("Can run final indicator calcalutaions locally", {
 
             "conversions_stage_2/",
             ".original_stage_2_conversions//",
-            ".original_stage_1_conversions/"
+            ".original_stage_1_conversions/",
+
+            "crop_data",
+            "livestock_data",
+            "off_farm_data",
+            "indicator_data",
+            "extra_outputs",
+            "processed_data",
+            "preprocessed_data"
+
         )
 
         directories_to_remove <- paste0(base_path, directories)
@@ -198,7 +203,6 @@ test_that("Can run final indicator calcalutaions on server", {
         database <- "rhomis-test"
         isDraft <- F
         central_test_case <- T
-        repeat_columns <- pkg.env$repeat_columns
 
         suppressWarnings(extract_units_and_conversions_server(
             central_url = central_url,
@@ -209,7 +213,6 @@ test_that("Can run final indicator calcalutaions on server", {
             database = database,
             isDraft = isDraft,
             central_test_case = central_test_case,
-            repeat_columns = repeat_columns
         ))
         suppressWarnings(calculate_prices_server(
             central_url = central_url,
@@ -220,7 +223,6 @@ test_that("Can run final indicator calcalutaions on server", {
             database = database,
             isDraft = isDraft,
             central_test_case = central_test_case,
-            repeat_columns = repeat_columns
         ))
 
         suppressWarnings(calculate_indicators_server(
@@ -232,7 +234,6 @@ test_that("Can run final indicator calcalutaions on server", {
             database = database,
             isDraft = isDraft,
             central_test_case = central_test_case,
-            repeat_columns = repeat_columns
 
         ))
 

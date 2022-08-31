@@ -108,7 +108,6 @@ make_id_columns <- function(data,
 #' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
 #' @param unique_id_col The column in the dataset which contains unique IDs (usually _uuid)
 #' @param hh_id_col The column containing household IDs
-#' @param repeat_columns The types of repeat column name
 #'
 #' @return A tibble of RHoMIS data
 #' @export
@@ -121,17 +120,17 @@ load_rhomis_csv <- function(file_path,
                             id_type = c("string", "column"), # list of allowed values for argument, default is first element in vector
                             proj_id = NULL,
                             form_id = NULL,
-                            overwrite = FALSE,
-                            repeat_columns = pkg.env$repeat_columns)
+                            overwrite = FALSE
+                           )
 {
 
 
 
     # read in the input csv file
-    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a", "-999", "NA"), locale = readr::locale(encoding = "latin1"))
+    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
 
     # simplify column names to more readable format
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), repeat_columns)
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data))
 
     # ensure all data entries are lower case for consistency / easier data analysis
     rhomis_data <- convert_all_columns_to_lower_case(rhomis_data)
@@ -236,7 +235,6 @@ replace_infinite <- function(column) {
 #' @param database The name of the database you would like to save results to
 #' @param isDraft Whether or not the ODK form you are working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
-#' @param repeat_columns The columns which are looped in the datasets being processed
 #' @param uuid_local The column in a local dataset containing uuids (usually _uuid)
 #' @param gender_categories The gender categories present in the data which is to be processed
 #' @return
@@ -266,7 +264,6 @@ processData <- function( # Arguments to indicate the stage of analysis
                         database = NULL,
                         isDraft = NULL,
                         central_test_case = FALSE,
-                        repeat_columns = pkg.env$repeat_columns,
                         gender_categories = pkg.env$gender_categories) {
 
 
@@ -303,7 +300,6 @@ processData <- function( # Arguments to indicate the stage of analysis
             id_type = id_type,
             proj_id = proj_id,
             form_id = form_id,
-            repeat_columns = repeat_columns
         )
     }
 
@@ -323,8 +319,7 @@ processData <- function( # Arguments to indicate the stage of analysis
             form_name=form_name,
             database=database,
             isDraft=isDraft,
-            central_test_case=central_test_case,
-            repeat_columns=repeat_columns
+            central_test_case=central_test_case
         )
     }
 

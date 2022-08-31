@@ -12,6 +12,7 @@ milk_sold_and_consumed_calculations(data)
 \description{
 Function to calculate the amounts of milk sold
 and consumed in litres.
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

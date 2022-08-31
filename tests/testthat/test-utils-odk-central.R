@@ -93,16 +93,18 @@ httptest::with_mock_api({
             file_destination <- "./test-central-url.com/v1/projects/test-project/forms/test-user/temp_submissions.zip"
         }
 
-        data <- get_submission_data(
+        data <- suppressWarnings(get_submission_data(
             central_url = "https://test-central-url.com",
             central_email = "test-email.com",
             central_password = "test-central-password",
             projectID = "test-project",
             formID = "test-user",
+            form_name = "dec-demo",
             isDraft = F,
             file_destination = file_destination
-        )
+        ))
 
         testthat::expect_equal(!is.null(data), T)
     })
 })
+

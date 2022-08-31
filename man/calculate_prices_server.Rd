@@ -4,7 +4,37 @@
 \alias{calculate_prices_server}
 \title{Calculate_prices_server}
 \usage{
-calculate_prices_server()
+calculate_prices_server(
+  central_url,
+  central_email,
+  central_password,
+  project_name,
+  form_name,
+  database,
+  isDraft,
+  central_test_case = FALSE,
+  repeat_columns = pkg.env$repeat_columns
+)
+}
+\arguments{
+\item{central_url}{The url of the ODK-central}
+
+\item{central_email}{The email of the ODK-central account being used}
+
+\item{central_password}{The password of the ODK-central account being used}
+
+\item{project_name}{The name of the ODK-central project being processed}
+
+\item{form_name}{The name of the ODK-central form being processed}
+
+\item{database}{The name of the database you would like to save results to}
+
+\item{isDraft}{Whether or not the ODK form you are working with is a draft
+or a final version. Only relevant if you are processing a project from ODK central}
+
+\item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
+
+\item{repeat_columns}{ODK has a "repeat loop" structure to ask repeated questions.}
 }
 \description{
 Rpackage file: 02-calculate-prices.R

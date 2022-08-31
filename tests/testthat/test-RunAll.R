@@ -92,7 +92,7 @@ testthat::test_that("Can process a whole central dataset",{
                 form_name = "test_form",
                 isDraft = F,
                 central_test_case = T,
-                database = "rhomis-test",
+                database = "rhomis-test"
             ))
 
             # Calculate initial indicators

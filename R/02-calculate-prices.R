@@ -245,7 +245,6 @@ get_secondary_conversions <- function(
 #' @param id_type RHoMIS surveys have form and project IDs. Sometimes the form and project IDs are included as a column in the dataset (id_type="column"), or the IDs are specified by the user at the point of processing (id_type="string")
 #' @param proj_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing project IDs
 #' @param form_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs
-#' @param repeat_columns The types of repeat column name
 #'
 #' Rpackage file: 02-calculate-prices.R
 #'
@@ -258,16 +257,14 @@ calculate_prices_csv <- function(
         file_path,
         id_type=c("string", "column"),
         proj_id,
-        form_id,
-        repeat_columns = pkg.env$repeat_columns
+        form_id
 ){
 
     rhomis_data <- load_rhomis_csv(
         file_path = file_path,
         id_type = id_type,
         proj_id = proj_id,
-        form_id = form_id,
-        repeat_columns=repeat_columns
+        form_id = form_id
     )
 
     units <- load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
@@ -312,7 +309,6 @@ calculate_prices_csv <- function(
 #' @param database The name of the database you would like to save results to
 #' @param isDraft Whether or not the ODK form you are working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
-#' @param repeat_columns ODK has a "repeat loop" structure to ask repeated questions.
 #'
 #' @return
 #' @export
@@ -326,8 +322,7 @@ calculate_prices_server <- function(
         form_name,
         database,
         isDraft,
-        central_test_case = FALSE,
-        repeat_columns = pkg.env$repeat_columns
+        central_test_case = FALSE
         ){
 
 
@@ -340,8 +335,7 @@ calculate_prices_server <- function(
         form_name=form_name,
         database=database,
         isDraft=isDraft,
-        central_test_case=central_test_case,
-        repeat_columns=repeat_columns
+        central_test_case=central_test_case
     )
 
     unit_list <- find_db_units(

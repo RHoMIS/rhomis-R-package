@@ -13,6 +13,7 @@ honey_amount_calculation(data, unit_conv_tibble = NULL)
 }
 \description{
 Calculating the amount of honey produced from RHoMIS data
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }
