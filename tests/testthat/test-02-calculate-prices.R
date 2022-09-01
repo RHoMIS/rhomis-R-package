@@ -95,9 +95,8 @@ test_that("Can run second calculation stage locally", {
         base_path <- "./"
         directories <- c(
             "conversions_stage_1/",
-
             "conversions_stage_2/",
-            ".original_second_stage_conversions/",
+            ".original_stage_2_conversions/",
             ".original_stage_1_conversions/"
         )
 

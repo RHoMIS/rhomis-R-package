@@ -79,7 +79,6 @@ test_that("Can run final indicator calcalutaions", {
         base_path <- "./"
         directories <- c(
             "conversions_stage_1/",
-
             "conversions_stage_2/",
             ".original_stage_2_conversions/",
             ".original_stage_1_conversions/"

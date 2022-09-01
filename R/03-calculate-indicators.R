@@ -233,6 +233,24 @@ calculate_indicators <- function(
         warning('"food_best_month" does not exist in dataset')
     }
 
+    if ("foodshortagetime_months_which" %in% colnames(rhomis_data) ==T){
+        food_shortage_months <- split_string_categories_to_dummy(rhomis_data$foodshortagetime_months_which, seperator = " ")
+        na_rows <- rep(FALSE, nrow(rhomis_data))
+        if ("na" %in% colnames(food_shortage_months)){
+            na_rows <- food_shortage_months$na
+            food_shortage_months$na <- NULL
+        }
+        number_hungry_months <- rowSums(food_shortage_months, na.rm=F)
+        number_hungry_months[na_rows] <- NA
+        indicator_data$nr_months_food_shortage <- number_hungry_months
+    }
+    if ("foodshortagetime_months_which" %in% colnames(rhomis_data) ==F){
+        warning('"foodshortagetime_months_which" does not exist in dataset, cannot calculate number of hungry months')
+
+    }
+
+
+
     indicator_data <- dplyr::bind_cols(indicator_data, food_security_calculations(rhomis_data))
 
     ###############
@@ -385,7 +403,7 @@ calculate_indicators_local <- function(
         rhomis_data,
         units_and_conversions,
         prices,
-        calories,
+        calorie_conversions,
         gender_categories)
 
     lapply(names(results), function(x) {
@@ -425,7 +443,7 @@ calculate_indicators_local <- function(
 
 
 
-    return(result)
+    return(results)
 
 
 }
@@ -513,9 +531,9 @@ calculate_indicators_server <- function(
         units_and_conversions,
         secondary_units,
         prices,
-        calories,
-        gender_categories,
+        calorie_conversions,
         gender_categories
+
 
     )
 
