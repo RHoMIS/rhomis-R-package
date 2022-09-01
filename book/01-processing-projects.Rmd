@@ -1,0 +1,314 @@
+
+
+
+# Data Processing
+
+RHoMIS data processing takes place in three stages.
+
+1. Unit Extraction: We search through a survey for all of the units, crops, and livestock which were encountered. The user can examine these units and provide conversion factors so that everything is standardised. For crops and livestock, the user can check all of the entries and standardise (e.g. ensure that there are no duplicates with mispelling, such as "maize" and "maze").
+2. Secondary Cleaning: Now that crop and livestock names are standardised (in step 1), we identify all of the calorie conversions and prices we need for a specific survey (e.g. based on crops identified in step one we need calorie and prices for "maize"). We use the units converted in step 1 to calculate crop prices.
+3. Indicator Calculation: Finally, with all conversions and units identified, we calculate all of the indicators possible for the survey. 
+
+This is the method we have developed to process 
+
+## Installation
+
+Currently RHoMIS is not available on CRAN, but 
+we hope one day it will be. In the meantime, to 
+install the RHoMIS R-package, you will need to install `devtools`,
+you can that by entering the following into the R console:
+
+```{r eval=FALSE, echo=T}
+install.packages("devtools")
+```
+
+
+Then to install the most recent version of the R-package you can enter 
+the following command
+
+```{r eval=FALSE, echo=T}
+library(devtools)
+devtools::install_github("https://github.com/l-gorman/rhomis-R-package", force = TRUE)
+```
+
+
+## Initial Setup 
+
+You should then ensure you have a folder containing the data
+you would like to process. If using Rstudio interactively, set
+your working directory to this folder using the `setwd()` command.
+Your directory structure should look something like this:
+
+```
+📂 project
+┃
+┗📂 raw-data
+  ┃
+  ┗📜 sample_project.csv
+```
+
+In this case, your working directory should be the `project` folder.
+If you do not have your own RHoMIS dataset, you can access one [here](https://raw.githubusercontent.com/l-gorman/rhomis-R-package/4012fc3992ab9a1f8811d3e98a349d51aa66d581/inst/sample_local_project/raw-data/raw-data.csv) (you can save the file using `ctrl + s` or `cmd + s`)
+
+## Stage 1: Unit Extraction
+
+### Extracting Units
+
+To extract new units from the data you are working with, run the
+code below. Set the `dataFilePath` to the path of your RHoMIS 
+raw-data file.
+
+```{r eval=FALSE, echo=T}
+library(rhomis)
+
+extract_units_and_conversions_csv(
+    file_path="raw-data/sample_project.csv",
+    id_type = "string",
+    proj_id = "test_prj",
+    form_id = "test_frm"))
+```
+
+If you now go back to your `project` directory, you should be able
+to see that more files have been added:
+
+```
+📂 project
+┃
+┣📂 raw-data
+┃ ┗📜 sample_project.csv
+┃
+┣📂 conversions_stage_1
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_1_conversions
+  ┣📜 crop_yield_units.csv
+  ┣📜 country.csv
+  ┗📜 ...
+
+```
+
+The `conversions_stage_1` folder should will include the units which you will
+verify and change.
+The `.original_stage_1_conversions` folder includes an original copy of the units
+pulled straight from the data. This folder will likely be hidden unless you 
+change the settings on your file browser.
+
+
+### Converting Units
+
+__Please note, while you do not _have_ to convert units for the next step in
+the calculations to run, uncoverted units will be ignored and will lead to 
+unnecessary missing values__
+
+In the `project/conversions_stage_1` directory, you will find a series of csv files 
+with conversion factors that need to be filled in. Each file will look 
+like the table below. The `survey_value` column indicates a value which was 
+found in the survey. The `conversion` column shows the conversion factor 
+which ought to be used. Where the conversion factor is unknown, the column
+will display `NA`. Where the conversion factor is known it will be provided.
+Known conversion factors are already embedded in the R-package.
+
+```{r echo=F, eval=T}
+knitr::kable(data.frame(list(
+    unit_type = c("crop_unit", "crop_unit"),
+    id_rhomis_dataset = c("x", "x"),
+    survey_value = c("foo", "bar"),
+    conversion = c(NA, NA)
+)))
+```
+
+There are a range of conversions to enter and it is important to be aware
+which units are needed. Each file is described in more detail below:
+
+
+| File | Description | Example Survey Value | Example Conversion |
+| :--- | :------- | :------- | :------- |
+| honey_amount_to_l.csv | The conversion factor should be used to convert to kilograms/litres. | buckets_12_litre | 12 |
+| country_to_iso2.csv | The conversion factor should be used to convert country names to [two-letter ISO country codes](https://www.iban.com/country-codes). This is important as it is used to find currency conversion factors  | uganda | UG |
+| crop_name_to_std.csv | The name of crops entered in the survey. Often enumerators may specify "other" crops in a free-text-entry field. Sometimes these crops can be mispelled, or in a language other than English. Here we correct misspellings and translations into standard forms (__all lower case__)  |  maze | maize  |
+| crop_price_to_lcu_per_kg.csv  |  The price units for crops which were sold. Please note that only one unit will be converted into a string, "total_income_per_year" will be converted to "total_income_per_year" as this is treated as a special case in the analysis scripts. | price_per_50kg_sack | 0.02 |
+| crop_amount_to_kg.csv  |  The unit of crops which have been collected. This needs to be converted to kilograms | cart_250kg  | 250 |
+| eggs_price_to_lcu_per_year.csv | The amount of money made per unit time for selling eggs. This needs to be converted into an income per year  | income for 3 months | 4 |
+| eggs_amount_to_pieces_per_year.csv  | The number of eggs collected per year | pieces/day | 365 |
+| fertiliser_amount_to_kg.csv|  The amount of fertiliser in kg |  sacks_25kg | 25  |
+| livestock_name_to_std.csv  | The names of livestock entered in the survey. As with crop names, enumerators can also enter extra livestock names which are in a different language or mispelt. This conversion is used to standardise livestock names entered in the survey | catel | cattle |
+| milk_price_to_lcu_per_l.csv  |  The amount of money made per unit volume or per unit time. For unit time, the options are "day", "week", "month", "year". These time units must be entered as strings. For the unit volume, numeric conversions must be entered| month | month |
+|      |       |  0.3litre | 0.3  |
+| milk_amount_to_l.csv  | The amount of milk  collected in litres per year. There are a number of exceptions which must be kept as text strings, and are dealt with in the analysis scripts (e.g. "per animal per day" and "l/animal/day" |  l/day  | 365 |
+| land_area_to_ha.csv  | The amount of land in hectares |  acres  | 0.4  |
+
+
+## Stage 2: Calculating Prices, Preparing Calorie Conversions, and Extracting Secondary Units
+
+As with unit extraction, ensure you are in the project directory.
+Then enter the commands below:
+
+```{r eval=FALSE, echo=T}
+library(rhomis)
+
+calculate_prices_csv(
+    file_path="raw-data/sample_project.csv",
+    id_type = "string",
+    proj_id = "my_project_id",
+    form_id = "my_form_id"
+)
+
+```
+
+You will now see that the directory structure again looks quite different:
+
+```
+📂 project
+┃
+┣📂 raw-data
+┃
+┃ ┗📜 sample_project.csv
+┣📂 conversions_stage_1
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_1_conversions
+┃ ┣📜 crop_yield_units.csv
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┣📂 conversions_stage_2
+┃ ┣📜 crop_calories.csv
+┃ ┣📜 mean_crop_pice_lcu_per_kg
+┃ ┣📜 eggs_calories.csv
+┃ ┣📜 mean_eggs_price_per_kg
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_2_conversions
+  ┣📜 crop_calories.csv
+  ┣📜 mean_crop_pice_lcu_per_kg
+  ┣📜 eggs_calories.csv
+  ┣📜 mean_eggs_price_per_kg
+  ┗📜 ...
+
+
+
+```
+
+### Converting Calories, Prices, and Other Units
+
+#### Calories and Prices
+
+As with the units which were extracted, you will also need to verify
+prices  and calorie values (in the `conversions_stage_2` folder). Prices will be in 
+lcu/kg for crops, meat, and eggs (where lcu is local currency units).
+Prices will be in lcu/l for milk and honey. And prices will be in 
+lcu/animal for whole livestock sales. For calorie values, conversions will be in kcal/kg or kcal/l.
+
+#### Secondary Units
+
+Aside from prices and calories, there are other conversion tables to be verified, these units
+depend on conversions from stage 1. For example `livestock_count_tlu` requires us to know
+the standard livestock names (identified in stage 1). The secondary units currently 
+processed in the R-package are:
+
+| File | Description | Example Survey Value | Example Conversion |
+| :--- | :------- | :------- | :------- |
+| livestock_weight_kg.csv | The conversion factor used to estimate the amount of meat collected from a whole animal. | sheep | 25 |
+| livestock_count_tlu.csv | "Tropical Livestock Units" (TLU) for individual animals. | cattle | 0.7 |
+
+_Please note any folder with a dot before it will not be visible by default in most file explorers_
+
+## Stage 3: Calculating Indicators
+
+Using the calories and prices you have converted, you will then be able to produce
+the final indicators. Either run the code below, or run the `03-calculate-final-indicators.R`
+file. 
+
+
+```{r eval=FALSE, echo=T}
+library(rhomis)
+calculate_indicators_local(
+            file_path,
+            id_type="string",
+            proj_id,
+            form_id,
+            repeat_columns = pkg.env$repeat_columns,
+            gender_categories = pkg.env$gender_categories)
+
+```
+
+You will now see the directory includes some
+extra folders:
+
+You will now see that the directory structure again looks quite different.
+Extra folders and files have been created. There is a lot of information here,
+for more explanation, please see [an explanation of indicators and outputs][Indicators Explained] 
+
+```
+📂 project
+┃
+┣📂 raw-data
+┃ ┗📜 sample_project.csv
+┃
+┣📂 conversions_stage_1
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_1_conversions
+┃ ┣📜 crop_yield_units.csv
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┣📂 conversions_stage_2
+┃ ┣📜 crop_calories.csv
+┃ ┣📜 mean_crop_pice_lcu_per_kg
+┃ ┣📜 eggs_calories.csv
+┃ ┣📜 mean_eggs_price_per_kg
+┃ ┗📜 ...
+┃
+┣📂 .original_stage_2_conversions
+┃ ┣📜 crop_calories.csv
+┃ ┣📜 mean_crop_pice_lcu_per_kg
+┃ ┣📜 eggs_calories.csv
+┃ ┣📜 mean_eggs_price_per_kg
+┃ ┗📜 ...
+┃
+┣📂 crop_data
+┃ ┣📜 crop_consumed_kg_per_year.csv
+┃ ┣📜 crop_harvest_kg_per_year.csv
+┃ ┗📜 ...
+┃
+┣📂 indicator_data
+┃ ┗📜 indicators.csv
+┃
+┣📂 livestock_data
+┃ ┣📜 crop_consumed_kg_per_year.csv
+┃ ┣📜 crop_consumed_kg_per_year.csv
+┃ ┗📜 ...
+┃
+┣📂 off_farm_data
+┃ ┣📜 offfarm_income_name.csv
+┃ ┣📜 offfarm_who_control_revenue.csv
+┃ ┗📜 ...
+┃
+┗📂 processed_data
+┃  ┗📜 processed_data.csv
+┃
+┣📂 consumption_calorie_values
+┃ ┣📜 crop_calories_consumed_kcal.csv
+┃ ┣📜 milk_calories_consumed_kcal.csv
+┃ ┗📜 ...
+┃
+┣📂 consumption_lcu_values
+┃ ┣📜 value_crop_consumed_lcu.csv
+┃ ┣📜 value_eggs_consumed_lcu.csv
+┃ ┗📜 ...  
+┃
+┗📂 gender_control
+┃
+┣📂 gender_control_amounts_consumed
+┃
+┣📂 gender_control_income
+┃
+┗📂 ... 
+```
+
+
+
