@@ -6,10 +6,10 @@
 #' Calculate land sizes in hectares using
 #' RHoMIS data
 #'
-#'   
+#'
 #' Rpackage file: LandSize.R
 #'
-#' 
+#'
 #' @param data RHoMIS data
 #' @param unit_conv_tibble A tibble of land area units and
 #'
@@ -29,7 +29,7 @@ land_size_calculation <- function(data,
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = land_area_units
+      unit_conv_tibble = land_area_to_ha
     )
   }
 

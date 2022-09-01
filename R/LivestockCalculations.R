@@ -5,7 +5,7 @@
 #' Calculate Livestock Price
 #'
 #' Calculate the prices of whole livestock sold
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data Dataset containing livestock sold and livestock sale income
@@ -52,7 +52,7 @@ price_per_livestock <- function(data) {
 #' and some conversion factors which can calculate
 #' how much meat can be collected from an animal which
 #' has been killed.
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data The dataset for which meat amounts need to be calculated
@@ -63,8 +63,8 @@ price_per_livestock <- function(data) {
 #' @examples
 meat_amount_calculation <- function(data,
                                     unit_conv_tibble = NULL) {
-  
-  
+
+
   # indicator_search_meat_kg_per_year
 
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
@@ -74,7 +74,7 @@ meat_amount_calculation <- function(data,
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = livestock_weights
+      unit_conv_tibble = livestock_weight_kg
     )
   }
 
@@ -113,7 +113,7 @@ meat_amount_calculation <- function(data,
 #'
 #' Calculating the numeric proportions of meat used for
 #' eating and selling
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data The RHoMIS data containing livestock loops
@@ -181,7 +181,7 @@ meat_uses <- function(data) {
 #' Calculate the amount of meat sold and consumed in kg.
 #' Note this only works if you have calculated the meat collected
 #' in kg.
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data Data containing "livestock_name", "meat_kg_per_year",
@@ -218,7 +218,7 @@ meat_sold_and_consumed_calculation <- function(data) {
       loop_structure = T
     )
   }
-  
+
   #meat_consumed_kg_per_year
   number_of_loops <- find_number_of_loops(data, name_column = "livestock_name")
   amount_columns <- paste0("meat_kg_per_year", "_", c(1:number_of_loops))
@@ -250,7 +250,7 @@ meat_sold_and_consumed_calculation <- function(data) {
 #' Meat price per kg
 #'
 #' Calculating the price of meat which was sold.
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data RHoMIS data including columns "meat_sold_kg_per_year" and "meat_sold_income".
@@ -294,7 +294,7 @@ meat_prices <- function(data) {
 #' Milk amount calculations
 #'
 #' Calculating the amount of milk collected each year
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data The dataset containing livestock loops for RHoMIS
@@ -313,7 +313,7 @@ milk_amount_calculations <- function(data,
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = milk_amount_units
+      unit_conv_tibble = milk_amount_to_l
     )
   }
 
@@ -414,7 +414,7 @@ milk_amount_calculations <- function(data,
 #'
 #' A function to calculate the numeric proportions of milk
 #' sold and milk consumed
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data Data containing livestock loops necessary to calculate milk sold and consumed proportions
@@ -460,7 +460,7 @@ milk_proportions_all <- function(data) {
 #'
 #' Function to calculate the amounts of milk sold
 #' and consumed in litres.
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data RHoMIS data including livestock loop information
@@ -523,7 +523,7 @@ milk_sold_and_consumed_calculations <- function(data) {
 }
 
 #' Milk Income Calculations
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data Dataset containing all milk income information
@@ -544,7 +544,7 @@ milk_income_calculations <- function(data, unit_conv_tibble = NULL) {
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = milk_price_time_units
+      unit_conv_tibble = milk_price_to_lcu_per_l
     )
   }
 
@@ -602,7 +602,7 @@ milk_income_calculations <- function(data, unit_conv_tibble = NULL) {
 #' EggsAmount Calculations
 #'
 #' Calculate the amount of eggs harvested
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data Data containing crop loop information
@@ -620,7 +620,7 @@ eggs_amount_calculations <- function(data, unit_conv_tibble = NULL) {
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = eggs_amount_units
+      unit_conv_tibble = eggs_amount_to_pieces_per_year
     )
   }
 
@@ -705,7 +705,7 @@ eggs_amount_calculations <- function(data, unit_conv_tibble = NULL) {
 #'
 #' A function for calculating the proportions of
 #' eggs and consumed
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data The RHoMIS data including livestock loops and
@@ -766,7 +766,7 @@ eggs_proportions_all <- function(data) {
 #' Eggs Sold and Consumed Calculations
 #'
 #' Function for calculating the amounts of eggs sold and consumed
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data Data containing livestock loops to calculate the amounts of
@@ -833,7 +833,7 @@ eggs_sold_and_consumed_calculations <- function(data) {
 #' Eggs Income Calculations
 #'
 #' Function to calculate egg income from livestock loops
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data RHoMIS data with livestock loops included.
@@ -845,8 +845,8 @@ eggs_sold_and_consumed_calculations <- function(data) {
 #' @examples
 egg_income_calculations <- function(data,
                                     unit_conv_tibble = NULL) {
-  
-  # indicator_search_eggs_income_per_year                                  
+
+  # indicator_search_eggs_income_per_year
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
     stop("Missing the id_rhomis_dataset column in RHoMIS data")
   }
@@ -854,7 +854,7 @@ egg_income_calculations <- function(data,
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = eggs_price_time_units
+      unit_conv_tibble = eggs_price_to_lcu_per_year
     )
   }
 
@@ -924,7 +924,7 @@ egg_income_calculations <- function(data,
 #'
 #' A function to make sure that price per egg can be converted
 #' for the correct calculations to be made
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param units_column A vector of crop units to convert
@@ -953,7 +953,7 @@ eggs_price_per_egg_to_numeric <- function(units_column, amount_sold_column) {
 
 
 #' Eggs Swap per Animal Units
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param units_column A vector containing the units to be converted
@@ -983,7 +983,7 @@ eggs_swap_per_animal_units <- function(units_column, livestock_name_column, live
 #' the livestock loops. Howver in some cases, for example in
 #' the eggs_amount calculations, it is useful to know the livestock heads
 #' during the loops. This function allows us to do so
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param livestock_name_column A vector of livestock names
@@ -1014,7 +1014,7 @@ identify_number_of_heads_for_livestock_loops <- function(livestock_name_column, 
 #'
 #' Some of RHoMIS milk yields are based on yield per animal.
 #' This function converts yield per animal into a total milk yield.
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param units_column The original column containing milk yield units
@@ -1038,7 +1038,7 @@ milk_swap_per_animal_units <- function(units_column, number_of_animals_milked_co
 #'
 #' RHoMIS milk price units can come in both times and per
 #' litre units. This function goes
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param id_rhomis_dataset An id vector containing information on which rhomis
@@ -1054,7 +1054,7 @@ milk_price_time_units_conversion <- function(id_rhomis_dataset, units_column, so
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = id_rhomis_dataset,
-      unit_conv_tibble = milk_price_time_units
+      unit_conv_tibble = milk_price_to_lcu_per_l
     )
   }
 
@@ -1081,7 +1081,7 @@ milk_price_time_units_conversion <- function(id_rhomis_dataset, units_column, so
 #' Averaging yield for the good season and bad season
 #' Where one season is NA, we only use information for the season available.
 #' Where both seasons are NA, the final is calculated as NA
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param good_season_amount Vector of good season yields
@@ -1106,7 +1106,7 @@ average_good_and_bad_season <- function(good_season_amount, bad_season_amount) {
 #' Honey Amount Calculation
 #'
 #' Calculating the amount of honey produced from RHoMIS data
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data The data containing livestock loops
@@ -1117,7 +1117,7 @@ average_good_and_bad_season <- function(good_season_amount, bad_season_amount) {
 #'
 #' @examples
 honey_amount_calculation <- function(data, unit_conv_tibble = NULL) {
-  
+
   # indicator_search_bees_honey_kg_per_year
 
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
@@ -1127,7 +1127,7 @@ honey_amount_calculation <- function(data, unit_conv_tibble = NULL) {
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = honey_amount_units
+      unit_conv_tibble = honey_amount_to_l
     )
   }
 
@@ -1163,7 +1163,7 @@ honey_amount_calculation <- function(data, unit_conv_tibble = NULL) {
 #'
 #' Can correctly calculate the numeric proportions of honey
 #' and its uses
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data The data containing livestock loops
@@ -1219,7 +1219,7 @@ honey_proportions_all <- function(data) {
 #' Honey Sold and Consumed Calculations
 #'
 #' Calculating the amounts of honey sold and consumed
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data Data containing RHoMIS
@@ -1288,7 +1288,7 @@ honey_amount_sold_and_consumed_calculations <- function(data) {
 #' Whole livestock, and products produced from livestock
 #' are divided among male and female farmers. This function
 #' determines how these values are split
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data RHoMIS data including information on number
@@ -1415,7 +1415,7 @@ gender_split_livestock <- function(data,
   # indicator_search_female_adult_milk_sold_income_per_year
   # indicator_search_male_youth_milk_sold_income_per_year
   # indicator_search_male_adult_milk_sold_income_per_year
-  
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "milk_sold_income_per_year",
@@ -1436,7 +1436,7 @@ gender_split_livestock <- function(data,
   # indicator_search_female_adult_milk_consumed_litres_per_year
   # indicator_search_male_youth_milk_consumed_litres_per_year
   # indicator_search_male_adult_milk_consumed_litres_per_year
-  
+
 
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
@@ -1460,7 +1460,7 @@ gender_split_livestock <- function(data,
   # indicator_search_female_adult_eggs_sold_kg_per_year
   # indicator_search_male_youth_eggs_sold_kg_per_year
   # indicator_search_male_adult_eggs_sold_kg_per_year
-  
+
 
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
@@ -1482,7 +1482,7 @@ gender_split_livestock <- function(data,
   # indicator_search_female_adult_eggs_income_per_year
   # indicator_search_male_youth_eggs_income_per_year
   # indicator_search_male_adult_eggs_income_per_year
-  
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "eggs_income_per_year",
@@ -1503,7 +1503,7 @@ gender_split_livestock <- function(data,
   # indicator_search_female_adult_eggs_consumed_kg_per_year
   # indicator_search_male_youth_eggs_consumed_kg_per_year
   # indicator_search_male_adult_eggs_consumed_kg_per_year
-  
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "eggs_consumed_kg_per_year",
@@ -1526,7 +1526,7 @@ gender_split_livestock <- function(data,
   # indicator_search_female_adult_bees_honey_sold_kg_per_year
   # indicator_search_male_youth_bees_honey_sold_kg_per_year
   # indicator_search_male_adult_bees_honey_sold_kg_per_year
-  
+
   missing_columns <- check_columns_in_data(data,
     loop_columns = c(
       "bees_honey_sold_kg_per_year",
@@ -1595,7 +1595,7 @@ gender_split_livestock <- function(data,
 #'
 #' Carrying out all calculations on RHoMIS
 #' livestock loops.
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param livestock_weights_conv_tibble Conversion tibble of livestock weights
@@ -1625,42 +1625,42 @@ livestock_calculations_all <- function(data,
   if (is.null(livestock_weights_conv_tibble)) {
     livestock_weights_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = livestock_weights
+      unit_conv_tibble = livestock_weight_kg
     )
   }
 
   if (is.null(eggs_amount_unit_conv_tibble)) {
     eggs_amount_unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = eggs_amount_units
+      unit_conv_tibble = eggs_amount_to_pieces_per_year
     )
   }
 
   if (is.null(eggs_price_time_units_conv_tibble)) {
     eggs_price_time_units_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = eggs_price_time_units
+      unit_conv_tibble = eggs_price_to_lcu_per_year
     )
   }
 
   if (is.null(honey_amount_unit_conv_tibble)) {
     honey_amount_unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = honey_amount_units
+      unit_conv_tibble = honey_amount_to_l
     )
   }
 
   if (is.null(milk_amount_unit_conv_tibble)) {
     milk_amount_unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = milk_amount_units
+      unit_conv_tibble = milk_amount_to_l
     )
   }
 
   if (is.null(milk_price_time_unit_conv_tibble)) {
     milk_price_time_unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = milk_price_time_units
+      unit_conv_tibble = milk_price_to_lcu_per_l
     )
   }
 
@@ -1820,7 +1820,7 @@ livestock_calculations_all <- function(data,
 
 
 #' Calculate the prices for honey
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data RHoMIS dataset.
@@ -1873,13 +1873,13 @@ honey_income_calculations <- function(data) {
 #'
 #' Calculate amount of livestock kept in
 #' tropical livestock units (TLU).
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data RHoMIS processed dataset
 #' @param livestock_name_conversion_tibble A tibble
 #' of conversions for livestock names
-#' @param livestock_tlu_conversions A tibble for converting 
+#' @param livestock_tlu_conversions A tibble for converting
 #' livestock names into TLUss
 #'
 #' @return
@@ -1947,13 +1947,13 @@ livestock_tlu_calculations <- function(data,
 #' "other", this is not interperatable or
 #' easy to use for analysis. This function addresses
 #' this
-#'   
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data A rhomis dataset
 #' @param livestock_name_conversion_tibble A tibble to convert
 #' livestock names
-#' @param livestock_tlu_conversions A conversions table for TLU 
+#' @param livestock_tlu_conversions A conversions table for TLU
 #'
 #' @return
 #' @export
@@ -2003,7 +2003,7 @@ clean_tlu_column_names <- function(data,
 #' "other", this is not interperatable or
 #' easy to use for analysis. This function addresses
 #' this
-#'    
+#'
 #' Rpackage file: LivestockCalculations.R
 #'
 #' @param data A rhomis dataset

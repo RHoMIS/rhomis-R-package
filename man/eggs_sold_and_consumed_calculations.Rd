@@ -12,6 +12,7 @@ egg sold and consumed}
 }
 \description{
 Function for calculating the amounts of eggs sold and consumed
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

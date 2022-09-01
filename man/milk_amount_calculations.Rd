@@ -13,6 +13,7 @@ milk_amount_calculations(data, unit_conv_tibble = NULL)
 }
 \description{
 Calculating the amount of milk collected each year
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

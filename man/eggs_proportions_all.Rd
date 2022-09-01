@@ -13,6 +13,7 @@ livestock heads data}
 \description{
 A function for calculating the proportions of
 eggs and consumed
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

@@ -11,6 +11,7 @@ price_per_livestock(data)
 }
 \description{
 Calculate the prices of whole livestock sold
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

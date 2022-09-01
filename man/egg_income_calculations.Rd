@@ -13,6 +13,7 @@ egg_income_calculations(data, unit_conv_tibble = NULL)
 }
 \description{
 Function to calculate egg income from livestock loops
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

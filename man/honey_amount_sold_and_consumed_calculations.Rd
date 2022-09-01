@@ -12,6 +12,7 @@ livestock loops}
 }
 \description{
 Calculating the amounts of honey sold and consumed
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

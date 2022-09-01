@@ -107,7 +107,31 @@ testthat::test_that("All column names properly cleaned", {
         "crop_name"
     )
 
-    actual_result <- clean_column_names(column_names, repeat_columns)
+    actual_result <- clean_column_names(column_names)
 
     expect_equal(actual_result, expected_result)
+})
+
+testthat::test_that("Can identify general repeat column names", {
+
+    column_names <- c(
+        "xxx/crop_repeat[12]/crop_name",
+        "xxx/livestock_repeat[12]/livestock_name",
+        "xxx.other_repeat.10000..crop_name",
+        "xx/crop_repeat/crop_name",
+        "x/offfarm_repeat[4]/offfarm_name",
+        "y/hh_rep[5]/person_name",
+        "z/crop_repeat/crop_name"
+    )
+    expected_result <- c(
+        "crop_repeat",
+        "livestock_repeat",
+        "other_repeat",
+        "offfarm_repeat",
+        "hh_rep"
+    )
+    actual_result <- identify_repeat_columns(column_names)
+    expect_equal(actual_result, expected_result)
+
+
 })

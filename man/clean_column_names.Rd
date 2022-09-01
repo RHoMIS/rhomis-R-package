@@ -4,11 +4,7 @@
 \alias{clean_column_names}
 \title{Clean Column Names}
 \usage{
-clean_column_names(
-  column_names,
-  repeat_columns = c("crop_repeat", "livestock_repeat", "offfarm_repeat",
-    "offfarm_income_repeat", "hh_pop_repeat", "hh_rep")
-)
+clean_column_names(column_names)
 }
 \arguments{
 \item{column_names}{A list of all of the column names}

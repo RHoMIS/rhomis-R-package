@@ -1,0 +1,75 @@
+# Indicators Explained
+
+The core RHoMIS survey contains over 750 variables.
+These are used to calculate key indicators, such as 
+`total_income_lcu_per_year`. 
+
+This guide is designed to explain:
+
+1. How some of the main indicators are calculated
+2. How variables are linked
+3. How you can explore these calculations and indicators yourself
+
+In order to make the most of this guide, you should have a sample RHoMIS 
+dataset, to see how to process a "Raw" RHoMIS dataset, and produce indicators
+from this dataset, please see [data processing][Data Processing]
+
+## Outputs
+
+### Indicators
+
+Indicators calculated whilst the data was being processed. These cover a range of
+topics, including incomes, dietary diversity, and household demographics. The indicators
+calculated depend on the columns present in the original `raw-data.csv` file.
+
+### Crop Data
+
+Found in the `crop_data` directory, in each of the csvs, a column represents the crops
+listed in the survey, each row represents one household (in the same row order as the original dataset)
+
+### Livestock Data
+
+Found in the `livestock_data` directory, in each of the csvs, a column represents the types of livestock listed in the survey,
+again each row represents a household.
+
+### Off-farm Data
+
+Found in the `off_farm_data` directory, in each of the csvs, a column represents an off-farm activity, and each row represents 
+a household.
+
+### Consumption Calories
+
+Found in the `consumption_calorie_values` directory, in each of the csvs, a column represents the products listed in the survey, and each row represents 
+a household.
+
+### Consumption value
+
+Found in the `consumption_lcu_values` directory, in each of the csvs, a column represents products listed in the survey, and each row represents 
+a household.
+
+### Gender Control
+
+Found in the `gender_control` directory, in each of the csvs, a column represents products listed in the survey, and each row represents 
+a household.
+
+
+
+
+## Where to start
+
+Firstly,
+
+```{r}
+
+plot_dependency_network(
+    indicator_name="crop_sold_kg_per_year",
+    list_of_indicators = indicator_list
+)
+
+plot_dependency_network(
+    indicator_name="male_youth_control",
+    list_of_indicators =indicator_list
+)
+
+
+```

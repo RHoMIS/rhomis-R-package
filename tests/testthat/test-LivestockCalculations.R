@@ -1253,7 +1253,7 @@ testthat::test_that("Can correctly clean livestock heads columns", {
             "column_x" = c(NA, NA, NA, NA)
         )
     )
-    livestock_tlu_conversions <- livestock_tlu
+    livestock_tlu_conversions <- livestock_count_to_tlu
 
     actual_result <- clean_tlu_column_names(data, livestock_name_conversion_tibble,livestock_tlu_conversions)
 
@@ -1348,7 +1348,7 @@ testthat::test_that("Can calculate TLUS", {
 
     expected_result <- c(household_1, household_2, household_3, household_4, household_5)
 
-    livestock_tlu_conversions <- livestock_tlu
+    livestock_tlu_conversions <- livestock_count_to_tlu
     actual_result <- livestock_tlu_calculations(data, livestock_name_conversion_tibble,livestock_tlu_conversions)
 
     testthat::expect_equal(actual_result, expected_result)

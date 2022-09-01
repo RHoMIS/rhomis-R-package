@@ -31,6 +31,7 @@ make_id_columns(
 }
 \description{
 Make ID columns for form, project, and household
- 
+}
+\details{
 Rpackage file: RunAll.R
 }
