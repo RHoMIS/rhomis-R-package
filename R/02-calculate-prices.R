@@ -245,6 +245,7 @@ get_secondary_conversions <- function(
 #' @param id_type RHoMIS surveys have form and project IDs. Sometimes the form and project IDs are included as a column in the dataset (id_type="column"), or the IDs are specified by the user at the point of processing (id_type="string")
 #' @param proj_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing project IDs
 #' @param form_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs
+#' @param unique_id_col The column containing unique household ids
 #'
 #' Rpackage file: 02-calculate-prices.R
 #'
@@ -257,14 +258,17 @@ calculate_prices_csv <- function(
         file_path,
         id_type=c("string", "column"),
         proj_id,
-        form_id
+        form_id,
+        unique_id_col = "_uuid"
+
 ){
 
     rhomis_data <- load_rhomis_csv(
         file_path = file_path,
         id_type = id_type,
         proj_id = proj_id,
-        form_id = form_id
+        form_id = form_id,
+        unique_id_col = unique_id_col
     )
 
     units <- load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])

@@ -13,7 +13,7 @@
 #' @param rhomis_data a rhomis dataset
 #' @param units_and_conversions A list of units and conversions
 #' @param prices A list of price conversions (mean price per kg)
-#' @param calories A list of calorie conversions for different products
+#' @param calorie_conversions A list of calorie conversions for different products
 #' @param gender_categories The different categories of people (e.g. male_youth, female_youth, male_adult, female_adult)
 #'
 #' @return
@@ -24,7 +24,7 @@ calculate_indicators <- function(
         rhomis_data,
         units_and_conversions,
         prices,
-        calories,
+        calorie_conversions,
         gender_categories
 ){
     results <- list()
@@ -338,13 +338,29 @@ calculate_indicators <- function(
     return(results)
 }
 
+#' Calculate all of the Local Indicators
+#'
+#' @param base_path
+#' @param file_path
+#' @param id_type
+#' @param proj_id
+#' @param form_id
+#' @param gender_categories
+#' @param unique_id_col  The column containing unique household ids
+
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_indicators_local <- function(
         base_path="./",
         file_path,
         id_type=c("string", "column"),
         proj_id,
         form_id,
-        gender_categories = pkg.env$gender_categories
+        gender_categories = pkg.env$gender_categories,
+        unique_id_col = "_uuid"
 
 ){
 
@@ -354,7 +370,8 @@ calculate_indicators_local <- function(
         file_path = file_path,
         id_type = id_type,
         proj_id = proj_id,
-        form_id = form_id
+        form_id = form_id,
+        unique_id_col = unique_id_col
     )
 
     units_and_conversions <- load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
