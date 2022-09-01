@@ -4,7 +4,10 @@
 \alias{find_nested_dependencies_network}
 \title{Find Nested Dependencies}
 \usage{
-find_nested_dependencies_network(indicator_name, indicator_list)
+find_nested_dependencies_network(
+  indicator_name,
+  indicator_list = indicator_list
+)
 }
 \arguments{
 \item{indicator_name}{The name of the indicator}

@@ -4,10 +4,18 @@
 \alias{plot_dependency_network}
 \title{Plot Dependency Network}
 \usage{
-plot_dependency_network(indicator_name, indicator_list, type = "horizontal")
+plot_dependency_network(
+  indicator_name,
+  list_of_indicators = indicator_list,
+  type = "horizontal"
+)
 }
 \arguments{
-\item{indicator_list}{}
+\item{indicator_name}{The name of the indicator}
+
+\item{list_of_indicators}{The list of indicators}
+
+\item{type}{Whether or not to do a horizontal or central plot}
 }
 \description{
 Plot the dependency network of RHoMIS Indicators

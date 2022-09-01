@@ -14,6 +14,8 @@ find_nested_dependencies_list(
 \item{indicator_name}{The name of the indicator}
 
 \item{indicator_list}{The list of indicators}
+
+\item{dependency_required}{`Whether you want to see the "individual" columns required, the "loop" columns required, the "indicators" required, or the "conversion" tables required}
 }
 \description{
 In the RHoMIS datasets, there are indicators

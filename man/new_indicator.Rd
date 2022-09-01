@@ -34,8 +34,6 @@ new_indicator(
 \item{function_calculated}{The function where this indicator is calculated}
 
 \item{search_term}{The search term you can use to find where this indicator is calculated}
-
-\item{indicator_list}{The Existing list of indicators}
 }
 \description{
 Create a new indicator

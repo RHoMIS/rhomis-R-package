@@ -1,7 +1,6 @@
 #' New Indicator
 #'
 #' Create a new indicator
-#' @param indicator_list The Existing list of indicators
 #' @param indicator_name The name of the new indicator
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
@@ -212,7 +211,12 @@ type_check <- function(object){
 #'
 #' @param indicator_name The name of the indicator
 #' @param indicator_list The list of indicators
-#' @param dependency_required
+#' @param dependency_required `Whether you want to see the "individual" columns required, the "loop" columns required, the "indicators" required, or the "conversion" tables required
+#'
+#' @return
+#' @export
+#'
+#' @examples
 find_nested_dependencies_list <- function(
     indicator_name,
     indicator_list,
@@ -295,7 +299,7 @@ if (length(indicator$indicators_required)>0){
 #' @examples
 find_nested_dependencies_network <- function(
     indicator_name,
-    indicator_list){
+    indicator_list=indicator_list){
       if (is.character(indicator_name)==F){
           stop("indicator_name must be a character")
      }
@@ -390,7 +394,7 @@ if (length(indicator$indicators_required)>0){
 
 find_d3_dependencies_network <- function(
     indicator_name,
-    indicator_list,
+    list_of_indicators,
     d3_list=list()){
 
     if (is.character(indicator_name)==F){
@@ -402,16 +406,16 @@ find_d3_dependencies_network <- function(
           stop("indicator_name must be a character")
      }
 
-     if (is.list(indicator_list)==F){
+     if (is.list(list_of_indicators)==F){
           stop("indicator_list must be a list")
      }
-     if (indicator_name %in% names(indicator_list)==F){
+     if (indicator_name %in% names(list_of_indicators)==F){
           stop("Could not find indicator name in list")
      }
 
 
 
-    indicator <- indicator_list[[indicator_name]]
+    indicator <- list_of_indicators[[indicator_name]]
     d3_list[["name"]] <- indicator$indicator_name
     d3_list[["children"]] <- c()
 
@@ -449,7 +453,7 @@ find_d3_dependencies_network <- function(
           children <- lapply(indicator$indicators_required, function(indicator_name){
                find_d3_dependencies_network(
                     indicator_name=indicator_name,
-                    indicator_list=indicator_list,
+                    list_of_indicators=list_of_indicators,
                     d3_list=d3_list)
           })
 
@@ -468,22 +472,23 @@ find_d3_dependencies_network <- function(
 #'
 #' Plot the dependency network of RHoMIS Indicators
 #'
-#' @param indicator_name
-#' @param indicator_list
-#'
+#' @param indicator_name The name of the indicator
+#' @param list_of_indicators The list of indicators
+#' @param type Whether or not to do a horizontal or central plot
+
 #' @return
 #' @export
 #'
 #' @examples
 plot_dependency_network <- function(
     indicator_name,
-    indicator_list,
+    list_of_indicators=indicator_list,
     type="horizontal"
     ){
 
     d3_network <- find_d3_dependencies_network(
         indicator_name=indicator_name,
-        indicator_list=indicator_list
+        list_of_indicators=list_of_indicators
 
     )
 

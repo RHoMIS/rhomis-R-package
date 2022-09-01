@@ -12,8 +12,7 @@ extract_units_and_conversions_server(
   form_name,
   database,
   isDraft,
-  central_test_case = FALSE,
-  repeat_columns = pkg.env$repeat_columns
+  central_test_case = FALSE
 )
 }
 \arguments{
@@ -33,8 +32,6 @@ extract_units_and_conversions_server(
 or a final version. Only relevant if you are processing a project from ODK central}
 
 \item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
-
-\item{repeat_columns}{ODK has a "repeat loop" structure to ask repeated questions.}
 }
 \description{
 Rpackage file: 01-extract-units.R

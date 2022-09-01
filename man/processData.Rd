@@ -24,7 +24,6 @@ processData(
   database = NULL,
   isDraft = NULL,
   central_test_case = FALSE,
-  repeat_columns = pkg.env$repeat_columns,
   gender_categories = pkg.env$gender_categories
 )
 }
@@ -78,8 +77,6 @@ ONLY RELEVANT IF "dataSource" WAS "central".}
 or a final version. Only relevant if you are processing a project from ODK central}
 
 \item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
-
-\item{repeat_columns}{The columns which are looped in the datasets being processed}
 
 \item{gender_categories}{The gender categories present in the data which is to be processed}
 }

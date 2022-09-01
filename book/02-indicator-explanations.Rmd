@@ -63,12 +63,12 @@ Firstly,
 
 plot_dependency_network(
     indicator_name="crop_sold_kg_per_year",
-    indicator_list=indicator_list
+    list_of_indicators = indicator_list
 )
 
 plot_dependency_network(
     indicator_name="male_youth_control",
-    indicator_list=indicator_list
+    list_of_indicators =indicator_list
 )
 
 

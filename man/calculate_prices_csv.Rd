@@ -9,8 +9,7 @@ calculate_prices_csv(
   file_path,
   id_type = c("string", "column"),
   proj_id,
-  form_id,
-  repeat_columns = pkg.env$repeat_columns
+  form_id
 )
 }
 \arguments{
@@ -22,9 +21,7 @@ calculate_prices_csv(
 
 \item{proj_id}{If ID type was string, this should be a string, if ID type was column, this should be a column name containing project IDs}
 
-\item{form_id}{If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs}
-
-\item{repeat_columns}{The types of repeat column name
+\item{form_id}{If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs
 
 Rpackage file: 02-calculate-prices.R}
 }
