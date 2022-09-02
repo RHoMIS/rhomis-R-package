@@ -430,14 +430,14 @@ check_existing_conversions <- function(list_of_df) {
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
                                                              conversion,
-                                                             by = ("survey_value" <- "survey_value")
+                                                             by = ("survey_value" = "survey_value")
             ) %>%
                 dplyr::select("unit_type", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
                 dplyr::rename("conversion" = "conversion.y")
         } else {
             df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
                                                              eval(parse(text = x)),
-                                                             by = ("survey_value" <- "survey_value")
+                                                             by = ("survey_value" = "survey_value")
             ) %>%
                 dplyr::select("unit_type", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
                 dplyr::rename("conversion" = "conversion.y")
