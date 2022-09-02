@@ -275,3 +275,22 @@
 #'
 #' @source NA
 "function_list"
+
+
+#' FP amount Conversions
+#'
+#' Conversions of FP amounts
+#' to KG
+#'
+#' @source NA
+"fp_amount_to_kg"
+
+
+#' FP Income pe Year
+#'
+#' Conversions of FP incomes
+#' to lcu per year
+#'
+#' @source NA
+"fp_income_per_freq_to_lcu_per_year"
+

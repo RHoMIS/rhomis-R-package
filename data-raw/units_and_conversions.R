@@ -511,3 +511,28 @@ milk_price_to_lcu_per_l <- tibble::as_tibble(list(survey_value=c("day",
 usethis::use_data(milk_price_to_lcu_per_l, overwrite = T)
 
 
+
+
+
+
+fp_amount_to_kg <- tibble::as_tibble(
+    list(
+        survey_value=c("bundle_20kg", "kg", "tine_20kg","calabash_5litres"),
+        conversion=c(20,1, 20, 5)
+    )
+)
+usethis::use_data(fp_amount_to_kg, overwrite = T)
+
+
+
+
+fp_income_per_freq_to_lcu_per_year <- tibble::as_tibble(
+    list(
+        survey_value=c("day", "week", "month","year"),
+        conversion=c(365,52, 12, 1)
+    )
+)
+usethis::use_data(fp_income_per_freq_to_lcu_per_year, overwrite = T)
+
+
+

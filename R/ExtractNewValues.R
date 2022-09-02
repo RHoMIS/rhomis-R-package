@@ -319,7 +319,24 @@ extract_new_core_units <- function(data) {
         "eggs_units",
         "eggs_amount_units_other",
         "eggs_sold_price_timeunits",
-        "eggs_sold_price_timeunits_other"
+        "eggs_sold_price_timeunits_other",
+
+        # ntfp_amount_unit_columns
+        "fruit_amount_units",
+        "nut_amount_units",
+        "leaves_amount_units",
+        "bark_amount_units",
+        "roots_amount_units",
+        "gum_amount_units",
+
+        "fruit_sold_frequency",
+        "nut_sold_frequency",
+        "leaves_sold_frequency",
+        "bark_sold_frequency",
+        "roots_sold_frequency",
+        "gum_sold_frequency"
+
+
     )
 
 
@@ -366,7 +383,11 @@ extract_new_core_units <- function(data) {
         bees_honey_production_units = c("bees_honey_production_units_other"),
         eggs_units = c("eggs_amount_units_other"),
         eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
-        fertiliser_units = c("fertiliser_units_other")
+        fertiliser_units = c("fertiliser_units_other"),
+
+        fp_amount_units = c("fruit_amount_units","nut_amount_units","leaves_amount_units","bark_amount_units","roots_amount_units", "gum_amount_units"),
+        fp_income_units = c("fruit_sold_frequency","nut_sold_frequency","leaves_sold_frequency","bark_sold_frequency","roots_sold_frequency", "gum_sold_frequency")
+
     )
 
 

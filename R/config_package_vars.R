@@ -48,7 +48,10 @@ set_conversion_file_names <- function(){
                "bees_honey_production_units" = "honey_amount_to_l",
                "eggs_units" = "eggs_amount_to_pieces_per_year",
                "eggs_sold_price_timeunits" = "eggs_price_to_lcu_per_year",
-               "fertiliser_units" = "fertiliser_amount_to_kg"
+               "fertiliser_units" = "fertiliser_amount_to_kg",
+
+               "fp_amount_units" = "fp_amount_to_kg",
+               "fp_income_units" = "fp_income_per_freq_to_lcu_per_year"
 
            ),
            envir = pkg.env
