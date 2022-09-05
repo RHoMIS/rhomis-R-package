@@ -16,6 +16,7 @@ of livestock sold and who sells this livestock}
 Whole livestock, and products produced from livestock
 are divided among male and female farmers. This function
 determines how these values are split
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

@@ -15,6 +15,7 @@ milked.}
 \description{
 Some of RHoMIS milk yields are based on yield per animal.
 This function converts yield per animal into a total milk yield.
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

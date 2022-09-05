@@ -24,7 +24,7 @@ convert_crop_yield_units <- function(data,
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = crop_yield_units
+      unit_conv_tibble = crop_amount_to_kg
     )
   }
 
@@ -230,7 +230,7 @@ convert_crop_sold_units <- function(data,
   if (is.null(unit_conv_tibble)) {
     unit_conv_tibble <- make_per_project_conversion_tibble(
       proj_id_vector = data[["id_rhomis_dataset"]],
-      unit_conv_tibble = crop_price_units
+      unit_conv_tibble = crop_price_to_lcu_per_kg
     )
   }
 
@@ -400,7 +400,7 @@ crop_income_calculations <- function(data, unit_conv_tibble = NULL) {
 
   crop_price <- crop_sold_income_per_year / crop_sold_amount
   colnames(crop_price) <- paste0("crop_price", "_", c(1:number_of_loops))
-  
+
   # indicator_search_crop_price
   data <- add_column_after_specific_column(
     data = data,

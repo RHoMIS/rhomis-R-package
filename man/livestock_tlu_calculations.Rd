@@ -16,12 +16,13 @@ livestock_tlu_calculations(
 \item{livestock_name_conversion_tibble}{A tibble
 of conversions for livestock names}
 
-\item{livestock_tlu_conversions}{A tibble for converting 
+\item{livestock_tlu_conversions}{A tibble for converting
 livestock names into TLUss}
 }
 \description{
 Calculate amount of livestock kept in
 tropical livestock units (TLU).
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

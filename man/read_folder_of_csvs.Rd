@@ -11,6 +11,7 @@ read_folder_of_csvs(folder = "./")
 }
 \description{
 A function
- 
+}
+\details{
 Rpackage file: redirectModules.R
 }

@@ -11,6 +11,7 @@ extract_project_values(rhomis_data)
 }
 \description{
 Extract all of the values from an individual data set
-  
+}
+\details{
 Rpackage file: redirectModules.R
 }

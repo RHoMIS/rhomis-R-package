@@ -11,7 +11,6 @@ generateData(
   project_name,
   form_name,
   number_of_responses,
-  form_version,
   isDraft = T
 )
 }
@@ -27,13 +26,10 @@ generateData(
 \item{form_name}{The name of the form to generate data for}
 
 \item{number_of_responses}{The number of responses to generate}
-
-\item{form_version}{The version of the form to upload}
-
-\item{isDraft}{Whether or not the form is a draft or finalized}
 }
 \description{
 Generate fake data and submit it to a test project
- 
+}
+\details{
 Rpackage file: RunAll.R
 }

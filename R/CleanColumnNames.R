@@ -8,7 +8,7 @@
 #' column names come in the form "xxxx/xxxxx/xxxxx/important_name".
 #' This function helps to extract only the final value
 #' "important name".
-#' 
+#'
 #' Rpackage file: CleanColumnNames.R
 #'
 #'
@@ -39,7 +39,7 @@ shorten_individual_column_name <- function(column_name, seperator) {
 #' in the for "xxxx/xxxxx/xxxxx/important_name".
 #' This function helps to extract only the final value
 #' "important name". It will do this for multiple column names
-#' 
+#'
 #' Rpackage file: CleanColumnNames.R
 #'
 #' @param long_names The list of column names which need to be shortened
@@ -66,7 +66,7 @@ shorten_multiple_column_names <- function(long_names, seperator) {
 #"
 #' Many of the variables in RHoMIS are
 #' collected through a looping structure
-#' 
+#'
 #' Rpackage file: CleanColumnNames.R
 #'
 #' @param column_name The individual column name to be changed
@@ -127,7 +127,7 @@ modify_loop_name <- function(column_name, loop_type) {
 #' "crop_name_1",
 #' "crop_name_2",
 #' "crop_name_3" ...
-#' 
+#'
 #' Rpackage file: CleanColumnNames.R
 #'
 #' @param column_names A list of the column names which
@@ -271,17 +271,12 @@ modify_all_loop_column_names <- function(column_names, repeat_columns) {
 #' # "offfarm_name_4",
 #' # "person_name_5",
 #' # "crop_name")
-clean_column_names <- function(column_names, repeat_columns = c(
-                                 "crop_repeat",
-                                 "livestock_repeat",
-                                 "offfarm_repeat",
-                                 "offfarm_income_repeat",
-                                 "hh_pop_repeat",
-                                 "hh_rep"
-                               )) {
+clean_column_names <- function(column_names) {
 
   # list of possible separators for columns in the raw rhomis survey data
   separator_list <- c("\\.", "/", "-")
+
+  repeat_columns <- identify_repeat_columns(column_names)
 
   # loop over the list of separators to identify
   # the one that applies in this case
@@ -305,4 +300,34 @@ clean_column_names <- function(column_names, repeat_columns = c(
   column_names <- tolower(column_names)
 
   return(column_names)
+}
+
+
+#' Identify Repeat Columns
+#'
+#' Identify repeat loop columns in a rhomis
+#' dataset
+#'
+#' @param column_names The list of column names
+#'
+#' @return
+#' @export
+#'
+#' @examples
+identify_repeat_columns <- function(column_names){
+
+    pattern <- paste0("[[:word:]]+[[:punct:]][[:digit:]]+[[:punct:]]")
+    repeats <- stringr::str_extract(column_names, pattern)
+
+    repeats <- gsub("[[:punct:]][[:digit:]]+[[:punct:]]", "",repeats)
+    repeats <- repeats[!is.na(repeats)]
+    repeats <- unique(repeats)
+
+    return(repeats)
+
+
+
+
+
+
 }

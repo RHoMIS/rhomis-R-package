@@ -2,9 +2,7 @@
 % Please edit documentation in R/redirectModules.R
 \name{value_gender_fa_calculations}
 \alias{value_gender_fa_calculations}
-\title{Value, Gender, and Food Availability Calculations
- 
-Rpackage file: redirectModules.R}
+\title{Value, Gender, and Food Availability Calculations}
 \usage{
 value_gender_fa_calculations(
   processed_data,
@@ -29,7 +27,5 @@ value_gender_fa_calculations(
 \item{units}{A list of units and conversion factors}
 }
 \description{
-Value, Gender, and Food Availability Calculations
- 
 Rpackage file: redirectModules.R
 }

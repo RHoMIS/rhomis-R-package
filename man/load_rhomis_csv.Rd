@@ -12,8 +12,7 @@ load_rhomis_csv(
   id_type = c("string", "column"),
   proj_id = NULL,
   form_id = NULL,
-  overwrite = FALSE,
-  repeat_columns = pkg.env$repeat_columns
+  overwrite = FALSE
 )
 }
 \arguments{
@@ -32,8 +31,6 @@ load_rhomis_csv(
 \item{form_id}{Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)}
 
 \item{overwrite}{True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs}
-
-\item{repeat_columns}{The types of repeat column name}
 }
 \value{
 A tibble of RHoMIS data
@@ -42,6 +39,7 @@ A tibble of RHoMIS data
 Load a Raw RHoMIS csv file, collected using ODK, and
 convert the column names into a shortened, standardised
 version.
- 
+}
+\details{
 Rpackage file: RunAll.R
 }

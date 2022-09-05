@@ -49,7 +49,7 @@
 #'
 #'
 #' @source NA
-"crop_yield_units"
+"crop_amount_to_kg"
 
 #' Crop Price Units
 #'
@@ -60,7 +60,7 @@
 #'
 #'
 #' @source NA
-"crop_price_units"
+"crop_price_to_lcu_per_kg"
 
 #' Proportion Conversions
 #'
@@ -83,7 +83,7 @@
 #'
 #'
 #' @source NA
-"livestock_weights"
+"livestock_weight_kg"
 
 
 #' Milk Amount Units
@@ -95,7 +95,7 @@
 #'
 #'
 #' @source NA
-"milk_amount_units"
+"milk_amount_to_l"
 
 #' Milk Price Time Units
 #'
@@ -107,7 +107,7 @@
 #'
 #'
 #' @source NA
-"milk_price_time_units"
+"milk_amount_to_l"
 
 #' Eggs Amount Units
 #'
@@ -118,7 +118,7 @@
 #'
 #'
 #' @source NA
-"eggs_amount_units"
+"eggs_amount_to_pieces_per_year"
 
 #' Eggs Price Time Units
 #'
@@ -128,7 +128,7 @@
 #'
 #'
 #' @source NA
-"eggs_price_time_units"
+"eggs_price_to_lcu_per_year"
 
 #' Honey Amount Units
 #'
@@ -139,7 +139,7 @@
 #'
 #'
 #' @source NA
-"honey_amount_units"
+"honey_amount_to_l"
 
 
 #' Land Area Units
@@ -150,7 +150,7 @@
 #'
 #'
 #' @source NA
-"land_area_units"
+"land_area_to_ha"
 
 
 #' Modules
@@ -164,13 +164,13 @@
 "modules"
 
 
-#' Country
+#' Country Conversions to ISO
 #'
 #' A dataset which converts country names found in previous RHoMIS surveys
 #' into two letter ISO country codes
 #'
 #'  @source NA
-"country"
+"country_to_iso2"
 
 
 #' Crop Name
@@ -179,7 +179,7 @@
 #' previous rhomis datasets
 #'
 #'  @source NA
-"crop_name"
+"crop_name_to_std"
 
 
 #' Livestock Name
@@ -187,14 +187,14 @@
 #'  A list of common names found in previous RHoMIS datasets
 #'
 #'  @source NA
-"livestock_name"
+"livestock_name_to_std"
 
 #' Fertiliser Units
 #'
 #' A list of common fertiliser amount units from previous RHoMIS datasets
 #'
 #'  @source NA
-"fertiliser_units"
+"fertiliser_amount_to_kg"
 
 #' Crop Calories
 #'
@@ -245,7 +245,7 @@
 #' tropical livestock units
 #'
 #' @source NA
-"livestock_tlu"
+"livestock_count_to_tlu"
 
 
 #' Indicator List
@@ -269,9 +269,9 @@
 "indicator_list"
 
 #' Function List
-#' 
+#'
 #' A list of the functions used to
 #' calculate various RHoMIS indicators
-#' 
+#'
 #' @source NA
 "function_list"

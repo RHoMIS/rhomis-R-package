@@ -21,11 +21,9 @@ processData(
   central_password = NULL,
   project_name = NULL,
   form_name = NULL,
-  form_version = NULL,
   database = NULL,
   isDraft = NULL,
   central_test_case = FALSE,
-  repeat_columns = pkg.env$repeat_columns,
   gender_categories = pkg.env$gender_categories
 )
 }
@@ -73,17 +71,12 @@ ONLY RELEVANT IF "dataSource" WAS "central".}
 \item{form_name}{The name of the ODK-central form you are processing.
 ONLY RELEVANT IF "dataSource" WAS "central".}
 
-\item{form_version}{The version of the ODK-central form you are processing.
-ONLY RELEVANT IF "dataSource" WAS "central".}
-
 \item{database}{The name of the database you would like to save results to}
 
 \item{isDraft}{Whether or not the ODK form you are working with is a draft
 or a final version. Only relevant if you are processing a project from ODK central}
 
 \item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
-
-\item{repeat_columns}{The columns which are looped in the datasets being processed}
 
 \item{gender_categories}{The gender categories present in the data which is to be processed}
 }
@@ -99,6 +92,6 @@ RHoMIS datasets go through 4 stages of processing:
 2. Calculation of initial indicators
 3. Calculation of final indicators, including food availability,
 gender, and value of products consumed
- 
+
 Rpackage file: RunAll.R
 }
