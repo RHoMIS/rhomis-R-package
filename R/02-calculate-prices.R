@@ -74,12 +74,31 @@ crop_and_livestock_calcs_all <- function(
 
     if (length(missing_crop_columns)==0)
     {
+
+        # Identifying which crops were grown in which project
+        crops_per_project <- map_to_wide_format(
+            data = rhomis_data,
+            name_column = "crop_name",
+            column_prefixes = "crop_name",
+            types = rep("chr")
+        )
+        crops_per_project <- crops_per_project[["crop_name"]]
+        crops_per_project$id_rhomis_dataset <- rhomis_data[["id_rhomis_dataset"]]
+
+        crops_per_project <- crops_per_project %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
+        crops_per_project <- crops_per_project[!is.na(crops_per_project$conversion),]
+        crops_per_project$conversion <- NULL
+        crops_per_project <- crops_per_project[duplicated(crops_per_project)==F,]
+
+        # Getting Prices Out
         crop_data <- map_to_wide_format(
             data = rhomis_data,
             name_column = "crop_name",
             column_prefixes = "crop_price",
             types = rep("num")
         )
+
+
 
         crop_price <- crop_data[["crop_price"]]
         crop_price$id_rhomis_dataset <- rhomis_data[["id_rhomis_dataset"]]
@@ -90,6 +109,15 @@ crop_and_livestock_calcs_all <- function(
 
         crop_price <- crop_price %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
         crop_price$unit_type <- "crop_price_lcu_per_kg"
+
+        crop_price <- crops_per_project %>%
+            merge(crop_price, by.x=c("id_rhomis_dataset","survey_value"),
+                  by.y=c("id_rhomis_dataset","survey_value"),
+                  all.x = T,
+                  all.y = F)
+
+
+
         prices$mean_crop_price_lcu_per_kg <- crop_price
 
         data_to_bind <- make_new_dataset(rhomis_data)
@@ -106,12 +134,14 @@ crop_and_livestock_calcs_all <- function(
     #         )
 
 
-    livestock_weights <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = units_and_conversions$livestock_weights)
-
-
+    if ("livestock_weights" %in% names(units_and_conversions)==F){
+        livestock_weights <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = livestock_weight_kg)
+    }else{
+        livestock_weights <-   units_and_conversions$livestock_weights
+    }
 
     rhomis_data <- livestock_calculations_all(rhomis_data,
-                                              livestock_weights_conv_tibble =  make_per_project_conversion_tibble(rhomis_data[["id_rhomis_dataset"]],livestock_weight_kg),
+                                              livestock_weights_conv_tibble = livestock_weights,
                                               eggs_amount_unit_conv_tibble = units_and_conversions$eggs_amount_to_pieces_per_year,
                                               eggs_price_time_units_conv_tibble = units_and_conversions$eggs_price_to_lcu_per_year,
                                               honey_amount_unit_conv_tibble = units_and_conversions$honey_amount_to_l,
@@ -144,6 +174,21 @@ crop_and_livestock_calcs_all <- function(
         if (price_data_set %in% missing_livestock_columns==T){
             next()
         }
+
+        livestock_per_project <- map_to_wide_format(
+            data = rhomis_data,
+            name_column = "livestock_name",
+            column_prefixes = "livestock_name",
+            types = rep("chr")
+        )
+        livestock_per_project <- livestock_per_project[["livestock_name"]]
+        livestock_per_project$id_rhomis_dataset <- rhomis_data[["id_rhomis_dataset"]]
+
+        livestock_per_project <- livestock_per_project %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
+        livestock_per_project <- livestock_per_project[!is.na(livestock_per_project$conversion),]
+        livestock_per_project$conversion <- NULL
+        livestock_per_project <- livestock_per_project[duplicated(livestock_per_project)==F,]
+
         livestock_data <- map_to_wide_format(
             data = rhomis_data,
             name_column = "livestock_name",
@@ -160,6 +205,13 @@ crop_and_livestock_calcs_all <- function(
 
             mean_price_df <- mean_price_df %>% tidyr::pivot_longer(!id_rhomis_dataset, names_to = "survey_value", values_to = "conversion")
             mean_price_df$unit_type<- paste0("mean_", price_data_set)
+
+            mean_price_df <- livestock_per_project %>%
+                merge(mean_price_df, by.x=c("id_rhomis_dataset","survey_value"),
+                      by.y=c("id_rhomis_dataset","survey_value"),
+                      all.x = T,
+                      all.y = F)
+
             prices[[paste0("mean_", price_data_set)]] <- mean_price_df
         }
 
@@ -271,7 +323,7 @@ calculate_prices_csv <- function(
         unique_id_col = unique_id_col
     )
 
-    units <- load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+    units <- load_local_units(paste0( base_path,"conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
     secondary_units <- get_secondary_conversions(
         rhomis_data=rhomis_data,

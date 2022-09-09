@@ -374,7 +374,7 @@ calculate_indicators_local <- function(
         unique_id_col = unique_id_col
     )
 
-    units_and_conversions <- load_local_units(paste0( "./conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
+    units_and_conversions <- load_local_units(paste0( base_path,"conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
     secondary_units <- sapply(names(pkg.env$secondary_units), function(unit_name){
         file_name <- paste0(base_path,"conversions_stage_2/",unit_name,".csv")
