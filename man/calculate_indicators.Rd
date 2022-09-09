@@ -8,7 +8,7 @@ calculate_indicators(
   rhomis_data,
   units_and_conversions,
   prices,
-  calories,
+  calorie_conversions,
   gender_categories
 )
 }
@@ -19,7 +19,7 @@ calculate_indicators(
 
 \item{prices}{A list of price conversions (mean price per kg)}
 
-\item{calories}{A list of calorie conversions for different products}
+\item{calorie_conversions}{A list of calorie conversions for different products}
 
 \item{gender_categories}{The different categories of people (e.g. male_youth, female_youth, male_adult, female_adult)}
 }
