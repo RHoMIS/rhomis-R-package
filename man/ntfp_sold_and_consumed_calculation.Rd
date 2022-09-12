@@ -5,7 +5,7 @@
 \title{NTFP sold and consumed Calculation}
 \usage{
 ntfp_sold_and_consumed_calculation(
-  data,
+  rhomis_data,
   fp_harvest_kg,
   fp_props_sold_numeric,
   fp_amount_sold_kg,

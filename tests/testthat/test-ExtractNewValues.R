@@ -107,7 +107,10 @@ testthat::test_that("Can extract units for core RHoMIS data", {
         "honey_amount_to_l" = c("hnyprod1", "hnyprod2", "hnyprod3", "hnyprodoth1", "hnyprodoth2", "hnyprodoth3"),
         "eggs_amount_to_pieces_per_year" = c("egg1", "egg2", "egg3", "eggoth1", "eggoth2", "eggoth3"),
         "eggs_price_to_lcu_per_year" = c("eggtime1", "eggtime2", "eggtime3", "eggtimeoth1", "eggtimeoth2", "eggtimeoth3"),
-        "fertiliser_amount_to_kg" = c("fert1", "fert2", "fertoth1", "fertoth2")
+        "fertiliser_amount_to_kg" = c("fert1", "fert2", "fertoth1", "fertoth2"),
+        "fp_amount_to_kg" = c(NA),
+        "fp_income_per_freq_to_lcu_per_year" = c(NA)
+
     ))
     actual_result <- extract_new_core_units(data)
     expect_equal(actual_result, expected_result)
@@ -254,6 +257,22 @@ testthat::test_that("Can extract units from individual projects", {
                 survey_value = as.character(c(NA, NA, NA)),
                 conversion = c(NA, NA, NA),
                 unit_type = c("fertiliser_amount_to_kg", "fertiliser_amount_to_kg", "fertiliser_amount_to_kg"),
+                id_rhomis_dataset = c("project_1", "project_2", "project_3")
+            )
+        ),
+        fp_amount_to_kg = tibble::as_tibble(
+            list(
+                survey_value = as.character(c(NA, NA, NA)),
+                conversion = c(NA, NA, NA),
+                unit_type = c("fp_amount_to_kg", "fp_amount_to_kg", "fp_amount_to_kg"),
+                id_rhomis_dataset = c("project_1", "project_2", "project_3")
+            )
+        ),
+        fp_income_per_freq_to_lcu_per_year = tibble::as_tibble(
+            list(
+                survey_value = as.character(c(NA, NA, NA)),
+                conversion = c(NA, NA, NA),
+                unit_type = c("fp_income_per_freq_to_lcu_per_year", "fp_income_per_freq_to_lcu_per_year", "fp_income_per_freq_to_lcu_per_year"),
                 id_rhomis_dataset = c("project_1", "project_2", "project_3")
             )
         )

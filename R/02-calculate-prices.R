@@ -237,6 +237,11 @@ crop_and_livestock_calcs_all <- function(
     )
 
 
+
+
+    # Adding NTFP calculations
+
+
     # Assemble all outputs ready to write to file
     results <- list(
         rhomis_data=rhomis_data,

@@ -137,10 +137,15 @@ value_calculations <- function(processed_data,
       )
     }
 
-    extra_outputs$value_crop_consumed_lcu <- map_to_wide_format(
-      data = processed_data, name_column = "crop_name", column_prefixes = "value_crop_consumed_lcu",
-      types = "num"
-    )[[1]]
+    if ("value_crop_consumed_lcu" %in% missing_columns==F){
+        extra_outputs$value_crop_consumed_lcu <- map_to_wide_format(
+            data = processed_data, name_column = "crop_name", column_prefixes = "value_crop_consumed_lcu",
+            types = "num"
+        )[[1]]
+    }
+
+
+
   }
 
   if ("mean_crop_price_lcu_per_kg" %in% names(prices) == F) {
@@ -179,12 +184,20 @@ value_calculations <- function(processed_data,
         control_column = "livestock_meat_who_control_eating",
         loop_structure = T, gender_control_categories = gender_categories
       )
+
+
     }
+    if ("value_meat_consumed_lcu" %in% missing_columns==F){
+
 
     extra_outputs$value_meat_consumed_lcu <- map_to_wide_format(
-      data = processed_data, name_column = "livestock_name", column_prefixes = "value_meat_consumed_lcu",
-      types = "num"
+        data = processed_data, name_column = "livestock_name", column_prefixes = "value_meat_consumed_lcu",
+        types = "num"
     )[[1]]
+    }
+
+
+
   }
 
   if ("mean_meat_price_per_kg" %in% names(prices) == F) {
@@ -223,12 +236,17 @@ value_calculations <- function(processed_data,
         control_column = "eggs_who_control_eating",
         loop_structure = T, gender_control_categories = gender_categories
       )
+
+    }
+    if ("value_eggs_consumed_lcu" %in% missing_columns==F){
+        extra_outputs$value_eggs_consumed_lcu <- map_to_wide_format(
+            data = processed_data, name_column = "livestock_name", column_prefixes = "value_eggs_consumed_lcu",
+            types = "num"
+        )[[1]]
+
     }
 
-    extra_outputs$value_eggs_consumed_lcu <- map_to_wide_format(
-      data = processed_data, name_column = "livestock_name", column_prefixes = "value_eggs_consumed_lcu",
-      types = "num"
-    )[[1]]
+
   }
 
   if ("mean_eggs_price_per_kg" %in% names(prices) == F) {
@@ -269,13 +287,18 @@ value_calculations <- function(processed_data,
         control_column = "milk_who_control_eating",
         loop_structure = T, gender_control_categories = gender_categories
       )
+
+    }
+
+    if ("value_milk_consumed_lcu" %in% missing_columns==F){
+        extra_outputs$value_milk_consumed_lcu <- map_to_wide_format(
+            data = processed_data, name_column = "livestock_name", column_prefixes = "value_milk_consumed_lcu",
+            types = "num"
+        )[[1]]
     }
 
 
-    extra_outputs$value_milk_consumed_lcu <- map_to_wide_format(
-      data = processed_data, name_column = "livestock_name", column_prefixes = "value_milk_consumed_lcu",
-      types = "num"
-    )[[1]]
+
   }
 
   if ("mean_milk_price_per_litre" %in% names(prices) == F) {
@@ -283,7 +306,7 @@ value_calculations <- function(processed_data,
   }
 
 
-  # Honey 
+  # Honey
 
   # indicator_search_value_bees_honey_consumed_lcu
   if ("mean_bees_honey_price_per_kg" %in% names(prices)) {
@@ -315,12 +338,19 @@ value_calculations <- function(processed_data,
         control_column = "bees_who_control_eating",
         loop_structure = T, gender_control_categories = gender_categories
       )
+      extra_outputs$value_bees_honey_consumed_lcu <- map_to_wide_format(
+          data = processed_data, name_column = "livestock_name", column_prefixes = "value_bees_honey_consumed_lcu",
+          types = "num"
+      )[[1]]
+    }
+    if ("value_bees_honey_consumed_lcu" %in% missing_columns==F){
+        extra_outputs$value_bees_honey_consumed_lcu <- map_to_wide_format(
+            data = processed_data, name_column = "livestock_name", column_prefixes = "value_bees_honey_consumed_lcu",
+            types = "num"
+        )[[1]]
     }
 
-    extra_outputs$value_bees_honey_consumed_lcu <- map_to_wide_format(
-      data = processed_data, name_column = "livestock_name", column_prefixes = "value_bees_honey_consumed_lcu",
-      types = "num"
-    )[[1]]
+
   }
 
   if ("mean_bees_honey_price_per_kg" %in% names(prices) == F) {

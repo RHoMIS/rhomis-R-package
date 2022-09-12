@@ -5,7 +5,7 @@
 \title{NTFP Income Calculation}
 \usage{
 fp_income_calculations(
-  data,
+  rhomis_data,
   unit_conv_tibble = NULL,
   fp_sold_kg_per_year_column,
   fp_sold_units_column,
