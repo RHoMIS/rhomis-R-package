@@ -3,6 +3,7 @@
 #' Create a new indicator
 #' @param indicator_name The name of the new indicator
 #' @param output_format The shape of the indicator (column, loop or table)
+#' @param description A description of the indicator
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
 #' @param loop_columns_required Which looped columns are required
 #' @param conversion_tables_required Which conversion tables are required
@@ -17,6 +18,7 @@
 #' @examples
 new_indicator <- function(indicator_name,
                            output_format=c("column", "loop", "table"),
+                           description,
                            individual_columns_required=list(),
                            loop_columns_required=list(),
                            conversion_tables_required=list(),
@@ -72,8 +74,11 @@ new_indicator <- function(indicator_name,
 #' Add an indicator metadata entry for
 #' the RHoMIS dataset
 #'
+#' File: R/Metadata.R
+#'
 #' @param indicator_list The Existing list of indicators
 #' @param indicator_name The name of the new indicator
+#' @param description A description of the indicator
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
 #' @param loop_columns_required Which looped columns are required
@@ -90,6 +95,7 @@ new_indicator <- function(indicator_name,
 add_indicator <- function(indicator_list,
                         indicator_name,
                         output_format=c("column", "loop", "table"),
+                        description,
                         individual_columns_required=list(),
                         loop_columns_required=list(),
                         conversion_tables_required=list(),
@@ -104,6 +110,7 @@ add_indicator <- function(indicator_list,
     indicator <- new_indicator(
     indicator_name = indicator_name,
     output_format=output_format,
+    description=description,
     individual_columns_required=individual_columns_required,
     loop_columns_required=loop_columns_required,
     conversion_tables_required=conversion_tables_required,
@@ -132,7 +139,8 @@ add_indicator <- function(indicator_list,
 #'
 #' @param indicator_list The Existing list of indicators
 #' @param gendered_list List of gender categories
-#' @param indicator_name The name of the new indicator (without gender prefix)
+#' @param indicator_name The name of the new indicator (without gender prefix),
+#' @param description A description of the indicator
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
 #' @param loop_columns_required Which looped columns are required
@@ -149,6 +157,7 @@ add_gendered_indicator <- function(
      indicator_list,
      gendered_list=c("male_youth", "male_adult", "female_youth", "female_adult"),
      indicator_name = "male_youth_crop_consumed_kg_per_year",
+     description,
      output_format, #column, loop, #table
      individual_columns_required=list(),
      loop_columns_required=list(),
@@ -169,6 +178,7 @@ add_gendered_indicator <- function(
                indicator_list,
                indicator_name = gender_indicator_name,
                output_format=output_format, #column, loop, #table
+               description=description,
                individual_columns_required=individual_columns_required,
                loop_columns_required=loop_columns_required,
                conversion_tables_required=conversion_tables_required,
@@ -475,7 +485,9 @@ find_d3_dependencies_network <- function(
 #' @param indicator_name The name of the indicator
 #' @param list_of_indicators The list of indicators
 #' @param type Whether or not to do a horizontal or central plot
-
+#'
+#' File: R/MetaData.R
+#'
 #' @return
 #' @export
 #'
@@ -494,19 +506,15 @@ plot_dependency_network <- function(
 
 
     if (type=="horizontal"){
-        plot <- networkD3::diagonalNetwork(List = d3_network)
+        plot <- networkD3::diagonalNetwork(List = d3_network, fontSize = 10)
+
     }
 
     if (type=="central"){
-        plot <- networkD3::radialNetwork(List = d3_network)
+        plot <- networkD3::radialNetwork(List = d3_network, fontSize = 10)
     }
 
-    plot
-
-
-
-
-
+    htmlwidgets::onRender(plot,  "function(el, x) { d3.selectAll('.node').on('mouseover', null).on('mouseout', null); }")
 }
 
 

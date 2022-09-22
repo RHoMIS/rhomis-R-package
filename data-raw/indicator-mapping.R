@@ -32,6 +32,7 @@ indicator_list <- list()
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "iso_country_code",
+    description="Two letter iso country code (lower case), see [here](https://www.iban.com/country-codes)",
     output_format="column",
     individual_columns_required=list("country"),
     loop_columns_required=list(),
@@ -45,6 +46,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "year",
+    description="The year the survey was conducted",
     output_format="column",
     individual_columns_required=list("year", "start_time_user"),
     loop_columns_required=list(),
@@ -58,6 +60,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "currency_conversion_lcu_to_ppp",
+    description="Currency conversion factors to convert incomes from lcu to ppp. To convert, mutliply the original income by this conversion factor",
     output_format="column",
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -71,6 +74,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "survey_length_minutes",
+    description="How long it took to complete the survey (in minutes)",
     output_format="column",
     individual_columns_required=list("start_time_user","end_time_user"),
     loop_columns_required=list(),
@@ -94,6 +98,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_harvest_kg_per_year",
+    description="The amount of crop harvested per year. Calculated by converting `crop_yield_units`",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(
@@ -111,6 +116,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
@@ -124,6 +130,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
@@ -138,6 +145,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_income_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_sold_income", "crop_sold_price_quantityunits"),
@@ -150,6 +158,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_price",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -166,6 +175,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "crop_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_consume_control"),
@@ -179,6 +189,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "crop_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_who_control_revenue"),
@@ -191,6 +202,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "crop_income_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_who_control_revenue"),
@@ -218,6 +230,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_price_per_animal",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_sold","livestock_sale_income","livestock_price_per_animal"),
@@ -234,6 +247,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name","killed_for_meat"),
@@ -246,6 +260,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_sell_amount","meat_use"),
@@ -258,6 +273,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_consumed_amount","meat_use"),
@@ -271,6 +287,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_price_per_kg",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_sold_income"),
@@ -288,6 +305,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_amount_good_season_litres_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_amount_good_season", "milk_units", "milk_number_animals_milked"),
@@ -300,6 +318,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_amount_bad_season_litres_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_amount_bad_season", "milk_units", "milk_number_animals_milked"),
@@ -312,6 +331,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_collected_litres_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -324,6 +344,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_sold_litres_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_sell_amount"),
@@ -336,6 +357,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_consumed_litres_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_consumed_amount"),
@@ -349,6 +371,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_sold_income_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_sold_income", "milk_sold_price_timeunits"),
@@ -366,6 +389,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_amount_good_season_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_amount_good", "eggs_units"),
@@ -378,6 +402,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_amount_bad_season_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_amount_good", "eggs_units"),
@@ -390,6 +415,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_collected_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -403,6 +429,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_use", "eggs_sell_amount"),
@@ -415,6 +442,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_use", "eggs_consumed_amount"),
@@ -428,6 +456,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_income_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_sold_income", "eggs_sold_price_timeunits"),
@@ -440,6 +469,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_price_per_kg",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -457,6 +487,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_production", "bees_honey_production_units"),
@@ -469,6 +500,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_use","bees_honey_sell_amount"),
@@ -481,6 +513,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_consumed_amount","bees_honey_use"),
@@ -494,6 +527,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_price_per_kg",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_sold_income"),
@@ -513,6 +547,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "livestock_sale_income",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_sale_income","livestock_who_sells"),
@@ -529,6 +564,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "meat_sold_income",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_sold_income","livestock_meat_who_sells"),
@@ -541,6 +577,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "meat_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_meat_who_sells"),
@@ -553,6 +590,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "meat_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_meat_who_control_eating"),
@@ -570,6 +608,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "milk_sold_litres_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_who_sells"),
@@ -582,6 +621,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "milk_sold_income_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_who_sells"),
@@ -594,6 +634,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "milk_consumed_litres_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_who_control_eating"),
@@ -612,6 +653,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "eggs_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_who_sells"),
@@ -624,6 +666,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "eggs_income_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_who_sells"),
@@ -636,6 +679,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "eggs_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_who_control_eating"),
@@ -652,6 +696,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "bees_honey_sold_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_who_sells"),
@@ -664,6 +709,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "bees_honey_sold_income",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_who_sells", "bees_honey_sold_income"),
@@ -676,6 +722,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "bees_honey_consumed_kg_per_year",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_who_control_eating"),
@@ -694,6 +741,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_tlu",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
     "livestock_other1",
@@ -727,6 +775,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hh_size_members",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "children_under_4",
@@ -747,6 +796,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hh_size_mae",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "children_under_4",
@@ -778,6 +828,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "land_cultivated_ha",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list("landcultivated","unitland"),
     loop_columns_required=list(),
@@ -790,6 +841,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "land_owned_ha",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list("landowned","unitland"),
     loop_columns_required=list(),
@@ -816,6 +868,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hfias_status",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
           "hfias_1",
@@ -838,6 +891,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "fies_score",
+    description="",
     output_format="column", #column, loop, #table
  individual_columns_required=list(
           "fies_1",
@@ -874,6 +928,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_good_season",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_good_season",
@@ -896,6 +951,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_good_season_farm",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_good",
@@ -918,6 +974,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_good_season_bought",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_good",
@@ -942,6 +999,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_bad_season",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_bad_season",
@@ -965,6 +1023,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_bad_season_farm",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
       "grainsrootstubers_source_bad",
@@ -988,6 +1047,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_bad_season_bought",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_bad",
@@ -1011,6 +1071,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_month",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_last_month",
@@ -1034,6 +1095,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_month_farm",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_last_month",
@@ -1057,6 +1119,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_month_bought",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_last_month",
@@ -1081,6 +1144,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_24hr",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_24hr",
@@ -1115,6 +1179,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_income_lcu_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1127,6 +1192,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_income_lcu_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_sale_income", "meat_sold_income", "bees_honey_sold_income"),
@@ -1141,6 +1207,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "off_farm_income_lcu_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list("offfarm_income_proportion","offfarm_incomes_any"),
     loop_columns_required=list(),
@@ -1154,6 +1221,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "total_income_lcu_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1179,6 +1247,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_crop_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_name"),
@@ -1191,6 +1260,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "value_crop_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_consume_control"),
@@ -1205,6 +1275,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_meat_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1217,6 +1288,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "value_meat_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_meat_who_control_eating"),
@@ -1231,6 +1303,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_eggs_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1243,6 +1316,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "value_eggs_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_who_control_eating"),
@@ -1257,6 +1331,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_milk_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1269,6 +1344,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "value_milk_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_who_control_eating"),
@@ -1283,6 +1359,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_bees_honey_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1295,6 +1372,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "value_bees_honey_consumed_lcu",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_who_control_eating"),
@@ -1313,6 +1391,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_crop_consumed_lcu_per_hh_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1326,6 +1405,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_livestock_products_consumed_lcu_per_hh_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1345,6 +1425,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_farm_products_consumed_lcu_per_hh_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1371,6 +1452,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_calories_consumed_kcal",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_name"),
@@ -1385,6 +1467,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_calories_consumed_kcal",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1399,6 +1482,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_calories_consumed_kcal",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1413,6 +1497,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_calories_consumed_kcal",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1429,6 +1514,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_calories_consumed_kcal",
+    description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1449,6 +1535,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_consumed_calories_kcal_per_hh_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1462,6 +1549,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_consumed_calories_kcal_per_hh_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1481,6 +1569,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "farm_products_consumed_calories_kcal_per_hh_per_year",
+    description="",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1539,7 +1628,8 @@ indicator_list <- add_indicator(
      indicator_list <- add_indicator(
      indicator_list,
      indicator_name = indicator_name,
-     output_format="column", #column, loop, #table
+     description="",
+    output_format="column", #column, loop, #table
      individual_columns_required=list(),
      loop_columns_required=list("off_farm_source_prop"),
      conversion_tables_required=list(),
@@ -1570,7 +1660,8 @@ plot_dependency_network(
 # indicator_list <- add_indicator(
 #     indicator_list,
 #     indicator_name = "",
-#     output_format="loop", #column, loop, #table
+#     description="",
+#    output_format="loop", #column, loop, #table
 #     individual_columns_required=list(),
 #     loop_columns_required=list(),
 #     conversion_tables_required=list(),
@@ -1603,8 +1694,7 @@ find_nested_dependencies_network(
 )
 
 plot_dependency_network(
-     indicator_name="currency_conversion_lcu_to_ppp",
-     indicator_list=indicator_list
+     indicator_name="currency_conversion_lcu_to_ppp"
 )
 
 
