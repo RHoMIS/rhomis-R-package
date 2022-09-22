@@ -509,7 +509,10 @@ plot_dependency_network <- function(
     if (type=="horizontal"){
         # plot <- networkD3::diagonalNetwork(List = d3_network, fontSize = 10)
 
-        plot <- networkD3::diagonalNetwork(List = d3_network, height=800, fontSize = 10, width = 800)
+        plot <- networkD3::diagonalNetwork(List = d3_network, height=1100, fontSize = 18, width = 1500, margin=c("top"=0,
+                                                                                                                 "left"=0,
+                                                                                                                 "bottom"=0,
+                                                                                                                 "rigth"=0))
 
     }
 

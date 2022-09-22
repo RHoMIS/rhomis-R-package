@@ -28,14 +28,18 @@ in the RHoMIS Indicators Table. Others you will find in a looped format, in the 
 data. To find out more about an indicator, you can do as follows:
 
 
+## Assumptions
+
 
 
 
 ## Indicators
+
+Below we have a table of all of the indicators calculated in the RHoMIS core. 
+
 ```{r generating_indicators, eval=T, echo=F,, warning=F}
 # library("widgetframe")
 library(DT)
-library(gt)
 dir.create('./_book/images/indicator_plots/', recursive = T,showWarnings = F)
 
 data_table <- indicator_mapping_to_df()

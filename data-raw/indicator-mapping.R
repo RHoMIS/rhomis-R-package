@@ -20,6 +20,12 @@ library(jsonlite)
 indicator_list <- list()
 
 
+
+#' Tags:
+#' production
+#' consumption
+#'
+
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
@@ -32,7 +38,7 @@ indicator_list <- list()
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "iso_country_code",
-    description="Two letter iso country code (lower case), see [here](https://www.iban.com/country-codes)",
+    description="Two letter iso country code (lower case), see <a href='https://www.iban.com/country-codes' target='_blank'>here</a>",
     output_format="column",
     individual_columns_required=list("country"),
     loop_columns_required=list(),
@@ -98,7 +104,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_harvest_kg_per_year",
-    description="The amount of crop harvested per year. Calculated by converting `crop_yield_units` to a numeric conversion factor. Then multiplying `crop_yield_units` by `crop_yield`",
+    description="The amount of crop harvested per year. Calculated by converting <code>crop_yield_units</code> to a numeric conversion factor. Then multiplying <code>crop_yield_units</code> by <code>crop_yield</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(
@@ -116,7 +122,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_consumed_kg_per_year",
-    description="The amount of crop consumed per year in kilograms. We take the proportion of crop consumed (`crop_consumed_prop`) and multiply this proportion by `crop_harvest_per_year`.",
+    description="The amount of crop consumed per year in kilograms. We take the proportion of crop consumed (<code>crop_consumed_prop</code>) and multiply this proportion by <code>crop_harvest_per_year</code>.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
@@ -130,7 +136,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_sold_kg_per_year",
-    description="The amount of crop sold per year in kilograms. We take the proportion of crop sold (`crop_sold_prop`) and multiply this proportion by `crop_harvest_per_year`.",
+    description="The amount of crop sold per year in kilograms. We take the proportion of crop sold (<code>crop_sold_prop</code>) and multiply this proportion by <code>crop_harvest_per_year</code>.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
@@ -145,7 +151,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_income_per_year",
-    description="The income from selling",
+    description="The income from selling a specific crop. We convert the <code>crop_sold_price_quantityunits</code> to a numeric conversion factor (e.g. <code>price_per_sack_50kg</code> would convert to <code>50</code>. We take the <code>crop_sold_kg_per_year</code> and multiple it by this conversion factor to get the annual income. Please not there is one common exceptions, when the unit is  <code>total_income_per_year<code> we simply take the value from <code>crop_sold_income</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_sold_income", "crop_sold_price_quantityunits"),
@@ -158,7 +164,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_price",
-    description="",
+    description="The price of a crop per kg. If the unit <code>crop_sold_price_quantityunits</code> was a mass unit (e.g. <code>price_per_sack_50kg</code>) then the price is derived from this. If the unit was <code>total_income_per_year<code>, then the price is calculated by dividing the <code>crop_income_per_year</code> by <code>crop_sold_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -175,7 +181,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "crop_consumed_kg_per_year",
-    description="",
+    description="Gendered division of crop consumed. Taken by dividing <code>crop_consumed_kg_per_year</code> by the gendered divisions specified in the <code>crop_consume_control</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_consume_control"),
@@ -189,7 +195,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "crop_sold_kg_per_year",
-    description="",
+    description="Gendered division of crop consumed. Taken by dividing <code>crop_sold_kg_per_year</code> by the gendered divisions specified in the <code>crop_who_control_revenue</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_who_control_revenue"),
@@ -202,7 +208,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "crop_income_per_year",
-    description="",
+    description="Gendered division of crop income Taken by dividing <code>crop_income_per_year</code> by the gendered divisions specified in the <code>crop_who_control_revenue</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_who_control_revenue"),
@@ -230,10 +236,10 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_price_per_animal",
-    description="",
+    description="The price per whole animal sold. Taken by dividing <code>livestock_sale_income</code> (yearly income from selling livestock) by <code>livestock_sale_income</code> (total annual income from selling that specific livestock.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("livestock_sold","livestock_sale_income","livestock_price_per_animal"),
+    loop_columns_required=list("livestock_sold","livestock_sale_income"),
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list(),
