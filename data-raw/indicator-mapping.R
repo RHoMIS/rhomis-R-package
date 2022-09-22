@@ -98,7 +98,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_harvest_kg_per_year",
-    description="The amount of crop harvested per year. Calculated by converting `crop_yield_units`",
+    description="The amount of crop harvested per year. Calculated by converting `crop_yield_units` to a numeric conversion factor. Then multiplying `crop_yield_units` by `crop_yield`",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(
@@ -116,7 +116,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_consumed_kg_per_year",
-    description="",
+    description="The amount of crop consumed per year in kilograms. We take the proportion of crop consumed (`crop_consumed_prop`) and multiply this proportion by `crop_harvest_per_year`.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
@@ -130,7 +130,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_sold_kg_per_year",
-    description="",
+    description="The amount of crop sold per year in kilograms. We take the proportion of crop sold (`crop_sold_prop`) and multiply this proportion by `crop_harvest_per_year`.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
@@ -145,7 +145,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_income_per_year",
-    description="",
+    description="The income from selling",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_sold_income", "crop_sold_price_quantityunits"),
@@ -1643,8 +1643,7 @@ indicator_list <- add_indicator(
 
 
 plot_dependency_network(
-     indicator_name="male_adult_bees_honey_sold_income",
-     indicator_list=indicator_list,
+     indicator_name="male_adult_bees_honey_sold_income"
 )
 
 

@@ -15,7 +15,9 @@ plot_dependency_network(
 
 \item{list_of_indicators}{The list of indicators}
 
-\item{type}{Whether or not to do a horizontal or central plot}
+\item{type}{Whether or not to do a horizontal or central plot
+
+File: R/MetaData.R}
 }
 \description{
 Plot the dependency network of RHoMIS Indicators

@@ -9,7 +9,8 @@ extract_units_and_conversions_csv(
   file_path,
   id_type = c("string", "column"),
   proj_id,
-  form_id
+  form_id,
+  unique_id_col = "_uuid"
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ extract_units_and_conversions_csv(
 \item{proj_id}{If ID type was string, this should be a string, if ID type was column, this should be a column name containing project IDs}
 
 \item{form_id}{If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs}
+
+\item{unique_id_col}{The column containing unique household ids}
 }
 \description{
 Extract all units from a RHoMIS CSV file, and write these

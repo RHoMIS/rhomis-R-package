@@ -17,22 +17,22 @@
 #'
 #' @examples
 new_indicator <- function(indicator_name,
-                           output_format=c("column", "loop", "table"),
-                           description,
-                           individual_columns_required=list(),
-                           loop_columns_required=list(),
-                           conversion_tables_required=list(),
-                           api_data_required=list(),
-                           indicators_required=list(),
-                           function_calculated,
-                           search_term){
+                          output_format=c("column", "loop", "table"),
+                          description,
+                          individual_columns_required=list(),
+                          loop_columns_required=list(),
+                          conversion_tables_required=list(),
+                          api_data_required=list(),
+                          indicators_required=list(),
+                          function_calculated,
+                          search_term){
 
     match.arg(output_format)
     stopifnot(
         is.character(indicator_name),
         is.character(output_format),
         is.character(search_term),
-
+        is.character(description),
         is.list(individual_columns_required),
         is.list(loop_columns_required),
         is.list(conversion_tables_required),
@@ -47,7 +47,7 @@ new_indicator <- function(indicator_name,
 
     args <- lapply(function_args, function(x){
         type_check(x)
-                           })
+    })
 
 
 
@@ -55,6 +55,7 @@ new_indicator <- function(indicator_name,
     indicator <- list(
         indicator_name=args$indicator_name,
         output_format=args$output_format,
+        description=args$description,
         individual_columns_required=args$individual_columns_required,
         loop_columns_required=args$loop_columns_required,
         conversion_tables_required=args$conversion_tables_required,
@@ -93,31 +94,31 @@ new_indicator <- function(indicator_name,
 #'
 #' @examples
 add_indicator <- function(indicator_list,
-                        indicator_name,
-                        output_format=c("column", "loop", "table"),
-                        description,
-                        individual_columns_required=list(),
-                        loop_columns_required=list(),
-                        conversion_tables_required=list(),
-                        api_data_required=list(),
-                        indicators_required=list(),
-                        function_calculated,
-                        search_term
-                    ){
+                          indicator_name,
+                          output_format=c("column", "loop", "table"),
+                          description,
+                          individual_columns_required=list(),
+                          loop_columns_required=list(),
+                          conversion_tables_required=list(),
+                          api_data_required=list(),
+                          indicators_required=list(),
+                          function_calculated,
+                          search_term
+){
 
 
 
     indicator <- new_indicator(
-    indicator_name = indicator_name,
-    output_format=output_format,
-    description=description,
-    individual_columns_required=individual_columns_required,
-    loop_columns_required=loop_columns_required,
-    conversion_tables_required=conversion_tables_required,
-    api_data_required = api_data_required,
-    indicators_required=indicators_required,
-    function_calculated=function_calculated,
-    search_term=search_term)
+        indicator_name = indicator_name,
+        output_format=output_format,
+        description=description,
+        individual_columns_required=individual_columns_required,
+        loop_columns_required=loop_columns_required,
+        conversion_tables_required=conversion_tables_required,
+        api_data_required = api_data_required,
+        indicators_required=indicators_required,
+        function_calculated=function_calculated,
+        search_term=search_term)
 
     # print(indicator)
 
@@ -154,40 +155,40 @@ add_indicator <- function(indicator_list,
 #'
 #' @examples
 add_gendered_indicator <- function(
-     indicator_list,
-     gendered_list=c("male_youth", "male_adult", "female_youth", "female_adult"),
-     indicator_name = "male_youth_crop_consumed_kg_per_year",
-     description,
-     output_format, #column, loop, #table
-     individual_columns_required=list(),
-     loop_columns_required=list(),
-     conversion_tables_required=list(),
-     api_data_required = list(),
-     indicators_required=list(),
-     function_calculated="crop_gender_calculations"
+        indicator_list,
+        gendered_list=c("male_youth", "male_adult", "female_youth", "female_adult"),
+        indicator_name = "male_youth_crop_consumed_kg_per_year",
+        description,
+        output_format, #column, loop, #table
+        individual_columns_required=list(),
+        loop_columns_required=list(),
+        conversion_tables_required=list(),
+        api_data_required = list(),
+        indicators_required=list(),
+        function_calculated="crop_gender_calculations"
 ){
 
-     for (gender in gendered_list){
+    for (gender in gendered_list){
 
-          gender_indicator_name <- paste0(gender, "_", indicator_name)
-          search_term <- paste0("indicator_search_", gender_indicator_name)
+        gender_indicator_name <- paste0(gender, "_", indicator_name)
+        search_term <- paste0("indicator_search_", gender_indicator_name)
 
-          indicator_list
+        indicator_list
 
-          indicator_list <- add_indicator(
-               indicator_list,
-               indicator_name = gender_indicator_name,
-               output_format=output_format, #column, loop, #table
-               description=description,
-               individual_columns_required=individual_columns_required,
-               loop_columns_required=loop_columns_required,
-               conversion_tables_required=conversion_tables_required,
-               api_data_required = api_data_required,
-               indicators_required=indicators_required,
-               function_calculated=function_calculated,
-               search_term=search_term)
-     }
-     return(indicator_list)
+        indicator_list <- add_indicator(
+            indicator_list,
+            indicator_name = gender_indicator_name,
+            output_format=output_format, #column, loop, #table
+            description=description,
+            individual_columns_required=individual_columns_required,
+            loop_columns_required=loop_columns_required,
+            conversion_tables_required=conversion_tables_required,
+            api_data_required = api_data_required,
+            indicators_required=indicators_required,
+            function_calculated=function_calculated,
+            search_term=search_term)
+    }
+    return(indicator_list)
 }
 
 
@@ -228,64 +229,64 @@ type_check <- function(object){
 #'
 #' @examples
 find_nested_dependencies_list <- function(
-    indicator_name,
-    indicator_list,
-    dependency_required=c("individual", "loop", "indicator", "conversion")
-    ){
-      if (is.character(indicator_name)==F){
-          stop("indicator_name must be a character")
-     }
+        indicator_name,
+        indicator_list,
+        dependency_required=c("individual", "loop", "indicator", "conversion")
+){
+    if (is.character(indicator_name)==F){
+        stop("indicator_name must be a character")
+    }
 
-     match.arg(dependency_required)
+    match.arg(dependency_required)
 
-      if (is.character(indicator_name)==F){
-          stop("indicator_name must be a character")
-     }
+    if (is.character(indicator_name)==F){
+        stop("indicator_name must be a character")
+    }
 
-     if (is.list(indicator_list)==F){
-          stop("indicator_list must be a list")
-     }
-     if (indicator_name %in% names(indicator_list)==F){
-          stop("Could not find indicator name in list")
-     }
+    if (is.list(indicator_list)==F){
+        stop("indicator_list must be a list")
+    }
+    if (indicator_name %in% names(indicator_list)==F){
+        stop("Could not find indicator name in list")
+    }
 
 
 
-     indicator <- indicator_list[[indicator_name]]
+    indicator <- indicator_list[[indicator_name]]
 
     columns_required <- c()
-     if (dependency_required=="individual"){
-          columns_required <- c(indicator$individual_columns_required)
-     }
+    if (dependency_required=="individual"){
+        columns_required <- c(indicator$individual_columns_required)
+    }
 
-     if (dependency_required=="loop"){
-          columns_required <- c(indicator$loop_columns_required)
-     }
+    if (dependency_required=="loop"){
+        columns_required <- c(indicator$loop_columns_required)
+    }
 
-     if (dependency_required=="indicator"){
-          columns_required <- c(indicator$indicators_required)
-     }
+    if (dependency_required=="indicator"){
+        columns_required <- c(indicator$indicators_required)
+    }
 
-     if (dependency_required=="conversion"){
-          columns_required <- c(indicator$conversion_tables_required)
-     }
+    if (dependency_required=="conversion"){
+        columns_required <- c(indicator$conversion_tables_required)
+    }
 
-     if (length(indicator$indicators_required)==0){
-          return(columns_required)
-     }
+    if (length(indicator$indicators_required)==0){
+        return(columns_required)
+    }
 
-if (length(indicator$indicators_required)>0){
-          dependent_columns_required <- lapply(indicator$indicators_required, function(indicator_name){
-               find_nested_dependencies_list(
-                    indicator_name=indicator_name,
-                    indicator_list=indicator_list,
-                    dependency_required=dependency_required)
-          })  %>% unlist()
+    if (length(indicator$indicators_required)>0){
+        dependent_columns_required <- lapply(indicator$indicators_required, function(indicator_name){
+            find_nested_dependencies_list(
+                indicator_name=indicator_name,
+                indicator_list=indicator_list,
+                dependency_required=dependency_required)
+        })  %>% unlist()
 
 
-          columns_required <- unlist(c(columns_required, dependent_columns_required))
-          return(columns_required)
-     }
+        columns_required <- unlist(c(columns_required, dependent_columns_required))
+        return(columns_required)
+    }
 
 }
 
@@ -308,27 +309,27 @@ if (length(indicator$indicators_required)>0){
 #'
 #' @examples
 find_nested_dependencies_network <- function(
-    indicator_name,
-    indicator_list=indicator_list){
-      if (is.character(indicator_name)==F){
-          stop("indicator_name must be a character")
-     }
+        indicator_name,
+        indicator_list=indicator_list){
+    if (is.character(indicator_name)==F){
+        stop("indicator_name must be a character")
+    }
 
 
-      if (is.character(indicator_name)==F){
-          stop("indicator_name must be a character")
-     }
+    if (is.character(indicator_name)==F){
+        stop("indicator_name must be a character")
+    }
 
-     if (is.list(indicator_list)==F){
-          stop("indicator_list must be a list")
-     }
-     if (indicator_name %in% names(indicator_list)==F){
-          stop("Could not find indicator name in list")
-     }
+    if (is.list(indicator_list)==F){
+        stop("indicator_list must be a list")
+    }
+    if (indicator_name %in% names(indicator_list)==F){
+        stop("Could not find indicator name in list")
+    }
 
 
 
-     indicator <- indicator_list[[indicator_name]]
+    indicator <- indicator_list[[indicator_name]]
 
     data_to_return <- tibble::as_tibble(
         list(
@@ -343,85 +344,85 @@ find_nested_dependencies_network <- function(
     )
 
 
-     if (length(indicator$individual_columns_required)>0){
-          data_to_return <- data_to_return  %>%
-          tibble::add_row(
-            from=indicator$indicator_name,
-            from_id=paste0(indicator$indicator_name,"_indicator"),
-            to=indicator$individual_columns_required,
-            to_id=paste0(indicator$individual_columns_required,"_raw"),
-            raw=T,
-            loop=F,
-            indicator=F
-          )
+    if (length(indicator$individual_columns_required)>0){
+        data_to_return <- data_to_return  %>%
+            tibble::add_row(
+                from=indicator$indicator_name,
+                from_id=paste0(indicator$indicator_name,"_indicator"),
+                to=indicator$individual_columns_required,
+                to_id=paste0(indicator$individual_columns_required,"_raw"),
+                raw=T,
+                loop=F,
+                indicator=F
+            )
 
-     }
+    }
 
-     if (length(indicator$loop_columns_required)>0){
-          data_to_return <- data_to_return  %>%
-          tibble::add_row(
-            from=indicator$indicator_name,
-            from_id=paste0(indicator$indicator_name,"_indicator"),
-            to=indicator$loop_columns_required,
-            to_id=paste0(indicator$loop_columns_required,"_raw"),
-            raw=T,
-            loop=T,
-            indicator=F
-          )
-     }
+    if (length(indicator$loop_columns_required)>0){
+        data_to_return <- data_to_return  %>%
+            tibble::add_row(
+                from=indicator$indicator_name,
+                from_id=paste0(indicator$indicator_name,"_indicator"),
+                to=indicator$loop_columns_required,
+                to_id=paste0(indicator$loop_columns_required,"_raw"),
+                raw=T,
+                loop=T,
+                indicator=F
+            )
+    }
 
-     if (length(indicator$indicators_required)>0){
-          data_to_return <- data_to_return  %>%
-          tibble::add_row(
-            from=indicator$indicator_name,
-            from_id=paste0(indicator$indicator_name,"_indicator"),
-            to=indicator$indicators_required,
-            to_id=paste0(indicator$indicators_required,"_indicator"),
-            raw=F,
-            loop=F,
-            indicator=T
-          )
-     }
+    if (length(indicator$indicators_required)>0){
+        data_to_return <- data_to_return  %>%
+            tibble::add_row(
+                from=indicator$indicator_name,
+                from_id=paste0(indicator$indicator_name,"_indicator"),
+                to=indicator$indicators_required,
+                to_id=paste0(indicator$indicators_required,"_indicator"),
+                raw=F,
+                loop=F,
+                indicator=T
+            )
+    }
 
-     if (length(indicator$indicators_required)==0){
-          return(data_to_return)
-     }
+    if (length(indicator$indicators_required)==0){
+        return(data_to_return)
+    }
 
-if (length(indicator$indicators_required)>0){
-          new_data_to_return <- lapply(indicator$indicators_required, function(indicator_name){
-               find_nested_dependencies_network(
-                    indicator_name=indicator_name,
-                    indicator_list=indicator_list)
-          })  %>% dplyr::bind_rows()
+    if (length(indicator$indicators_required)>0){
+        new_data_to_return <- lapply(indicator$indicators_required, function(indicator_name){
+            find_nested_dependencies_network(
+                indicator_name=indicator_name,
+                indicator_list=indicator_list)
+        })  %>% dplyr::bind_rows()
 
 
-          data_to_return <- data_to_return %>% dplyr::bind_rows(new_data_to_return)
-          return(data_to_return)
-     }
+        data_to_return <- data_to_return %>% dplyr::bind_rows(new_data_to_return)
+        return(data_to_return)
+    }
 
 }
 
 
 find_d3_dependencies_network <- function(
-    indicator_name,
-    list_of_indicators,
-    d3_list=list()){
+        indicator_name,
+        list_of_indicators,
+        d3_list=list()){
 
     if (is.character(indicator_name)==F){
-          stop("indicator_name must be a character")
-     }
+        stop("indicator_name must be a character")
+    }
 
 
-      if (is.character(indicator_name)==F){
-          stop("indicator_name must be a character")
-     }
+    if (is.character(indicator_name)==F){
+        stop("indicator_name must be a character")
+    }
 
-     if (is.list(list_of_indicators)==F){
-          stop("indicator_list must be a list")
-     }
-     if (indicator_name %in% names(list_of_indicators)==F){
-          stop("Could not find indicator name in list")
-     }
+    if (is.list(list_of_indicators)==F){
+        stop("indicator_list must be a list")
+    }
+    if (indicator_name %in% names(list_of_indicators)==F){
+        stop("Could not find indicator name in list")
+    }
 
 
 
@@ -429,49 +430,49 @@ find_d3_dependencies_network <- function(
     d3_list[["name"]] <- indicator$indicator_name
     d3_list[["children"]] <- c()
 
-     if (length(indicator$individual_columns_required)>0){
-            new_children <- lapply(indicator$individual_columns_required, function(x){
-                return(list(name=x))
-            })
-          d3_list[["children"]] <- append(d3_list$children,new_children)
-     }
+    if (length(indicator$individual_columns_required)>0){
+        new_children <- lapply(indicator$individual_columns_required, function(x){
+            return(list(name=x))
+        })
+        d3_list[["children"]] <- append(d3_list$children,new_children)
+    }
 
-     if (length(indicator$loop_columns_required)>0){
+    if (length(indicator$loop_columns_required)>0){
         new_children <- lapply(indicator$loop_columns_required, function(x){
-                return(list(name=x))
-            })
-          d3_list[["children"]] <- append(d3_list$children,new_children)
-     }
+            return(list(name=x))
+        })
+        d3_list[["children"]] <- append(d3_list$children,new_children)
+    }
 
-     if (length(indicator$conversion_tables_required)>0){
+    if (length(indicator$conversion_tables_required)>0){
         new_children <- lapply(indicator$conversion_tables_required, function(x){
-                return(list(name=x))
-            })
-          d3_list[["children"]] <- append(d3_list$children,new_children)
-     }
+            return(list(name=x))
+        })
+        d3_list[["children"]] <- append(d3_list$children,new_children)
+    }
 
-       if (length(indicator$api_data_required)>0){
+    if (length(indicator$api_data_required)>0){
         new_children <- lapply(indicator$api_data_required, function(x){
-                return(list(name=x))
-            })
-          d3_list[["children"]] <- append(d3_list$children,new_children)
-     }
+            return(list(name=x))
+        })
+        d3_list[["children"]] <- append(d3_list$children,new_children)
+    }
 
 
 
     if (length(indicator$indicators_required)>0){
-          children <- lapply(indicator$indicators_required, function(indicator_name){
-               find_d3_dependencies_network(
-                    indicator_name=indicator_name,
-                    list_of_indicators=list_of_indicators,
-                    d3_list=d3_list)
-          })
+        children <- lapply(indicator$indicators_required, function(indicator_name){
+            find_d3_dependencies_network(
+                indicator_name=indicator_name,
+                list_of_indicators=list_of_indicators,
+                d3_list=d3_list)
+        })
 
-         d3_list$children <- append(d3_list[["children"]],children)
+        d3_list$children <- append(d3_list[["children"]],children)
 
 
 
-     }
+    }
 
     return(d3_list)
 
@@ -493,10 +494,10 @@ find_d3_dependencies_network <- function(
 #'
 #' @examples
 plot_dependency_network <- function(
-    indicator_name,
-    list_of_indicators=indicator_list,
-    type="horizontal"
-    ){
+        indicator_name,
+        list_of_indicators=indicator_list,
+        type="horizontal"
+){
 
     d3_network <- find_d3_dependencies_network(
         indicator_name=indicator_name,
@@ -506,7 +507,9 @@ plot_dependency_network <- function(
 
 
     if (type=="horizontal"){
-        plot <- networkD3::diagonalNetwork(List = d3_network, fontSize = 10)
+        # plot <- networkD3::diagonalNetwork(List = d3_network, fontSize = 10)
+
+        plot <- networkD3::diagonalNetwork(List = d3_network, height=800, fontSize = 10, width = 800)
 
     }
 
@@ -514,7 +517,9 @@ plot_dependency_network <- function(
         plot <- networkD3::radialNetwork(List = d3_network, fontSize = 10)
     }
 
-    htmlwidgets::onRender(plot,  "function(el, x) { d3.selectAll('.node').on('mouseover', null).on('mouseout', null); }")
+    plot <- htmlwidgets::onRender(plot,  "function(el, x) { d3.selectAll('.node').on('mouseover', null).on('mouseout', null); }")
+
+    return(plot)
 }
 
 
@@ -544,9 +549,9 @@ add_function_to_list <- function(
 
     if(!is.null(called_by))
     {
-    if (called_by %in% names(function_list)==F){
-        stop("Trying to say that it is called by a function that you have not added to this list")
-    }
+        if (called_by %in% names(function_list)==F){
+            stop("Trying to say that it is called by a function that you have not added to this list")
+        }
     }
 
     if (is.null(called_by)){
@@ -567,9 +572,9 @@ add_function_to_list <- function(
 
 
 get_function_stack <- function(
-    function_list,
-    function_name,
-    d3_list=list()
+        function_list,
+        function_name,
+        d3_list=list()
 ){
 
     if (function_name %in% names(function_list)==F){
@@ -587,17 +592,17 @@ get_function_stack <- function(
     }
 
     if (length(new_function$called_by)>0 & !is.null(new_function$called_by)){
-          children <-list(get_function_stack(
-                    function_list=function_list,
-                    function_name=new_function$called_by,
-                    d3_list=d3_list))
-        }
+        children <-list(get_function_stack(
+            function_list=function_list,
+            function_name=new_function$called_by,
+            d3_list=d3_list))
+    }
 
-         d3_list$children <- append(d3_list[["children"]],children)
+    d3_list$children <- append(d3_list[["children"]],children)
 
     return(d3_list)
 
-     }
+}
 
 
 #' Add function to List
@@ -610,19 +615,19 @@ get_function_stack <- function(
 #'
 #' @examples
 plot_function_dependency <- function(
-    function_list=function_list,
-    function_name,
-    type="horizontal"
+        function_list=function_list,
+        function_name,
+        type="horizontal"
 ){
 
 
     d3_network <- get_function_stack(
-            function_list=function_list,
-            function_name=function_name,
-        )
+        function_list=function_list,
+        function_name=function_name,
+    )
 
     if (type=="horizontal"){
-    plot <- networkD3::diagonalNetwork(List = d3_network)
+        plot <- networkD3::diagonalNetwork(List = d3_network)
     }
 
     if (type=="central"){
@@ -631,6 +636,33 @@ plot_function_dependency <- function(
 
     plot
 
+}
+
+
+#' Indicator Mapping to DF
+#'
+#' Convert the dependent indicator mapping
+#' structure to a data frame
+#'
+#' @return
+#' @export
+#'
+#' @examples
+indicator_mapping_to_df <- function(){
+
+
+    indicator_df <- lapply(indicator_list, function(indicator){
+        fixed_indicator <- lapply(indicator, function(indicator_feature){
+            paste0(indicator_feature, collapse = ", ")
+
+        })
+        stack(fixed_indicator) %>%
+            tibble::as_tibble() %>%
+            tidyr::pivot_wider(values_from="values",names_from="ind")
+
+    }) %>% dplyr::bind_rows()
+
+    return(indicator_df)
 }
 
 

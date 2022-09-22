@@ -8,6 +8,7 @@ add_indicator(
   indicator_list,
   indicator_name,
   output_format = c("column", "loop", "table"),
+  description,
   individual_columns_required = list(),
   loop_columns_required = list(),
   conversion_tables_required = list(),
@@ -23,6 +24,8 @@ add_indicator(
 \item{indicator_name}{The name of the new indicator}
 
 \item{output_format}{The shape of the indicator (column, loop or table)}
+
+\item{description}{A description of the indicator}
 
 \item{individual_columns_required}{Which individual columns are required (directly) for the RHoMIS dataset}
 
@@ -41,4 +44,7 @@ add_indicator(
 \description{
 Add an indicator metadata entry for
 the RHoMIS dataset
+}
+\details{
+File: R/Metadata.R
 }

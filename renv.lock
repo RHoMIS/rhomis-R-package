@@ -9,6 +9,11 @@
     ]
   },
   "Packages": {
+    "DT": {
+      "Package": "DT",
+      "Version": "0.25",
+      "Source": "Repository"
+    },
     "Matrix": {
       "Package": "Matrix",
       "Version": "1.4-1",
