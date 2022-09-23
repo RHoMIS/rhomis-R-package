@@ -11,3 +11,5 @@ inst/doc
 *.DS_Store
 /inst/extdata/projects
 notes/
+book/_book/
+book/_images/
