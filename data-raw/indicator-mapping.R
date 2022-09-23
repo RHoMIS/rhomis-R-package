@@ -236,7 +236,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_price_per_animal",
-    description="The price per whole animal sold. Taken by dividing <code>livestock_sale_income</code> (yearly income from selling livestock) by <code>livestock_sale_income</code> (total annual income from selling that specific livestock.",
+    description="The price per whole animal sold. Taken by dividing <code>livestock_sale_income</code> (yearly income from selling livestock) by <code>livestock_sale_income</code> (total annual income from selling that specific livestock).",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_sold","livestock_sale_income"),
@@ -253,7 +253,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_kg_per_year",
-    description="",
+    description="The amount of meat obtained per year (kg). Calculated by taking the number of animals <code>killed_for_meat</code>, and converting this to an amount of meat (kg), using  <code>livestock_name</code> and <code>livestock_weights</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name","killed_for_meat"),
@@ -266,7 +266,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_sold_kg_per_year",
-    description="",
+    description="Amount of meat sold per year (kg). The proprtion of meat sold is calculated using the variables <code>meat_sell_amount</code> and <code>meat_use</code>. This proportion is then applied to <code>meat_kg_per_year</code> to calculate <code>meat_sold_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_sell_amount","meat_use"),
@@ -279,7 +279,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_consumed_kg_per_year",
-    description="",
+    description="Amount of meat consumed per year (kg). The proprtion of meat sold is calculated using the variables <code>meat_consumed_amount</code> and <code>meat_use</code>. This proportion is then applied to <code>meat_kg_per_year</code> to calculate <code>meat_consumed_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_consumed_amount","meat_use"),
@@ -293,7 +293,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_price_per_kg",
-    description="",
+    description="The price per kg of meat for a specific animal. Calculated by dividing <code>meat_sold_income</code> by <code>meat_sold_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_sold_income"),
@@ -311,7 +311,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_amount_good_season_litres_per_year",
-    description="",
+    description="The rate of milk produced during the good season in litres/year. <code>milk_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). Where units include the number of animals (e.g. <code>l/animal/day</code>), the column <code>milk_number_animals_milked</code> is included in the conversion factor. The final conversion is applied to the <code>milk_amount_good_season</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_amount_good_season", "milk_units", "milk_number_animals_milked"),
@@ -324,7 +324,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_amount_bad_season_litres_per_year",
-    description="",
+    description="The rate of milk produced during the bad season in litres/year. <code>milk_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). Where units include the number of animals (e.g. <code>l/animal/day</code>), the column <code>milk_number_animals_milked</code> is included in the conversion factor. The final conversion is applied to the <code>milk_amount_bad_season</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_amount_bad_season", "milk_units", "milk_number_animals_milked"),
@@ -337,7 +337,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_collected_litres_per_year",
-    description="",
+    description="The average rate of milk production in litres/year. An average of <code>milk_amount_bad_season_litres_per_year</code> and <code>milk_amount_good_season_litres_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -350,10 +350,10 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_sold_litres_per_year",
-    description="",
+    description="Average amount of milk sold per year. The proportion sold",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("milk_sell_amount"),
+    loop_columns_required=list("milk_sell_amount", "milk_use"),
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list("milk_collected_litres_per_year"),
@@ -366,7 +366,7 @@ indicator_list <- add_indicator(
     description="",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("milk_consumed_amount"),
+    loop_columns_required=list("milk_consumed_amount", "milk_use"),
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list("milk_collected_litres_per_year"),

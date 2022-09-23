@@ -30,7 +30,7 @@ data. To find out more about an indicator, you can do as follows:
 
 ## Assumptions
 
-
+* If a single use is provided, then all of the mass is used for consumption (not accounting for waste)
 
 
 ## Indicators
