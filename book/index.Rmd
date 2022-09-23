@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 site: bookdown::gitbook
 output: 
   bookdown::gitbook:
+    lib_dir: assets
     config:
       sharing:
         facebook: false
@@ -23,6 +24,7 @@ github-repo: l-gorman/rhomis-R-package
 username: l-gorman
 repo: rhomis-R-package
 branch: main
+
 ---
 
 # About

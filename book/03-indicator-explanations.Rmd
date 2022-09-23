@@ -27,48 +27,55 @@ There are a lot of indicators here. Some of them you will find as standalone col
 in the RHoMIS Indicators Table. Others you will find in a looped format, in the processed
 data. To find out more about an indicator, you can do as follows:
 
-```{r individ_indicator_expl, warning=FALSE, message=FALSE, }
-indicator_list[["hh_size_mae"]]
-```
-There is a lot of information here. So let's break it down. This is telling me
-that the indicator is in a column format (in the indicator sheet). It requires a series
-of individual columns, a series of looped columns and a conversion table. No other indicators
-are needed to calculate "hh_size_mae". I can see it is calculated with the `calculate_household_size_members`. If I want to see where this function is stored in the 
-R-package raw code I can enter the `?calculate_household_size_members` command into the console.
-I can search for the tag `indicator_search_hh_size_mae` to see exactly where the indicator is 
-calculated in this file.
+
+## Assumptions
+
+* If a single use is provided, then all of the mass is used for consumption (not accounting for waste)
 
 
-Now lets look at a more complex indicator. `crop_income_lcu_per_year`:
+## Indicators
 
-```{r loop_indicator_expl, warning=FALSE, message=FALSE}
-indicator_list[["crop_income_per_year"]]
-```
-I can see that this comes in a loop format. It relies two looped 
-columns, a conversion table, and another indicator. Again I can find
-the function that calculates the indicator, and use a search term to identify exactly 
-the point where it is calcuated.
+Below we have a table of all of the indicators calculated in the RHoMIS core. 
 
-However, when one indicator depends on another, we might need do know
-the nested relationship (i.e, what columns does the dependency rely on).
-If we want to visualise it, we could do this:
+```{r generating_indicators, eval=T, echo=F,, warning=F}
+# library("widgetframe")
+library(DT)
+dir.create('./_book/images/indicator_plots/', recursive = T,showWarnings = F)
 
-```{r dependency_network_explained, warning=FALSE, message=FALSE}
+data_table <- indicator_mapping_to_df()
+data_table$links <- paste0('<a href="./images/indicator_plots/',data_table$indicator_name,'.html" target="_blank" >a link</a>') 
+DT::datatable(data_table,
+              extensions = 'Buttons',
+              escape = FALSE,
+              options = list(
+                  
+                  dom = 'Blfrtip',
+                  scrollX = TRUE,
+                  buttons = list(
+                      'copy',
+                      list(
+                          extend = 'collection',
+                          buttons = c('csv', 'excel'),
+                          text = 'Download'
+                      )
+                  )
+                  
+                 ))
 
-plot_dependency_network(
-    indicator_name="crop_income_per_year"
-)
+for(indicator_index in c(1:length(indicator_list))){
+
+    indicator <- indicator_list[[indicator_index]]
+
+    plot <- plot_dependency_network(indicator$indicator_name)
+
+    # Saving the widget
+    htmlwidgets::saveWidget(plot,
+                            file =      paste0("./_book/images/indicator_plots/",indicator$indicator_name,'.html'),
+                            selfcontained = F,
+                            libdir = "lib")
+   
+}
+
+``` 
 
 
-```
-A lternatively,r if we want to extract the actual information, we can do this:
-
-```{r depend_list,  warning=FALSE, message=FALSE}
-find_nested_dependencies_list(
-     indicator_name="crop_sold_kg_per_year",
-     indicator_list=indicator_list,
-     dependency_required="loop")
-
-```
-This would find all of the looped dependencies (recursively) for the 
-indicator I am interested in.

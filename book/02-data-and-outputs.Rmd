@@ -1,4 +1,4 @@
-# Indicators Explained
+# Outputs and Data
 
 The core RHoMIS survey contains over 750 variables.
 These are used to calculate key indicators, such as 
@@ -55,21 +55,4 @@ a household.
 
 
 
-## Where to start
 
-Firstly,
-
-```{r}
-
-plot_dependency_network(
-    indicator_name="crop_sold_kg_per_year",
-    list_of_indicators = indicator_list
-)
-
-plot_dependency_network(
-    indicator_name="male_youth_control",
-    list_of_indicators =indicator_list
-)
-
-
-```

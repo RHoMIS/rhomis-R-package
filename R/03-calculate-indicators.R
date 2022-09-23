@@ -329,11 +329,7 @@ calculate_indicators <- function(
         gender_categories = gender_categories
     )
 
-    results$indicator_data <- indicator_data
-    results$processed_data <- rhomis_data
-    results$crop_data <- crop_data
-    results$livestock_data <- livestock_data
-    results$off_farm_data <- off_farm_data
+
 
     return(results)
 }
