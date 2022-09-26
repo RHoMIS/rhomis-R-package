@@ -783,5 +783,56 @@ fp_calculations_all <- function(
 
 
 
+replace_fp_other_units <- function(tree_aid_df, fp_list){
+
+    looped_units <- list(
+        "fruit_amount_units" = "fruit_amount_units_other",
+        "fruit_amount_units"=""
+    )
+
+    looped_units_merged <- sapply(names(looped_units), function(x) {
+        number_of_loops <- find_number_of_loops(data, x)
+        if (number_of_loops > 0) {
+            main_column <- paste0(x, "_", 1:number_of_loops)
+            other_column <- paste0(looped_units[[x]], "_", 1:number_of_loops)
+        }
+        if (number_of_loops == 0) {
+            main_column <- paste0(x, "_", 1)
+            other_column <- paste0(looped_units[[x]], "_", 1)
+        }
+        setNames(other_column, main_column)
+    }, simplify = T)
+
+    looped_units_merged <- unlist(unname(looped_units_merged))
+
+    units_to_change <- c(individual_units, looped_units_merged)
+
+
+    result <- sapply(colnames(data), function(x) {
+        if (x %in% names(units_to_change)) {
+            if (units_to_change[[x]] %in% colnames(data)) {
+                other_column <- units_to_change[[x]]
+                new_column <- replace_unit_column_with_other_single(
+                    data[[x]],
+                    data[[other_column]]
+                )
+                return(new_column)
+            } else {
+                return(data[[x]])
+            }
+        }
+        if (x %in% names(units_to_change) == F) {
+            return(data[[x]])
+        }
+    }, simplify = F)
+
+
+
+
+
+    result <- tibble::as_tibble(result)
+
+}
+
 
 

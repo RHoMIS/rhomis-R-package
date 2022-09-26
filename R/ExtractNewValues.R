@@ -322,15 +322,23 @@ extract_new_core_units <- function(data) {
         "eggs_sold_price_timeunits_other",
 
         # ntfp_amount_unit_columns
+
         "fruit_amount_units",
+        "fruit_amount_units_other",
         "nut_amount_units",
+        "nut_amount_units_other_kg",
         "leaves_amount_units",
         "bark_amount_units",
         "roots_amount_units",
         "gum_amount_units",
 
         "fruit_sold_frequency",
+        "fruit_sold_amount_units_other",
+        "fruit_process_sold_frequency",
+        "fruit_process_sold_amount_units_other",
         "nut_sold_frequency",
+        "nut_sold_amount_units_other",
+
         "leaves_sold_frequency",
         "bark_sold_frequency",
         "roots_sold_frequency",
