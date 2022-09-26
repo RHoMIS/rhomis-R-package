@@ -350,7 +350,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_sold_litres_per_year",
-    description="Average amount of milk sold per year. The proportion sold",
+    description="Average amount of milk sold per year (l/year). The proportion of milk sold (<code>milk_sell_amount</code>) is converted to a numeric conversion factor. This conversion factor is applied to <code>milk_collected_litres_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_sell_amount", "milk_use"),
@@ -363,7 +363,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_consumed_litres_per_year",
-    description="",
+    description="Average amount of milk consumed per year (l/year). The proportion of milk consumed (<code>milk_consumed_amount</code>) is converted to a numeric conversion factor. This conversion factor is applied to <code>milk_collected_litres_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_consumed_amount", "milk_use"),
@@ -377,7 +377,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_sold_income_per_year",
-    description="",
+    description="Yearly income from milk (lcu/year). <code>milk_sold_price_timeunits</code> is converted to a numeric income conversion factor. This conversion factor is applied to <code>milk_collected_litres_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_sold_income", "milk_sold_price_timeunits"),
