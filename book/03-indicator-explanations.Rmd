@@ -158,7 +158,7 @@ for(indicator_index in c(1:length(indicator_list))){
 
 dir.create('./_book/files/', recursive = T,showWarnings = F)
 
-file.copy("./files/RHoMIS_Core_v1.6.xlsx", './_book/files/RHoMIS_Core_v1.6.xlsx')
+invisible(file.copy("./files/RHoMIS_Core_v1.6.xlsx", './_book/files/RHoMIS_Core_v1.6.xlsx'))
 
 ``` 
 
