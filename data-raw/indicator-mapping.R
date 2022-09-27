@@ -395,7 +395,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_amount_good_season_kg_per_year",
-    description="",
+    description="The rate of egg production during the good season in kg/year. <code>eggs_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). The conversion is applied to the <code>eggs_amount_good</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_amount_good", "eggs_units"),
@@ -408,10 +408,10 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_amount_bad_season_kg_per_year",
-    description="",
+    description="The rate of egg production during the bad season in kg/year. <code>eggs_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). The conversion is applied to the <code>eggs_amount_bad</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("eggs_amount_good", "eggs_units"),
+    loop_columns_required=list("eggs_amount_bad", "eggs_units"),
     conversion_tables_required=list("eggs_unit_conversion"),
     api_data_required = list(),
     indicators_required=list(),
@@ -421,7 +421,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_collected_kg_per_year",
-    description="",
+    description="The average rate of egg production in kg/year. Calculated by average <code>eggs_amount_good_season_kg_per_year</code> and  <code>eggs_amount_bad_season_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -435,7 +435,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_sold_kg_per_year",
-    description="",
+    description="Average amount of eggs sold per year (kg/year). The proportion of eggs sold (<code>eggs_sell_amount</code>) is converted to a numeric conversion factor. This conversion factor is applied to <code>eggs_collected_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_use", "eggs_sell_amount"),
@@ -448,7 +448,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_consumed_kg_per_year",
-    description="",
+    description="Average amount of eggs consumed per year (kg/year). The proportion of eggs consumed (<code>eggs_consumed_amount</code>) is converted to a numeric conversion factor. This conversion factor is applied to <code>eggs_collected_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_use", "eggs_consumed_amount"),
@@ -462,7 +462,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_income_per_year",
-    description="",
+    description="Average amount of income gained from selling eggs (lcu/year). <code>eggs_sold_price_timeunits</code> is converted to a numeric conversion factor. This conversion factor is then applied to <code>eggs_sold_income</code> to obtain an annual income",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_sold_income", "eggs_sold_price_timeunits"),
@@ -475,7 +475,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_price_per_kg",
-    description="",
+    description="The price of eggs (lcu/kg). Obtained by dividing <code>eggs_income_per_year</code> by <code>eggs_sold_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -493,7 +493,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_kg_per_year",
-    description="",
+    description="The amount of honey harvested (kg/year). <code>bees_honey_production_units</code> is converted into a numeric conversion factor and applied to <code>bees_honey_production</code>.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_production", "bees_honey_production_units"),
@@ -506,7 +506,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_sold_kg_per_year",
-    description="",
+    description="The amount of honey sold (kg/year). <code>bees_honey_sell_amount</code> is converted into a numeric conversion factor and applied to <code>bees_honey_kg_per_year</code>.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_use","bees_honey_sell_amount"),
@@ -519,7 +519,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_consumed_kg_per_year",
-    description="",
+    description="The amount of honey consumed (kg/year). <code>bees_honey_consumed_amount</code> is converted into a numeric conversion factor and applied to <code>bees_honey_kg_per_year</code>.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_consumed_amount","bees_honey_use"),
@@ -533,7 +533,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_price_per_kg",
-    description="",
+    description="The price of honey (lcu/year). <code>bees_honey_sold_income</code> is divided by <code>bees_honey_sold_kg_per_year</code>.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_honey_sold_income"),
@@ -553,7 +553,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "livestock_sale_income",
-    description="",
+    description="Gendered division of <code>livestock_sale_income</code>, split using information in <code>livestock_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_sale_income","livestock_who_sells"),
@@ -570,7 +570,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "meat_sold_income",
-    description="",
+    description="Gendered division of <code>meat_sold_income</code>, split using information in <code>livestock_meat_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("meat_sold_income","livestock_meat_who_sells"),
@@ -583,7 +583,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "meat_sold_kg_per_year",
-    description="",
+    description="Gendered division of <code>meat_sold_kg_per_year</code>, split using information in <code>livestock_meat_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_meat_who_sells"),
@@ -596,7 +596,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "meat_consumed_kg_per_year",
-    description="",
+    description="Gendered division of <code>meat_consumed_kg_per_year</code>, split using information in <code>livestock_meat_who_control_eating</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_meat_who_control_eating"),
@@ -614,7 +614,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "milk_sold_litres_per_year",
-    description="",
+    description="Gendered division of <code>milk_sold_litres_per_year</code>, split using information in <code>milk_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_who_sells"),
@@ -627,7 +627,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "milk_sold_income_per_year",
-    description="",
+    description="Gendered division of <code>milk_sold_income_per_year</code>, split using information in <code>milk_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_who_sells"),
@@ -640,7 +640,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "milk_consumed_litres_per_year",
-    description="",
+    description="Gendered division of <code>milk_consumed_litres_per_year</code>, split using information in <code>milk_who_control_eating</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("milk_who_control_eating"),
@@ -659,7 +659,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "eggs_sold_kg_per_year",
-    description="",
+    description="Gendered division of <code>eggs_sold_kg_per_year</code>, split using information in <code>eggs_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_who_sells"),
@@ -672,20 +672,20 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "eggs_income_per_year",
-    description="",
+    description="Gendered division of <code>eggs_income_per_year</code>, split using information in <code>eggs_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_who_sells"),
     conversion_tables_required=list(),
     api_data_required = list(),
-    indicators_required=list("eggs_sold_kg_per_year"),
+    indicators_required=list("eggs_income_per_year"),
     function_calculated="gender_split_livestock"
 )
 
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "eggs_consumed_kg_per_year",
-    description="",
+    description="Gendered division of <code>eggs_consumed_kg_per_year</code>, split using information in <code>eggs_who_control_eating</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("eggs_who_control_eating"),
@@ -702,7 +702,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "bees_honey_sold_kg_per_year",
-    description="",
+    description="Gendered division of <code>bees_honey_sold_kg_per_year</code>, split using information in <code>bees_honey_sold_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_who_sells"),
@@ -715,7 +715,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "bees_honey_sold_income",
-    description="",
+    description="Gendered division of <code>bees_honey_sold_income</code>, split using information in <code>bees_who_sells</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_who_sells", "bees_honey_sold_income"),
@@ -728,7 +728,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_gendered_indicator(
     indicator_list,
     indicator_name = "bees_honey_consumed_kg_per_year",
-    description="",
+    description="Gendered division of <code>bees_honey_consumed_kg_per_year</code>, split using information in <code>bees_who_control_eating</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("bees_who_control_eating"),
@@ -747,7 +747,7 @@ indicator_list <- add_gendered_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_tlu",
-    description="",
+    description="The amount of livestock kept by a household in terms of tropical livestock units (TLUs). More info on TLUs can be found here <a href='https://fscluster.org/handbook/Section_one_TLU.html#:~:text=Tropical%20Livestock%20Units%20are%20livestock,indicator%20of%20food%20security%20risk.' target='_blank'>here</a>.",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
     "livestock_other1",
@@ -781,7 +781,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hh_size_members",
-    description="",
+    description="The number of people in the household for at least 3 months of the year",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "children_under_4",
@@ -802,7 +802,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hh_size_mae",
-    description="",
+    description="The number of people in the household for at least 3 months of the year in terms of male adult equivalent (MAE). More info on MAE <a href='https://journals.sagepub.com/doi/abs/10.1177/15648265120333s203?journalCode=fnba#:~:text=The%20Adult%20Male%20Equivalent%20(AME)%20was%20devel%2D%20oped%20to,of%20different%20sizes%20and%20compositions.' target='_blank' >here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "children_under_4",
@@ -834,7 +834,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "land_cultivated_ha",
-    description="",
+    description="Total land cultivated by the household (hectares). <code>unitland</code> is converted to a numeric conversion factor and applied to <code>landcultivated</code> to obtain the final result",
     output_format="column", #column, loop, #table
     individual_columns_required=list("landcultivated","unitland"),
     loop_columns_required=list(),
@@ -847,7 +847,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "land_owned_ha",
-    description="",
+    description="Total land owned by the household (hectares). <code>unitland</code> is converted to a numeric conversion factor and applied to <code>landowned</code> to obtain the final result",
     output_format="column", #column, loop, #table
     individual_columns_required=list("landowned","unitland"),
     loop_columns_required=list(),
@@ -874,7 +874,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hfias_status",
-    description="",
+    description="Household food insecurity status (HFIAS). More information here <a href='https://inddex.nutrition.tufts.edu/data4diets/indicator/household-food-insecurity-access-scale-hfias' target='_blank'></a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
           "hfias_1",
@@ -897,7 +897,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "fies_score",
-    description="",
+    description="Food Insecurity Experience Scale (FIES). More information here <a href='https://www.fao.org/in-action/voices-of-the-hungry/fies/en/' target='_blank'></a>",
     output_format="column", #column, loop, #table
  individual_columns_required=list(
           "fies_1",
@@ -934,7 +934,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_good_season",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all foods consumed during the season where food is most abundant. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_good_season",
@@ -957,7 +957,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_good_season_farm",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all farm-sourced foods consumed during the season where food is most abundant. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_good",
@@ -980,7 +980,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_good_season_bought",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all bought foods consumed during the season where food is most abundant. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_good",
@@ -1005,7 +1005,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_bad_season",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all foods consumed during the lean season. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_bad_season",
@@ -1029,7 +1029,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_bad_season_farm",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all farm-sourced foods consumed during the lean season. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
       "grainsrootstubers_source_bad",
@@ -1053,7 +1053,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_bad_season_bought",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all bought foods consumed during the lean season. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_bad",
@@ -1077,7 +1077,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_month",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all foods consumed during the last month. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_last_month",
@@ -1101,7 +1101,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_month_farm",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all farm-sourced foods consumed during the last month. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_last_month",
@@ -1125,7 +1125,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_month_bought",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all bought foods consumed during the last month. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_source_last_month",
@@ -1150,7 +1150,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "hdds_last_24hr",
-    description="",
+    description="Household dietary diversity score (HDDS). Considering all foods consumed during the last 24hrs. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
      "grainsrootstubers_24hr",
@@ -1185,7 +1185,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_income_lcu_per_year",
-    description="",
+    description="Total income from crops (lcu/year). Taken by adding all of the individual crop incomes in the looped column <code>crop_income_per_year</code>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1198,7 +1198,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_income_lcu_per_year",
-    description="",
+    description="Total income from the sale of whole livestock and livestock products (lcu/year). Taken by adding all of the individual incomes in the looped columns <code>livestock_sale_income</code>, <code>meat_sold_income</code>, <code>bees_honey_sold_income</code>, <code>milk_sold_income_per_year</code>, <code>eggs_income_per_year</code>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_sale_income", "meat_sold_income", "bees_honey_sold_income"),
@@ -1213,7 +1213,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "off_farm_income_lcu_per_year",
-    description="",
+    description="Total income from off-farm activities. <code>offfarm_income_proportion</code> is converted to a numeric proportion. Then off-farm income is calculated using the equation: <br/>I<sub>off</sub> = (p<sub>off</sub> x I<sub>tot</sub>)/(1 - p<sub>off</sub>) <br/>. Where I<sub>off</sub> is off-farm income, p<sub>off</sub> is the proportion of income coming from off-farm activities, I<sub>tot</sub> is the income from crop and livestock sales, ",
     output_format="column", #column, loop, #table
     individual_columns_required=list("offfarm_income_proportion","offfarm_incomes_any"),
     loop_columns_required=list(),
@@ -1227,7 +1227,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "total_income_lcu_per_year",
-    description="",
+    description="Total income from <code>off_farm_income_lcu_per_year</code>, <code>crop_income_lcu_per_year</code> and <code>livestock_income_lcu_per_year</code>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1253,7 +1253,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "value_crop_consumed_lcu",
-    description="",
+    description="The value of crops which were consumed, ",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_name"),
@@ -1458,7 +1458,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_calories_consumed_kcal",
-    description="",
+    description="The annual calories from crops produced and consumed in the household, for each individual crop loop (<code>crop_name_1</code>, <code>crop_name_2</code> ...). The <code>crop_calories</code> conversion table is applied to <code>crop_consumed_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_name"),
@@ -1473,7 +1473,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "meat_calories_consumed_kcal",
-    description="",
+    description="The annual calories from meat produced and consumed in the household, for each individual livestock loop (<code>livestock_name_1</code>, <code>livestock_name_1</code> ...).  The <code>meat_calories_kcal_per_kg</code> conversion table is applied to <code>meat_consumed_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1488,7 +1488,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "eggs_calories_consumed_kcal",
-    description="",
+    description="The annual calories from eggs produced and consumed in the household, for each individual livestock loop (<code>livestock_name_1</code>, <code>livestock_name_1</code> ...). The <code>eggs_calories_kcal_per_kg</code> conversion table is applied to <code>eggs_consumed_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1503,7 +1503,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "milk_calories_consumed_kcal",
-    description="",
+    description="The annual calories from milk produced and consumed in the household, for each individual livestock loop (<code>livestock_name_1</code>, <code>livestock_name_1</code> ...). The <code>milk_calories_kcal_per_litre</code> conversion table is applied to <code>milk_consumed_litres_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1520,7 +1520,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "bees_honey_calories_consumed_kcal",
-    description="",
+    description="The annual calories from honey produced and consumed in the household, for each individual livestock loop (<code>livestock_name_1</code>, <code>livestock_name_1</code> ...). The <code>bees_honey_calories_kcal_per_kg</code> conversion table is applied to <code>bees_honey_consumed_kg_per_year</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("livestock_name"),
@@ -1541,7 +1541,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_consumed_calories_kcal_per_hh_per_year",
-    description="",
+    description="The total annual calories from crops produced and consumed in the household, for all crops. Calculated from calories of individual crops consumed <code>crop_calories_consumed_kcal_1</code>, <code>crop_calories_consumed_kcal_2</code> ...",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1555,7 +1555,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "livestock_consumed_calories_kcal_per_hh_per_year",
-    description="",
+    description="The total annual calories from livestock products which were produced and consumed in the household, for all livestock. Calculated from calories of all livestock products consumed <code>meat_calories_consumed_kcal</code>,<code>eggs_calories_consumed_kcal</code>, <code>milk_calories_consumed_kcal</code>, <code>bees_honey_calories_consumed_kcal</code>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1575,7 +1575,7 @@ indicator_list <- add_indicator(
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "farm_products_consumed_calories_kcal_per_hh_per_year",
-    description="",
+    description="The total annual calories from crop and livestock products which were produced and consumed in the household. Calculated from the sum of <code>crop_consumed_calories_kcal_per_hh_per_year</code> and <code>livestock_consumed_calories_kcal_per_hh_per_year</code>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(),
@@ -1615,6 +1615,8 @@ indicator_list <- add_indicator(
 
 
 
+
+
   gender_prefixes <- list(
      "female_youth",
      "female_adult",
@@ -1634,7 +1636,7 @@ indicator_list <- add_indicator(
      indicator_list <- add_indicator(
      indicator_list,
      indicator_name = indicator_name,
-     description="",
+     description=paste0("Percentage of all value of farm produce controlled by ", gender,". Calculated by looking at the value of all individual products controlled by the ",gender,". Then dividing this by the total value of all products."),
     output_format="column", #column, loop, #table
      individual_columns_required=list(),
      loop_columns_required=list("off_farm_source_prop"),
