@@ -5,9 +5,9 @@
 \alias{indicator_list}
 \title{Indicator List}
 \format{
-An object of class \code{list} of length 156.
+An object of class \code{list} of length 159.
 
-An object of class \code{list} of length 156.
+An object of class \code{list} of length 159.
 }
 \source{
 NA

@@ -333,6 +333,7 @@ milk_amount_calculations <- function(data,
   milk_amount_bad_season_data <- data[milk_amount_bad_season_columns]
   milk_amount_bad_season_data <- milk_amount_bad_season_data %>% dplyr::mutate_all(as.numeric)
 
+  #indicator_search_milk_amount_units_numeric
   milk_units_data <- data[milk_units_columns]
 
   if (all(milk_number_of_animals_milked_columns %in% colnames(data)) == F) {

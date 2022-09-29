@@ -100,6 +100,23 @@ indicator_list <- add_indicator(
 #------------------------------------------------------------------------------
 
 
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "crop_yield_units_numeric",
+    description="Numeric conversion of <code>crop_yield_units</code> (to kg) or to 'total_income_per_year'.",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(),
+    loop_columns_required=list(
+        "crop_name",
+        "crop_yield_units",
+        "crop_yield_units_other"
+    ),
+    conversion_tables_required=list("crop_name_conversions", "crop_yield_unit_conversions"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="convert_crop_yield_units",
+    search_term="indicator_search_crop_yield_units_numeric")
+
 
 indicator_list <- add_indicator(
     indicator_list,
@@ -109,13 +126,11 @@ indicator_list <- add_indicator(
     individual_columns_required=list(),
     loop_columns_required=list(
                                    "crop_name",
-                                   "crop_yield",
-                                   "crop_yield_units",
-                                   "crop_yield_units_other"
+                                   "crop_yield"
                               ),
     conversion_tables_required=list("crop_name_conversions", "crop_yield_unit_conversions"),
     api_data_required = list(),
-    indicators_required=list(),
+    indicators_required=list("crop_yield_units_numeric"),
     function_calculated="crop_harvest_calculations",
     search_term="indicator_search_crop_harvest_kg_per_year")
 
@@ -148,16 +163,36 @@ indicator_list <- add_indicator(
     search_term="indicator_search_crop_sold_kg_per_year")
 
 
+
+
+indicator_list <- add_indicator(
+    indicator_list,
+    indicator_name = "crop_sold_units_numeric",
+    description="Numeric conversion of <code>crop_yield_units</code> (to kg) or to 'total_income_per_year'.",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(),
+    loop_columns_required=list(
+        "crop_name",
+        "crop_sold_price_quantityunits",
+        "crop_price_quantityunits_other"
+
+    ),
+    conversion_tables_required=list("crop_name_conversions", "crop_price_unit_conversions"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="convert_crop_sold_units",
+    search_term="indicator_search_crop_sold_units_numeric")
+
 indicator_list <- add_indicator(
     indicator_list,
     indicator_name = "crop_income_per_year",
     description="The income from selling a specific crop. We convert the <code>crop_sold_price_quantityunits</code> to a numeric conversion factor (e.g. <code>price_per_sack_50kg</code> would convert to <code>50</code>. We take the <code>crop_sold_kg_per_year</code> and multiple it by this conversion factor to get the annual income. Please not there is one common exceptions, when the unit is  <code>total_income_per_year<code> we simply take the value from <code>crop_sold_income</code>",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("crop_sold_income", "crop_sold_price_quantityunits"),
+    loop_columns_required=list("crop_sold_income"),
     conversion_tables_required=list("crop_price_unit_conversions"),
     api_data_required = list(),
-    indicators_required=list("crop_sold_kg_per_year"),
+    indicators_required=list("crop_sold_kg_per_year", "crop_sold_units_numeric"),
     function_calculated="crop_income_calculations",
     search_term="indicator_search_crop_income_per_year")
 
@@ -239,7 +274,7 @@ indicator_list <- add_indicator(
     description="The price per whole animal sold. Taken by dividing <code>livestock_sale_income</code> (yearly income from selling livestock) by <code>livestock_sale_income</code> (total annual income from selling that specific livestock).",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("livestock_sold","livestock_sale_income"),
+    loop_columns_required=list("livestock_name","livestock_sold","livestock_sale_income"),
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list(),
@@ -310,14 +345,32 @@ indicator_list <- add_indicator(
 
 indicator_list <- add_indicator(
     indicator_list,
+    indicator_name = "milk_amount_units_numeric",
+    description="Numeric conversion of <code>milk_units</code> (to l/year) '.",
+    output_format="loop", #column, loop, #table
+    individual_columns_required=list(),
+    loop_columns_required=list(
+        "livestock_name",
+        "milk_units",
+        "milk_amount_units_other"
+
+    ),
+    conversion_tables_required=list("livestock_name_conversions", "milk_unit_conversion"),
+    api_data_required = list(),
+    indicators_required=list(),
+    function_calculated="milk_amount_calculations",
+    search_term="indicator_search_milk_amount_units_numeric")
+
+indicator_list <- add_indicator(
+    indicator_list,
     indicator_name = "milk_amount_good_season_litres_per_year",
     description="The rate of milk produced during the good season in litres/year. <code>milk_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). Where units include the number of animals (e.g. <code>l/animal/day</code>), the column <code>milk_number_animals_milked</code> is included in the conversion factor. The final conversion is applied to the <code>milk_amount_good_season</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("milk_amount_good_season", "milk_units", "milk_number_animals_milked"),
-    conversion_tables_required=list("milk_unit_conversion"),
+    loop_columns_required=list("livestock_name","milk_amount_good_season", "milk_number_animals_milked"),
+    conversion_tables_required=list(),
     api_data_required = list(),
-    indicators_required=list(),
+    indicators_required=list("milk_amount_units_numeric"),
     function_calculated="milk_amount_calculations",
     search_term="indicator_search_milk_amount_good_season_litres_per_year")
 
@@ -327,10 +380,10 @@ indicator_list <- add_indicator(
     description="The rate of milk produced during the bad season in litres/year. <code>milk_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). Where units include the number of animals (e.g. <code>l/animal/day</code>), the column <code>milk_number_animals_milked</code> is included in the conversion factor. The final conversion is applied to the <code>milk_amount_bad_season</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("milk_amount_bad_season", "milk_units", "milk_number_animals_milked"),
+    loop_columns_required=list("livestock_name","milk_amount_bad_season", "milk_number_animals_milked"),
     conversion_tables_required=list("milk_unit_conversion"),
     api_data_required = list(),
-    indicators_required=list(),
+    indicators_required=list("milk_amount_units_numeric"),
     function_calculated="milk_amount_calculations",
     search_term="indicator_search_milk_amount_bad_season_litres_per_year")
 
@@ -398,7 +451,7 @@ indicator_list <- add_indicator(
     description="The rate of egg production during the good season in kg/year. <code>eggs_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). The conversion is applied to the <code>eggs_amount_good</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("eggs_amount_good", "eggs_units"),
+    loop_columns_required=list("livestock_name","eggs_amount_good", "eggs_units"),
     conversion_tables_required=list("eggs_unit_conversion"),
     api_data_required = list(),
     indicators_required=list(),
@@ -411,7 +464,7 @@ indicator_list <- add_indicator(
     description="The rate of egg production during the bad season in kg/year. <code>eggs_units</code> are converted (e.g. <code>day</code> is given the conversion <code>365</code>). The conversion is applied to the <code>eggs_amount_bad</code> to obtain the result",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("eggs_amount_bad", "eggs_units"),
+    loop_columns_required=list("livestock_name","eggs_amount_bad", "eggs_units"),
     conversion_tables_required=list("eggs_unit_conversion"),
     api_data_required = list(),
     indicators_required=list(),
@@ -496,7 +549,7 @@ indicator_list <- add_indicator(
     description="The amount of honey harvested (kg/year). <code>bees_honey_production_units</code> is converted into a numeric conversion factor and applied to <code>bees_honey_production</code>.",
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
-    loop_columns_required=list("bees_honey_production", "bees_honey_production_units"),
+    loop_columns_required=list("livestock_name","bees_honey_production", "bees_honey_production_units"),
     conversion_tables_required=list("honey_unit_conversion"),
     api_data_required = list(),
     indicators_required=list(),
