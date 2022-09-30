@@ -39,7 +39,7 @@ jobs:
         run: |
           brew tap mongodb/brew
           brew install mongodb-community
-          brew services start mongodb-community
+          brew services start mongodb-community@5.0
 
       - if: runner.os == 'linux'
         run: sudo systemctl restart mongod
