@@ -8,6 +8,7 @@ add_gendered_indicator(
   indicator_list,
   gendered_list = c("male_youth", "male_adult", "female_youth", "female_adult"),
   indicator_name = "male_youth_crop_consumed_kg_per_year",
+  description,
   output_format,
   individual_columns_required = list(),
   loop_columns_required = list(),
@@ -22,7 +23,9 @@ add_gendered_indicator(
 
 \item{gendered_list}{List of gender categories}
 
-\item{indicator_name}{The name of the new indicator (without gender prefix)}
+\item{indicator_name}{The name of the new indicator (without gender prefix),}
+
+\item{description}{A description of the indicator}
 
 \item{output_format}{The shape of the indicator (column, loop or table)}
 

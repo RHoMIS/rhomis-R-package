@@ -2,9 +2,7 @@
 % Please edit documentation in R/redirectModules.R
 \name{calculate_values_gender_and_fa_local}
 \alias{calculate_values_gender_and_fa_local}
-\title{Calculate Values, Gender and Food Availability
- 
-Rpackage file: redirectModules.R}
+\title{Calculate Values, Gender and Food Availability}
 \usage{
 calculate_values_gender_and_fa_local(
   base_path = "./",
@@ -39,7 +37,5 @@ the analysis}
 \item{units}{A nested list containing all of the unit conversion tibbles}
 }
 \description{
-Calculate Values, Gender and Food Availability
- 
 Rpackage file: redirectModules.R
 }

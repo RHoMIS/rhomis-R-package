@@ -6,69 +6,162 @@ These are used to calculate key indicators, such as
 
 This guide is designed to explain:
 
-1. How some of the main indicators are calculated
+1. How each indicator is calculated
 2. How variables are linked
 3. How you can explore these calculations and indicators yourself
 
-In order to make the most of this guide, you should have a sample RHoMIS 
-dataset, to see how to process a "Raw" RHoMIS dataset, and produce indicators
-from this dataset, please see [data processing][Data Processing]
+## Main Principle in Calculations
 
-## Where to start
+RHoMIS is designed to collect information on wide range of 
+topics in a short amount of time. Questions in the survey 
+are asked in a way that we can make estimates, whilst not 
+forcing the respondent to provide a level of precision they
+are not able to.
 
-Firstly, we have created a list of indicators. To see
-the names of all of the indicators, enter the following command:
+To calculate indicators such as income, productivity, gendered control of resources, 
+we rely on proportions and recall. This is best explained using worked examples (see below)
 
-```{r indicator_names, warning=FALSE, message=FALSE, eval=F}
-names(indicator_list)
-```
+### Worked Example
 
-There are a lot of indicators here. Some of them you will find as standalone columns
-in the RHoMIS Indicators Table. Others you will find in a looped format, in the processed
-data. To find out more about an indicator, you can do as follows:
+When calculating crop productivity, respondents are asked to give the amount harvested over the past 12 months, 
+they are then asked to give the unit of this amount (e.g. 'kg', 'tons', 'gorogoro' etc.). 
+By multiplying the two it is possible to calculate the number of kilograms harvested over 
+the past 12 months (let's label this $C_H$). 
 
-```{r individ_indicator_expl, warning=FALSE, message=FALSE, }
-indicator_list[["hh_size_mae"]]
-```
-There is a lot of information here. So let's break it down. This is telling me
-that the indicator is in a column format (in the indicator sheet). It requires a series
-of individual columns, a series of looped columns and a conversion table. No other indicators
-are needed to calculate "hh_size_mae". I can see it is calculated with the `calculate_household_size_members`. If I want to see where this function is stored in the 
-R-package raw code I can enter the `?calculate_household_size_members` command into the console.
-I can search for the tag `indicator_search_hh_size_mae` to see exactly where the indicator is 
-calculated in this file.
+Respondents are also asked how much income they gain from the sale of this crop and the 
+units of this income (e.g. 'total income per year', 'price per kg', 'price per gorogoro' etc.). 
+This can either be used to calculate total income per year or the income per kg 
+(let's label these $I_{yr}$ and $I_{kg}$ respectively).
 
+Using these variables it is necessary to calculate: number of kg sold ($C_s$), 
+number of kg consumed ($C_c$), price per kilo ($I_{kg}$), income per year ($I_{yr}$), 
+value controlled by the man ($Ctr_M$), value controlled by the woman ($Ctr_W$) and the values of the crops which were consumed ($V_{cons}$). These calculations mainly rely on proportion responses. 
+The respondent is asked what proportion of the harvest was consumed ($prop_{cons}$) and what proportion was sold ($prop_{sold}$), where none=0, little=0.1, under half=0.2, half=0.5, most=0.7, all=0.9. Therefore:
 
-Now lets look at a more complex indicator. `crop_income_lcu_per_year`:
+\begin{equation}
+    C_c = prop_{cons}C_H 
+    (\#eq:cropconsume)
+\end{equation}
 
-```{r loop_indicator_expl, warning=FALSE, message=FALSE}
-indicator_list[["crop_income_per_year"]]
-```
-I can see that this comes in a loop format. It relies two looped 
-columns, a conversion table, and another indicator. Again I can find
-the function that calculates the indicator, and use a search term to identify exactly 
-the point where it is calcuated.
-
-However, when one indicator depends on another, we might need do know
-the nested relationship (i.e, what columns does the dependency rely on).
-If we want to visualise it, we could do this:
-
-```{r dependency_network_explained, warning=FALSE, message=FALSE}
-
-plot_dependency_network(
-    indicator_name="crop_income_per_year"
-)
+\begin{equation}
+    C_s = prop_{sold}C_H
+    (\#eq:cropsold)
+\end{equation}
 
 
-```
-A lternatively,r if we want to extract the actual information, we can do this:
+Using the amount sold ($C_S$) it is possible to work out income per kg and price per kilo ($I_{kg}$) and income per year ($I_{yr}$), depending on which sale units were given by the respondent:
 
-```{r depend_list,  warning=FALSE, message=FALSE}
-find_nested_dependencies_list(
-     indicator_name="crop_sold_kg_per_year",
-     indicator_list=indicator_list,
-     dependency_required="loop")
+\begin{equation}
+    I_{kg} = \dfrac{P_{yr}}{C_s}
+    (\#eq:cropincomeperkg)
+\end{equation}
 
-```
-This would find all of the looped dependencies (recursively) for the 
-indicator I am interested in.
+The price per kg is then averaged across the whole project and verified against FAOstat prices, or verified
+by field staff. Please not this is step 2 of the indicator calculations. Price verification then 
+ makes it possible to calculate the value of crop consumed ($V_{cons}$):
+
+\begin{equation}
+    V_{cons} = P_{kg}{C_c}
+    (\#eq:valueconsumed)
+\end{equation}
+
+Finally, the value controlled by the female ($Ctr{W}$) and the male ($Ctr_M$) in the household can be calculated. The respondent is asked what proportion of the crop consumed is controlled by the male ($Ctr_{Mcons}$)  or the woman ($Ctr_{Wcons}$), where none=0, little=0.1, under half=0.2, half=0.5, most=0.7, all=0.9.  The respondent is then asked what proportion of the income from the crop sale is controlled by the male ($Ctr_{IM}$)  or the woman ($Ctr_{IW}$). Which finally gives:
+
+\begin{equation}
+    Ctr_M= Ctr_{Mcons}V_{cons} + (Ctr_{IM}I_{yr})
+    (\#eq:controlmale)
+\end{equation}
+
+\begin{equation}
+    Ctr_W= Ctr_{Wcons}V_{cons} + (Ctr_{IW}I_{yr})
+    (\#eq:controlfemale)
+\end{equation}
+
+
+**This style of proportion calculation is used throughout the indicator calculations, 
+for further details please see individual explanations of each indicator (below).**
+
+
+
+
+
+
+
+
+## Indicators
+
+There are a lot of indicators generated in the RHoMIS dataset. In the final "indicator" table,
+we have a few key indicators, such as total income, household size, and total land cultivated.
+For complex indicators, such as total income, we have to calculate a series of intermediate indicators
+to reach the final income (e.g. crop harvested, amount sold, income per kg for that crop). The table
+below summarises all of the indicators (and intermediate indicators), calculated for core RHoMIS 
+outputs. 
+
+In this table you will find:
+
+* **Indicator Name**: The name of the indicator
+* **Output Format**: The format for the outputted indicator. If "column", then the indicator will be found as a column in the final indicator table. If "loop", the indicator will be found across multiple columns in the processed dataset (e.g "crop_name_1", "crop_name_2", "crop_name_3"...). 
+* **Description**: A description of the indicators required
+* **Individual Columns Required**: Which individual columns in the processed data are needed to calculate the indicator (e.g. for land_cultivated_ha, we rely on the columns "landcultivated" and "unitland")
+* **Loop Columns Required**: Which "looped" columns are needed to calculate the indicator (e.g. for "crop_harvest_kg_per_year_1", "crop_harvest_kg_per_year_2"... we need the columns "crop_yield_1" "crop_yield_2", "crop_yield_3"... and "crop_yield_units_1", "crop_yield_units_2", "crop_yield_units_3"...)
+* **Conversion Tables Required**: Many indicators rely on conversion tables. For example "crop_yield_units" come as strings (e.g. "sacks_50kg", "carts"). Conversion tables are used to switch between strings and numeric conversion factors. In this column we specify which conversion factors are required.
+* **API Data Required**: Some indicators rely on external APIs, for example to obtain currency conversions. This column specifies which API data is needed.
+* **Indicators Required**: Some indicators rely on other intermediate indicators. For example, total income relies on crop income, livestock income, and off-farm income. Here we specify which indicators an indicator depends on. 
+* **Function Calculated**: Which function in the RHoMIS R-package is used to calculate the indicator
+* **Search Term**: A unique search term which can be used to identify the point where the indicator is calculated within the function.
+* **Dependency Diagram**: A link to a diagram which illustrates how the indicator is connected to other indicators/columns.
+
+
+
+If you would like to see the individual questions, please download a copy of the <a href="./files/RHoMIS_Core_v1.6.xlsx" download>RHoMIS core survey</a>
+
+
+
+```{r generating_indicators, eval=T, echo=F,, warning=F}
+# library("widgetframe")
+library(DT)
+dir.create('./_book/images/indicator_plots/', recursive = T,showWarnings = F)
+
+data_table <- indicator_mapping_to_df()
+data_table$dependency_diagram <- paste0('<a href="./images/indicator_plots/',data_table$indicator_name,'.html" target="_blank" >',data_table$indicator_name,' diagram</a>') 
+DT::datatable(data_table,
+              extensions = 'Buttons',
+              escape = FALSE,
+              options = list(
+                  
+                  dom = 'Blfrtip',
+                  scrollX = TRUE,
+                  buttons = list(
+                      'copy',
+                      list(
+                          extend = 'collection',
+                          buttons = c('csv', 'excel'),
+                          text = 'Download'
+                      )
+                  )
+                  
+                 ))
+
+for(indicator_index in c(1:length(indicator_list))){
+
+    indicator <- indicator_list[[indicator_index]]
+
+    plot <- plot_dependency_network(indicator$indicator_name)
+
+    # Saving the widget
+    htmlwidgets::saveWidget(plot,
+                            file =      paste0("./_book/images/indicator_plots/",indicator$indicator_name,'.html'),
+                            selfcontained = F,
+                            libdir = "lib")
+   
+}
+
+dir.create('./_book/files/', recursive = T,showWarnings = F)
+
+invisible(file.copy("./files/RHoMIS_Core_v1.6.xlsx", './_book/files/RHoMIS_Core_v1.6.xlsx'))
+
+``` 
+
+
+
+

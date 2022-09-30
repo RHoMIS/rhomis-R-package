@@ -12,6 +12,7 @@ meat_uses(data)
 \description{
 Calculating the numeric proportions of meat used for
 eating and selling
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

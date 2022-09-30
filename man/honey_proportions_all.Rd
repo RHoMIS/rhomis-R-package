@@ -12,6 +12,7 @@ honey_proportions_all(data)
 \description{
 Can correctly calculate the numeric proportions of honey
 and its uses
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

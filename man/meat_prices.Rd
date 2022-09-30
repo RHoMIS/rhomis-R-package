@@ -11,6 +11,7 @@ meat_prices(data)
 }
 \description{
 Calculating the price of meat which was sold.
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

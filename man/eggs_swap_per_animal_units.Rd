@@ -2,9 +2,7 @@
 % Please edit documentation in R/LivestockCalculations.R
 \name{eggs_swap_per_animal_units}
 \alias{eggs_swap_per_animal_units}
-\title{Eggs Swap per Animal Units
-  
-Rpackage file: LivestockCalculations.R}
+\title{Eggs Swap per Animal Units}
 \usage{
 eggs_swap_per_animal_units(
   units_column,
@@ -21,7 +19,5 @@ eggs_swap_per_animal_units(
 with column names "livestock_heads_cattle","livestock_heads_chicken" etc...}
 }
 \description{
-Eggs Swap per Animal Units
-  
 Rpackage file: LivestockCalculations.R
 }

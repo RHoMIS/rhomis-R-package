@@ -2,7 +2,15 @@
 title: "RHoMIS Book"
 author: "Léo Gorman"
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
+site: bookdown::gitbook
+output: 
+  bookdown::gitbook:
+    lib_dir: assets
+    config:
+      sharing:
+        facebook: false
+        twitter: false
+        share: false
 documentclass: book
 bibliography: [book.bib, packages.bib]
 # url: your book url like https://bookdown.org/yihui/bookdown
@@ -13,6 +21,10 @@ description: |
   RHoMIS R-package
 link-citations: yes
 github-repo: l-gorman/rhomis-R-package
+username: l-gorman
+repo: rhomis-R-package
+branch: main
+
 ---
 
 # About
@@ -20,13 +32,10 @@ github-repo: l-gorman/rhomis-R-package
 The Rural Household Multi-Indicator Survey (RHoMIS) is designed to collect data on smallholder farmers.
 The survey is rich in information, covering a range of topics from dietary diversity to livelihoods.
 With so much information available, it can often be difficult to extract, 
-This is a book documentating how to use the RHoMIS R-package to process
-data collected with the Rural Household Multi-Indicator Survey.
+This is a book documenting how to use the RHoMIS R-package. We cover
+3 main topics: 
 
-## Key Concepts
+1. How to process data collected RHoMIS
+2. The logic of the calculations, and an overview of key indicators/outputs
+2. How to use the R-package to extract useful information
 
-Data processing occurs in three main steps:
-
-1. Verification of units
-2. Verification of prices and calorie conversions
-3. Calculation of final indicators

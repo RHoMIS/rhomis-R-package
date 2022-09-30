@@ -7,7 +7,7 @@ library(tibble)
 testthat::test_that("Can create a a by-project unit conversion table for standard units",{
     proj_id_vector <- c("id_1", "id_1", "id_3", "id_2")
 
-    result <- make_per_project_conversion_tibble(proj_id_vector = proj_id_vector,unit_conv_tibble = eggs_amount_units)
+    result <- make_per_project_conversion_tibble(proj_id_vector = proj_id_vector,unit_conv_tibble = eggs_amount_to_pieces_per_year)
 
     # Generated with dput
     expected_result <- structure(list(survey_value = c("pieces/day", "pieces/week",
@@ -200,3 +200,4 @@ testthat::test_that('Can swap main units with "other" units',{
 
 
 })
+

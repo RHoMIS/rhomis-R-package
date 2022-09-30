@@ -12,6 +12,7 @@ extract_all_new_values(data)
 \description{
 Extract all of the new values from a RHoMIS data frame,
 if they have unit conversions in the package, then convert them.
- 
+}
+\details{
 Rpackage file: RunAll.R
 }

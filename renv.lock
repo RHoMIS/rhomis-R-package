@@ -9,6 +9,11 @@
     ]
   },
   "Packages": {
+    "DT": {
+      "Package": "DT",
+      "Version": "0.25",
+      "Source": "Repository"
+    },
     "Matrix": {
       "Package": "Matrix",
       "Version": "1.4-1",
@@ -599,10 +604,10 @@
     },
     "stringr": {
       "Package": "stringr",
-      "Version": "1.4.0",
+      "Version": "1.4.1",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0759e6b6c0957edb1311028a49a35e76"
+      "Hash": "a66ad12140cd34d4f9dfcc19e84fc2a5"
     },
     "sys": {
       "Package": "sys",

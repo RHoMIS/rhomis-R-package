@@ -17,6 +17,7 @@ produced based on the number of animals killed,
 and some conversion factors which can calculate
 how much meat can be collected from an animal which
 has been killed.
-  
+}
+\details{
 Rpackage file: LivestockCalculations.R
 }

@@ -25,6 +25,7 @@ calculate_prices_and_indicator_local(
 }
 \description{
 Calculate prices and initial indicators locally
- 
+}
+\details{
 Rpackage file: redirectModules.R
 }

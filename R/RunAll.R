@@ -1,17 +1,7 @@
-
-
-
-load_data_odk <- function(url,
-                          central_url,
-                          central_email) {
-
-}
-
-
 #' Make ID Columns
 #'
 #' Make ID columns for form, project, and household
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param data The rhomis data set as a tibble
@@ -33,8 +23,6 @@ make_id_columns <- function(data,
                             id_type = c("string", "column"), # list of allowed values for argument, default is first element in vector
                             proj_id,
                             form_id) {
-
-
 
     # Check validity of argument and print error if unknown type is supplied
     id_type <- match.arg(id_type)
@@ -103,128 +91,12 @@ make_id_columns <- function(data,
 }
 
 
-
-
-#' Load RHoMIS Central
-#'
-#' Load Raw RHoMIS data from ODK central and
-#' convert the column names into a shortened, standardised
-#' version.
-#'  
-#' Rpackage file: RunAll.R
-#'
-#' @param central_url The url of the ODK-central server you are using.
-#' ONLY RELEVANT IF "dataSource" WAS "central".
-#' @param central_email The email of the ODK-central account you are using.
-#' ONLY RELEVANT IF "dataSource" WAS "central"
-#' @param central_password The password of the ODK-central account you are using.
-#' ONLY RELEVANT IF "dataSource" WAS "central".
-#' @param project_name The name of the ODK-central project you are processing.
-#' ONLY RELEVANT IF "dataSource" WAS "central".
-#' @param form_name The name of the ODK-central form you are processing.
-#' ONLY RELEVANT IF "dataSource" WAS "central".
-#' @param form_version The version of the ODK-central form you are processing.
-#' ONLY RELEVANT IF "dataSource" WAS "central".
-#' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
-#' @param database The name of the database you would like to save results to
-#' @param isDraft Whether or not the ODK form you are working with is a draft
-#' or a final version. Only relevant if you are processing a project from ODK central
-#' @param repeat_columns The columns which are looped in the datasets being processed
-#' @return
-#' @export
-#'
-#' @examples
-
-load_rhomis_central <- function(
-                                central_url=NULL,
-                                central_email=NULL,
-                                central_password=NULL,
-                                project_name=NULL,
-                                form_name=NULL,
-                                form_version=NULL,
-                                database=NULL,
-                                isDraft=NULL,
-                                central_test_case=FALSE,
-                                repeat_columns=pkg.env$repeat_columns
-                                ){
-
-
-    # Checking if the right arguments are supplied to obtain data from ODK central
-    items_to_test <- list("central_email",
-                          "central_password",
-                          "project_name",
-                          "form_name",
-                          "form_version",
-                          "database",
-                          "isDraft")
-    null_variables <-sapply(items_to_test, function(x) is.null(get(x)))
-    if(any(null_variables)){
-        error_message <- paste(items_to_test[null_variables], collapse="\n")
-        stop(paste0('You specified the data was coming from a ODK central. You need to define: \n',error_message))
-    }
-
-    if ( !(central_test_case) ){
-
-        # Getting project and formID
-        projectID <- get_project_id_from_name( project_name, central_url, central_email, central_password )
-
-        # Finding form information from the API
-        formID <- get_xml_form_id_from_name( form_name, projectID, central_url, central_email, central_password )
-
-    } else {
-
-        # Set empty strings for testing purposes
-        projectID <- ""
-        formID <- ""
-    }
-
-    rhomis_data <- get_submission_data(
-        central_url,
-        central_email,
-        central_password,
-        projectID,
-        formID,
-        isDraft )
-
-
-    # Cleaning the column names
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), pkg.env$repeat_columns)
-    # There are some extra central columns
-    # which are problematic, these need to be removed
-    rhomis_data <- rhomis_data %>%
-        remove_extra_central_columns()
-
-    rhomis_data <- make_id_columns(
-        data = rhomis_data,
-        country_column = pkg.env$identification_column_list$country,
-        unique_id_col = "key",
-        hh_id_col = NULL,
-        id_type = "string",
-        proj_id = project_name,
-        form_id = form_name)
-
-    # Convert the IDs to lower case
-    rhomis_data<- convert_all_columns_to_lower_case(rhomis_data)
-
-    # An extra step to ensure all -999 values are set to NA,
-    # This wasn't always happening with ODK central datasets.
-    rhomis_data <- sapply(rhomis_data, function(x){
-        x[as.numeric(x)==-999]<-NA
-        x
-    }, simplify = F) %>% tibble::as_tibble()
-
-    return(rhomis_data)
-
-}
-
-
-
 #' Load RHoMIS CSV
 #'
 #' Load a Raw RHoMIS csv file, collected using ODK, and
 #' convert the column names into a shortened, standardised
 #' version.
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param file_path The filepath of the RHoMIS csv
@@ -236,7 +108,6 @@ load_rhomis_central <- function(
 #' @param overwrite True if you would like to overwrite previous ID column, false if would not like to overwrite existing IDs
 #' @param unique_id_col The column in the dataset which contains unique IDs (usually _uuid)
 #' @param hh_id_col The column containing household IDs
-#' @param repeat_columns The types of repeat column name
 #'
 #' @return A tibble of RHoMIS data
 #' @export
@@ -249,17 +120,17 @@ load_rhomis_csv <- function(file_path,
                             id_type = c("string", "column"), # list of allowed values for argument, default is first element in vector
                             proj_id = NULL,
                             form_id = NULL,
-                            overwrite = FALSE,
-                            repeat_columns = pkg.env$repeat_columns)
+                            overwrite = FALSE
+)
 {
 
 
 
     # read in the input csv file
-    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a", "-999", "NA"), locale = readr::locale(encoding = "latin1"))
+    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
 
     # simplify column names to more readable format
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), repeat_columns)
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data))
 
     # ensure all data entries are lower case for consistency / easier data analysis
     rhomis_data <- convert_all_columns_to_lower_case(rhomis_data)
@@ -282,7 +153,7 @@ load_rhomis_csv <- function(file_path,
 #'
 #' Extract all of the new values from a RHoMIS data frame,
 #' if they have unit conversions in the package, then convert them.
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param data A RHoMIS tibble
@@ -302,7 +173,7 @@ extract_all_new_values <- function(data) {
 #' Replace Infinite
 #'
 #' Replace infinite values with NA in a specific column
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param column The column where infinite values need to be replaced
@@ -331,7 +202,7 @@ replace_infinite <- function(column) {
 #' 2. Calculation of initial indicators
 #' 3. Calculation of final indicators, including food availability,
 #' gender, and value of products consumed
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param extractUnitsOnly Whether or not to only extract units (TRUE/FALSE)
@@ -360,13 +231,10 @@ replace_infinite <- function(column) {
 #' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param form_name The name of the ODK-central form you are processing.
 #' ONLY RELEVANT IF "dataSource" WAS "central".
-#' @param form_version The version of the ODK-central form you are processing.
-#' ONLY RELEVANT IF "dataSource" WAS "central".
 #' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
 #' @param database The name of the database you would like to save results to
 #' @param isDraft Whether or not the ODK form you are working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
-#' @param repeat_columns The columns which are looped in the datasets being processed
 #' @param uuid_local The column in a local dataset containing uuids (usually _uuid)
 #' @param gender_categories The gender categories present in the data which is to be processed
 #' @return
@@ -374,36 +242,36 @@ replace_infinite <- function(column) {
 #'
 #' @examples
 processData <- function( # Arguments to indicate the stage of analysis
-                        extractUnitsOnly = T, # The stage of data processing
-                        calculateInitialIndicatorsOnly = F,
-                        calculateFinalIndicatorsOnly = F,
-                        # Arguments to indicate the type of processing being done (local or on server)
-                        dataSource = c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
-                        outputType = c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
-                        # Arguments used for processing local data sets
-                        base_path = "./", # The path to the folder where outputs will be written
-                        dataFilePath = NULL,
-                        id_type = c("string", "column"),
-                        proj_id,
-                        form_id,
-                        uuid_local = pkg.env$identification_column_list$uuid_local,
-                        # Arguments for if processing from ODK central
-                        central_url = NULL,
-                        central_email = NULL,
-                        central_password = NULL,
-                        project_name = NULL,
-                        form_name = NULL,
-                        form_version = NULL,
-                        database = NULL,
-                        isDraft = NULL,
-                        central_test_case = FALSE,
-                        repeat_columns = pkg.env$repeat_columns,
-                        gender_categories = pkg.env$gender_categories) {
+    extractUnitsOnly = T, # The stage of data processing
+    calculateInitialIndicatorsOnly = F,
+    calculateFinalIndicatorsOnly = F,
+    # Arguments to indicate the type of processing being done (local or on server)
+    dataSource = c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
+    outputType = c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
+    # Arguments used for processing local data sets
+    base_path = "./", # The path to the folder where outputs will be written
+    dataFilePath = NULL,
+    id_type = c("string", "column"),
+    proj_id,
+    form_id,
+    uuid_local = pkg.env$identification_column_list$uuid_local,
+    # Arguments for if processing from ODK central
+    central_url = NULL,
+    central_email = NULL,
+    central_password = NULL,
+    project_name = NULL,
+    form_name = NULL,
+    database = NULL,
+    isDraft = NULL,
+    central_test_case = FALSE,
+    gender_categories = pkg.env$gender_categories) {
 
 
     #----------------------------------------
     # Checking the validity of the Arguments
     #----------------------------------------
+
+
 
     # Check validity of OutputTypes and print error if unknown OutputType is supplied
     outputType <- match.arg(outputType)
@@ -432,7 +300,6 @@ processData <- function( # Arguments to indicate the stage of analysis
             id_type = id_type,
             proj_id = proj_id,
             form_id = form_id,
-            repeat_columns = repeat_columns
         )
     }
 
@@ -445,16 +312,14 @@ processData <- function( # Arguments to indicate the stage of analysis
     {
 
         rhomis_data <- load_rhomis_central(
-            central_url,
-            central_email,
-            central_password,
-            project_name,
-            form_name,
-            form_version,
-            database,
-            isDraft,
-            central_test_case,
-            repeat_columns
+            central_url=central_url,
+            central_email=central_email,
+            central_password=central_password,
+            project_name=project_name,
+            form_name=form_name,
+            database=database,
+            isDraft=isDraft,
+            central_test_case=central_test_case
         )
     }
 
@@ -519,10 +384,10 @@ processData <- function( # Arguments to indicate the stage of analysis
 
             )
             set_project_tag_to_true(database = database,
-                url = url,
-                projectID=project_name,
-                formID=form_name,
-                project_tag="unitsExtracted")
+                                    url = url,
+                                    projectID=project_name,
+                                    formID=form_name,
+                                    project_tag="unitsExtracted")
         }
     } else {
 
@@ -533,37 +398,37 @@ processData <- function( # Arguments to indicate the stage of analysis
 
         if (calculateInitialIndicatorsOnly == T) {
 
-              #---------------------------------------------------------------
-        # Load Conversions
-        #---------------------------------------------------------------
-        if (outputType == "csv") {
-            units_folder <- paste0(base_path, "units_and_conversions/")
+            #---------------------------------------------------------------
+            # Load Conversions
+            #---------------------------------------------------------------
+            if (outputType == "csv") {
+                units_folder <- paste0(base_path, "units_and_conversions/")
 
-            if (!dir.exists(units_folder))
-            {
-                stop('Specified that the units were stored locally but the path ',units_folder,' does not exist')
+                if (!dir.exists(units_folder))
+                {
+                    stop('Specified that the units were stored locally but the path ',units_folder,' does not exist')
+                }
+
+                #---------------------------------------------
+                # Loading all of the unit conversions locally
+                #---------------------------------------------
+                units <- load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
             }
-
-            #---------------------------------------------
-            # Loading all of the unit conversions locally
-            #---------------------------------------------
-            units <- load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
-        }
-         if (outputType == "mongodb") {
-            unit_list <- find_db_units(
-                projectID = project_name,
-                formID = form_name,
-                url = "mongodb://localhost",
-                collection = "projectData",
-                database = database
-            )
-            units <- load_all_db_units(unit_list,
-                projectID = project_name,
-                formID = form_name,
-                database = database,
-                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
-            )
-        }
+            if (outputType == "mongodb") {
+                unit_list <- find_db_units(
+                    projectID = project_name,
+                    formID = form_name,
+                    url = "mongodb://localhost",
+                    collection = "projectData",
+                    database = database
+                )
+                units <- load_all_db_units(unit_list,
+                                           projectID = project_name,
+                                           formID = form_name,
+                                           database = database,
+                                           id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
+                )
+            }
 
             # Run all of the preliminary calculations that can
             # be done without price verification and without
@@ -667,10 +532,10 @@ processData <- function( # Arguments to indicate the stage of analysis
                         url = "mongodb://localhost"
                     )
                     set_project_tag_to_true(database = database,
-                url = url,
-                projectID=project_name,
-                formID=form_name,
-                project_tag="pricesCalculated")
+                                            url = url,
+                                            projectID=project_name,
+                                            formID=form_name,
+                                            project_tag="pricesCalculated")
                     return()
                 }
 
@@ -771,26 +636,26 @@ processData <- function( # Arguments to indicate the stage of analysis
                 prices_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$price_conversion_list]
                 prices <- sapply(prices_conversion_list, function(price_conversion) {
                     extract_units_from_db(database,
-                        url = "mongodb://localhost",
-                        projectID = project_name,
-                        formID = form_name,
-                        conversion_type = price_conversion,
-                        collection = "units_and_conversions"
+                                          url = "mongodb://localhost",
+                                          projectID = project_name,
+                                          formID = form_name,
+                                          conversion_type = price_conversion,
+                                          collection = "units_and_conversions"
                     )
                 }, simplify = F)
 
                 calorie_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$calorie_conversion_list]
                 calorie_conversions <- sapply(calorie_conversion_list, function(calorie_conversion) {
                     extract_units_from_db(database,
-                        url = "mongodb://localhost",
-                        projectID = project_name,
-                        formID = form_name,
-                        conversion_type = calorie_conversion,
-                        collection = "units_and_conversions"
+                                          url = "mongodb://localhost",
+                                          projectID = project_name,
+                                          formID = form_name,
+                                          conversion_type = calorie_conversion,
+                                          collection = "units_and_conversions"
                     )
                 }, simplify = F)
 
-                 if (outputType == "mongodb") {
+                if (outputType == "mongodb") {
                     unit_list <- find_db_units(
                         projectID = project_name,
                         formID = form_name,
@@ -800,12 +665,12 @@ processData <- function( # Arguments to indicate the stage of analysis
                     )
                     # Not yet complete
                     load_all_db_units(unit_list,
-                        projectID = project_name,
-                        formID = form_name,
-                        database = database,
-                        id_rhomis_dataset = processed_data[["id_rhomis_dataset"]]
+                                      projectID = project_name,
+                                      formID = form_name,
+                                      database = database,
+                                      id_rhomis_dataset = processed_data[["id_rhomis_dataset"]]
                     )
-        }
+                }
             }
 
             results <- value_gender_fa_calculations(
@@ -878,10 +743,10 @@ processData <- function( # Arguments to indicate the stage of analysis
                         )
                     }
                     set_project_tag_to_true(database = database,
-                        url = url,
-                        projectID=project_name,
-                        formID=form_name,
-                        project_tag="finalIndicators")
+                                            url = url,
+                                            projectID=project_name,
+                                            formID=form_name,
+                                            project_tag="finalIndicators")
                 }
             })
 
@@ -905,7 +770,7 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' Generate Data
 #'
 #' Generate fake data and submit it to a test project
-#'  
+#'
 #' Rpackage file: RunAll.R
 #'
 #' @param central_url The URL of the central server holding the data
@@ -914,8 +779,7 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' @param project_name The name of the project to generate data for
 #' @param form_name The name of the form to generate data for
 #' @param number_of_responses The number of responses to generate
-#' @param form_version The version of the form to upload
-#' @param isDraft Whether or not the form is a draft or finalized
+#' @param isDraft Whether or not this is a draft state project
 #'
 #' @return
 #' @export
@@ -927,7 +791,6 @@ generateData <- function(central_url,
                          project_name,
                          form_name,
                          number_of_responses,
-                         form_version,
                          isDraft = T) {
 
 
@@ -949,16 +812,14 @@ generateData <- function(central_url,
     )
     formID <- forms$xmlFormId[forms$name == form_name]
 
-    xls_form <- rhomis::get_xls_form(
-        central_url = central_url,
-        central_email = central_email,
-        central_password = central_password,
-        projectID = projectID,
-        formID = formID,
-        # file_destination=form_destination,
-        form_version = form_version,
-        isDraft = isDraft
-    )
+
+    xls_form <- get_xls_form(central_url,
+                             central_email,
+                             central_password,
+                             projectID,
+                             formID,
+                             isDraft)
+
 
 
     # Get number of responses to generate
