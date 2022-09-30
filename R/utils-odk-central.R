@@ -27,15 +27,15 @@
 #' @examples
 
 load_rhomis_central <- function(
-                                central_url=NULL,
-                                central_email=NULL,
-                                central_password=NULL,
-                                project_name=NULL,
-                                form_name=NULL,
-                                database=NULL,
-                                isDraft=NULL,
-                                central_test_case=FALSE
-                                ){
+        central_url=NULL,
+        central_email=NULL,
+        central_password=NULL,
+        project_name=NULL,
+        form_name=NULL,
+        database=NULL,
+        isDraft=NULL,
+        central_test_case=FALSE
+){
 
 
     # Checking if the right arguments are supplied to obtain data from ODK central
@@ -123,28 +123,28 @@ load_rhomis_central <- function(
 #' @return This function will return a token. This token is useful for
 #' @examples
 get_email_token <- function(central_url, central_email, central_password) {
-  data_for_request <- list(email = central_email, password = central_password)
-  # Passing a handle with the request allows for
-  # the use of cookies. Facilitating multiple requests.
-  h <- httr::handle(central_url)
-  central_response <- httr::POST(
-    url = paste0(central_url, "/v1/sessions"),
-    body = data_for_request,
-    encode = "json",
-    httr::add_headers("Content-Type" = "application/json"),
-    handle = h
-  )
+    data_for_request <- list(email = central_email, password = central_password)
+    # Passing a handle with the request allows for
+    # the use of cookies. Facilitating multiple requests.
+    h <- httr::handle(central_url)
+    central_response <- httr::POST(
+        url = paste0(central_url, "/v1/sessions"),
+        body = data_for_request,
+        encode = "json",
+        httr::add_headers("Content-Type" = "application/json"),
+        handle = h
+    )
 
-  central_response_content <- httr::content(central_response)
-  token <- central_response_content$token
+    central_response_content <- httr::content(central_response)
+    token <- central_response_content$token
 
-  if (is.null(token)) {
-    stop("Unable to return token.\n
+    if (is.null(token)) {
+        stop("Unable to return token.\n
          Please check the credentials you provided are
          correct by going to your URL and logging in.")
-  }
+    }
 
-  return(token)
+    return(token)
 }
 
 
@@ -164,16 +164,16 @@ get_email_token <- function(central_url, central_email, central_password) {
 #'
 #' @examples
 get_users <- function(central_url, central_email, central_password) {
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = paste0(central_url, "/v1/users"),
-    encode = "json",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_users <- httr::content(central_response)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = paste0(central_url, "/v1/users"),
+        encode = "json",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_users <- httr::content(central_response)
 
-  central_users <- central_results_to_df(central_users)
-  return(central_users)
+    central_users <- central_results_to_df(central_users)
+    return(central_users)
 }
 
 
@@ -194,14 +194,14 @@ get_project_id_from_name <- function(project_name,
                                      central_url,
                                      central_email,
                                      central_password) {
-  projects <- get_projects(
-    central_url,
-    central_email,
-    central_password
-  )
-  projectID <- projects$id[projects$name == project_name]
+    projects <- get_projects(
+        central_url,
+        central_email,
+        central_password
+    )
+    projectID <- projects$id[projects$name == project_name]
 
-  return(projectID)
+    return(projectID)
 }
 
 
@@ -227,14 +227,14 @@ get_xml_form_id_from_name <- function(form_name,
                                       central_url,
                                       central_email,
                                       central_password) {
-  forms <- get_forms(
-    central_url,
-    central_email,
-    central_password,
-    projectID
-  )
-  formID <- forms$xmlFormId[forms$name == form_name]
-  return(formID)
+    forms <- get_forms(
+        central_url,
+        central_email,
+        central_password,
+        projectID
+    )
+    formID <- forms$xmlFormId[forms$name == form_name]
+    return(formID)
 }
 
 #' Get Projects
@@ -256,15 +256,15 @@ get_xml_form_id_from_name <- function(form_name,
 #' central_password <- "my_password"
 #' # get_projects(central_url,central_email,central_password)
 get_projects <- function(central_url, central_email, central_password) {
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = paste0(central_url, "/v1/projects"),
-    encode = "json",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_projects <- httr::content(central_response)
-  central_projects <- central_results_to_df(central_projects)
-  return(central_projects)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = paste0(central_url, "/v1/projects"),
+        encode = "json",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_projects <- httr::content(central_response)
+    central_projects <- central_results_to_df(central_projects)
+    return(central_projects)
 }
 
 
@@ -282,39 +282,16 @@ delete_project <- function(central_url,
                            central_email,
                            central_password,
                            projectID) {
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::DELETE(
-    url = paste0(central_url, "/v1/projects/", projectID),
-    encode = "json",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_projects <- httr::content(central_response)
-  print(central_projects)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::DELETE(
+        url = paste0(central_url, "/v1/projects/", projectID),
+        encode = "json",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_projects <- httr::content(central_response)
+    print(central_projects)
 }
 
-create_project <- function(central_url,
-                           central_email,
-                           central_password,
-                           project_name) {
-  central_url <- "https://central.rhomis.cgiar.org"
-  central_email <- "leomgorman@outlook.com"
-  central_password <- "mang0.T.118"
-  email_token <- get_email_token(central_url, central_email, central_password)
-
-  project_name <- "project_made_by_r"
-
-  data_for_request <- list(name = project_name)
-
-
-  central_response <- httr::POST(
-    url = paste0(central_url, "/v1/projects/"),
-    encode = "json",
-    body = data_for_request,
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_projects <- httr::content(central_response)
-  print(central_projects)
-}
 
 #' Get forms
 #'
@@ -334,15 +311,15 @@ create_project <- function(central_url,
 #'
 #' @examples
 get_forms <- function(central_url, central_email, central_password, projectID) {
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = paste0(central_url, "/v1/projects/", projectID, "/forms"),
-    encode = "json",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_forms <- httr::content(central_response)
-  central_forms <- central_results_to_df(central_forms)
-  return(central_forms)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = paste0(central_url, "/v1/projects/", projectID, "/forms"),
+        encode = "json",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_forms <- httr::content(central_response)
+    central_forms <- central_results_to_df(central_forms)
+    return(central_forms)
 }
 
 
@@ -359,8 +336,6 @@ get_forms <- function(central_url, central_email, central_password, projectID) {
 #' @param projectID The ID of the project you are looking at. To get a
 #' list of project, see the
 #' @param formID The XML form ID from a specific project
-#' @param form_version The version of the form you are examining. For now
-#' we presume you are looking for the first version of the form
 #' @param isDraft Stating whether or not the form is a draft
 #'
 #' @return
@@ -368,32 +343,32 @@ get_forms <- function(central_url, central_email, central_password, projectID) {
 #'
 #' @examples
 get_xls_form <- function(central_url, central_email, central_password, projectID, formID,  isDraft = T) {
-  if (isDraft) {
-    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft.xlsx")
-  } else {
-    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, ".xlsx")
-  }
+    if (isDraft) {
+        url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft.xlsx")
+    } else {
+        url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, ".xlsx")
+    }
 
-  file_destination <- tempfile(fileext = ".xls")
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = url,
-    encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token)),
-    httr::write_disk(file_destination, overwrite = TRUE)
-  )
+    file_destination <- tempfile(fileext = ".xls")
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = url,
+        encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token)),
+        httr::write_disk(file_destination, overwrite = TRUE)
+    )
 
-  response <- httr::content(central_response)
+    response <- httr::content(central_response)
 
 
 
-  xls_form <- list()
-  xls_form$survey <- readxl::read_xlsx(file_destination, sheet = "survey")
-  xls_form$choices <- readxl::read_xlsx(file_destination, sheet = "choices")
-  xls_form$settings <- readxl::read_xlsx(file_destination, sheet = "settings")
-  unlink(file_destination)
+    xls_form <- list()
+    xls_form$survey <- readxl::read_xlsx(file_destination, sheet = "survey")
+    xls_form$choices <- readxl::read_xlsx(file_destination, sheet = "choices")
+    xls_form$settings <- readxl::read_xlsx(file_destination, sheet = "settings")
+    unlink(file_destination)
 
-  return(xls_form)
+    return(xls_form)
 }
 
 
@@ -429,29 +404,29 @@ get_xls_survey_file <- function(central_url,
                                 formID,
                                 file_destination = NULL,
                                 form_version = 1) {
-  if (is.null(file_destination)) {
-    file_destination <- tempfile(fileext = ".xls")
-  }
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = paste0(
-      central_url,
-      "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/versions/",
-      form_version,
-      ".xlsx"
-    ),
-    encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token)),
-    httr::write_disk(file_destination, overwrite = TRUE)
-  )
+    if (is.null(file_destination)) {
+        file_destination <- tempfile(fileext = ".xls")
+    }
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = paste0(
+            central_url,
+            "/v1/projects/",
+            projectID,
+            "/forms/",
+            formID,
+            "/versions/",
+            form_version,
+            ".xlsx"
+        ),
+        encode = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token)),
+        httr::write_disk(file_destination, overwrite = TRUE)
+    )
 
-  xls_form <- readxl::read_xlsx(file_destination, sheet = "survey")
+    xls_form <- readxl::read_xlsx(file_destination, sheet = "survey")
 
-  return(xls_form)
+    return(xls_form)
 }
 
 #' Extract Form Metadata
@@ -476,12 +451,12 @@ get_xls_survey_file <- function(central_url,
 #'
 #' @examples
 extract_form_metadata <- function(central_url, central_email, central_password, projectID, formID, form_version = 1, isDraft) {
-  xls_form <- get_xls_form(central_url, central_email, central_password, projectID, formID, form_version, isDraft)
+    xls_form <- get_xls_form(central_url, central_email, central_password, projectID, formID, isDraft)
 
-  metadata <- xls_form[c("metadata_variable", "metadata_value")]
-  metadata <- metadata[!is.na(metadata["metadata_variable"]) & !is.na(metadata["metadata_value"]), ]
+    metadata <- xls_form[c("metadata_variable", "metadata_value")]
+    metadata <- metadata[!is.na(metadata["metadata_variable"]) & !is.na(metadata["metadata_value"]), ]
 
-  return(metadata)
+    return(metadata)
 }
 
 
@@ -509,22 +484,22 @@ get_submissions_list <- function(central_url,
                                  central_password,
                                  projectID,
                                  formID) {
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = paste0(
-      central_url,
-      "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/submissions"
-    ),
-    encode = "json",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_submissions <- httr::content(central_response)
-  central_submissions <- central_results_to_df(central_submissions)
-  return(central_submissions)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = paste0(
+            central_url,
+            "/v1/projects/",
+            projectID,
+            "/forms/",
+            formID,
+            "/submissions"
+        ),
+        encode = "json",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_submissions <- httr::content(central_response)
+    central_submissions <- central_results_to_df(central_submissions)
+    return(central_submissions)
 }
 
 #' Submission All
@@ -551,23 +526,23 @@ submissions_all <- function(central_url,
                             central_password,
                             projectID,
                             formID) {
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = paste0(
-      central_url,
-      "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/submissions"
-    ),
-    encode = "json",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_submissions <- httr::content(central_response)
-  central_submissions <- central_results_to_df(central_submissions)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = paste0(
+            central_url,
+            "/v1/projects/",
+            projectID,
+            "/forms/",
+            formID,
+            "/submissions"
+        ),
+        encode = "json",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_submissions <- httr::content(central_response)
+    central_submissions <- central_results_to_df(central_submissions)
 
-  return(central_submissions)
+    return(central_submissions)
 }
 
 #' Get Submission XML
@@ -597,22 +572,22 @@ get_submission_xml <- function(central_url,
                                projectID,
                                formID,
                                submissionID) {
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::GET(
-    url = paste0(
-      central_url, "/v1/projects/",
-      projectID,
-      "/forms/",
-      formID,
-      "/submissions/",
-      submissionID, ".xml"
-    ),
-    encode = "json",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_submission <- httr::content(central_response)
-  submission_xml <- paste0(central_submission, collapse = "\n")
-  return(submission_xml)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::GET(
+        url = paste0(
+            central_url, "/v1/projects/",
+            projectID,
+            "/forms/",
+            formID,
+            "/submissions/",
+            submissionID, ".xml"
+        ),
+        encode = "json",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_submission <- httr::content(central_response)
+    submission_xml <- paste0(central_submission, collapse = "\n")
+    return(submission_xml)
 }
 
 
@@ -637,31 +612,31 @@ get_submission_xml <- function(central_url,
 #'
 #' @examples
 submit_xml_data <- function(xml_string, central_url, central_email, central_password, projectID, formID, isDraft) {
-  deviceID <- uuid::UUIDgenerate()
-  instanceID <- uuid::UUIDgenerate()
+    deviceID <- uuid::UUIDgenerate()
+    instanceID <- uuid::UUIDgenerate()
 
-  unknownID <- gsub(".*<instanceID>uuid:", "", xml_string)
-  unknownID <- gsub("</instanceID>.*", "", unknownID)
+    unknownID <- gsub(".*<instanceID>uuid:", "", xml_string)
+    unknownID <- gsub("</instanceID>.*", "", unknownID)
 
 
-  xml_string <- gsub(unknownID, instanceID, xml_string)
+    xml_string <- gsub(unknownID, instanceID, xml_string)
 
-  if (isDraft) {
-    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft/submissions?deviceID=", deviceID)
-  } else {
-    url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/submissions?deviceID=", deviceID)
-  }
+    if (isDraft) {
+        url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft/submissions?deviceID=", deviceID)
+    } else {
+        url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/submissions?deviceID=", deviceID)
+    }
 
-  email_token <- get_email_token(central_url, central_email, central_password)
-  central_response <- httr::POST(
-    url = url,
-    body = xml_string,
-    encode = "raw",
-    httr::add_headers("Authorization" = paste0("Bearer ", email_token))
-  )
-  central_submission <- httr::content(central_response)
-  submission_xml <- paste0(central_submission, collapse = "\n")
-  return(submission_xml)
+    email_token <- get_email_token(central_url, central_email, central_password)
+    central_response <- httr::POST(
+        url = url,
+        body = xml_string,
+        encode = "raw",
+        httr::add_headers("Authorization" = paste0("Bearer ", email_token))
+    )
+    central_submission <- httr::content(central_response)
+    submission_xml <- paste0(central_submission, collapse = "\n")
+    return(submission_xml)
 }
 
 
@@ -699,7 +674,7 @@ get_submission_data <- function(central_url, central_email, central_password, pr
         file_destination <- tempfile(fileext=".zip")
         central_response <- download.file(url = central_url, destfile = file_destination)
 
-    # Fetching actual submission data (not test case)
+        # Fetching actual submission data (not test case)
     } else {
 
         email_token <- get_email_token(central_url,central_email,central_password)
@@ -774,7 +749,7 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 
     unlink(file_destination)
 
-  return(main_data_set)
+    return(main_data_set)
 }
 
 
@@ -803,32 +778,32 @@ get_submission_data <- function(central_url, central_email, central_password, pr
 #'   list("id" = 3, "name" = "name3", "email" = "email3")
 #' ))
 central_results_to_df <- function(central_results) {
-  # replace nulls with NA
+    # replace nulls with NA
 
-  # Identifying all the null values in the nested list
-  # structure returned by the request
-  subsets <- sapply(1:length(central_results), function(x) {
-    sapply(central_results[[x]], is.null, simplify = F)
-  }, simplify = F)
+    # Identifying all the null values in the nested list
+    # structure returned by the request
+    subsets <- sapply(1:length(central_results), function(x) {
+        sapply(central_results[[x]], is.null, simplify = F)
+    }, simplify = F)
 
-  # Going through each value of the nested loop, replacing the
-  # Nulls with the NAs for each subset
-  central_results <- sapply(1:length(central_results), function(x) {
-    central_results[[x]][unlist(subsets[[x]])] <- NA
-    return(central_results[[x]])
-  }, simplify = F)
+    # Going through each value of the nested loop, replacing the
+    # Nulls with the NAs for each subset
+    central_results <- sapply(1:length(central_results), function(x) {
+        central_results[[x]][unlist(subsets[[x]])] <- NA
+        return(central_results[[x]])
+    }, simplify = F)
 
-  # Identifying all of the necessary column headers
-  column_headers <- unique(names(unlist(central_results)))
-  all_tibbles <- sapply(central_results, function(x) {
-    widen_individual_result(x)
-  },
-  simplify = F
-  )
+    # Identifying all of the necessary column headers
+    column_headers <- unique(names(unlist(central_results)))
+    all_tibbles <- sapply(central_results, function(x) {
+        widen_individual_result(x)
+    },
+    simplify = F
+    )
 
 
-  final_df <- dplyr::bind_rows(all_tibbles)
-  return(final_df)
+    final_df <- dplyr::bind_rows(all_tibbles)
+    return(final_df)
 }
 
 #' Widen Individual Central Results
@@ -854,12 +829,12 @@ central_results_to_df <- function(central_results) {
 #' individual_central_result <- central_results[2]
 #' widen_individual_result(individual_central_result, column_headers)
 widen_individual_result <- function(individual_central_item, column_headers) {
-  item_to_tibble <- stack(unlist(individual_central_item)[column_headers]) %>%
-    tibble::as_tibble() %>%
-    tidyr::pivot_wider(names_from = "ind", values_from = "values") %>%
-    dplyr::mutate_all(as.character)
+    item_to_tibble <- stack(unlist(individual_central_item)[column_headers]) %>%
+        tibble::as_tibble() %>%
+        tidyr::pivot_wider(names_from = "ind", values_from = "values") %>%
+        dplyr::mutate_all(as.character)
 
-  return(item_to_tibble)
+    return(item_to_tibble)
 }
 
 
@@ -879,8 +854,8 @@ widen_individual_result <- function(individual_central_item, column_headers) {
 #'
 #' @examples
 remove_extra_central_columns <- function(data) {
-  extra_columns <- grepl("no[[:digit:]]+_+[[:digit:]]", colnames(data))
-  data <- data[extra_columns == F]
+    extra_columns <- grepl("no[[:digit:]]+_+[[:digit:]]", colnames(data))
+    data <- data[extra_columns == F]
 
-  return(data)
+    return(data)
 }

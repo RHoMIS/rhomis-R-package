@@ -1,0 +1,101 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "rfrelat",
+      "name": "Romain Frelat",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15328277?v=4",
+      "profile": "https://github.com/rfrelat",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "JimHam",
+      "name": "JimHam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8358392?v=4",
+      "profile": "https://github.com/JimHam",
+      "contributions": [
+        "projectManagement",
+        "mentoring",
+        "bug",
+        "ideas"
+      ]
+    },
+    {
+      "login": "gemmanewbold",
+      "name": "gemmanewbold",
+      "avatar_url": "https://avatars.githubusercontent.com/u/110897106?v=4",
+      "profile": "https://github.com/gemmanewbold",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "ekuw",
+      "name": "ekuw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76116294?v=4",
+      "profile": "https://github.com/ekuw",
+      "contributions": [
+        "bug",
+        "code",
+        "data",
+        "doc",
+        "ideas",
+        "maintenance",
+        "mentoring",
+        "review",
+        "tutorial"
+      ]
+    },
+    {
+      "login": "chryswoods",
+      "name": "Christopher Woods",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3694698?v=4",
+      "profile": "https://chryswoods.com",
+      "contributions": [
+        "ideas",
+        "mentoring",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "l-gorman",
+      "name": "Léo Gorman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55786252?v=4",
+      "profile": "https://www.turing.ac.uk/people/doctoral-students/leo-gorman",
+      "contributions": [
+        "bug",
+        "code",
+        "content",
+        "data",
+        "doc",
+        "example",
+        "ideas",
+        "infra",
+        "maintenance",
+        "mentoring",
+        "platform",
+        "question",
+        "review",
+        "security",
+        "tool",
+        "test",
+        "tutorial",
+        "userTesting",
+        "video"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "rhomis-R-package",
+  "projectOwner": "l-gorman",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

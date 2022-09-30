@@ -55,7 +55,8 @@ test_that("Checking that can extract units from a csv dataset", {
 
 test_that("Can take a dataset from an ODK central server and process",{
 
-
+    if(.Platform$OS.type!="windows")
+    {
     result = tryCatch({
 
         suppressWarnings(extract_units_and_conversions_server(
@@ -110,6 +111,7 @@ test_that("Can take a dataset from an ODK central server and process",{
     })
 
     expect_equal(result, TRUE)
+    }
 
 
 })

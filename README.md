@@ -1,4 +1,7 @@
 # RHoMIS R-package for Data Processing
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/l-gorman/rhomis-R-package/workflows/R-CMD-check/badge.svg)](https://github.com/l-gorman/rhomis-R-package/actions)
 <!-- badges: end -->
@@ -41,3 +44,28 @@ To process a sample dataset locally, see the example found in the `inst/sample_l
 Run the command `devtools::test()` in the console to run all tests. `devtools::document()` to rebuild documentation. `devtools::check()` will run a CRAN check on the package, this is the same check that is implemented on `git push` and for any pull requests.
 
 
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/rfrelat"><img src="https://avatars.githubusercontent.com/u/15328277?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Romain Frelat</b></sub></a><br /><a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3Arfrelat" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/JimHam"><img src="https://avatars.githubusercontent.com/u/8358392?v=4?s=100" width="100px;" alt=""/><br /><sub><b>JimHam</b></sub></a><br /><a href="#projectManagement-JimHam" title="Project Management">📆</a> <a href="#mentoring-JimHam" title="Mentoring">🧑‍🏫</a> <a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3AJimHam" title="Bug reports">🐛</a> <a href="#ideas-JimHam" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/gemmanewbold"><img src="https://avatars.githubusercontent.com/u/110897106?v=4?s=100" width="100px;" alt=""/><br /><sub><b>gemmanewbold</b></sub></a><br /><a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3Agemmanewbold" title="Bug reports">🐛</a> <a href="https://github.com/l-gorman/rhomis-R-package/commits?author=gemmanewbold" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ekuw"><img src="https://avatars.githubusercontent.com/u/76116294?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ekuw</b></sub></a><br /><a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3Aekuw" title="Bug reports">🐛</a> <a href="https://github.com/l-gorman/rhomis-R-package/commits?author=ekuw" title="Code">💻</a> <a href="#data-ekuw" title="Data">🔣</a> <a href="https://github.com/l-gorman/rhomis-R-package/commits?author=ekuw" title="Documentation">📖</a> <a href="#ideas-ekuw" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-ekuw" title="Maintenance">🚧</a> <a href="#mentoring-ekuw" title="Mentoring">🧑‍🏫</a> <a href="https://github.com/l-gorman/rhomis-R-package/pulls?q=is%3Apr+reviewed-by%3Aekuw" title="Reviewed Pull Requests">👀</a> <a href="#tutorial-ekuw" title="Tutorials">✅</a></td>
+    <td align="center"><a href="https://chryswoods.com"><img src="https://avatars.githubusercontent.com/u/3694698?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Christopher Woods</b></sub></a><br /><a href="#ideas-chryswoods" title="Ideas, Planning, & Feedback">🤔</a> <a href="#mentoring-chryswoods" title="Mentoring">🧑‍🏫</a> <a href="#projectManagement-chryswoods" title="Project Management">📆</a></td>
+    <td align="center"><a href="https://www.turing.ac.uk/people/doctoral-students/leo-gorman"><img src="https://avatars.githubusercontent.com/u/55786252?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Léo Gorman</b></sub></a><br /><a href="https://github.com/l-gorman/rhomis-R-package/issues?q=author%3Al-gorman" title="Bug reports">🐛</a> <a href="https://github.com/l-gorman/rhomis-R-package/commits?author=l-gorman" title="Code">💻</a> <a href="#content-l-gorman" title="Content">🖋</a> <a href="#data-l-gorman" title="Data">🔣</a> <a href="https://github.com/l-gorman/rhomis-R-package/commits?author=l-gorman" title="Documentation">📖</a> <a href="#example-l-gorman" title="Examples">💡</a> <a href="#ideas-l-gorman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#infra-l-gorman" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#maintenance-l-gorman" title="Maintenance">🚧</a> <a href="#mentoring-l-gorman" title="Mentoring">🧑‍🏫</a> <a href="#platform-l-gorman" title="Packaging/porting to new platform">📦</a> <a href="#question-l-gorman" title="Answering Questions">💬</a> <a href="https://github.com/l-gorman/rhomis-R-package/pulls?q=is%3Apr+reviewed-by%3Al-gorman" title="Reviewed Pull Requests">👀</a> <a href="#security-l-gorman" title="Security">🛡️</a> <a href="#tool-l-gorman" title="Tools">🔧</a> <a href="https://github.com/l-gorman/rhomis-R-package/commits?author=l-gorman" title="Tests">⚠️</a> <a href="#tutorial-l-gorman" title="Tutorials">✅</a> <a href="#userTesting-l-gorman" title="User Testing">📓</a> <a href="#video-l-gorman" title="Videos">📹</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

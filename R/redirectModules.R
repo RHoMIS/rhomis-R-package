@@ -41,7 +41,7 @@ extract_values_central <- function(central_email,
 
 
 
-  colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), units$repeat_columns)
+  colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data))
   rhomis_data <- rhomis_data %>%
     remove_extra_central_columns()
 
@@ -151,7 +151,6 @@ extract_values_local <- function(base_folder = "./",
     id_type = id_type,
     proj_id = proj_id,
     form_id = form_id,
-    repeat_columns = repeat_column_names
   )
 
   extract_project_values(rhomis_data)

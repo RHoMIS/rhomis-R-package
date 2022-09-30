@@ -336,12 +336,12 @@ calculate_indicators <- function(
 
 #' Calculate all of the Local Indicators
 #'
-#' @param base_path
-#' @param file_path
-#' @param id_type
-#' @param proj_id
-#' @param form_id
-#' @param gender_categories
+#' @param base_path Tha folder where the analysis is being conducted
+#' @param file_path The direct file path to the indicator file
+#' @param id_type The type of ID being provided ("string" or "column")
+#' @param proj_id The project id string or column name
+#' @param form_id The form id string or column name
+#' @param gender_categories The gender categories to examine
 #' @param unique_id_col  The column containing unique household ids
 
 #'
@@ -418,6 +418,8 @@ calculate_indicators_local <- function(
         prices,
         calorie_conversions,
         gender_categories)
+
+
 
     lapply(names(results), function(x) {
         data_to_write <- results[[x]]
@@ -542,13 +544,12 @@ calculate_indicators_server <- function(
     results <- calculate_indicators(
         rhomis_data,
         units_and_conversions,
-        secondary_units,
         prices,
         calorie_conversions,
         gender_categories
-
-
     )
+
+
 
 
     lapply(names(results), function(x) {

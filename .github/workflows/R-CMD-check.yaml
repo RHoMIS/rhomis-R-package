@@ -22,10 +22,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'release'}
-          - {os: macOS-latest, r: 'release', mongodb-version:'5.0'}
-          - {os: ubuntu-20.04, mongodb-version:'5.0', r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
-          - {os: ubuntu-20.04, mongodb-version:'5.0', r: 'devel', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: 'windows-latest', r: 'release'}
+          - {os: 'macOS-latest', r: 'release'}
+          - {os: 'ubuntu-20.04', 'mongodb-version':'5.0', r: 'release', rspm: 'https://packagemanager.rstudio.com/cran/__linux__/focal/latest'}
+          - {os: 'ubuntu-20.04', 'mongodb-version':'5.0', r: 'devel', rspm: 'https://packagemanager.rstudio.com/cran/__linux__/focal/latest'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -36,7 +36,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - if: runner.os == 'macos'
-        run: brew services start mongodb-community
+        run: |
+          brew tap mongodb/brew
+          brew install mongodb-community
+          brew services start mongodb-community@5.0
 
       - if: runner.os == 'linux'
         run: sudo systemctl restart mongod

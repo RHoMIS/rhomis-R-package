@@ -6,25 +6,15 @@
 \title{Milk Amount Units}
 \format{
 A tibble
-
-A tibble
 }
 \source{
 NA
-
-NA
 }
 \usage{
-milk_amount_to_l
-
 milk_amount_to_l
 }
 \description{
 Conversion factors for the amounts
 of milk collected
-
-Conversion factors for the price of
-milk, can both be a time or a per
-unit volume
 }
 \keyword{datasets}

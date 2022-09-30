@@ -18,10 +18,10 @@ load_rhomis_csvs <- function(
 
 #' Load Survey CSV
 #'
-#' Load a Raw or processed RHoMIS survey csv file, collected using ODK, 
+#' Load a Raw or processed RHoMIS survey csv file, collected using ODK,
 #' and convert the column names into a shortened, standardised
 #' version. This function can either be used to read
-#'  
+#'
 #' Rpackage file: utils-csv-data.R
 #'
 #' @param file_path The filepath of the RHoMIS csv
@@ -51,14 +51,14 @@ load_survey_csv <- function(file_path,
 {
 
     # read in the input csv file
-    rhomis_data <- readr::read_csv(file_path, 
-        col_types = readr::cols(), 
-        na = c("n/a", "-999", "NA", "-99", "na", ""), 
+    rhomis_data <- readr::read_csv(file_path,
+        col_types = readr::cols(),
+        na = c("n/a", "-999", "NA", "-99", "na", ""),
         locale = readr::locale(encoding = "latin1")
         )
 
     # simplify column names to more readable format
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data), repeat_columns)
+    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data))
 
     # ensure all data entries are lower case for consistency / easier data analysis
 

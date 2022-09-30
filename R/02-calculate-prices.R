@@ -266,6 +266,8 @@ crop_and_livestock_calcs_all <- function(
 #' Rpackage file: 02-calculate-prices.R
 #'
 #' @param rhomis_data A "raw" rhomis dataset
+#' @param units_and_conversions The units and conversions table (usually already loaded)
+#' @param gender_categories The gender categories for the survey
 #'
 #' @return
 #' @export
@@ -384,7 +386,7 @@ calculate_prices_server <- function(
         database,
         isDraft,
         central_test_case = FALSE
-        ){
+){
 
 
     # Load the RHoMIS Dataset from ODK central

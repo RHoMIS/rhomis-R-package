@@ -121,7 +121,7 @@ load_rhomis_csv <- function(file_path,
                             proj_id = NULL,
                             form_id = NULL,
                             overwrite = FALSE
-                           )
+)
 {
 
 
@@ -250,29 +250,29 @@ replace_infinite <- function(column) {
 #'
 #' @examples
 processData <- function( # Arguments to indicate the stage of analysis
-                        extractUnitsOnly = T, # The stage of data processing
-                        calculateInitialIndicatorsOnly = F,
-                        calculateFinalIndicatorsOnly = F,
-                        # Arguments to indicate the type of processing being done (local or on server)
-                        dataSource = c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
-                        outputType = c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
-                        # Arguments used for processing local data sets
-                        base_path = "./", # The path to the folder where outputs will be written
-                        dataFilePath = NULL,
-                        id_type = c("string", "column"),
-                        proj_id,
-                        form_id,
-                        uuid_local = pkg.env$identification_column_list$uuid_local,
-                        # Arguments for if processing from ODK central
-                        central_url = NULL,
-                        central_email = NULL,
-                        central_password = NULL,
-                        project_name = NULL,
-                        form_name = NULL,
-                        database = NULL,
-                        isDraft = NULL,
-                        central_test_case = FALSE,
-                        gender_categories = pkg.env$gender_categories) {
+    extractUnitsOnly = T, # The stage of data processing
+    calculateInitialIndicatorsOnly = F,
+    calculateFinalIndicatorsOnly = F,
+    # Arguments to indicate the type of processing being done (local or on server)
+    dataSource = c("csv", "central"), # list of allowed values for argument, default is first element in vector (csv),
+    outputType = c("csv", "mongodb"), # list of allowed values for argument, default is first element in vector (csv),
+    # Arguments used for processing local data sets
+    base_path = "./", # The path to the folder where outputs will be written
+    dataFilePath = NULL,
+    id_type = c("string", "column"),
+    proj_id,
+    form_id,
+    uuid_local = pkg.env$identification_column_list$uuid_local,
+    # Arguments for if processing from ODK central
+    central_url = NULL,
+    central_email = NULL,
+    central_password = NULL,
+    project_name = NULL,
+    form_name = NULL,
+    database = NULL,
+    isDraft = NULL,
+    central_test_case = FALSE,
+    gender_categories = pkg.env$gender_categories) {
 
 
     #----------------------------------------
@@ -392,10 +392,10 @@ processData <- function( # Arguments to indicate the stage of analysis
 
             )
             set_project_tag_to_true(database = database,
-                url = url,
-                projectID=project_name,
-                formID=form_name,
-                project_tag="unitsExtracted")
+                                    url = url,
+                                    projectID=project_name,
+                                    formID=form_name,
+                                    project_tag="unitsExtracted")
         }
     } else {
 
@@ -406,37 +406,37 @@ processData <- function( # Arguments to indicate the stage of analysis
 
         if (calculateInitialIndicatorsOnly == T) {
 
-              #---------------------------------------------------------------
-        # Load Conversions
-        #---------------------------------------------------------------
-        if (outputType == "csv") {
-            units_folder <- paste0(base_path, "units_and_conversions/")
+            #---------------------------------------------------------------
+            # Load Conversions
+            #---------------------------------------------------------------
+            if (outputType == "csv") {
+                units_folder <- paste0(base_path, "units_and_conversions/")
 
-            if (!dir.exists(units_folder))
-            {
-                stop('Specified that the units were stored locally but the path ',units_folder,' does not exist')
+                if (!dir.exists(units_folder))
+                {
+                    stop('Specified that the units were stored locally but the path ',units_folder,' does not exist')
+                }
+
+                #---------------------------------------------
+                # Loading all of the unit conversions locally
+                #---------------------------------------------
+                units <- load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
             }
-
-            #---------------------------------------------
-            # Loading all of the unit conversions locally
-            #---------------------------------------------
-            units <- load_local_units(units_folder, id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
-        }
-         if (outputType == "mongodb") {
-            unit_list <- find_db_units(
-                projectID = project_name,
-                formID = form_name,
-                url = "mongodb://localhost",
-                collection = "projectData",
-                database = database
-            )
-            units <- load_all_db_units(unit_list,
-                projectID = project_name,
-                formID = form_name,
-                database = database,
-                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
-            )
-        }
+            if (outputType == "mongodb") {
+                unit_list <- find_db_units(
+                    projectID = project_name,
+                    formID = form_name,
+                    url = "mongodb://localhost",
+                    collection = "projectData",
+                    database = database
+                )
+                units <- load_all_db_units(unit_list,
+                                           projectID = project_name,
+                                           formID = form_name,
+                                           database = database,
+                                           id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
+                )
+            }
 
             # Run all of the preliminary calculations that can
             # be done without price verification and without
@@ -540,10 +540,10 @@ processData <- function( # Arguments to indicate the stage of analysis
                         url = "mongodb://localhost"
                     )
                     set_project_tag_to_true(database = database,
-                url = url,
-                projectID=project_name,
-                formID=form_name,
-                project_tag="pricesCalculated")
+                                            url = url,
+                                            projectID=project_name,
+                                            formID=form_name,
+                                            project_tag="pricesCalculated")
                     return()
                 }
 
@@ -644,26 +644,26 @@ processData <- function( # Arguments to indicate the stage of analysis
                 prices_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$price_conversion_list]
                 prices <- sapply(prices_conversion_list, function(price_conversion) {
                     extract_units_from_db(database,
-                        url = "mongodb://localhost",
-                        projectID = project_name,
-                        formID = form_name,
-                        conversion_type = price_conversion,
-                        collection = "units_and_conversions"
+                                          url = "mongodb://localhost",
+                                          projectID = project_name,
+                                          formID = form_name,
+                                          conversion_type = price_conversion,
+                                          collection = "units_and_conversions"
                     )
                 }, simplify = F)
 
                 calorie_conversion_list <- conversion_factors_list[conversion_factors_list %in% pkg.env$calorie_conversion_list]
                 calorie_conversions <- sapply(calorie_conversion_list, function(calorie_conversion) {
                     extract_units_from_db(database,
-                        url = "mongodb://localhost",
-                        projectID = project_name,
-                        formID = form_name,
-                        conversion_type = calorie_conversion,
-                        collection = "units_and_conversions"
+                                          url = "mongodb://localhost",
+                                          projectID = project_name,
+                                          formID = form_name,
+                                          conversion_type = calorie_conversion,
+                                          collection = "units_and_conversions"
                     )
                 }, simplify = F)
 
-                 if (outputType == "mongodb") {
+                if (outputType == "mongodb") {
                     unit_list <- find_db_units(
                         projectID = project_name,
                         formID = form_name,
@@ -673,12 +673,12 @@ processData <- function( # Arguments to indicate the stage of analysis
                     )
                     # Not yet complete
                     load_all_db_units(unit_list,
-                        projectID = project_name,
-                        formID = form_name,
-                        database = database,
-                        id_rhomis_dataset = processed_data[["id_rhomis_dataset"]]
+                                      projectID = project_name,
+                                      formID = form_name,
+                                      database = database,
+                                      id_rhomis_dataset = processed_data[["id_rhomis_dataset"]]
                     )
-        }
+                }
             }
 
             results <- value_gender_fa_calculations(
@@ -751,10 +751,10 @@ processData <- function( # Arguments to indicate the stage of analysis
                         )
                     }
                     set_project_tag_to_true(database = database,
-                        url = url,
-                        projectID=project_name,
-                        formID=form_name,
-                        project_tag="finalIndicators")
+                                            url = url,
+                                            projectID=project_name,
+                                            formID=form_name,
+                                            project_tag="finalIndicators")
                 }
             })
 
@@ -787,6 +787,7 @@ processData <- function( # Arguments to indicate the stage of analysis
 #' @param project_name The name of the project to generate data for
 #' @param form_name The name of the form to generate data for
 #' @param number_of_responses The number of responses to generate
+#' @param isDraft Whether or not this is a draft state project
 #'
 #' @return
 #' @export

@@ -26,9 +26,6 @@ list of project, see the}
 \item{formID}{The XML form ID from a specific project}
 
 \item{isDraft}{Stating whether or not the form is a draft}
-
-\item{form_version}{The version of the form you are examining. For now
-we presume you are looking for the first version of the form}
 }
 \description{
 Allows the user to get an ODK central xls form

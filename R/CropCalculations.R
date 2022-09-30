@@ -56,6 +56,8 @@ convert_crop_yield_units <- function(data,
       id_vector = data[["id_rhomis_dataset"]]
     )
     colnames(numeric_crop_units) <- new_column_names
+
+    # indicator_search_crop_yield_units_numeric
     data <- add_column_after_specific_column(
       data = data,
       new_data = numeric_crop_units,
@@ -223,6 +225,8 @@ crop_proportions_all <- function(data) {
 #' @examples
 convert_crop_sold_units <- function(data,
                                     unit_conv_tibble = NULL) {
+
+    #indicator_search_crop_sold_units_numeric
   if ("id_rhomis_dataset" %in% colnames(data) == F) {
     stop("Missing the id_rhomis_dataset column in RHoMIS data")
   }

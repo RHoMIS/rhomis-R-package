@@ -107,7 +107,7 @@
 #'
 #'
 #' @source NA
-"milk_amount_to_l"
+"milk_price_to_lcu_per_l"
 
 #' Eggs Amount Units
 #'
