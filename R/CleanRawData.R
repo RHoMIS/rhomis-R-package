@@ -389,7 +389,7 @@ replace_units_with_other_all <- function(data) {
 #'
 #' @examples
 write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
-  folder_name <- paste0( folder)
+  folder_name <-  folder
   dir.create(folder_name, showWarnings = F)
 
   sapply(names(list_of_df), function(x) {
@@ -419,6 +419,17 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
                 }
       }
       }
+
+        if(.Platform$OS.type!="windows"){
+            total_file_path <- paste0(getwd(),"/",file_path)
+            if(nchar(total_file_path)>259){
+                warning(paste0("Problem writing file, file path exceeds Windows limit: \n",file_path))
+                return()
+            }
+        }
+
+
+
 
 
       readr::write_csv(data_to_write, file_path)
