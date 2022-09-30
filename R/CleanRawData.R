@@ -10,7 +10,7 @@
 #' If no conversion table is provided, construct
 #' a conversion tibble, including project IDs, from the
 #' the in built conversion tables
-#' 
+#'
 #' Rpackage file: CleanRawData.R
 #'
 #'
@@ -45,7 +45,7 @@ make_per_project_conversion_tibble <- function(proj_id_vector,
 #'
 #' Rpackage file: CleanRawData.R
 #'
-#' 
+#'
 #' @param unit_tibble A tibble containing
 #' @param data_to_convert This list or data frame which needs to be converted
 #' @param id_vector Column containing the RHoMIS id, used to subset the units
@@ -118,7 +118,7 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector) {
 #' to lower case
 #'
 #' Rpackage file: CleanRawData.R
-#' 
+#'
 #' @param data A tibble to be converted to lower case
 #'
 #' @return
@@ -153,9 +153,9 @@ convert_column_to_lowercase <- function(column) {
 #'
 #' Replace "other1", "other2", and "other3" text
 #' entries in the crop and livestock names
-#' 
+#'
 #' Rpackage file: CleanRawData.R
-#' 
+#'
 #' @param data A whole rhomis dataset
 #'
 #' @return
@@ -221,7 +221,7 @@ replace_crop_and_livestock_other <- function(data) {
 #' Replace Name Column with Other
 #'
 #' Rpackage file: CleanRawData.R
-#' 
+#'
 #' @param main_column The column you are searching for "other"
 #' values in (e.g. crop_name)
 #' @param other_column1 The first "other" column you are searching
@@ -266,7 +266,7 @@ replace_name_column_with_other <- function(main_column,
 #' it with th appropriate text entry
 #'
 #' Rpackage file: CleanRawData.R
-#' 
+#'
 #' @param unit_column The main unit column
 #' @param unit_other_column The column containing the free text entry
 #'
@@ -295,7 +295,7 @@ replace_unit_column_with_other_single <- function(unit_column,
 #' the "other" units into where they are needed.
 #'
 #' Rpackage file: CleanRawData.R
-#' 
+#'
 #' @param data The whole rhomis dataset
 #'
 #' @return
@@ -379,7 +379,7 @@ replace_units_with_other_all <- function(data) {
 #' Take a list of multiple outputs and write them all to a single folder
 #'
 #' Rpackage file: CleanRawData.R
-#' 
+#'
 #' @param list_of_df The list of dataframes (must be a named list)
 #' @param folder The name of the folder where they are to be written
 #' @param converted_values Whether the file being written will contain
@@ -389,7 +389,7 @@ replace_units_with_other_all <- function(data) {
 #'
 #' @examples
 write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
-  folder_name <- paste0("./", folder)
+  folder_name <- paste0( folder)
   dir.create(folder_name, showWarnings = F)
 
   sapply(names(list_of_df), function(x) {
@@ -415,12 +415,12 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
                 "id_rhomis_dataset"="id_rhomis_dataset")) %>%
                 dplyr::select("unit_type.x", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
                 dplyr::rename("conversion" = "conversion.y") %>%
-                dplyr::rename("unit_type" = "unit_type.x")        
+                dplyr::rename("unit_type" = "unit_type.x")
                 }
       }
       }
 
-      
+
       readr::write_csv(data_to_write, file_path)
       return()
     }
