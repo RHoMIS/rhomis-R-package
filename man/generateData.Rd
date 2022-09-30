@@ -26,6 +26,8 @@ generateData(
 \item{form_name}{The name of the form to generate data for}
 
 \item{number_of_responses}{The number of responses to generate}
+
+\item{isDraft}{Whether or not this is a draft state project}
 }
 \description{
 Generate fake data and submit it to a test project

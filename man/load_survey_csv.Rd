@@ -39,9 +39,10 @@ load_survey_csv(
 A tibble of RHoMIS data
 }
 \description{
-Load a Raw or processed RHoMIS survey csv file, collected using ODK, 
+Load a Raw or processed RHoMIS survey csv file, collected using ODK,
 and convert the column names into a shortened, standardised
 version. This function can either be used to read
- 
+}
+\details{
 Rpackage file: utils-csv-data.R
 }

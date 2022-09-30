@@ -27,8 +27,8 @@
 #' )
 #' # Shortened name will be equal "important_name"
 shorten_individual_column_name <- function(column_name, seperator) {
-  split_name <- unlist(strsplit(column_name, paste0("\\", seperator)))
-  return(split_name[length(split_name)])
+    split_name <- unlist(strsplit(column_name, paste0("\\", seperator)))
+    return(split_name[length(split_name)])
 }
 #--------------------------------------------------------------
 " Shorten Multiple Column Names
@@ -59,7 +59,7 @@ shorten_individual_column_name <- function(column_name, seperator) {
 #'
 #' shortened_names <- shorten_multiple_column_names(long_names, seperator)
 shorten_multiple_column_names <- function(long_names, seperator) {
-  split_list <- unlist(lapply(long_names, function(name) shorten_individual_column_name(name, seperator)))
+    split_list <- unlist(lapply(long_names, function(name) shorten_individual_column_name(name, seperator)))
 }
 #--------------------------------------------------------------
 " Modify Loop Name
@@ -82,32 +82,32 @@ shorten_multiple_column_names <- function(long_names, seperator) {
 #' modified_name <- modify_loop_name(column_name, loop_type)
 #' # Will return: "SECTION_Crop_Productivity/crop_repeat[2]/crop_name_2"
 modify_loop_name <- function(column_name, loop_type) {
-  if (grepl(paste0(loop_type, "\\."), column_name)) {
-    open_bracket <- "\\."
-    close_bracket <- "\\."
-  }
+    if (grepl(paste0(loop_type, "\\."), column_name)) {
+        open_bracket <- "\\."
+        close_bracket <- "\\."
+    }
 
-  if (grepl(paste0(loop_type, "\\["), column_name)) {
-    open_bracket <- "\\["
-    close_bracket <- "\\]"
-  }
+    if (grepl(paste0(loop_type, "\\["), column_name)) {
+        open_bracket <- "\\["
+        close_bracket <- "\\]"
+    }
 
-  if (grepl(paste0(loop_type, "\\["), column_name) &
-    grepl(paste0(loop_type, "\\."), column_name)) {
-    stop("Data set contains both square brackets and dots in the column name\n
+    if (grepl(paste0(loop_type, "\\["), column_name) &
+        grepl(paste0(loop_type, "\\."), column_name)) {
+        stop("Data set contains both square brackets and dots in the column name\n
           therefore unable to identify which
           columns are looped and which are not")
-  }
-  # Get rid of everything before the opening square bracket
-  # Can modify and generalise to exclude the "loop_type" variable
-  pattern <- paste0(".*", loop_type, open_bracket)
-  repeat_number <- gsub(pattern, "", column_name)
-  # Get rid of everything after closing square bracket
-  repeat_number <- gsub(paste0(close_bracket, ".*"), "", repeat_number)
+    }
+    # Get rid of everything before the opening square bracket
+    # Can modify and generalise to exclude the "loop_type" variable
+    pattern <- paste0(".*", loop_type, open_bracket)
+    repeat_number <- gsub(pattern, "", column_name)
+    # Get rid of everything after closing square bracket
+    repeat_number <- gsub(paste0(close_bracket, ".*"), "", repeat_number)
 
-  # Combining original column name with extra number
-  new_column_name <- paste0(column_name, "_", repeat_number)
-  return(new_column_name)
+    # Combining original column name with extra number
+    new_column_name <- paste0(column_name, "_", repeat_number)
+    return(new_column_name)
 }
 
 
@@ -152,34 +152,34 @@ modify_loop_name <- function(column_name, loop_type) {
 #'
 #' modified_names <- modify_loop_column_names(original_columns, loop_type)
 modify_loop_column_names <- function(column_names, loop_type) {
-  repeat_columns <- grep(paste0(loop_type, "\\[.\\]"), column_names)
-  double_repeat_columns <- grep(paste0(loop_type, "\\[..\\]"), column_names)
-  triple_repeat_columns <- grep(paste0(loop_type, "\\[...\\]"), column_names)
+    repeat_columns <- grep(paste0(loop_type, "\\[.\\]"), column_names)
+    double_repeat_columns <- grep(paste0(loop_type, "\\[..\\]"), column_names)
+    triple_repeat_columns <- grep(paste0(loop_type, "\\[...\\]"), column_names)
 
-  if (length(repeat_columns) == 0) {
-    repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]]\\."), column_names)
-    double_repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]][[:digit:]]\\."), column_names)
-    triple_repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]][[:digit:]][[:digit:]]\\."), column_names)
-  }
-
-  if (length(triple_repeat_columns) > 0) {
-    repeat_columns <- c(repeat_columns, triple_repeat_columns)
-    repeat_columns <- sort(repeat_columns)
-  }
-  if (length(double_repeat_columns) > 0) {
-    repeat_columns <- c(repeat_columns, double_repeat_columns)
-    repeat_columns <- sort(repeat_columns)
-  }
-
-
-  # Modifying the relevant columns
-  column_names[repeat_columns] <- unlist(lapply(
-    column_names[repeat_columns],
-    function(x) {
-      modify_loop_name(x, loop_type)
+    if (length(repeat_columns) == 0) {
+        repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]]\\."), column_names)
+        double_repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]][[:digit:]]\\."), column_names)
+        triple_repeat_columns <- grep(paste0(loop_type, "\\.[[:digit:]][[:digit:]][[:digit:]]\\."), column_names)
     }
-  ))
-  return(column_names)
+
+    if (length(triple_repeat_columns) > 0) {
+        repeat_columns <- c(repeat_columns, triple_repeat_columns)
+        repeat_columns <- sort(repeat_columns)
+    }
+    if (length(double_repeat_columns) > 0) {
+        repeat_columns <- c(repeat_columns, double_repeat_columns)
+        repeat_columns <- sort(repeat_columns)
+    }
+
+
+    # Modifying the relevant columns
+    column_names[repeat_columns] <- unlist(lapply(
+        column_names[repeat_columns],
+        function(x) {
+            modify_loop_name(x, loop_type)
+        }
+    ))
+    return(column_names)
 }
 #--------------------------------------------------------------
 " Modify all types of loop in RHoMIS
@@ -224,10 +224,10 @@ modify_loop_column_names <- function(column_names, loop_type) {
 #' # "y/hh_rep[5]/person_name_5",
 #' # "z/crop_repeat/crop_name")
 modify_all_loop_column_names <- function(column_names, repeat_columns) {
-  for (repeat_column in repeat_columns) {
-    column_names <- modify_loop_column_names(column_names, repeat_column)
-  }
-  return(column_names)
+    for (repeat_column in repeat_columns) {
+        column_names <- modify_loop_column_names(column_names, repeat_column)
+    }
+    return(column_names)
 }
 
 #' Clean Column Names
@@ -238,8 +238,6 @@ modify_all_loop_column_names <- function(column_names, repeat_columns) {
 #' Rpackage file: CleanColumnNames.R
 #'
 #' @param column_names A list of all of the column names
-#' @param repeat_columns A list of all of the repeat
-#' loops contained in the RHoMIS dataset
 #'
 #' @return A cleaned list of all of the column names
 #' @export
@@ -273,33 +271,33 @@ modify_all_loop_column_names <- function(column_names, repeat_columns) {
 #' # "crop_name")
 clean_column_names <- function(column_names) {
 
-  # list of possible separators for columns in the raw rhomis survey data
-  separator_list <- c("\\.", "/", "-")
+    # list of possible separators for columns in the raw rhomis survey data
+    separator_list <- c("\\.", "/", "-")
 
-  repeat_columns <- identify_repeat_columns(column_names)
+    repeat_columns <- identify_repeat_columns(column_names)
 
-  # loop over the list of separators to identify
-  # the one that applies in this case
-  for (sep in separator_list) {
+    # loop over the list of separators to identify
+    # the one that applies in this case
+    for (sep in separator_list) {
 
-    # check whether the current sep exists in a majority of column name fields
-    if (length(grep(sep, column_names)) > length(column_names) / 2) {
-      # remove the leading "\\" (needed for "." special char when using grep)
-      separator <- gsub("\\\\", "", sep)
+        # check whether the current sep exists in a majority of column name fields
+        if (length(grep(sep, column_names)) > length(column_names) / 2) {
+            # remove the leading "\\" (needed for "." special char when using grep)
+            separator <- gsub("\\\\", "", sep)
 
-      # loop over the columns and modify them
-      column_names <- modify_all_loop_column_names(column_names, repeat_columns)
-      column_names <- shorten_multiple_column_names(column_names, separator)
+            # loop over the columns and modify them
+            column_names <- modify_all_loop_column_names(column_names, repeat_columns)
+            column_names <- shorten_multiple_column_names(column_names, separator)
 
-      # no need to continue loop if relevant sep has been identified
-      break
+            # no need to continue loop if relevant sep has been identified
+            break
+        }
     }
-  }
 
-  # make sure column names are all lower case
-  column_names <- tolower(column_names)
+    # make sure column names are all lower case
+    column_names <- tolower(column_names)
 
-  return(column_names)
+    return(column_names)
 }
 
 

@@ -12,6 +12,10 @@ get_secondary_conversions(
 }
 \arguments{
 \item{rhomis_data}{A "raw" rhomis dataset}
+
+\item{units_and_conversions}{The units and conversions table (usually already loaded)}
+
+\item{gender_categories}{The gender categories for the survey}
 }
 \description{
 Rpackage file: 02-calculate-prices.R

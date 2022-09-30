@@ -15,6 +15,18 @@ calculate_indicators_local(
 )
 }
 \arguments{
+\item{base_path}{Tha folder where the analysis is being conducted}
+
+\item{file_path}{The direct file path to the indicator file}
+
+\item{id_type}{The type of ID being provided ("string" or "column")}
+
+\item{proj_id}{The project id string or column name}
+
+\item{form_id}{The form id string or column name}
+
+\item{gender_categories}{The gender categories to examine}
+
 \item{unique_id_col}{The column containing unique household ids}
 }
 \description{

@@ -8,9 +8,6 @@ clean_column_names(column_names)
 }
 \arguments{
 \item{column_names}{A list of all of the column names}
-
-\item{repeat_columns}{A list of all of the repeat
-loops contained in the RHoMIS dataset}
 }
 \value{
 A cleaned list of all of the column names

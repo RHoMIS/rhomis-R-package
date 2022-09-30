@@ -125,9 +125,9 @@ indicator_list <- add_indicator(
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list(
-                                   "crop_name",
-                                   "crop_yield"
-                              ),
+        "crop_name",
+        "crop_yield"
+    ),
     conversion_tables_required=list("crop_name_conversions", "crop_yield_unit_conversions"),
     api_data_required = list(),
     indicators_required=list("crop_yield_units_numeric"),
@@ -141,7 +141,7 @@ indicator_list <- add_indicator(
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
-                              "crop_consumed_prop"),
+                               "crop_consumed_prop"),
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list("crop_harvest_kg_per_year"),
@@ -155,7 +155,7 @@ indicator_list <- add_indicator(
     output_format="loop", #column, loop, #table
     individual_columns_required=list(),
     loop_columns_required=list("crop_use",
-                              "crop_sold_prop"),
+                               "crop_sold_prop"),
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list("crop_harvest_kg_per_year"),
@@ -803,17 +803,17 @@ indicator_list <- add_indicator(
     description="The amount of livestock kept by a household in terms of tropical livestock units (TLUs). More info on TLUs can be found here <a href='https://fscluster.org/handbook/Section_one_TLU.html#:~:text=Tropical%20Livestock%20Units%20are%20livestock,indicator%20of%20food%20security%20risk.' target='_blank'>here</a>.",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-    "livestock_other1",
-     "livestock_other2",
-    "livestock_other3",
-    "livestock_heads_cattle",
-    "livestock_heads_chicken",
-    "livestock_heads_pigs",
-    "livestock_heads_sheep",
-    "livestock_heads_goats",
-    "livestock_heads_other1_lstk",
-    "livestock_heads_other2_lstk",
-    "livestock_heads_other3_lstk"
+        "livestock_other1",
+        "livestock_other2",
+        "livestock_other3",
+        "livestock_heads_cattle",
+        "livestock_heads_chicken",
+        "livestock_heads_pigs",
+        "livestock_heads_sheep",
+        "livestock_heads_goats",
+        "livestock_heads_other1_lstk",
+        "livestock_heads_other2_lstk",
+        "livestock_heads_other3_lstk"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list("livestock_tlu_conversions"),
@@ -837,14 +837,14 @@ indicator_list <- add_indicator(
     description="The number of people in the household for at least 3 months of the year",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "children_under_4",
-     "children_4to10",
-     "males11to24",
-     "females11to24",
-     "males25to50",
-     "female_25_to_50",
-     "male_50_plus",
-     "female_50_plus"),
+        "children_under_4",
+        "children_4to10",
+        "males11to24",
+        "females11to24",
+        "males25to50",
+        "female_25_to_50",
+        "male_50_plus",
+        "female_50_plus"),
     loop_columns_required=list("person_age", "person_gender","hh_pop_rep_num"),
     conversion_tables_required=list(),
     api_data_required = list(),
@@ -858,14 +858,14 @@ indicator_list <- add_indicator(
     description="The number of people in the household for at least 3 months of the year in terms of male adult equivalent (MAE). More info on MAE <a href='https://journals.sagepub.com/doi/abs/10.1177/15648265120333s203?journalCode=fnba#:~:text=The%20Adult%20Male%20Equivalent%20(AME)%20was%20devel%2D%20oped%20to,of%20different%20sizes%20and%20compositions.' target='_blank' >here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "children_under_4",
-     "children_4to10",
-     "males11to24",
-     "females11to24",
-     "males25to50",
-     "female_25_to_50",
-     "male_50_plus",
-     "female_50_plus"),
+        "children_under_4",
+        "children_4to10",
+        "males11to24",
+        "females11to24",
+        "males25to50",
+        "female_25_to_50",
+        "male_50_plus",
+        "female_50_plus"),
     loop_columns_required=list("person_age", "person_gender","hh_pop_rep_num"),
     conversion_tables_required=list("MAE_coeff"),
     api_data_required = list(),
@@ -930,16 +930,16 @@ indicator_list <- add_indicator(
     description="Household food insecurity status (HFIAS). More information here <a href='https://inddex.nutrition.tufts.edu/data4diets/indicator/household-food-insecurity-access-scale-hfias' target='_blank'></a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-          "hfias_1",
-          "hfias_2",
-          "hfias_3",
-          "hfias_4",
-          "hfias_5",
-          "hfias_6",
-          "hfias_7",
-          "hfias_8",
-          "hfias_9"
-     ),
+        "hfias_1",
+        "hfias_2",
+        "hfias_3",
+        "hfias_4",
+        "hfias_5",
+        "hfias_6",
+        "hfias_7",
+        "hfias_8",
+        "hfias_9"
+    ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
     api_data_required = list(),
@@ -952,16 +952,16 @@ indicator_list <- add_indicator(
     indicator_name = "fies_score",
     description="Food Insecurity Experience Scale (FIES). More information here <a href='https://www.fao.org/in-action/voices-of-the-hungry/fies/en/' target='_blank'></a>",
     output_format="column", #column, loop, #table
- individual_columns_required=list(
-          "fies_1",
-          "fies_2",
-          "fies_3",
-          "fies_4",
-          "fies_5",
-          "fies_6",
-          "fies_7",
-          "fies_8"
-     ),     loop_columns_required=list(),
+    individual_columns_required=list(
+        "fies_1",
+        "fies_2",
+        "fies_3",
+        "fies_4",
+        "fies_5",
+        "fies_6",
+        "fies_7",
+        "fies_8"
+    ),     loop_columns_required=list(),
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list(),
@@ -990,16 +990,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all foods consumed during the season where food is most abundant. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_good_season",
-     "legumes_good_season",
-     "nuts_seeds_good_season",
-     "veg_leafy_good_season",
-     "vita_veg_fruit_good_season",
-     "vegetables_good_season",
-     "fruits_good_season",
-     "meat_good_season",
-     "eggs_good_season",
-     "milk_dairy_good_season"),
+        "grainsrootstubers_good_season",
+        "legumes_good_season",
+        "nuts_seeds_good_season",
+        "veg_leafy_good_season",
+        "vita_veg_fruit_good_season",
+        "vegetables_good_season",
+        "fruits_good_season",
+        "meat_good_season",
+        "eggs_good_season",
+        "milk_dairy_good_season"),
     loop_columns_required=list(),
     conversion_tables_required=list(),
     api_data_required = list(),
@@ -1013,16 +1013,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all farm-sourced foods consumed during the season where food is most abundant. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_source_good",
-     "legumes_source_good",
-     "nuts_seeds_source_good",
-     "veg_leafy_source_good",
-     "vita_veg_fruit_source_good",
-     "vegetables_source_good",
-     "fruits_source_good",
-     "meat_source_good",
-     "eggs_source_good",
-     "milk_dairy_source_good"),
+        "grainsrootstubers_source_good",
+        "legumes_source_good",
+        "nuts_seeds_source_good",
+        "veg_leafy_source_good",
+        "vita_veg_fruit_source_good",
+        "vegetables_source_good",
+        "fruits_source_good",
+        "meat_source_good",
+        "eggs_source_good",
+        "milk_dairy_source_good"),
     loop_columns_required=list(),
     conversion_tables_required=list(),
     api_data_required = list(),
@@ -1036,16 +1036,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all bought foods consumed during the season where food is most abundant. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_source_good",
-     "legumes_source_good",
-     "nuts_seeds_source_good",
-     "veg_leafy_source_good",
-     "vita_veg_fruit_source_good",
-     "vegetables_source_good",
-     "fruits_source_good",
-     "meat_source_good",
-     "eggs_source_good",
-     "milk_dairy_source_good"
+        "grainsrootstubers_source_good",
+        "legumes_source_good",
+        "nuts_seeds_source_good",
+        "veg_leafy_source_good",
+        "vita_veg_fruit_source_good",
+        "vegetables_source_good",
+        "fruits_source_good",
+        "meat_source_good",
+        "eggs_source_good",
+        "milk_dairy_source_good"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1061,16 +1061,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all foods consumed during the lean season. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_bad_season",
-     "legumes_bad_season",
-     "nuts_seeds_bad_season",
-     "veg_leafy_bad_season",
-     "vita_veg_fruit_bad_season",
-     "vegetables_bad_season",
-     "fruits_bad_season",
-     "meat_bad_season",
-     "eggs_bad_season",
-     "milk_dairy_bad_season"
+        "grainsrootstubers_bad_season",
+        "legumes_bad_season",
+        "nuts_seeds_bad_season",
+        "veg_leafy_bad_season",
+        "vita_veg_fruit_bad_season",
+        "vegetables_bad_season",
+        "fruits_bad_season",
+        "meat_bad_season",
+        "eggs_bad_season",
+        "milk_dairy_bad_season"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1085,16 +1085,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all farm-sourced foods consumed during the lean season. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-      "grainsrootstubers_source_bad",
-     "legumes_source_bad",
-     "nuts_seeds_source_bad",
-     "veg_leafy_source_bad",
-     "vita_veg_fruit_source_bad",
-     "vegetables_source_bad",
-     "fruits_source_bad",
-     "meat_source_bad",
-     "eggs_source_bad",
-     "milk_dairy_source_bad"
+        "grainsrootstubers_source_bad",
+        "legumes_source_bad",
+        "nuts_seeds_source_bad",
+        "veg_leafy_source_bad",
+        "vita_veg_fruit_source_bad",
+        "vegetables_source_bad",
+        "fruits_source_bad",
+        "meat_source_bad",
+        "eggs_source_bad",
+        "milk_dairy_source_bad"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1109,16 +1109,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all bought foods consumed during the lean season. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_source_bad",
-     "legumes_source_bad",
-     "nuts_seeds_source_bad",
-     "veg_leafy_source_bad",
-     "vita_veg_fruit_source_bad",
-     "vegetables_source_bad",
-     "fruits_source_bad",
-     "meat_source_bad",
-     "eggs_source_bad",
-     "milk_dairy_source_bad"
+        "grainsrootstubers_source_bad",
+        "legumes_source_bad",
+        "nuts_seeds_source_bad",
+        "veg_leafy_source_bad",
+        "vita_veg_fruit_source_bad",
+        "vegetables_source_bad",
+        "fruits_source_bad",
+        "meat_source_bad",
+        "eggs_source_bad",
+        "milk_dairy_source_bad"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1133,16 +1133,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all foods consumed during the last month. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_last_month",
-     "legumes_last_month",
-     "nuts_seeds_last_month",
-     "veg_leafy_last_month",
-     "vita_veg_fruit_last_month",
-     "vegetables_last_month",
-     "fruits_last_month",
-     "meat_last_month",
-     "eggs_last_month",
-     "milk_dairy_last_month"
+        "grainsrootstubers_last_month",
+        "legumes_last_month",
+        "nuts_seeds_last_month",
+        "veg_leafy_last_month",
+        "vita_veg_fruit_last_month",
+        "vegetables_last_month",
+        "fruits_last_month",
+        "meat_last_month",
+        "eggs_last_month",
+        "milk_dairy_last_month"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1157,16 +1157,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all farm-sourced foods consumed during the last month. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_source_last_month",
-     "legumes_source_last_month",
-     "nuts_seeds_source_last_month",
-     "veg_leafy_source_last_month",
-     "vita_veg_fruit_source_last_month",
-     "vegetables_source_last_month",
-     "fruits_source_last_month",
-     "meat_source_last_month",
-     "eggs_source_last_month",
-     "milk_dairy_source_last_month"
+        "grainsrootstubers_source_last_month",
+        "legumes_source_last_month",
+        "nuts_seeds_source_last_month",
+        "veg_leafy_source_last_month",
+        "vita_veg_fruit_source_last_month",
+        "vegetables_source_last_month",
+        "fruits_source_last_month",
+        "meat_source_last_month",
+        "eggs_source_last_month",
+        "milk_dairy_source_last_month"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1181,16 +1181,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all bought foods consumed during the last month. A food group is considered to be consumed if it is consumed daily/weekly. Foods consumed only monthly are not counted. Where the respondent does not specify a good/bad season, they are asked about their consumption over the last month. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_source_last_month",
-     "legumes_source_last_month",
-     "nuts_seeds_source_last_month",
-     "veg_leafy_source_last_month",
-     "vita_veg_fruit_source_last_month",
-     "vegetables_source_last_month",
-     "fruits_source_last_month",
-     "meat_source_last_month",
-     "eggs_source_last_month",
-     "milk_dairy_source_last_month"
+        "grainsrootstubers_source_last_month",
+        "legumes_source_last_month",
+        "nuts_seeds_source_last_month",
+        "veg_leafy_source_last_month",
+        "vita_veg_fruit_source_last_month",
+        "vegetables_source_last_month",
+        "fruits_source_last_month",
+        "meat_source_last_month",
+        "eggs_source_last_month",
+        "milk_dairy_source_last_month"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1206,16 +1206,16 @@ indicator_list <- add_indicator(
     description="Household dietary diversity score (HDDS). Considering all foods consumed during the last 24hrs. For more info on HDDS see <a href='https://www.fao.org/nutrition/assessment/tools/household-dietary-diversity/en/#:~:text=Household%20dietary%20diversity%20Score%20(HDDS)%20is%20a%20qualitative%20measure%20of,dietary%20diversity%20at%20individual%20level.' target='_blank'>here</a>",
     output_format="column", #column, loop, #table
     individual_columns_required=list(
-     "grainsrootstubers_24hr",
-     "legumes_24hr",
-     "nuts_seeds_24hr",
-     "veg_leafy_24hr",
-     "vita_veg_fruit_24hr",
-     "vegetables_24hr",
-     "fruit_24hr",
-     "meat_24hr",
-     "eggs_24hr",
-     "milk_dairy_24hr"
+        "grainsrootstubers_24hr",
+        "legumes_24hr",
+        "nuts_seeds_24hr",
+        "veg_leafy_24hr",
+        "vita_veg_fruit_24hr",
+        "vegetables_24hr",
+        "fruit_24hr",
+        "meat_24hr",
+        "eggs_24hr",
+        "milk_dairy_24hr"
     ),
     loop_columns_required=list(),
     conversion_tables_required=list(),
@@ -1471,10 +1471,10 @@ indicator_list <- add_indicator(
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list(
-     "value_meat_consumed_lcu",
-     "value_eggs_consumed_lcu",
-     "value_milk_consumed_lcu",
-     "value_bees_honey_consumed_lcu"),
+        "value_meat_consumed_lcu",
+        "value_eggs_consumed_lcu",
+        "value_milk_consumed_lcu",
+        "value_bees_honey_consumed_lcu"),
     function_calculated="value_calculations",
     search_term="indicator_search_value_livestock_products_consumed_lcu_per_hh_per_year")
 
@@ -1491,9 +1491,9 @@ indicator_list <- add_indicator(
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list(
-     "value_crop_consumed_lcu_per_hh_per_year",
-     "value_livestock_products_consumed_lcu_per_hh_per_year"
-     ),
+        "value_crop_consumed_lcu_per_hh_per_year",
+        "value_livestock_products_consumed_lcu_per_hh_per_year"
+    ),
     function_calculated="value_calculations",
     search_term="indicator_search_value_farm_products_consumed_lcu_per_hh_per_year")
 
@@ -1615,10 +1615,10 @@ indicator_list <- add_indicator(
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list(
-           "meat_calories_consumed_kcal",
-          "eggs_calories_consumed_kcal",
-          "milk_calories_consumed_kcal",
-          "bees_honey_calories_consumed_kcal"),
+        "meat_calories_consumed_kcal",
+        "eggs_calories_consumed_kcal",
+        "milk_calories_consumed_kcal",
+        "bees_honey_calories_consumed_kcal"),
     function_calculated="calorie_calculations",
     search_term="indicator_search_livestock_consumed_calories_kcal_per_hh_per_year")
 
@@ -1635,9 +1635,9 @@ indicator_list <- add_indicator(
     conversion_tables_required=list(),
     api_data_required = list(),
     indicators_required=list(
-     "crop_consumed_calories_kcal_per_hh_per_year",
-     "livestock_consumed_calories_kcal_per_hh_per_year"
-     ),
+        "crop_consumed_calories_kcal_per_hh_per_year",
+        "livestock_consumed_calories_kcal_per_hh_per_year"
+    ),
     function_calculated="calorie_calculations",
     search_term="indicator_search_farm_products_consumed_calories_kcal_per_hh_per_year")
 
@@ -1652,59 +1652,59 @@ indicator_list <- add_indicator(
 
 
 
-  dependent_indicator_suffixes <- list(
+dependent_indicator_suffixes <- list(
     "value_crop_consumed_lcu",
     "value_meat_consumed_lcu",
     "value_milk_consumed_lcu",
     "value_eggs_consumed_lcu",
     "value_bees_honey_consumed_lcu",
-     "crop_income_per_year",
+    "crop_income_per_year",
     "livestock_sale_income",
     "meat_sold_income",
     "milk_sold_income_per_year",
     "eggs_income_per_year",
     "bees_honey_sold_income"
-  )
+)
 
 
 
 
 
-  gender_prefixes <- list(
-     "female_youth",
-     "female_adult",
-     "male_youth",
-     "male_adult"
-  )
+gender_prefixes <- list(
+    "female_youth",
+    "female_adult",
+    "male_youth",
+    "male_adult"
+)
 
-  for (gender in gender_prefixes){
+for (gender in gender_prefixes){
 
-     indicator_dependents <- paste0(gender, "_", dependent_indicator_suffixes)
-     indicator_dependents <- append(indicator_dependents,"off_farm_income_lcu_per_year")
+    indicator_dependents <- paste0(gender, "_", dependent_indicator_suffixes)
+    indicator_dependents <- append(indicator_dependents,"off_farm_income_lcu_per_year")
 
 
-     indicator_name <- paste0(gender,"_control")
-     search_term <- paste0("indicator_search_",gender,"_control")
+    indicator_name <- paste0(gender,"_control")
+    search_term <- paste0("indicator_search_",gender,"_control")
 
-     indicator_list <- add_indicator(
-     indicator_list,
-     indicator_name = indicator_name,
-     description=paste0("Percentage of all value of farm produce controlled by ", gender,". Calculated by looking at the value of all individual products controlled by the ",gender,". Then dividing this by the total value of all products."),
-    output_format="column", #column, loop, #table
-     individual_columns_required=list(),
-     loop_columns_required=list("off_farm_source_prop"),
-     conversion_tables_required=list(),
-     api_data_required = list(),
-     indicators_required=list(indicator_dependents),
-     function_calculated="gender_control_summary",
-     search_term=search_term)
-  }
+    indicator_list <- add_indicator(
+        indicator_list,
+        indicator_name = indicator_name,
+        description=paste0("Percentage of all value of farm produce controlled by ", gender,". Calculated by looking at the value of all individual products controlled by the ",gender,". Then dividing this by the total value of all products."),
+        output_format="column", #column, loop, #table
+        individual_columns_required=list(),
+        loop_columns_required=list("off_farm_source_prop"),
+        conversion_tables_required=list(),
+        api_data_required = list(),
+        indicators_required=list(indicator_dependents),
+        function_calculated="gender_control_summary",
+        search_term=search_term)
+}
 
 
 
 
 plot_dependency_network(
-     indicator_name="male_adult_bees_honey_sold_income"
+    indicator_name="male_adult_bees_honey_sold_income"
 )
 
 
@@ -1743,18 +1743,18 @@ jsonlite::toJSON(indicator_list, pretty=T)
 
 
 find_nested_dependencies_list(
-     indicator_name="crop_sold_kg_per_year",
-     indicator_list=indicator_list,
-     dependency_required="loop")
+    indicator_name="crop_sold_kg_per_year",
+    indicator_list=indicator_list,
+    dependency_required="loop")
 
 
 find_nested_dependencies_network(
-     indicator_name="currency_conversion_lcu_to_ppp",
-     indicator_list=indicator_list
+    indicator_name="currency_conversion_lcu_to_ppp",
+    indicator_list=indicator_list
 )
 
 plot_dependency_network(
-     indicator_name="currency_conversion_lcu_to_ppp"
+    indicator_name="currency_conversion_lcu_to_ppp"
 )
 
 

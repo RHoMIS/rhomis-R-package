@@ -456,10 +456,10 @@ usethis::use_data(meat_calories, overwrite = TRUE)
 
 
 milk_amount_to_l <- tibble::as_tibble(list("survey_value"=c("l/day",
-                                                             "l/animal/day",
-                                                             "0.3l/day",
-                                                             "per animal per week",
-                                                             "0.3l/animal/day"
+                                                            "l/animal/day",
+                                                            "0.3l/day",
+                                                            "per animal per week",
+                                                            "0.3l/animal/day"
 ),
 "conversion"=c(365,
                "l/animal/day",
@@ -496,17 +496,17 @@ usethis::use_data(milk_calories, overwrite = TRUE)
 
 
 milk_price_to_lcu_per_l <- tibble::as_tibble(list(survey_value=c("day",
-                                                          "week",
-                                                          "month",
-                                                          "year",
-                                                          "litre",
-                                                          "0.3l"),
-                                           conversion=c("day",
-                                                        "week",
-                                                        "month",
-                                                        "year",
-                                                        1,
-                                                        0.3)))
+                                                                 "week",
+                                                                 "month",
+                                                                 "year",
+                                                                 "litre",
+                                                                 "0.3l"),
+                                                  conversion=c("day",
+                                                               "week",
+                                                               "month",
+                                                               "year",
+                                                               1,
+                                                               0.3)))
 
 usethis::use_data(milk_price_to_lcu_per_l, overwrite = T)
 
