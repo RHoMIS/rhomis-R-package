@@ -439,8 +439,10 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
 
         if (class(data_to_write) == "list") {
             new_folder <- paste0(folder_name, "/", x)
+            if(length(data_to_write)>0){
             names(data_to_write) <- paste0(x, "_", names(data_to_write))
             write_list_of_df_to_folder(data_to_write, new_folder)
+            }
             return()
         }
         return()

@@ -78,7 +78,8 @@ extract_units_and_conversions_csv <- function(
 
     write_units_to_folder(
         list_of_df = units_and_conversions,
-        folder = new_units_dest
+        folder = new_units_dest,
+        converted_folder = T
     )
     return(units_and_conversions)
 }

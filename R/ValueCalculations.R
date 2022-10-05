@@ -22,6 +22,12 @@ value_or_calorie_calculations_item_consumed <- function(data,
                                                         price_column_name,
                                                         converted_column_name) {
     missing_columns <- check_columns_in_data(data, loop_columns = c(name_column, amount_consumed_column), individual_columns = "id_rhomis_dataset")
+
+    if (is.null(conversion_tibble)){
+        return(data)
+
+    }
+
     if (length(missing_columns) == 0) {
         number_of_loops <- find_number_of_loops(data, amount_consumed_column)
 
@@ -102,17 +108,30 @@ value_calculations <- function(processed_data,
 
     # Crop value calcs
     # indicator_search_value_crop_consumed_lcu
-    if ("mean_crop_price_lcu_per_kg" %in% names(prices)) {
 
-        # processed_data <- remove_existing_loop_if_exists(processed_data, "value_crop_consumed_lcu")
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "crop_name",
-            amount_consumed_column = "crop_consumed_kg_per_year",
-            conversion_tibble = prices[["mean_crop_price_lcu_per_kg"]],
-            price_column_name = "mean_crop_price_lcu_per_kg",
-            converted_column_name = "value_crop_consumed_lcu"
-        )
+    missing_columns <-  check_columns_in_data(processed_data,
+                                              loop_columns = c("crop_name", "crop_consumed_kg_per_year"),
+                                              warning_message = "Could not calculate value crop consumed"
+    )
+    if ("mean_crop_price_lcu_per_kg" %in% names(prices) & length(missing_columns) == 0) {
+
+        if (!is.null(prices[["mean_crop_price_lcu_per_kg"]])){
+
+
+            # processed_data <- remove_existing_loop_if_exists(processed_data, "value_crop_consumed_lcu")
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "crop_name",
+                amount_consumed_column = "crop_consumed_kg_per_year",
+                conversion_tibble = prices[["mean_crop_price_lcu_per_kg"]],
+                price_column_name = "mean_crop_price_lcu_per_kg",
+                converted_column_name = "value_crop_consumed_lcu"
+            )
+            extra_outputs$value_crop_consumed_lcu <- map_to_wide_format(
+                data = processed_data, name_column = "crop_name", column_prefixes = "value_crop_consumed_lcu",
+                types = "num"
+            )[[1]]
+        }
 
 
         missing_columns <- check_columns_in_data(processed_data,
@@ -137,28 +156,38 @@ value_calculations <- function(processed_data,
             )
         }
 
-        extra_outputs$value_crop_consumed_lcu <- map_to_wide_format(
-            data = processed_data, name_column = "crop_name", column_prefixes = "value_crop_consumed_lcu",
-            types = "num"
-        )[[1]]
-    }
 
-    if ("mean_crop_price_lcu_per_kg" %in% names(prices) == F) {
+    }
+    if ("mean_crop_price_lcu_per_kg" %in% names(prices) == F & length(missing_columns)==0) {
         warning("Unable to calculate the value of crops consumed, no mean prices for crops loaded")
     }
+
+
+    missing_columns <-  check_columns_in_data(processed_data,
+                                              loop_columns = c("livestock_name", "meat_consumed_kg_per_year"),
+                                              warning_message = "Could not calculate value meat consumed"
+    )
+
 
     # Meat value calcs
 
     # indicator_search_value_meat_consumed_lcu
     if ("mean_meat_price_per_kg" %in% names(prices)) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "meat_consumed_kg_per_year",
-            conversion_tibble = prices[["mean_meat_price_per_kg"]],
-            price_column_name = "mean_meat_price_per_kg",
-            converted_column_name = "value_meat_consumed_lcu"
-        )
+        if (!is.null(prices[["mean_meat_price_per_kg"]])){
+
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "meat_consumed_kg_per_year",
+                conversion_tibble = prices[["mean_meat_price_per_kg"]],
+                price_column_name = "mean_meat_price_per_kg",
+                converted_column_name = "value_meat_consumed_lcu"
+            )
+            extra_outputs$value_meat_consumed_lcu <- map_to_wide_format(
+                data = processed_data, name_column = "livestock_name", column_prefixes = "value_meat_consumed_lcu",
+                types = "num"
+            )[[1]]
+        }
 
         missing_columns <- check_columns_in_data(processed_data,
                                                  loop_columns = c(
@@ -181,10 +210,7 @@ value_calculations <- function(processed_data,
             )
         }
 
-        extra_outputs$value_meat_consumed_lcu <- map_to_wide_format(
-            data = processed_data, name_column = "livestock_name", column_prefixes = "value_meat_consumed_lcu",
-            types = "num"
-        )[[1]]
+
     }
 
     if ("mean_meat_price_per_kg" %in% names(prices) == F) {
@@ -193,15 +219,27 @@ value_calculations <- function(processed_data,
 
     # Egg value calcs
     # indicator_search_value_eggs_consumed_lcu
-    if ("mean_eggs_price_per_kg" %in% names(prices)) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "eggs_consumed_kg_per_year",
-            conversion_tibble = prices[["mean_eggs_price_per_kg"]],
-            price_column_name = "mean_eggs_price_per_kg",
-            converted_column_name = "value_eggs_consumed_lcu"
-        )
+
+    missing_columns <-  check_columns_in_data(processed_data,
+                                              loop_columns = c("livestock_name", "eggs_consumed_kg_per_year"),
+                                              warning_message = "Could not calculate value eggs consumed"
+    )
+    if ("mean_eggs_price_per_kg" %in% names(prices) & length(missing_columns==0)) {
+        if (!is.null(prices[["mean_eggs_price_per_kg"]])){
+
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "eggs_consumed_kg_per_year",
+                conversion_tibble = prices[["mean_eggs_price_per_kg"]],
+                price_column_name = "mean_eggs_price_per_kg",
+                converted_column_name = "value_eggs_consumed_lcu"
+            )
+            extra_outputs$value_eggs_consumed_lcu <- map_to_wide_format(
+                data = processed_data, name_column = "livestock_name", column_prefixes = "value_eggs_consumed_lcu",
+                types = "num"
+            )[[1]]
+        }
 
         missing_columns <- check_columns_in_data(processed_data,
                                                  loop_columns = c(
@@ -224,10 +262,7 @@ value_calculations <- function(processed_data,
                 loop_structure = T, gender_control_categories = gender_categories
             )
 
-            extra_outputs$value_eggs_consumed_lcu <- map_to_wide_format(
-                data = processed_data, name_column = "livestock_name", column_prefixes = "value_eggs_consumed_lcu",
-                types = "num"
-            )[[1]]
+
         }
 
 
@@ -240,15 +275,27 @@ value_calculations <- function(processed_data,
 
     # Milk value calcs
     # indicator_search_value_milk_consumed_lcu
-    if ("mean_milk_price_per_litre" %in% names(prices)) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "milk_consumed_litres_per_year",
-            conversion_tibble = prices[["mean_milk_price_per_litre"]],
-            price_column_name = "mean_milk_price_per_litre",
-            converted_column_name = "value_milk_consumed_lcu"
-        )
+    missing_columns <-  check_columns_in_data(processed_data,
+                                              loop_columns = c("livestock_name", "milk_consumed_litres_per_year"),
+                                              warning_message = "Could not calculate value eggs consumed"
+    )
+    if ("mean_milk_price_per_litre" %in% names(prices) & length(missing_columns)==0) {
+        if (!is.null(prices[["mean_milk_price_per_litre"]])){
+
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "milk_consumed_litres_per_year",
+                conversion_tibble = prices[["mean_milk_price_per_litre"]],
+                price_column_name = "mean_milk_price_per_litre",
+                converted_column_name = "value_milk_consumed_lcu"
+            )
+
+            extra_outputs$value_milk_consumed_lcu <- map_to_wide_format(
+                data = processed_data, name_column = "livestock_name", column_prefixes = "value_milk_consumed_lcu",
+                types = "num"
+            )[[1]]
+        }
 
         missing_columns <- check_columns_in_data(processed_data,
                                                  loop_columns = c(
@@ -272,10 +319,7 @@ value_calculations <- function(processed_data,
                 loop_structure = T, gender_control_categories = gender_categories
             )
 
-            extra_outputs$value_milk_consumed_lcu <- map_to_wide_format(
-                data = processed_data, name_column = "livestock_name", column_prefixes = "value_milk_consumed_lcu",
-                types = "num"
-            )[[1]]
+
         }
 
 
@@ -290,15 +334,26 @@ value_calculations <- function(processed_data,
     # Honey
 
     # indicator_search_value_bees_honey_consumed_lcu
-    if ("mean_bees_honey_price_per_kg" %in% names(prices)) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "bees_honey_consumed_kg_per_year",
-            conversion_tibble = prices[["mean_bees_honey_price_per_kg"]],
-            price_column_name = "mean_bees_honey_price_per_kg",
-            converted_column_name = "value_bees_honey_consumed_lcu"
-        )
+    missing_columns <-  check_columns_in_data(processed_data,
+                                              loop_columns = c("livestock_name", "bees_honey_consumed_kg_per_year"),
+                                              warning_message = "Could not calculate value eggs consumed"
+    )
+    if ("mean_bees_honey_price_per_kg" %in% names(prices) & length(missing_columns)==0) {
+        if (!is.null(prices[["mean_bees_honey_price_per_kg"]])){
+
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "bees_honey_consumed_kg_per_year",
+                conversion_tibble = prices[["mean_bees_honey_price_per_kg"]],
+                price_column_name = "mean_bees_honey_price_per_kg",
+                converted_column_name = "value_bees_honey_consumed_lcu"
+            )
+            extra_outputs$value_bees_honey_consumed_lcu <- map_to_wide_format(
+                data = processed_data, name_column = "livestock_name", column_prefixes = "value_bees_honey_consumed_lcu",
+                types = "num"
+            )[[1]]
+        }
 
         missing_columns <- check_columns_in_data(processed_data,
                                                  loop_columns = c(
@@ -320,10 +375,7 @@ value_calculations <- function(processed_data,
                 loop_structure = T, gender_control_categories = gender_categories
             )
 
-            extra_outputs$value_bees_honey_consumed_lcu <- map_to_wide_format(
-                data = processed_data, name_column = "livestock_name", column_prefixes = "value_bees_honey_consumed_lcu",
-                types = "num"
-            )[[1]]
+
         }
 
 
