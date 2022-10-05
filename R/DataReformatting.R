@@ -482,13 +482,13 @@ apply_conversion_factor_to_columns_multiple_projects <- function(data, conversio
 #'
 #' @examples
 proportions_calculation <- function(data, use, use_column, prop_column, loop_number = NULL) {
-    if (use != "sell" &
-        use != "eat" &
-        use != "feed_livestock" &
-        use != "use" &
-        use != "process") {
-        stop("Invalid 'use' defined for proportions")
-    }
+    # if (use != "sell" &
+    #     use != "eat" &
+    #     use != "feed_livestock" &
+    #     use != "use" &
+    #     use != "process") {
+    #     stop("Invalid 'use' defined for proportions")
+    # }
 
     # If there is a loop number
     # included in the arguments,
