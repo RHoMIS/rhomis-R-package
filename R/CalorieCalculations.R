@@ -27,20 +27,22 @@ calorie_calculations <- function(processed_data,
     )
     # indicator_search_crop_calories_consumed_kcal
     if ("crop_calories" %in% names(calorie_conversions) & length(missing_columns) == 0) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "crop_name",
-            amount_consumed_column = "crop_consumed_kg_per_year",
-            conversion_tibble = calorie_conversions[["crop_calories"]],
-            price_column_name = "crop_calories_kcal_per_kg",
-            converted_column_name = "crop_calories_consumed_kcal"
-        )
+        if (!is.null(calorie_conversions[["crop_calories"]])){
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "crop_name",
+                amount_consumed_column = "crop_consumed_kg_per_year",
+                conversion_tibble = calorie_conversions[["crop_calories"]],
+                price_column_name = "crop_calories_kcal_per_kg",
+                converted_column_name = "crop_calories_consumed_kcal"
+            )
 
-        extra_outputs$crop_calories_consumed_kcal <- map_to_wide_format(
-            data = processed_data, name_column = "crop_name", column_prefixes = "crop_calories_consumed_kcal",
-            types = "num"
-        )[[1]]
 
+            extra_outputs$crop_calories_consumed_kcal <- map_to_wide_format(
+                data = processed_data, name_column = "crop_name", column_prefixes = "crop_calories_consumed_kcal",
+                types = "num"
+            )[[1]]
+        }
     }
 
     if ("crop_calories" %in% names(calorie_conversions) == F) {
@@ -54,19 +56,22 @@ calorie_calculations <- function(processed_data,
     )
     # indicator_search_meat_calories_consumed_kcal
     if ("meat_calories" %in% names(calorie_conversions) & length(missing_columns) == 0) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "meat_consumed_kg_per_year",
-            conversion_tibble = calorie_conversions[["meat_calories"]],
-            price_column_name = "meat_calories_kcal_per_kg",
-            converted_column_name = "meat_calories_consumed_kcal"
-        )
+        if (!is.null(calorie_conversions[["meat_calories"]])){
 
-        extra_outputs$meat_calories_consumed_kcal <- map_to_wide_format(
-            data = processed_data, name_column = "livestock_name", column_prefixes = "meat_calories_consumed_kcal",
-            types = "num"
-        )[[1]]
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "meat_consumed_kg_per_year",
+                conversion_tibble = calorie_conversions[["meat_calories"]],
+                price_column_name = "meat_calories_kcal_per_kg",
+                converted_column_name = "meat_calories_consumed_kcal"
+            )
+
+            extra_outputs$meat_calories_consumed_kcal <- map_to_wide_format(
+                data = processed_data, name_column = "livestock_name", column_prefixes = "meat_calories_consumed_kcal",
+                types = "num"
+            )[[1]]
+        }
     }
 
     if ("meat_calories" %in% names(calorie_conversions) == F) {
@@ -80,19 +85,22 @@ calorie_calculations <- function(processed_data,
                                              warning_message = "Could not calculate kcal eggs consumed"
     )
     if ("eggs_calories" %in% names(calorie_conversions) & length(missing_columns) == 0) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "eggs_consumed_kg_per_year",
-            conversion_tibble = calorie_conversions[["eggs_calories"]],
-            price_column_name = "eggs_calories_kcal_per_kg",
-            converted_column_name = "eggs_calories_consumed_kcal"
-        )
+        if (!is.null(calorie_conversions[["eggs_calories"]])){
 
-        extra_outputs$eggs_calories_consumed_kcal <- map_to_wide_format(
-            data = processed_data, name_column = "livestock_name", column_prefixes = "eggs_calories_consumed_kcal",
-            types = "num"
-        )[[1]]
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "eggs_consumed_kg_per_year",
+                conversion_tibble = calorie_conversions[["eggs_calories"]],
+                price_column_name = "eggs_calories_kcal_per_kg",
+                converted_column_name = "eggs_calories_consumed_kcal"
+            )
+
+            extra_outputs$eggs_calories_consumed_kcal <- map_to_wide_format(
+                data = processed_data, name_column = "livestock_name", column_prefixes = "eggs_calories_consumed_kcal",
+                types = "num"
+            )[[1]]
+        }
     }
 
     if ("eggs_calories" %in% names(calorie_conversions) == F) {
@@ -107,19 +115,22 @@ calorie_calculations <- function(processed_data,
                                              warning_message = "Could not calculate kcal milk consumed"
     )
     if ("milk_calories" %in% names(calorie_conversions) & length(missing_columns) == 0) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "milk_consumed_litres_per_year",
-            conversion_tibble = calorie_conversions[["milk_calories"]],
-            price_column_name = "milk_calories_kcal_per_litre",
-            converted_column_name = "milk_calories_consumed_kcal"
-        )
+        if (!is.null(calorie_conversions[["milk_calories"]])){
 
-        extra_outputs$milk_calories_consumed_kcal <- map_to_wide_format(
-            data = processed_data, name_column = "livestock_name", column_prefixes = "milk_calories_consumed_kcal",
-            types = "num"
-        )[[1]]
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "milk_consumed_litres_per_year",
+                conversion_tibble = calorie_conversions[["milk_calories"]],
+                price_column_name = "milk_calories_kcal_per_litre",
+                converted_column_name = "milk_calories_consumed_kcal"
+            )
+
+            extra_outputs$milk_calories_consumed_kcal <- map_to_wide_format(
+                data = processed_data, name_column = "livestock_name", column_prefixes = "milk_calories_consumed_kcal",
+                types = "num"
+            )[[1]]
+        }
     }
 
     if ("milk_calories" %in% names(calorie_conversions) == F) {
@@ -134,21 +145,24 @@ calorie_calculations <- function(processed_data,
                                              warning_message = "Could not calculate kcal honey consumed"
     )
     if ("honey_calories" %in% names(calorie_conversions) & length(missing_columns) == 0) {
-        processed_data <- value_or_calorie_calculations_item_consumed(
-            data = processed_data,
-            name_column = "livestock_name",
-            amount_consumed_column = "bees_honey_consumed_kg_per_year",
-            conversion_tibble = calorie_conversions[["honey_calories"]],
-            price_column_name = "bees_honey_calories_kcal_per_kg",
-            converted_column_name = "bees_honey_calories_consumed_kcal"
-        )
+        if (!is.null(calorie_conversions[["honey_calories"]])){
 
-        extra_outputs$bees_honey_calories_consumed_kcal <- map_to_wide_format(
-            data = processed_data,
-            name_column = "livestock_name",
-            column_prefixes = "bees_honey_calories_consumed_kcal",
-            types = "num"
-        )[[1]]
+            processed_data <- value_or_calorie_calculations_item_consumed(
+                data = processed_data,
+                name_column = "livestock_name",
+                amount_consumed_column = "bees_honey_consumed_kg_per_year",
+                conversion_tibble = calorie_conversions[["honey_calories"]],
+                price_column_name = "bees_honey_calories_kcal_per_kg",
+                converted_column_name = "bees_honey_calories_consumed_kcal"
+            )
+
+            extra_outputs$bees_honey_calories_consumed_kcal <- map_to_wide_format(
+                data = processed_data,
+                name_column = "livestock_name",
+                column_prefixes = "bees_honey_calories_consumed_kcal",
+                types = "num"
+            )[[1]]
+        }
     }
 
     if ("honey_calories" %in% names(calorie_conversions) == F) {

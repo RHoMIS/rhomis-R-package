@@ -98,6 +98,7 @@ calculate_indicators <- function(
     missing_crop_columns <- check_columns_in_data(rhomis_data,
                                                   loop_columns = crop_columns
     )
+
     if (length(missing_crop_columns) >= 0 & length(missing_crop_columns) < length(crop_columns)) {
         columns_to_widen <- crop_columns[crop_columns %in% missing_crop_columns == F]
         crop_data <- map_to_wide_format(
@@ -116,6 +117,7 @@ calculate_indicators <- function(
         crop_data <- NULL
         warning("No extra outputs generated for crop loops")
     }
+
 
 
 
@@ -328,6 +330,12 @@ calculate_indicators <- function(
         prices = prices,
         gender_categories = gender_categories
     )
+
+    results$off_farm_data <- off_farm_data
+    results$livestock_data <-  livestock_data
+    results$crop_data <- crop_data
+
+
 
 
 

@@ -341,17 +341,20 @@ calculate_prices_csv <- function(
     write_list_of_df_to_folder(list_of_df = secondary_units$calorie_conversions,
                                folder = paste0(base_path, ".original_stage_2_conversions"))
     write_list_of_df_to_folder(list_of_df = secondary_units$calorie_conversions,
-                               folder = paste0(base_path, "conversions_stage_2"))
+                               folder = paste0(base_path, "conversions_stage_2"),
+                               converted_values = T)
 
     write_list_of_df_to_folder(list_of_df = secondary_units$prices,
                                folder = paste0(base_path, ".original_stage_2_conversions"))
     write_list_of_df_to_folder(list_of_df = secondary_units$prices,
-                               folder = paste0(base_path, "conversions_stage_2"))
+                               folder = paste0(base_path, "conversions_stage_2"),
+                               converted_values = T)
 
     write_list_of_df_to_folder(list_of_df = secondary_units$secondary_conversions,
                                folder = paste0(base_path, ".original_stage_2_conversions"))
     write_list_of_df_to_folder(list_of_df = secondary_units$secondary_conversions,
-                               folder = paste0(base_path, "conversions_stage_2"))
+                               folder = paste0(base_path, "conversions_stage_2"),
+                               converted_values = T)
 
     return(secondary_units)
 
