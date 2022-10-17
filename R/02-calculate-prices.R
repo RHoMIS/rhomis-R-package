@@ -501,5 +501,11 @@ calculate_prices_server <- function(
         conversion_types = names(secondary_units$secondary_conversions),
         collection = "unmodified_units"
     )
+
+    set_project_tag_to_true(database = database,
+                            url =  "mongodb://localhost",
+                            projectID=project_name,
+                            formID=form_name,
+                            project_tag="pricesCalculated")
     return(secondary_units)
 }
