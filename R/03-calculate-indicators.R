@@ -463,6 +463,25 @@ calculate_indicators_local <- function(
 
 }
 
+#' Calculate Indicators Server
+#'
+#' Rpackage file: 03-calculate-indicators.R
+#'
+#' @param central_url The url of the ODK-central
+#' @param central_email The email of the ODK-central account being used
+#' @param central_password The password of the ODK-central account being used
+#' @param project_name The name of the ODK-central project being processed
+#' @param form_name The name of the ODK-central form being processed
+#' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
+#' @param database The name of the database you would like to save results to
+#' @param isDraft Whether or not the ODK form you are working with is a draft
+#' or a final version. Only relevant if you are processing a project from ODK central
+#' @param gender_categories Which gender groups to consider
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_indicators_server <- function(
         central_url,
         central_email,
