@@ -30,38 +30,63 @@ make_id_columns <- function(data,
     # Check whether id columns in list below exist in loaded rhomis data
     id_columns <- c(country_column, hh_id_col, unique_id_col)
 
-    # loop over column names
-    for (cname in id_columns) {
-        # if column is not found in dataset throw an error
-        if (!(cname %in% colnames(data))) {
-            stop(paste("Expected column", cname, "does not exist in the input dataset."))
+    # Issues with country column
+    if (country_column %in% colnames(data)==F){
+        warning(paste("Expected column '", country_column, "' does not exist in the input dataset. This will mean units will not be convertable per-country"))
+        data[[country_column]] <- NA
+    }
+
+    # Issues with unique id column
+    if (unique_id_col %in% colnames(data)==F){
+        warning(paste("Expected column '", unique_id_col, "' does not exist in the input dataset. This will mean we use row numbers as individual ids"))
+        data[[unique_id_col]] <- NA
+
+    }
+
+    # Issues with hhid column
+    if (!is.null(hh_id_col)){
+        if (hh_id_col %in% colnames(data)==F){
+            warning(paste("Expected column '", hh_id_col, "' does not exist in the input dataset. This will mean we cannot identify individual households"))
+            data[[hh_id_col]] <- NA
         }
     }
 
-    # make sure that the unique_id_col does indeed contain unique values
-    if (any(duplicated(data[unique_id_col]))) {
-        stop("The unique_id_col you provided `",unique_id_col,"` exists in the data, but contains duplicate entries.")
+
+    # Issues with proj id
+    if (id_type=="column"){
+        if (proj_id %in% colnames(data)==F){
+            warning(paste("Expected column '", proj_id, "' does not exist in the input dataset. Will use a single project id for this dataset"))
+            data[["id_proj"]] <- NA
+        }else{
+            data[["id_proj"]] <- data[[proj_id]]
+        }
+    }
+    # Issues with form id
+    if (id_type=="column"){
+        if (form_id %in% colnames(data)==F){
+            warning(paste("Expected column '", form_id, "' does not exist in the input dataset. Will use a single project id for this dataset"))
+            data[["id_form"]] <- NA
+
+        }else{
+            data[["id_form"]] <- data[[form_id]]
+        }
     }
 
-    # if form and proj ids are provided as strings, create new columns filled with these string values
     if (id_type == "string") {
         data$id_proj <- rep(proj_id, nrow(data))
         data$id_form <- rep(form_id, nrow(data))
-    } else {
-
-        # loop over proj and form id arguments
-        for (cname in c(proj_id, form_id)) {
-
-            # confirm that these columns exist in the dataset, otherwise bail and print error
-            if (!(cname %in% colnames(data))) {
-                stop(paste0("Expected column", cname, "does not exist in the input dataset."))
-            }
-        }
-
-        # copy the contents of these columns into id_proj and id_form columns
-        data$id_proj <- data[[proj_id]]
-        data$id_form <- data[[form_id]]
     }
+
+
+
+
+
+    # make sure that the unique_id_col does indeed contain unique values
+    if (any(duplicated(data[unique_id_col]))) {
+        warning("The unique_id_col you provided `",unique_id_col,"` exists in the data, but contains duplicate entries. Will use row index instead")
+    }
+
+
 
     # create a unique project, form, country, ID column
     proj_form_id_col <- paste0(data[["id_proj"]], data[["id_form"]], data[[country_column]])
@@ -86,7 +111,6 @@ make_id_columns <- function(data,
     for (i in c("id_proj", "id_form", "id_rhomis_dataset", "id_hh", "id_unique")) {
         data <- data %>% dplyr::relocate(i)
     }
-
     return(data)
 }
 

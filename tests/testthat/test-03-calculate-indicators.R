@@ -1,7 +1,7 @@
 test_that("Can run final indicator calcalutaions", {
     proj_id <- "test_prj"
     form_id <- "test_frm"
-    file_path <- "https://raw.githubusercontent.com/l-gorman/rhomis-R-package/main/inst/sample_local_project/raw-data/raw-data.csv"
+    file_path <- "https://raw.githubusercontent.com/RHoMIS/rhomis-R-package/main/inst/sample_local_project/raw-data/raw-data.csv"
     id_type="string"
 
     result <- tryCatch({
@@ -112,7 +112,7 @@ test_that("Can run final indicator calcalutaions", {
 test_that("Can run final indicator calcalutaions locally", {
     proj_id <- "test_prj"
     form_id <- "test_frm"
-    file_path <- "https://raw.githubusercontent.com/l-gorman/rhomis-R-package/main/inst/sample_local_project/raw-data/raw-data.csv"
+    file_path <- "https://raw.githubusercontent.com/RHoMIS/rhomis-R-package/main/inst/sample_local_project/raw-data/raw-data.csv"
     id_type="string"
 
     result <- tryCatch({
@@ -196,7 +196,7 @@ test_that("Can run final indicator calcalutaions on server", {
     if(.Platform$OS.type!="windows")
     {
         result <- tryCatch({
-            central_url <- "https://github.com/l-gorman/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true"
+            central_url <- "https://github.com/RHoMIS/rhomis-R-package/blob/main/inst/sample_central_project/sample-central-data.csv.zip?raw=true"
             central_email <- "test@domain.com"
             central_password <- "testpassword"
             project_name <- "test_project"

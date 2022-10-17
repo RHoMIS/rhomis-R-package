@@ -672,7 +672,12 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     if (formID=="" & projectID==""){
         form_name <- "dec-demo"
         file_destination <- tempfile(fileext=".zip")
+
+        print("Getting File")
         central_response <- download.file(url = central_url, destfile = file_destination)
+        print("Wait")
+
+        Sys.sleep(20)
 
         # Fetching actual submission data (not test case)
     } else {
