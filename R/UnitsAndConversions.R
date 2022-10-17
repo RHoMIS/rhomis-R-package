@@ -77,7 +77,13 @@ extract_secondary_unit_set <- function(
 
     # Adding Livestock Related Conversion Tables
     if (name_conversions %in% names(units_and_conversions)){
-        temp_df <- units_and_conversions[[name_conversions]][!is.na(units_and_conversions[[name_conversions]][["conversion"]]), c("id_rhomis_dataset", "conversion")]
+        temp_df <- units_and_conversions[[name_conversions]]
+
+        temp_df <- temp_df[c("id_rhomis_dataset", "conversion")]
+        if (nrow(temp_df[!is.na(units_and_conversions[[name_conversions]][["conversion"]]), c("id_rhomis_dataset", "conversion")])!=0){
+            temp_df <- temp_df[!is.na(units_and_conversions[[name_conversions]][["conversion"]]), c("id_rhomis_dataset", "conversion")]
+        }
+
         temp_df$index <- c(1:nrow(temp_df))
         temp_df <- temp_df %>%
             merge(get(unit_type), by.x ="conversion", by.y = "survey_value", sort=F, all.x = T) %>%

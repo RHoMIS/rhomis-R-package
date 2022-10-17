@@ -124,6 +124,14 @@ crop_and_livestock_calcs_all <- function(
         crop_data <- lapply(crop_data, function(x) {
             dplyr::bind_cols(data_to_bind, x)
         })
+    }else{
+        crop_price <- tibble::as_tibble(list(
+            unit_type="crop_price_lcu_per_kg",
+            survey_value=NA,
+            conversion=NA
+        ))
+
+        crop_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, crop_price)
     }
 
 
@@ -172,6 +180,16 @@ crop_and_livestock_calcs_all <- function(
     for (price_data_set in price_datasets) {
 
         if (price_data_set %in% missing_livestock_columns==T){
+
+                livestock_price <- tibble::as_tibble(list(
+                    unit_type= paste0("mean_", price_data_set),
+                    survey_value=NA,
+                    conversion=NA
+                ))
+                livestock_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, crop_price)
+
+                prices[[paste0("mean_", price_data_set)]] <- livestock_price
+
             next()
         }
 
