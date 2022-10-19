@@ -48,7 +48,9 @@ set_conversion_file_names <- function(){
                "bees_honey_production_units" = "honey_amount_to_l",
                "eggs_units" = "eggs_amount_to_pieces_per_year",
                "eggs_sold_price_timeunits" = "eggs_price_to_lcu_per_year",
-               "fertiliser_units" = "fertiliser_amount_to_kg"
+               "fertiliser_units" = "fertiliser_amount_to_kg",
+               "livestock_count_to_tlu"="livestock_name_to_std",
+               "livestock_weight_kg"="livestock_name_to_std" #Isn't collected in data but needs to be converted
 
            ),
            envir = pkg.env

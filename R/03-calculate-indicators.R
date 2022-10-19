@@ -477,6 +477,7 @@ calculate_indicators_local <- function(
 #' @param isDraft Whether or not the ODK form you are working with is a draft
 #' or a final version. Only relevant if you are processing a project from ODK central
 #' @param gender_categories Which gender groups to consider
+#' @param base_folder Folder where to store zipped outputs
 #'
 #' @return
 #' @export
@@ -491,7 +492,8 @@ calculate_indicators_server <- function(
         database,
         isDraft,
         central_test_case = FALSE,
-        gender_categories = pkg.env$gender_categories
+        gender_categories = pkg.env$gender_categories,
+        base_folder="~/rhomis_datasets/"
 ){
     rhomis_data <- load_rhomis_central(
         central_url=central_url,
@@ -517,6 +519,18 @@ calculate_indicators_server <- function(
                                                database = database,
                                                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
     )
+
+    secondary_units <- sapply(names(pkg.env$secondary_units), function(unit_name){
+        extract_units_from_db(database,
+                              url = "mongodb://localhost",
+                              projectID = project_name,
+                              formID = form_name,
+                              conversion_type = unit_name,
+                              collection = "units_and_conversions"
+        )
+    }, simplify = F)
+
+    units_and_conversions <- c(units_and_conversions, secondary_units)
 
     prices <- sapply(pkg.env$price_conversion_list, function(unit_name){
         extract_units_from_db(database,
