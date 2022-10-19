@@ -2,6 +2,7 @@
 #'
 #' Create a new indicator
 #' @param indicator_name The name of the new indicator
+#' @param file The file where the indicator is located
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param description A description of the indicator
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
@@ -17,6 +18,7 @@
 #'
 #' @examples
 new_indicator <- function(indicator_name,
+                          file,
                           output_format=c("column", "loop", "table"),
                           description,
                           individual_columns_required=list(),
@@ -30,6 +32,7 @@ new_indicator <- function(indicator_name,
     match.arg(output_format)
     stopifnot(
         is.character(indicator_name),
+        is.character(file),
         is.character(output_format),
         is.character(search_term),
         is.character(description),
@@ -54,6 +57,7 @@ new_indicator <- function(indicator_name,
 
     indicator <- list(
         indicator_name=args$indicator_name,
+        file=args$file,
         output_format=args$output_format,
         description=args$description,
         individual_columns_required=args$individual_columns_required,
@@ -95,6 +99,7 @@ new_indicator <- function(indicator_name,
 #' @examples
 add_indicator <- function(indicator_list,
                           indicator_name,
+                          file,
                           output_format=c("column", "loop", "table"),
                           description,
                           individual_columns_required=list(),
@@ -110,6 +115,7 @@ add_indicator <- function(indicator_list,
 
     indicator <- new_indicator(
         indicator_name = indicator_name,
+        file=file,
         output_format=output_format,
         description=description,
         individual_columns_required=individual_columns_required,

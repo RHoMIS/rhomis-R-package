@@ -337,19 +337,21 @@ get_forms <- function(central_url, central_email, central_password, projectID) {
 #' list of project, see the
 #' @param formID The XML form ID from a specific project
 #' @param isDraft Stating whether or not the form is a draft
-#'
+#' @param file_destination Where to store the survey file (leave null if reading file into environment)
 #' @return
 #' @export
 #'
 #' @examples
-get_xls_form <- function(central_url, central_email, central_password, projectID, formID,  isDraft = T) {
+get_xls_form <- function(central_url, central_email, central_password, projectID, formID,  isDraft = T, file_destination=NULL) {
     if (isDraft) {
         url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft.xlsx")
     } else {
         url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, ".xlsx")
     }
 
-    file_destination <- tempfile(fileext = ".xls")
+    if (is.null(file_destination)){
+        file_destination <- tempfile(fileext = ".xls")
+    }
     email_token <- get_email_token(central_url, central_email, central_password)
     central_response <- httr::GET(
         url = url,
@@ -361,14 +363,17 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     response <- httr::content(central_response)
 
 
+    if (is.null(file_destination)){
+        xls_form <- list()
+        xls_form$survey <- readxl::read_xlsx(file_destination, sheet = "survey")
+        xls_form$choices <- readxl::read_xlsx(file_destination, sheet = "choices")
+        xls_form$settings <- readxl::read_xlsx(file_destination, sheet = "settings")
 
-    xls_form <- list()
-    xls_form$survey <- readxl::read_xlsx(file_destination, sheet = "survey")
-    xls_form$choices <- readxl::read_xlsx(file_destination, sheet = "choices")
-    xls_form$settings <- readxl::read_xlsx(file_destination, sheet = "settings")
-    unlink(file_destination)
+        unlink(file_destination)
+        return(xls_form)
 
-    return(xls_form)
+    }
+    return(response)
 }
 
 

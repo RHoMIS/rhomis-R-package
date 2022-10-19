@@ -5,6 +5,7 @@ test_that("Can create indicators", {
     indicator_list <- add_indicator(
         indicator_list,
         indicator_name = "iso_country_code",
+        file="file_xyz",
         output_format="column",
         description="random description",
 
@@ -20,6 +21,8 @@ test_that("Can create indicators", {
     indicator_list <- add_indicator(
         indicator_list,
         indicator_name = "year",
+        file="file_xyz",
+
         output_format="column",
         description="random description",
         individual_columns_required=list("year", "start_time_user"),
@@ -34,6 +37,7 @@ test_that("Can create indicators", {
     indicator_list <- add_indicator(
         indicator_list,
         indicator_name = "currency_conversion_lcu_to_ppp",
+        file="file_xyz",
 
         output_format="column",
         description="random description",
@@ -50,6 +54,8 @@ test_that("Can create indicators", {
     expected_output <- list(
         iso_country_code = list(
             indicator_name = "iso_country_code",
+            file="file_xyz",
+
             output_format = "column",
             description="random description",
             individual_columns_required = "country",
@@ -61,6 +67,8 @@ test_that("Can create indicators", {
             search_term = "indicator_search_id_rhomis_dataset"),
         year = list(
             indicator_name = "year",
+            file="file_xyz",
+
             output_format = "column",
             description="random description",
 
@@ -73,6 +81,8 @@ test_that("Can create indicators", {
             search_term = "indicator_search_year"),
         currency_conversion_lcu_to_ppp = list(
             indicator_name = "currency_conversion_lcu_to_ppp",
+            file="file_xyz",
+
             output_format = "column",
             description="random description",
 
@@ -95,6 +105,8 @@ test_that("Can fetch list of dependencies", {
     indicator_list <- add_indicator(
         indicator_list,
         indicator_name = "iso_country_code",
+        file="file_xyz",
+
         output_format="column",
         description="random description",
 
@@ -110,6 +122,8 @@ test_that("Can fetch list of dependencies", {
     indicator_list <- add_indicator(
         indicator_list,
         indicator_name = "year",
+        file="file_xyz",
+
         output_format="column",
         description="random description",
 
@@ -125,6 +139,8 @@ test_that("Can fetch list of dependencies", {
     indicator_list <- add_indicator(
         indicator_list,
         indicator_name = "currency_conversion_lcu_to_ppp",
+        file="file_xyz",
+
         output_format="column",
         description="random description",
 
