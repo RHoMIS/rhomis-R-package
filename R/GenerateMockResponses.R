@@ -7,7 +7,7 @@
 #'
 #' This is a function to generate a mock response based on
 #' the survey file alone
-#' 
+#'
 #' Rpackage file: GenerateMockResponses.R
 #'
 #' @param survey The "survey" tab of the survey xls file
@@ -64,7 +64,7 @@ generate_mock_response <- function(survey, choices, metadata, survey_path = NULL
 
     # Dealing with loops and repeats --------------------------------
     if (survey_row %in% repeat_start_rows) {
-      loop_xml <- adding_looped_data(survey, choices, repeat_rows[[which(repeat_start_rows %in% survey_row)]])
+      loop_xml <- adding_looped_data(survey, choices, rows=repeat_rows[[which(repeat_start_rows %in% survey_row)]])
       loop_xml <- print_chunk_with_tab_spacing(loop_xml, xml_level)
       submission_xml <- paste0(submission_xml, loop_xml)
     }
@@ -81,8 +81,8 @@ generate_mock_response <- function(survey, choices, metadata, survey_path = NULL
 #'
 #' Some of the survey questions in ODK central are asked in a
 #' repeat format. This function allows us to carry out these
-#' repeats for a randome number of loops (capped at 5)
-#' 
+#' repeats for a random number of loops (capped at 5)
+#'
 #' Rpackage file: GenerateMockResponses.R
 #'
 #' @param survey The survey table as a tibble
@@ -112,6 +112,10 @@ adding_looped_data <- function(survey, choices, rows) {
     repeat_group_row_start <- rows[3]
     repeat_group_row_end <- which(survey$name == survey$name[rows[3]] & survey$type == "end group")
 
+    if (length(repeat_group_row_end)==0){
+        repeat_group_row_end <- which(survey$name == survey$name[rows[2]] & survey$type == "end group")
+
+    }
     xml_level <- 2
     group_at_level <- c("", "")
     for (repeat_row in c(repeat_group_row_start:repeat_group_row_end))
@@ -139,7 +143,7 @@ adding_looped_data <- function(survey, choices, rows) {
 #' When a xml chunk is created, say for a looped
 #' set of questions, we can add the required
 #' number of tabs at the beginning of each line
-#' 
+#'
 #' Rpackage file: GenerateMockResponses.R
 #'
 #' @param xml_string The string which needs extra tabs
@@ -164,7 +168,7 @@ print_chunk_with_tab_spacing <- function(xml_string, xml_level) {
 #'
 #' Find the rows in the survey file
 #' where questions are in repeat loops
-#' 
+#'
 #' Rpackage file: GenerateMockResponses.R
 #'
 #' @param survey The survey sheet of the
@@ -193,7 +197,7 @@ identify_repeat_locations <- function(survey) {
 #'
 #' For each row in the survey file generate
 #' the xml row needed for submission.
-#' 
+#'
 #' Rpackage file: GenerateMockResponses.R
 #'
 #' @param submission_xml The previous xml which must be
@@ -297,7 +301,7 @@ generate_random_row <- function(submission_xml, survey, choices, survey_row, xml
 #'
 #' Make the necessary number of
 #' spaces based on the level of the xml form
-#' 
+#'
 #' Rpackage file: GenerateMockResponses.R
 #'
 #' @param form_level The level (amount of indentation)
@@ -343,7 +347,7 @@ select_multiple <- function(list_to_sample) {
 #' Submissions to ODK central have headers
 #' and footers so the forms can be managed and metadata included.
 #' This function adds the necessary headers and footer based on the survey file
-#'  
+#'
 #' Rpackage file: GenerateMockResponses.R
 #'
 #' @param metadata The "settings" sheet of the xls form

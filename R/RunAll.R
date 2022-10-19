@@ -844,12 +844,12 @@ generateData <- function(central_url,
                              formID,
                              isDraft)
 
-
+    xls_form$settings$version <-forms$version[forms$name == form_name]
 
     # Get number of responses to generate
     for (response_index in 1:number_of_responses)
     {
-        mock_response <- rhomis::generate_mock_response(
+        mock_response <- generate_mock_response(
             survey = xls_form$survey,
             choices = xls_form$choices,
             metadata = xls_form$settings
