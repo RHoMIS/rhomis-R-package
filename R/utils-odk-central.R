@@ -715,7 +715,7 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     files_names <- unzip(file_destination)
 
     files <-sapply(files_names, function(x){
-        readr::read_csv(x, col_types = readr::cols(), na = c("n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
+        readr::read_csv(x, col_types = readr::cols(), na = c("","n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
     }, simplify=F)
 
 
