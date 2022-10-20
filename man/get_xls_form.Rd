@@ -10,7 +10,8 @@ get_xls_form(
   central_password,
   projectID,
   formID,
-  isDraft = T
+  isDraft = T,
+  file_destination = NULL
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ list of project, see the}
 \item{formID}{The XML form ID from a specific project}
 
 \item{isDraft}{Stating whether or not the form is a draft}
+
+\item{file_destination}{Where to store the survey file (leave null if reading file into environment)}
 }
 \description{
 Allows the user to get an ODK central xls form

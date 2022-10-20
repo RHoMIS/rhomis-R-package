@@ -83,6 +83,7 @@ new_indicator <- function(indicator_name,
 #'
 #' @param indicator_list The Existing list of indicators
 #' @param indicator_name The name of the new indicator
+#' @param file The file where this indicator can be found
 #' @param description A description of the indicator
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
@@ -147,6 +148,7 @@ add_indicator <- function(indicator_list,
 #' @param indicator_list The Existing list of indicators
 #' @param gendered_list List of gender categories
 #' @param indicator_name The name of the new indicator (without gender prefix),
+#' @param file The file where this indicator can be found
 #' @param description A description of the indicator
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
@@ -164,6 +166,7 @@ add_gendered_indicator <- function(
         indicator_list,
         gendered_list=c("male_youth", "male_adult", "female_youth", "female_adult"),
         indicator_name = "male_youth_crop_consumed_kg_per_year",
+        file,
         description,
         output_format, #column, loop, #table
         individual_columns_required=list(),
@@ -184,6 +187,7 @@ add_gendered_indicator <- function(
         indicator_list <- add_indicator(
             indicator_list,
             indicator_name = gender_indicator_name,
+            file=file,
             output_format=output_format, #column, loop, #table
             description=description,
             individual_columns_required=individual_columns_required,

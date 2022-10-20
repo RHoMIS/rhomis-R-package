@@ -13,7 +13,8 @@ calculate_indicators_server(
   database,
   isDraft,
   central_test_case = FALSE,
-  gender_categories = pkg.env$gender_categories
+  gender_categories = pkg.env$gender_categories,
+  base_folder = "~/rhomis_datasets/"
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ or a final version. Only relevant if you are processing a project from ODK centr
 \item{central_test_case}{This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder}
 
 \item{gender_categories}{Which gender groups to consider}
+
+\item{base_folder}{Folder where to store zipped outputs}
 }
 \description{
 Rpackage file: 03-calculate-indicators.R

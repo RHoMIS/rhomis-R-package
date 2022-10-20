@@ -665,7 +665,15 @@ calculate_indicators_server <- function(
     }
 
 
-    data_table <- indicator_mapping_to_df()
+    indicator_table_mapping <- indicator_mapping_to_df()
+
+    dir.create(paste0(base_folder,
+                      clean_project_name,
+                      "/",
+                      clean_form_name,
+                      "/indicator_explanations/"),showWarnings = F)
+    readr::write_csv(indicator_table_mapping, paste0(base_folder,clean_project_name,"/",clean_form_name,"/indicator_explanations/indicator_explanations.csv"))
+
 
 
 
@@ -673,8 +681,8 @@ calculate_indicators_server <- function(
                       clean_project_name,
                       "/",
                       clean_form_name,
-                      "/raw-data"),showWarnings = F)
-    readr::write_csv(raw_data, paste0(base_folder,clean_project_name,"/",clean_form_name,"/raw-data/raw-data.csv"))
+                      "/raw_data"),showWarnings = F)
+    readr::write_csv(raw_data, paste0(base_folder,clean_project_name,"/",clean_form_name,"/raw_data/raw_data.csv"))
 
 
 

@@ -17,7 +17,7 @@ to the looped questions}
 \description{
 Some of the survey questions in ODK central are asked in a
 repeat format. This function allows us to carry out these
-repeats for a randome number of loops (capped at 5)
+repeats for a random number of loops (capped at 5)
 }
 \details{
 Rpackage file: GenerateMockResponses.R
