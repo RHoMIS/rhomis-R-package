@@ -6,7 +6,7 @@
 #' Connect to db
 #'
 #' A simple function for connecting to a mongo database
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param collection Which collection you want to connect to
@@ -31,7 +31,7 @@ connect_to_db <- function(collection, database = "rhomis", url = "mongodb://loca
 #'
 #' To write objects to a mongoDB, they need to be in JSON format.
 #' This function converts data from a data frame to a JSON
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param data_to_change The data frame that needs to be converted
@@ -55,7 +55,7 @@ data_frame_to_json <- function(data_to_change) {
 #' Querying whole collection
 #'
 #' Returning all of the information from a mongoDB query in a tabular format
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param collection The collection you want to collect the information from
@@ -76,7 +76,7 @@ find_collection <- function(collection, database = "rhomis", url = "mongodb://lo
 #' Count collection
 #'
 #' Count the number of documents in a collection
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param collection The collection you want to collect the information from
@@ -99,7 +99,7 @@ count_collection <- function(collection, database = "rhomis", url = "mongodb://l
 #' Write a New Collection
 #'
 #' Write a new table to a RHoMIS db database
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param data_to_write The dataframe that you want to write to file
@@ -143,7 +143,7 @@ update_collection <- function(data_to_write, collection, database = "rhomis", ur
 #'
 #' A method for submitting another project
 #' to a list of projects.
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param data Data to add
@@ -183,7 +183,7 @@ add_data_to_project_list <- function(data, collection, database = "rhomis", url 
 
 
 #' Add data to db
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param data The tibble dataset that you would like to write
@@ -229,7 +229,7 @@ add_data_to_db <- function(data, collection = "data", data_type, database = "rho
 #' After conducting the main RHoMIS calculations, it is important to add the
 #' form ID and project ID to the list of projects in the database, to keep track of the
 #' projects using RHoMIS. This function allows us to do this.
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param database Database to add it to
@@ -255,14 +255,14 @@ adding_project_to_list <- function(database = "rhomis", url = "mongodb://localho
 }
 
 #' Set Project Tag to True
-#' 
+#'
 #' RHoMIS data goes through several
 #' processing stages. Where units are
-#' extracted, then verified, then 
+#' extracted, then verified, then
 #' prices verified. This function allows
 #' us to tick off these stages, letting
 #' the system know what has been verified and what has not.
-#'    
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param database Database to add it to
@@ -280,9 +280,13 @@ set_project_tag_to_true <- function(database = "rhomis", url = "mongodb://localh
 
 
   connection <- connect_to_db("projectData", database, url)
+  time <- Sys.time()
+
+  project_tag_update <- paste0('"',project_tag,'" : true ')
+  time_tag_update <- paste0('"time_updated.',project_tag,'" : "',time,'"')
 
   connection$update(paste0('{"projectID":"', projectID, '","formID":"', formID, '"}'),
-    paste0('{"$set":{"', project_tag, '" : true }}'),
+    paste0('{"$set":{',project_tag_update,',',time_tag_update,'}}'),
     upsert = TRUE
   )
   connection$disconnect()
@@ -292,7 +296,7 @@ set_project_tag_to_true <- function(database = "rhomis", url = "mongodb://localh
 #' Save Dataset to DB
 #'
 #' Save a dataset to the MongoDB database
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param data The data to save
@@ -318,7 +322,7 @@ save_data_set_to_db <- function(data,
 #     "hhid"=c("hh1", "hh2", "hh3"),
 #     "crop"=c("crop_1", "crop_2","crop_4")
 
-#   )) 
+#   ))
 #   data_type <- "crop_name"
 #   projectID <-  "proj_test"
 #   formID <- "form_test"
@@ -339,12 +343,12 @@ save_data_set_to_db <- function(data,
 
     return(json_string)
     # row
-                                }, 
-                                MARGIN=1))     
+                                },
+                                MARGIN=1))
 
-                                
 
-  
+
+
   connection <- connect_to_db("data", database, url)
   connection$remove(paste0('{"projectID":"', projectID, '","formID":"', formID, '", "dataType":"', data_type, '"}'))
   lapply(data_string, function(x){
@@ -373,7 +377,7 @@ save_data_set_to_db <- function(data,
 #'
 #' Take a list of output datasets and save them all to the
 #' RHoMIS mongoDB
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param list_of_df The list of dataframes
@@ -434,7 +438,7 @@ save_list_of_df_to_db <- function(list_of_df,
 #'
 #' This function can be useful for removing these unnecessary
 #' characters.
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param json_string The json string which needs to be cleaned
@@ -458,7 +462,7 @@ clean_json_string <- function(json_string) {
 #'
 #' A function for reading and unwinding
 #' data in the RHoMIS database.
-#'   
+#'
 #' Rpackage file: utils-mongodb.R
 #'
 #' @param collection The collection containing the data needed
@@ -491,7 +495,7 @@ read_in_db_dataset <- function(collection = "data",
     "dataType" = jsonlite::unbox(data_set_name)
   ), na = "null")
 
-    result  <- connection$find(match_arguments)  
+    result  <- connection$find(match_arguments)
     result <- tibble::as_tibble(result$data)
 
 
