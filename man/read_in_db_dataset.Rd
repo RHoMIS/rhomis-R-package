@@ -26,6 +26,7 @@ read_in_db_dataset(
 \description{
 A function for reading and unwinding
 data in the RHoMIS database.
-  
+}
+\details{
 Rpackage file: utils-mongodb.R
 }

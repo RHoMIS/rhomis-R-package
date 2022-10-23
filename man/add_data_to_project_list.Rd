@@ -32,6 +32,7 @@ add_data_to_project_list(
 \description{
 A method for submitting another project
 to a list of projects.
-  
+}
+\details{
 Rpackage file: utils-mongodb.R
 }

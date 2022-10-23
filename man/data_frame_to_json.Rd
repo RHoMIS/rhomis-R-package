@@ -15,7 +15,8 @@ A JSON string
 \description{
 To write objects to a mongoDB, they need to be in JSON format.
 This function converts data from a data frame to a JSON
-  
+}
+\details{
 Rpackage file: utils-mongodb.R
 }
 \examples{
