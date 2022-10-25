@@ -34,8 +34,8 @@ land_size_calculation <- function(data,
     }
 
     land_df <- tibble::as_tibble(list(
-        land_cultivated = rep(NA, nrow(data)),
-        land_owned = rep(NA, nrow(data))
+        land_cultivated_ha = rep(NA, nrow(data)),
+        land_owned_ha = rep(NA, nrow(data))
     ))
 
     missing_unit_land_cultivated <- check_columns_in_data(data, individual_columns = "unitland")

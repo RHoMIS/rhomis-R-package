@@ -343,6 +343,7 @@ calculate_prices_csv <- function(
         unique_id_col = unique_id_col
     )
 
+
     units <- load_local_units(paste0( base_path,"conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
     secondary_units <- get_secondary_conversions(
@@ -415,6 +416,15 @@ calculate_prices_server <- function(
         database=database,
         isDraft=isDraft,
         central_test_case=central_test_case
+    )
+
+    save_data_set_to_db(
+        data = rhomis_data,
+        data_type = "rawData",
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name
     )
 
     unit_list <- find_db_units(
