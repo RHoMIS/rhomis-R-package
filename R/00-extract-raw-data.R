@@ -46,6 +46,12 @@ extract_raw_data_server <- function(
         projectID = project_name,
         formID = form_name
     )
+
+    set_project_tag_to_true(database = database,
+                            url = url,
+                            projectID=project_name,
+                            formID=form_name,
+                            project_tag="rawDataExtracted")
     return()
 
 }
