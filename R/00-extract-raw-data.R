@@ -35,8 +35,7 @@ extract_raw_data_server <- function(
         project_name=project_name,
         form_name=form_name,
         database=database,
-        isDraft=isDraft,
-        central_test_case=central_test_case
+        isDraft=isDraft
     )
 
     save_data_set_to_db(
