@@ -413,6 +413,20 @@ find_nested_dependencies_network <- function(
 }
 
 
+#' Find D3 Dependencies Network
+#'
+#' Find indicator nested dependencies and
+#' return them in a format
+#' which can be used to draw a d3 network plot
+#'
+#' @param indicator_name The name of the indicator
+#' @param list_of_indicators The entire list of RHoMIS indicators
+#' @param d3_list An existing d3 formatted list
+#'
+#' @return
+#' @export
+#'
+#' @examples
 find_d3_dependencies_network <- function(
         indicator_name,
         list_of_indicators,
