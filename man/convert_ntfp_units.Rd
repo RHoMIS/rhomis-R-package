@@ -7,8 +7,11 @@
 convert_ntfp_units(unit_data, units_conversions)
 }
 \arguments{
-\item{units_conversions}{}
+\item{unit_data}{The columns in the raw data containing units}
+
+\item{units_conversions}{The list of unit conversion tibbles}
 }
 \description{
-Switch Out NTFP units
+Switch Out NTFP units for numeric
+conversion factors
 }

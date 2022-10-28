@@ -330,6 +330,16 @@ calculate_indicators <- function(
     }
 
 
+
+
+
+    rhomis_data <- ntfp_calories_and_values(tree_aid_df = rhomis_data,
+                             price_conversions = prices,
+                             calorie_conversions =calorie_conversions)
+
+
+
+
     results <- value_gender_fa_calculations(
         processed_data = rhomis_data,
         indicator_data = indicator_data,
@@ -449,6 +459,8 @@ calculate_indicators_local <- function(
             readr::write_csv(data_to_write, path)
             return()
         }
+
+
 
 
         if (x == "extra_outputs" |

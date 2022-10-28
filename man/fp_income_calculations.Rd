@@ -5,17 +5,17 @@
 \title{NTFP Income Calculation}
 \usage{
 fp_income_calculations(
-  rhomis_data,
+  data,
   unit_conv_tibble = NULL,
   fp_sold_kg_per_year_column,
   fp_sold_units_column,
   fp_sold_income_column,
   new_fp_sold_income,
-  product_type
+  new_price_column
 )
 }
 \arguments{
-\item{product_type}{}
+\item{new_fp_sold_income}{}
 }
 \description{
 Calculate the Income from NTFPs

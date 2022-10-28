@@ -51,7 +51,7 @@ set_conversion_file_names <- function(){
                "fertiliser_units" = "fertiliser_amount_to_kg",
 
                "fp_amount_units" = "fp_amount_to_kg",
-               "fp_income_units" = "fp_income_per_freq_to_lcu_per_year"
+               "fp_income_units" = "fp_income_per_freq_to_lcu_per_year",
                "livestock_count_to_tlu"="livestock_name_to_std",
                "livestock_weight_kg"="livestock_name_to_std" #Isn't collected in data but needs to be converted
 
@@ -164,6 +164,16 @@ set_local_processing_paths <- function() {
 
 
 set_prices_list <- function() {
+
+    fp_prices <- c()
+    for (fp_product in rhomis::fp_products){
+
+        fp_prices <- c(fp_prices,paste0(fp_product$base_name,"_price_lcu_per_kg"))
+        fp_prices <- c(fp_prices,paste0(fp_product$base_name,"_process_price_lcu_per_kg"))
+
+
+    }
+
     assign("price_conversion_list",
            c(
                "mean_crop_price_lcu_per_kg",
@@ -171,20 +181,32 @@ set_prices_list <- function() {
                "mean_meat_price_per_kg",
                "mean_milk_price_per_litre",
                "mean_eggs_price_per_kg",
-               "mean_bees_honey_price_per_kg"
+               "mean_bees_honey_price_per_kg",
+               fp_prices
            ),
            envir = pkg.env
     )
 }
 
 set_calories_list <- function() {
+
+    fp_calories <- c()
+    for (fp_product in rhomis::fp_products){
+
+        fp_calories <- c(fp_calories,paste0(fp_product$base_name,"_price_lcu_per_kg"))
+        fp_calories <- c(fp_calories,paste0(fp_product$base_name,"_process_price_lcu_per_kg"))
+
+
+    }
+
     assign("calorie_conversion_list",
            c(
                "crop_calories",
                "milk_calories",
                "eggs_calories",
                "honey_calories",
-               "meat_calories"
+               "meat_calories",
+               fp_calories
            ),
            envir = pkg.env
     )

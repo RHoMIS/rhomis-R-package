@@ -237,6 +237,13 @@ crop_and_livestock_calcs_all <- function(
 
 
 
+
+
+
+
+
+
+
     # Adding Extra units to convert
     # TLU Conversions
     # Calorie Conversions
@@ -245,6 +252,8 @@ crop_and_livestock_calcs_all <- function(
     calorie_conversions_dfs$staple_crop <- make_per_project_conversion_tibble(proj_id_vector = rhomis_data[["id_rhomis_dataset"]], unit_conv_tibble = list(
         "staple_crop" = c("maize")
     ))
+
+
 
 
     # Livestock Weights, TLU conversions, and anything
@@ -257,7 +266,17 @@ crop_and_livestock_calcs_all <- function(
 
 
 
+
+
     # Adding NTFP calculations
+    rhomis_data <- fp_calculations_all(tree_aid_df = rhomis_data,
+                                       units_and_conversions = units_and_conversions
+
+    )
+    ntfp_prices_and_calories <- extract_fp_price_and_calorie_conv(tree_aid_df = rhomis_data)
+    prices <- c(prices,ntfp_prices_and_calories$prices)
+    calorie_conversions_dfs <- c(calorie_conversions_dfs,ntfp_prices_and_calories$calorie_conversions)
+
 
 
     # Assemble all outputs ready to write to file
@@ -267,6 +286,9 @@ crop_and_livestock_calcs_all <- function(
         calorie_conversions=calorie_conversions_dfs,
         secondary_conversions=secondary_units
     )
+
+
+
 
 
 

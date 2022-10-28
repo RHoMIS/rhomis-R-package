@@ -234,7 +234,7 @@ test_that("Can run final indicator calcalutaions on server", {
                 form_name = form_name,
                 database = database,
                 isDraft = isDraft,
-                central_test_case = central_test_case,base_folder = "./zip_outputs"
+                central_test_case = central_test_case,base_folder = "./zip_outputs/"
 
             ))
 
@@ -247,7 +247,7 @@ test_that("Can run final indicator calcalutaions on server", {
         },
         finally = {
 
-            unlink("./zip_outputs", recursive = T)
+            unlink("./zip_outputs/", recursive = T)
 
             data_collection <- mongolite::mongo(collection = "data",
                                                 db = "rhomis-test",

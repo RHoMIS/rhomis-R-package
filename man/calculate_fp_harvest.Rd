@@ -13,7 +13,15 @@ calculate_fp_harvest(
 )
 }
 \arguments{
-\item{unit_column}{}
+\item{tree_aid_df}{A tree aid data frame}
+
+\item{fp_harvest_conversions}{The conversion table for NTFP harvests}
+
+\item{name_column}{The column containing the name of the product}
+
+\item{amount_column}{The column containing the amount}
+
+\item{unit_column}{The column containing the survey unit}
 }
 \description{
 Calculate the amount of forest products harvested in KG

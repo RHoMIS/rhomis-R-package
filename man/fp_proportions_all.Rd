@@ -7,7 +7,15 @@
 fp_proportions_all(tree_aid_df, use, use_column, prop_column, new_column_name)
 }
 \arguments{
-\item{new_column_name}{}
+\item{tree_aid_df}{A tree aid df}
+
+\item{use}{The use that you want to identify proportions for}
+
+\item{use_column}{The column containing the use}
+
+\item{prop_column}{The column containing the proportions}
+
+\item{new_column_name}{The new column name you want to produce}
 }
 \description{
 Calculate numeric proportions NTFPs sold and consumed
