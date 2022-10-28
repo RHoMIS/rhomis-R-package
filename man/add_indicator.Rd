@@ -7,6 +7,7 @@
 add_indicator(
   indicator_list,
   indicator_name,
+  file,
   output_format = c("column", "loop", "table"),
   description,
   individual_columns_required = list(),
@@ -22,6 +23,8 @@ add_indicator(
 \item{indicator_list}{The Existing list of indicators}
 
 \item{indicator_name}{The name of the new indicator}
+
+\item{file}{The file where this indicator can be found}
 
 \item{output_format}{The shape of the indicator (column, loop or table)}
 

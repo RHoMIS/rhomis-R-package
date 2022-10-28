@@ -22,6 +22,7 @@ write_new_collection(
 }
 \description{
 Write a new table to a RHoMIS db database
-  
+}
+\details{
 Rpackage file: utils-mongodb.R
 }

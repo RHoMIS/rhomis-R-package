@@ -337,19 +337,23 @@ get_forms <- function(central_url, central_email, central_password, projectID) {
 #' list of project, see the
 #' @param formID The XML form ID from a specific project
 #' @param isDraft Stating whether or not the form is a draft
-#'
+#' @param file_destination Where to store the survey file (leave null if reading file into environment)
 #' @return
 #' @export
 #'
 #' @examples
-get_xls_form <- function(central_url, central_email, central_password, projectID, formID,  isDraft = T) {
+get_xls_form <- function(central_url, central_email, central_password, projectID, formID,  isDraft = T, file_destination=NULL) {
     if (isDraft) {
         url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, "/draft.xlsx")
     } else {
         url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, ".xlsx")
     }
+    read_file <- F
 
-    file_destination <- tempfile(fileext = ".xls")
+    if (is.null(file_destination)){
+        file_destination <- tempfile(fileext = ".xls")
+        read_file <- T
+    }
     email_token <- get_email_token(central_url, central_email, central_password)
     central_response <- httr::GET(
         url = url,
@@ -361,14 +365,17 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     response <- httr::content(central_response)
 
 
+    if (read_file==T){
+        xls_form <- list()
+        xls_form$survey <- readxl::read_xlsx(file_destination, sheet = "survey")
+        xls_form$choices <- readxl::read_xlsx(file_destination, sheet = "choices")
+        xls_form$settings <- readxl::read_xlsx(file_destination, sheet = "settings")
 
-    xls_form <- list()
-    xls_form$survey <- readxl::read_xlsx(file_destination, sheet = "survey")
-    xls_form$choices <- readxl::read_xlsx(file_destination, sheet = "choices")
-    xls_form$settings <- readxl::read_xlsx(file_destination, sheet = "settings")
-    unlink(file_destination)
+        unlink(file_destination)
+        return(xls_form)
 
-    return(xls_form)
+    }
+    return(response)
 }
 
 
@@ -672,7 +679,12 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     if (formID=="" & projectID==""){
         form_name <- "dec-demo"
         file_destination <- tempfile(fileext=".zip")
+
+        print("Getting File")
         central_response <- download.file(url = central_url, destfile = file_destination)
+        print("Wait")
+
+        Sys.sleep(20)
 
         # Fetching actual submission data (not test case)
     } else {
@@ -705,7 +717,7 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     files_names <- unzip(file_destination)
 
     files <-sapply(files_names, function(x){
-        readr::read_csv(x, col_types = readr::cols(), na = c("n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
+        readr::read_csv(x, col_types = readr::cols(), na = c("","n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
     }, simplify=F)
 
 
@@ -743,8 +755,9 @@ get_submission_data <- function(central_url, central_email, central_password, pr
     if (sum(colnames(main_data_set) == "deviceid") > 1) {
         column_to_keep <- which(colnames(main_data_set) == "deviceid" & colSums(is.na(main_data_set)) == 0)
         column_to_remove <- which(colnames(main_data_set) == "deviceid" & colSums(is.na(main_data_set)) > 0)
-
+        if(length(column_to_remove)>0){
         main_data_set <- main_data_set[-column_to_remove]
+        }
     }
 
     unlink(file_destination)

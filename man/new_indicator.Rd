@@ -6,6 +6,7 @@
 \usage{
 new_indicator(
   indicator_name,
+  file,
   output_format = c("column", "loop", "table"),
   description,
   individual_columns_required = list(),
@@ -19,6 +20,8 @@ new_indicator(
 }
 \arguments{
 \item{indicator_name}{The name of the new indicator}
+
+\item{file}{The file where the indicator is located}
 
 \item{output_format}{The shape of the indicator (column, loop or table)}
 

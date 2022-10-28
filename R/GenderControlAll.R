@@ -225,7 +225,13 @@ gender_control_summary <- function(processed_data,
 
   gender_control_scores <- (total_gender_value_controls / rowSums(total_gender_value_controls, na.rm = T)) %>% tibble::as_tibble()
   colnames(gender_control_scores) <- paste0("proportion_of_value_controlled_", colnames(gender_control_scores))
+
+  if(nrow(gender_control_scores)!=0){
+
   indicator_data <- dplyr::bind_cols(indicator_data, gender_control_scores)
+  }else{
+      warning("Gender outputs have zero rows, indicating no gender outputs generated")
+  }
 
   result <- list()
   result$indicator_data <- indicator_data

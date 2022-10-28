@@ -28,6 +28,7 @@ save_data_set_to_db(
 }
 \description{
 Save a dataset to the MongoDB database
-  
+}
+\details{
 Rpackage file: utils-mongodb.R
 }

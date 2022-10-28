@@ -19,6 +19,7 @@ obtain the metadata information}
 Submissions to ODK central have headers
 and footers so the forms can be managed and metadata included.
 This function adds the necessary headers and footer based on the survey file
- 
+}
+\details{
 Rpackage file: GenerateMockResponses.R
 }

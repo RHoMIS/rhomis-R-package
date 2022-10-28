@@ -127,6 +127,15 @@ extract_units_and_conversions_server <- function(
         central_test_case=central_test_case
     )
 
+    save_data_set_to_db(
+        data = rhomis_data,
+        data_type = "rawData",
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name
+    )
+
 
     units_and_conversions <- extract_units_and_conversions(rhomis_data)
 

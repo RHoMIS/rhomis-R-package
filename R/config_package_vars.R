@@ -52,6 +52,8 @@ set_conversion_file_names <- function(){
 
                "fp_amount_units" = "fp_amount_to_kg",
                "fp_income_units" = "fp_income_per_freq_to_lcu_per_year"
+               "livestock_count_to_tlu"="livestock_name_to_std",
+               "livestock_weight_kg"="livestock_name_to_std" #Isn't collected in data but needs to be converted
 
            ),
            envir = pkg.env

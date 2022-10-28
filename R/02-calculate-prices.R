@@ -124,6 +124,14 @@ crop_and_livestock_calcs_all <- function(
         crop_data <- lapply(crop_data, function(x) {
             dplyr::bind_cols(data_to_bind, x)
         })
+    }else{
+        crop_price <- tibble::as_tibble(list(
+            unit_type="crop_price_lcu_per_kg",
+            survey_value=NA,
+            conversion=NA
+        ))
+
+        crop_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, crop_price)
     }
 
 
@@ -172,6 +180,16 @@ crop_and_livestock_calcs_all <- function(
     for (price_data_set in price_datasets) {
 
         if (price_data_set %in% missing_livestock_columns==T){
+
+                livestock_price <- tibble::as_tibble(list(
+                    unit_type= paste0("mean_", price_data_set),
+                    survey_value=NA,
+                    conversion=NA
+                ))
+                livestock_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, crop_price)
+
+                prices[[paste0("mean_", price_data_set)]] <- livestock_price
+
             next()
         }
 
@@ -330,6 +348,7 @@ calculate_prices_csv <- function(
         unique_id_col = unique_id_col
     )
 
+
     units <- load_local_units(paste0( base_path,"conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
     secondary_units <- get_secondary_conversions(
@@ -402,6 +421,15 @@ calculate_prices_server <- function(
         database=database,
         isDraft=isDraft,
         central_test_case=central_test_case
+    )
+
+    save_data_set_to_db(
+        data = rhomis_data,
+        data_type = "rawData",
+        database = database,
+        url = "mongodb://localhost",
+        projectID = project_name,
+        formID = form_name
     )
 
     unit_list <- find_db_units(
@@ -488,5 +516,11 @@ calculate_prices_server <- function(
         conversion_types = names(secondary_units$secondary_conversions),
         collection = "unmodified_units"
     )
+
+    set_project_tag_to_true(database = database,
+                            url =  "mongodb://localhost",
+                            projectID=project_name,
+                            formID=form_name,
+                            project_tag="pricesCalculated")
     return(secondary_units)
 }

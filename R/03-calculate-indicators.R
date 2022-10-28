@@ -77,8 +77,15 @@ calculate_indicators <- function(
         }
     }
 
+    # Land Area
+    missing_columns <- check_columns_in_data(rhomis_data,
+                                             individual_columns = c("landcultivated"),
+                                             warning_message = "Could not calculate land cultivated"
+    )
+    if (length(missing_columns) == 0) {
+        indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = units_and_conversions$land_area_to_ha))
 
-
+    }
     # Crops and Livestock ----------------------------------------------------------------
 
     rhomis_data <- crop_and_livestock_calcs_all(
@@ -331,10 +338,10 @@ calculate_indicators <- function(
         gender_categories = gender_categories
     )
 
-    results$off_farm_data <- off_farm_data
-    results$livestock_data <-  livestock_data
-    results$crop_data <- crop_data
 
+    results$crop_data <- crop_data
+    results$livestock_data <- livestock_data
+    results$off_farm_data <- off_farm_data
 
 
 
@@ -471,6 +478,26 @@ calculate_indicators_local <- function(
 
 }
 
+#' Calculate Indicators Server
+#'
+#' Rpackage file: 03-calculate-indicators.R
+#'
+#' @param central_url The url of the ODK-central
+#' @param central_email The email of the ODK-central account being used
+#' @param central_password The password of the ODK-central account being used
+#' @param project_name The name of the ODK-central project being processed
+#' @param form_name The name of the ODK-central form being processed
+#' @param central_test_case This flag is used for running a test-sample dataset from ODK the inst/sample_central_project/ folder
+#' @param database The name of the database you would like to save results to
+#' @param isDraft Whether or not the ODK form you are working with is a draft
+#' or a final version. Only relevant if you are processing a project from ODK central
+#' @param gender_categories Which gender groups to consider
+#' @param base_folder Folder where to store zipped outputs
+#'
+#' @return
+#' @export
+#'
+#' @examples
 calculate_indicators_server <- function(
         central_url,
         central_email,
@@ -480,9 +507,10 @@ calculate_indicators_server <- function(
         database,
         isDraft,
         central_test_case = FALSE,
-        gender_categories = pkg.env$gender_categories
+        gender_categories = pkg.env$gender_categories,
+        base_folder="~/rhomis_datasets/"
 ){
-    rhomis_data <- load_rhomis_central(
+    raw_data <- load_rhomis_central(
         central_url=central_url,
         central_email=central_email,
         central_password=central_password,
@@ -492,6 +520,8 @@ calculate_indicators_server <- function(
         isDraft=isDraft,
         central_test_case=central_test_case
     )
+
+    rhomis_data <- raw_data
 
     unit_list <- find_db_units(
         projectID = project_name,
@@ -506,6 +536,18 @@ calculate_indicators_server <- function(
                                                database = database,
                                                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
     )
+
+    secondary_units <- sapply(names(pkg.env$secondary_units), function(unit_name){
+        extract_units_from_db(database,
+                              url = "mongodb://localhost",
+                              projectID = project_name,
+                              formID = form_name,
+                              conversion_type = unit_name,
+                              collection = "units_and_conversions"
+        )
+    }, simplify = F)
+
+    units_and_conversions <- c(units_and_conversions, secondary_units)
 
     prices <- sapply(pkg.env$price_conversion_list, function(unit_name){
         extract_units_from_db(database,
@@ -558,7 +600,121 @@ calculate_indicators_server <- function(
     )
 
 
+    clean_project_name <- tolower(project_name)
+    clean_project_name <- trimws(clean_project_name)
+    clean_project_name <- gsub(" ", "_", clean_project_name, fixed=T)
+    clean_project_name <- gsub("[^_[:^punct:]]", "_", clean_project_name,perl=T)
 
+    clean_form_name <- tolower(form_name)
+    clean_form_name <- trimws(clean_form_name)
+    clean_form_name <- gsub(" ", "_", clean_form_name, fixed=T)
+    clean_form_name <- gsub("[^_[:^punct:]]", "_", clean_form_name,perl=T)
+    clean_form_name <- paste0(clean_project_name,"_",clean_form_name)
+
+    dir.create(base_folder,showWarnings = F)
+    dir.create(paste0(base_folder,
+                      clean_project_name,
+                      "/"),
+               showWarnings = F)
+    dir.create(paste0(base_folder,
+                      clean_project_name,
+                      "/",
+                      clean_form_name,
+                      "/"),showWarnings = F)
+
+    dir.create(paste0(base_folder,
+                      clean_project_name,
+                      "/",
+                      clean_form_name,
+                      "/"),showWarnings = F)
+
+
+    # final_zi
+
+    readme_string <- write_docs(project_name, form_name)
+
+
+
+
+
+
+    readr::write_file(readme_string,paste0(base_folder,
+                                           clean_project_name,
+                                           "/",
+                                           clean_form_name,
+                                           "/README.txt"))
+
+
+
+
+    if (central_test_case==F){
+
+    projects <- get_projects(
+        central_url,
+        central_email,
+        central_password
+    )
+    projectID <- projects$id[projects$name == project_name]
+
+
+    # Get central formID
+    forms <- get_forms(
+        central_url,
+        central_email,
+        central_password,
+        projectID
+    )
+    formID <- forms$xmlFormId[forms$name == form_name]
+
+    get_xls_form(central_url = central_url,
+                 central_email = central_email,
+                 central_password = central_password,
+                 projectID =projectID ,
+                 formID = formID,
+                 isDraft = isDraft,
+                 file_destination =  paste0(base_folder,
+                                            clean_project_name,
+                                            "/",
+                                            clean_form_name,
+                                            "/",clean_form_name,"_survey.xls"))
+    }
+
+
+    indicator_table_mapping <- indicator_mapping_to_df()
+
+    dir.create(paste0(base_folder,
+                      clean_project_name,
+                      "/",
+                      clean_form_name,
+                      "/indicator_explanations/"),showWarnings = F)
+    readr::write_csv(indicator_table_mapping, paste0(base_folder,clean_project_name,"/",clean_form_name,"/indicator_explanations/indicator_explanations.csv"))
+
+
+
+
+    dir.create(paste0(base_folder,
+                      clean_project_name,
+                      "/",
+                      clean_form_name,
+                      "/raw_data"),showWarnings = F)
+    readr::write_csv(raw_data, paste0(base_folder,clean_project_name,"/",clean_form_name,"/raw_data/raw_data.csv"))
+
+
+
+    new_folder <- paste0(base_folder,
+                         clean_project_name,
+                         "/",
+                         clean_form_name,
+                         "/conversions_stage_1/")
+    write_list_of_df_to_folder(list_of_df = units_and_conversions[names(units_and_conversions) %in% pkg.env$unit_file_names], folder = new_folder)
+
+
+    new_folder <- paste0(base_folder,
+                         clean_project_name,
+                         "/",
+                         clean_form_name,
+                         "/conversions_stage_2/")
+    write_list_of_df_to_folder(list_of_df = c(secondary_units,prices, calorie_conversions), folder = new_folder)
 
     lapply(names(results), function(x) {
         data_to_write <- results[[x]]
@@ -575,6 +731,8 @@ calculate_indicators_server <- function(
                 projectID = project_name,
                 formID = form_name
             )
+            dir.create(paste0(base_folder,clean_project_name,"/",clean_form_name,"/processed_data/"),showWarnings = F)
+            readr::write_csv(data_to_write, paste0(base_folder,clean_project_name,"/",clean_form_name,"/processed_data/processed_data.csv"))
 
 
             return()
@@ -589,6 +747,10 @@ calculate_indicators_server <- function(
                 projectID = project_name,
                 formID = form_name
             )
+
+            dir.create(paste0(base_folder,clean_project_name,"/",clean_form_name,"/indicator_data/"),showWarnings = F)
+            readr::write_csv(data_to_write, paste0(base_folder,clean_project_name,"/",clean_form_name,"/indicator_data/indicator_data.csv"))
+
             return()
         }
 
@@ -604,6 +766,9 @@ calculate_indicators_server <- function(
                 database = database,
                 url = "mongodb://localhost"
             )
+
+            new_folder <- paste0(base_folder,clean_project_name,"/",clean_form_name,"/",x)
+            write_list_of_df_to_folder(list_of_df = data_to_write, folder = new_folder)
         }
         set_project_tag_to_true(database = database,
                                 url = url,
@@ -613,8 +778,25 @@ calculate_indicators_server <- function(
 
     })
 
+    parent_folder <-  paste0(base_folder,clean_project_name,"/")
+    form_folder <- paste0("../",clean_form_name)
 
+    folder_path <- paste0(base_folder,clean_project_name,"/",clean_form_name,"/")
+    zip_output_path <- paste0(base_folder,clean_project_name,"/",clean_form_name,".zip")
 
+    command <- paste0("cd ",parent_folder,";"," zip -r ",zip_output_path, " *")
+
+    system(command)
+
+    command <- paste0("rm -rf ",folder_path)
+
+    system(command)
+
+    connection <- connect_to_db("projectData", database, "mongodb://localhost")
+    connection$update(paste0('{"projectID":"', project_name, '","formID":"', form_name, '"}'),
+                      paste0('{"$set":{"zip_file_path": ', '"', zip_output_path,  '"}}')
+    )
+    connection$disconnect()
 
 
     return(results)

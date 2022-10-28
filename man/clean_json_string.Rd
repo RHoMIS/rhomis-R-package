@@ -16,6 +16,6 @@ processed, can contain some unnecessary characters.
 \details{
 This function can be useful for removing these unnecessary
 characters.
-  
+
 Rpackage file: utils-mongodb.R
 }

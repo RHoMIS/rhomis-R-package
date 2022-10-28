@@ -2,6 +2,7 @@
 #'
 #' Create a new indicator
 #' @param indicator_name The name of the new indicator
+#' @param file The file where the indicator is located
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param description A description of the indicator
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
@@ -17,6 +18,7 @@
 #'
 #' @examples
 new_indicator <- function(indicator_name,
+                          file,
                           output_format=c("column", "loop", "table"),
                           description,
                           individual_columns_required=list(),
@@ -30,6 +32,7 @@ new_indicator <- function(indicator_name,
     match.arg(output_format)
     stopifnot(
         is.character(indicator_name),
+        is.character(file),
         is.character(output_format),
         is.character(search_term),
         is.character(description),
@@ -54,6 +57,7 @@ new_indicator <- function(indicator_name,
 
     indicator <- list(
         indicator_name=args$indicator_name,
+        file=args$file,
         output_format=args$output_format,
         description=args$description,
         individual_columns_required=args$individual_columns_required,
@@ -79,6 +83,7 @@ new_indicator <- function(indicator_name,
 #'
 #' @param indicator_list The Existing list of indicators
 #' @param indicator_name The name of the new indicator
+#' @param file The file where this indicator can be found
 #' @param description A description of the indicator
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
@@ -95,6 +100,7 @@ new_indicator <- function(indicator_name,
 #' @examples
 add_indicator <- function(indicator_list,
                           indicator_name,
+                          file,
                           output_format=c("column", "loop", "table"),
                           description,
                           individual_columns_required=list(),
@@ -110,6 +116,7 @@ add_indicator <- function(indicator_list,
 
     indicator <- new_indicator(
         indicator_name = indicator_name,
+        file=file,
         output_format=output_format,
         description=description,
         individual_columns_required=individual_columns_required,
@@ -141,6 +148,7 @@ add_indicator <- function(indicator_list,
 #' @param indicator_list The Existing list of indicators
 #' @param gendered_list List of gender categories
 #' @param indicator_name The name of the new indicator (without gender prefix),
+#' @param file The file where this indicator can be found
 #' @param description A description of the indicator
 #' @param output_format The shape of the indicator (column, loop or table)
 #' @param individual_columns_required Which individual columns are required (directly) for the RHoMIS dataset
@@ -158,6 +166,7 @@ add_gendered_indicator <- function(
         indicator_list,
         gendered_list=c("male_youth", "male_adult", "female_youth", "female_adult"),
         indicator_name = "male_youth_crop_consumed_kg_per_year",
+        file,
         description,
         output_format, #column, loop, #table
         individual_columns_required=list(),
@@ -178,6 +187,7 @@ add_gendered_indicator <- function(
         indicator_list <- add_indicator(
             indicator_list,
             indicator_name = gender_indicator_name,
+            file=file,
             output_format=output_format, #column, loop, #table
             description=description,
             individual_columns_required=individual_columns_required,
@@ -403,6 +413,20 @@ find_nested_dependencies_network <- function(
 }
 
 
+#' Find D3 Dependencies Network
+#'
+#' Find indicator nested dependencies and
+#' return them in a format
+#' which can be used to draw a d3 network plot
+#'
+#' @param indicator_name The name of the indicator
+#' @param list_of_indicators The entire list of RHoMIS indicators
+#' @param d3_list An existing d3 formatted list
+#'
+#' @return
+#' @export
+#'
+#' @examples
 find_d3_dependencies_network <- function(
         indicator_name,
         list_of_indicators,

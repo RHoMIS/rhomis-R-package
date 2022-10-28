@@ -172,7 +172,7 @@ value_calculations <- function(processed_data,
     # Meat value calcs
 
     # indicator_search_value_meat_consumed_lcu
-    if ("mean_meat_price_per_kg" %in% names(prices)) {
+    if ("mean_meat_price_per_kg" %in% names(prices) & length(missing_columns)==0) {
         if (!is.null(prices[["mean_meat_price_per_kg"]])){
 
             processed_data <- value_or_calorie_calculations_item_consumed(
@@ -183,6 +183,9 @@ value_calculations <- function(processed_data,
                 price_column_name = "mean_meat_price_per_kg",
                 converted_column_name = "value_meat_consumed_lcu"
             )
+
+
+
             extra_outputs$value_meat_consumed_lcu <- map_to_wide_format(
                 data = processed_data, name_column = "livestock_name", column_prefixes = "value_meat_consumed_lcu",
                 types = "num"
@@ -224,7 +227,7 @@ value_calculations <- function(processed_data,
                                               loop_columns = c("livestock_name", "eggs_consumed_kg_per_year"),
                                               warning_message = "Could not calculate value eggs consumed"
     )
-    if ("mean_eggs_price_per_kg" %in% names(prices) & length(missing_columns==0)) {
+    if ("mean_eggs_price_per_kg" %in% names(prices) & length(missing_columns)==0) {
         if (!is.null(prices[["mean_eggs_price_per_kg"]])){
 
             processed_data <- value_or_calorie_calculations_item_consumed(

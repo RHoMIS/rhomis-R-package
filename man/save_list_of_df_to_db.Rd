@@ -26,6 +26,7 @@ save_list_of_df_to_db(
 \description{
 Take a list of output datasets and save them all to the
 RHoMIS mongoDB
-  
+}
+\details{
 Rpackage file: utils-mongodb.R
 }

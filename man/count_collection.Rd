@@ -15,6 +15,7 @@ count_collection(collection, database = "rhomis", url = "mongodb://localhost")
 }
 \description{
 Count the number of documents in a collection
-  
+}
+\details{
 Rpackage file: utils-mongodb.R
 }

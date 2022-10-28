@@ -1711,12 +1711,6 @@ livestock_calculations_all <- function(data,
         data <- meat_prices(data)
     }
 
-
-
-
-
-
-
     # Milk amounts
     missing_columns <- check_columns_in_data(data,
                                              loop_columns = c(

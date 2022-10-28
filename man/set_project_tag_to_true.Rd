@@ -26,10 +26,11 @@ set_project_tag_to_true(
 \description{
 RHoMIS data goes through several
 processing stages. Where units are
-extracted, then verified, then 
+extracted, then verified, then
 prices verified. This function allows
 us to tick off these stages, letting
 the system know what has been verified and what has not.
-   
+}
+\details{
 Rpackage file: utils-mongodb.R
 }
