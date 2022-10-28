@@ -348,9 +348,11 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     } else {
         url <- paste0(central_url, "/v1/projects/", projectID, "/forms/", formID, ".xlsx")
     }
+    read_file <- F
 
     if (is.null(file_destination)){
         file_destination <- tempfile(fileext = ".xls")
+        read_file <- T
     }
     email_token <- get_email_token(central_url, central_email, central_password)
     central_response <- httr::GET(
@@ -363,7 +365,7 @@ get_xls_form <- function(central_url, central_email, central_password, projectID
     response <- httr::content(central_response)
 
 
-    if (is.null(file_destination)){
+    if (read_file==T){
         xls_form <- list()
         xls_form$survey <- readxl::read_xlsx(file_destination, sheet = "survey")
         xls_form$choices <- readxl::read_xlsx(file_destination, sheet = "choices")
