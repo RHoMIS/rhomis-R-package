@@ -763,8 +763,208 @@ ntfp_calories_and_values <- function(tree_aid_df,
     return(tree_aid_df)
 }
 
+#' NTFP Totals
+#'
+#' Calculate total ntfp income, value consumed,
+#' calories consumed, processed income, value
+#' of processed ntfp consumed, processed
+#' calories consumed
+#'
+#' @param tree_aid_df
+#' @param indicator_df
+#' @param fp_products
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ntfp_totals <- function(tree_aid_df,
+                        indicator_df,
+                        fp_products=fp_products
+){
+    number_of_tree_aid_loops <- find_number_of_loops(tree_aid_df,"fp_name")
+    if (number_of_tree_aid_loops==0){
+        return(indicator_df)
+    }
+    if (number_of_tree_aid_loops>0){
+
+        ntfp_income <- ntfp_total_individual(tree_aid_df,
+                                             fp_products = fp_products,
+                                             income = T,
+                                             warning_message= "Issue calculating ntfp incomes")
+
+        ntfp_processed_income <- ntfp_total_individual(tree_aid_df,
+                                                       fp_products = fp_products,
+                                                       processed_income = T,
+                                                       warning_message= "Issue calculating ntfp processed incomes")
+
+        total_ntfp_income <- tibble::as_tibble(list(
+            ntfp_income=ntfp_income,
+            ntfp_processed_income=ntfp_processed_income
+        ))
+        na_rows <- rowSums(is.na(total_ntfp_income)==nrow(total_ntfp_income))
+        total_ntfp_income <- rowSums(total_ntfp_income, na.rm = T)
+        total_ntfp_income[na_rows] <- NA
 
 
+
+        ntfp_value <- ntfp_total_individual(tree_aid_df,
+                                            fp_products = fp_products,
+                                            value = T,
+                                            warning_message= "Issue calculating ntfp value consumed")
+
+        ntfp_processed_value <- ntfp_total_individual(tree_aid_df,
+                                                      fp_products = fp_products,
+                                                      processed_value = T,
+                                                      warning_message= "Issue calculating ntfp processed value consumed")
+
+        total_ntfp_value <- tibble::as.tibble(list(
+            ntfp_value=ntfp_value,
+            ntfp_processed_value=ntfp_processed_value
+        ))
+        na_rows <- rowSums(is.na(total_ntfp_value)==nrow(total_ntfp_value))
+        total_ntfp_value <- rowSums(total_ntfp_value, na.rm = T)
+        total_ntfp_value[na_rows] <- NA
+
+
+        ntfp_calories <- ntfp_total_individual(tree_aid_df,
+                                               fp_products = fp_products,
+                                               calories = T,
+                                               warning_message= "Issue calculating ntfp calories consumed")
+
+        ntfp_processed_calories <- ntfp_total_individual(tree_aid_df,
+                                                         fp_products = fp_products,
+                                                         processed_calories = T,
+                                                         warning_message= "Issue calculating ntfp processed calories consumed")
+
+        total_ntfp_calories <- tibble::as.tibble(list(
+            ntfp_calories=ntfp_calories,
+            ntfp_processed_calories=ntfp_processed_calories
+        ))
+        na_rows <- rowSums(is.na(total_ntfp_calories)==nrow(total_ntfp_calories))
+        total_ntfp_calories <- rowSums(total_ntfp_calories, na.rm = T)
+        total_ntfp_calories[na_rows] <- NA
+
+        indicator_data$ntfp_income <- total_ntfp_income
+        indicator_data$value_ntfp_consumed <- total_ntfp_value
+        indicator_data$ntfp_consumed_calories_kcal_per_hh_per_year <- total_ntfp_calories
+
+        return(indicator_data)
+    }
+
+}
+
+
+
+#' NTFP Totals
+#'
+#' Calculate total ntfp income, value consumed,
+#' calories consumed, processed income, value
+#' of processed ntfp consumed, processed
+#' calories consumed
+#'
+#' @param tree_aid_df A tree aid dataset
+#' @param fp_products Forest products
+#' @param income Whether to calculate income only
+#' @param value Whether to calculate value only
+#' @param calories Whether to calculate calories only
+#' @param processed_income Whether to calculate processed income only
+#' @param processed_value Whether to calculate processed value consumed only
+#' @param processed_calories Whether to calculate processed calories consumed only
+#' @param warning_message Warning message to give for any missing columns
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ntfp_total_individual <- function(tree_aid_df,
+                                  fp_products=fp_products,
+                                  income=F,
+                                  value=F,
+                                  calories=F,
+                                  processed_income=F,
+                                  processed_value=F,
+                                  processed_calories=F,
+                                  warning_message
+){
+
+    #ntfp_income <- []
+    #list <- []
+
+    main_args <- c(income,
+                   value,
+                   calories,
+                   processed_income,
+                   processed_value,
+                   processed_calories)
+
+    if (sum(main_args)!=1){
+        warning("Must only specify one argument as true:\n
+                   income, \n
+                   value, \n
+                   calories,\n
+                   processed_income, \n
+                   processed_value,\n
+                   processed_calories.")
+
+        return(rep(NA, nrow(tree_aid_df)))
+    }
+
+    if (income){
+        suffix <- "_sold_income_per_year"
+    }else if (value){
+        suffix <- "_value_consumed_lcu_per_year"
+    }else if (calories){
+        suffix <- "_calories_consumed_kcal_per_year"
+    }else if (processed_income){
+        suffix <- "_process_sold_income_per_year"
+    }else if (processed_value){
+        suffix <- "_process_value_consumed_lcu_per_year"
+    }else if (processed_calories){
+        suffix <- "_process_calories_consumed_kcal_per_year"
+    } else{
+        return(rep(NA, nrow(tree_aid_df)))
+    }
+
+    # For each product in list
+    columns_to_return <- c()
+    for (fp_product in fp_products){
+
+
+        column_base <- paste0(fp_product$base_name, suffix)
+
+        # Check whether the column names in list are in the data and assign warning message if any are missing
+        # Create list called missing_columns containing the missing column names
+        missing_columns <- check_columns_in_data(
+            data = tree_aid_df,
+            loop_columns = column_base,
+            warning_message = warning_message
+        )
+
+        # If no columns are missing, add the column names within list to the total column
+        if (length(missing_columns)==0){
+
+            loop_number <- find_number_of_loops(tree_aid_df,column_base)
+            total_columns <- paste0(column_base,"_",c(1:loop_number))
+            columns_to_return <- c(columns_to_return,total_columns)
+
+        }
+
+
+
+    }
+
+    if (length(columns_to_return)>0){
+
+        totals <- rowSums(tree_aid_df[income_columns],na.rm=T)
+        na_rows <- rowSums(is.na(tree_aid_df[income_columns]))==length(income_columns)
+        totals[na_rows] <- NA
+    }else {
+        totals <- rep(NA, nrow(tree_aid_df))
+    }
+
+    return(totals)
+}
 
 
 #' Extract FP Price and Calorie Values

@@ -338,6 +338,9 @@ calculate_indicators <- function(
                              calorie_conversions =calorie_conversions)
 
 
+    indicator_data <- ntfp_totals(rhomis_data,
+                                  indicator_data,
+                                  fp_products = fp_products)
 
 
     results <- value_gender_fa_calculations(
