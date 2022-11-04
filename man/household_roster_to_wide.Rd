@@ -11,6 +11,7 @@ household_roster_to_wide(data)
 }
 \description{
 Moving household roster size to wide
- 
+}
+\details{
 Rpackage file: HouseholdSize.R
 }

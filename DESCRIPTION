@@ -33,7 +33,8 @@ Imports:
     optparse,
     digest,
     networkD3,
-    htmlwidgets
+    htmlwidgets,
+    R.utils
 Depends: 
     R (>= 3.3)
 Config/testthat/edition: 3

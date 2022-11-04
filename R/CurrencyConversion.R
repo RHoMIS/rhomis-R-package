@@ -20,28 +20,29 @@
 #'
 #' @examples
 querywb_stats <- function(year, country_code) {
-  tryCatch(
-    {
-      wbstats::wb_data(
-        indicator = "PA.NUS.PRVT.PP",
-        country = country_code,
-        start_date = year
-      )
-    },
-    error = function(cond) {
-      message("Could not obtain currency conversion factor")
-      message("error message:")
-      message(cond)
-      # Choose a return value in case of error
-      return(tibble::as_tibble(list(
-        "PA.NUS.PRVT.PP" = c(NA),
-        "date" = c(NA)
-      )))
-    },
-    finally = {
+    tryCatch(
+        {
+            wbstats::wb_data(
+                indicator = "PA.NUS.PRVT.PP",
+                country = country_code,
+                start_date = year
+            )
 
-    }
-  )
+        },
+        error = function(cond) {
+            message("Could not obtain currency conversion factor")
+            message("error message:")
+            message(cond)
+            # Choose a return value in case of error
+            return(tibble::as_tibble(list(
+                "PA.NUS.PRVT.PP" = c(NA),
+                "date" = c(NA)
+            )))
+        },
+        finally = {
+
+        }
+    )
 }
 
 
@@ -62,44 +63,53 @@ querywb_stats <- function(year, country_code) {
 #'
 #' @examples
 currency_conversion_factor <- function(year, country_code) {
-  conversion_factor <- NA
-  year <- as.numeric(year)
-  country_code <- as.character(country_code)
-  initial_year <- year
+    conversion_factor <- NA
+    year <- as.numeric(year)
+    country_code <- as.character(country_code)
+    initial_year <- year
 
-  if (is.na(year) | is.na(country_code)) {
-    message("Either country or year of survey are not well defined, so unable to obtain currency conversion")
+    if (is.na(year) | is.na(country_code)) {
+        message("Either country or year of survey are not well defined, so unable to obtain currency conversion")
+
+        return(list(
+            "conversion_year" = NA,
+            "conversion_factor" = NA
+        ))
+    }
+
+
+
+    while (is.na(conversion_factor) & initial_year - year < 10) {
+        Sys.sleep(0.5)
+        print("Fetching Conversion factor")
+        print(year)
+        print(country_code)
+
+        wb_result <-querywb_stats(year, country_code)
+
+
+
+
+        conversion_factor <- as.numeric(wb_result$PA.NUS.PRVT.PP)
+        conversion_year <- as.numeric(wb_result$date)
+
+        if (nrow(wb_result) == 0) {
+            conversion_factor <- NA
+            conversion_year <- NA
+        }
+
+
+        year <- year - 1
+
+        if (is.na(conversion_factor)) {
+            conversion_year <- NA
+        }
+    }
 
     return(list(
-      "conversion_year" = NA,
-      "conversion_factor" = NA
+        "conversion_year" = conversion_year,
+        "conversion_factor" = conversion_factor
     ))
-  }
-
-
-
-  while (is.na(conversion_factor) & initial_year - year < 10) {
-    wb_result <- querywb_stats(year, country_code)
-    conversion_factor <- as.numeric(wb_result$PA.NUS.PRVT.PP)
-    conversion_year <- as.numeric(wb_result$date)
-
-    if (nrow(wb_result) == 0) {
-      conversion_factor <- NA
-      conversion_year <- NA
-    }
-
-
-    year <- year - 1
-
-    if (is.na(conversion_factor)) {
-      conversion_year <- NA
-    }
-  }
-
-  return(list(
-    "conversion_year" = conversion_year,
-    "conversion_factor" = conversion_factor
-  ))
 }
 
 
@@ -121,51 +131,51 @@ currency_conversion_factor <- function(year, country_code) {
 #' @examples
 convert_all_currencies <- function(data, country_column = "country", year_column = "year") {
 
-  # data <- tibble::as_tibble((list(
-  #
-  #     "country_code"=c("KM","KM","VN", "VN", "UG", NA, "XY"),
-  #     "year"=c("2016","2016","2021", "2014", "2016", NA, "2020")
-  # )))
-  subset_data <- data %>% dplyr::select(c(country_column, year_column))
-  combinations <- tibble::as_tibble(table(subset_data)) %>%
-    dplyr::filter(n > 0) %>%
-    dplyr::select(-c("n"))
+    # data <- tibble::as_tibble((list(
+    #
+    #     "country_code"=c("KM","KM","VN", "VN", "UG", NA, "XY"),
+    #     "year"=c("2016","2016","2021", "2014", "2016", NA, "2020")
+    # )))
+    subset_data <- data %>% dplyr::select(c(country_column, year_column))
+    combinations <- tibble::as_tibble(table(subset_data)) %>%
+        dplyr::filter(n > 0) %>%
+        dplyr::select(-c("n"))
 
-  conversion_factors <- c()
-  conversion_years <- c()
+    conversion_factors <- c()
+    conversion_years <- c()
 
-  for (i in 1:nrow(combinations)) {
-    conversion_data <- currency_conversion_factor(combinations[i, year_column], combinations[i, country_column])
-    conversion_factors <- c(conversion_factors, conversion_data["conversion_factor"])
-    conversion_years <- c(conversion_years, conversion_data["conversion_year"])
-  }
+    for (i in 1:nrow(combinations)) {
+        conversion_data <- currency_conversion_factor(year=combinations[i, year_column], country_code=combinations[i, country_column])
+        conversion_factors <- c(conversion_factors, conversion_data["conversion_factor"])
+        conversion_years <- c(conversion_years, conversion_data["conversion_year"])
+    }
 
-  combinations$conversion_factor <- unlist(conversion_factors)
-  combinations$conversion_year <- unlist(conversion_years)
+    combinations$conversion_factor <- unlist(conversion_factors)
+    combinations$conversion_year <- unlist(conversion_years)
 
-  matching_list <- c(country_column, year_column)
-  names(matching_list) <- c(country_column, year_column)
+    matching_list <- c(country_column, year_column)
+    names(matching_list) <- c(country_column, year_column)
 
-  data[[year_column]] <- as.numeric(data[[year_column]])
-  combinations$year <- as.numeric(combinations$year)
+    data[[year_column]] <- as.numeric(data[[year_column]])
+    combinations$year <- as.numeric(combinations$year)
 
-  data_with_conversions <- dplyr::left_join(data, combinations, by = matching_list)
+    data_with_conversions <- dplyr::left_join(data, combinations, by = matching_list)
 
-  data <- add_column_after_specific_column(
-    data = data,
-    new_data = data_with_conversions["conversion_factor"],
-    new_column_name = "conversion_factor",
-    old_column_name = year_column,
-    loop_structure = F
-  )
+    data <- add_column_after_specific_column(
+        data = data,
+        new_data = data_with_conversions["conversion_factor"],
+        new_column_name = "conversion_factor",
+        old_column_name = year_column,
+        loop_structure = F
+    )
 
-  data <- add_column_after_specific_column(
-    data = data,
-    new_data = data_with_conversions["conversion_year"],
-    new_column_name = "conversion_year",
-    old_column_name = "conversion_factor",
-    loop_structure = F
-  )
+    data <- add_column_after_specific_column(
+        data = data,
+        new_data = data_with_conversions["conversion_year"],
+        new_column_name = "conversion_year",
+        old_column_name = "conversion_factor",
+        loop_structure = F
+    )
 
-  return(data)
+    return(data)
 }

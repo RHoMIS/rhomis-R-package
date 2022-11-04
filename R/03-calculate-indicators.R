@@ -138,7 +138,7 @@ calculate_indicators <- function(
         warning("Unable to calculate livestock TLU, no 'TLU' conversions provided")
     }else {
         #indicator_search_livestock_tlu
-        data <- clean_tlu_column_names(rhomis_data, units_and_conversions$livestock_name_to_std,units_and_conversions$livestock_count_to_tlu)
+        rhomis_data <- clean_tlu_column_names(rhomis_data, units_and_conversions$livestock_name_to_std,units_and_conversions$livestock_count_to_tlu)
         indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units_and_conversions$livestock_name_to_std, units_and_conversions$livestock_count_to_tlu)
     }
 
@@ -550,36 +550,61 @@ calculate_indicators_server <- function(
     )
 
     secondary_units <- sapply(names(pkg.env$secondary_units), function(unit_name){
-        extract_units_from_db(database,
+        secondary_unit <- extract_units_from_db(database,
                               url = "mongodb://localhost",
                               projectID = project_name,
                               formID = form_name,
                               conversion_type = unit_name,
                               collection = "units_and_conversions"
         )
+        if (!is.null(secondary_unit)){
+            if ("conversion" %in% colnames(secondary_unit)){
+                secondary_unit$conversion <- as.numeric(secondary_unit$conversion)
+
+            }
+
+        }
+        return(secondary_unit)
     }, simplify = F)
 
     units_and_conversions <- c(units_and_conversions, secondary_units)
 
     prices <- sapply(pkg.env$price_conversion_list, function(unit_name){
-        extract_units_from_db(database,
+        price <- extract_units_from_db(database,
                               url = "mongodb://localhost",
                               projectID = project_name,
                               formID = form_name,
                               conversion_type = unit_name,
                               collection = "units_and_conversions"
         )
+        if (!is.null(price)){
+            if ("conversion" %in% colnames(price)){
+                price$conversion <- as.numeric(price$conversion)
+
+            }
+
+        }
+        return(price)
+
 
     }, simplify = F)
 
     calorie_conversions <- sapply(pkg.env$calorie_conversion_list, function(unit_name){
-        extract_units_from_db(database,
+        calorie_converison <- extract_units_from_db(database,
                               url = "mongodb://localhost",
                               projectID = project_name,
                               formID = form_name,
                               conversion_type = unit_name,
                               collection = "units_and_conversions"
         )
+
+        if (!is.null(calorie_converison)){
+            if ("conversion" %in% colnames(calorie_converison)){
+                calorie_converison$conversion <- as.numeric(calorie_converison$conversion)
+            }
+        }
+        return(calorie_converison)
+
 
     }, simplify = F)
 
