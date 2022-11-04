@@ -483,16 +483,22 @@ find_d3_dependencies_network <- function(
     }
 
 
+    if (length(indicator$indicators_required)==1){
+        if (indicator$indicators_required==""){
+            indicator$indicators_required <- list()
+        }
 
-    if (length(indicator$indicators_required)>0){
-        children <- lapply(indicator$indicators_required, function(indicator_name){
-            find_d3_dependencies_network(
-                indicator_name=indicator_name,
-                list_of_indicators=list_of_indicators,
-                d3_list=d3_list)
-        })
+    }
 
-        d3_list$children <- append(d3_list[["children"]],children)
+    if (length(indicator$indicators_required)>0 ){
+            children <- lapply(indicator$indicators_required, function(indicator_name){
+                find_d3_dependencies_network(
+                    indicator_name=indicator_name,
+                    list_of_indicators=list_of_indicators,
+                    d3_list=d3_list)
+            })
+
+            d3_list$children <- append(d3_list[["children"]],children)
 
 
 
