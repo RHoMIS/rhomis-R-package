@@ -14,6 +14,7 @@ identify_person_category(age, gender)
 \description{
 For the household roster, categories
 each person based on the MAE conversion information
- 
+}
+\details{
 Rpackage file: HouseholdSize.R
 }

@@ -1931,6 +1931,8 @@ livestock_tlu_calculations <- function(data,
         tlu_total[tlu_zeros] <- 0
     }
 
+
+
     return(tlu_total)
 }
 

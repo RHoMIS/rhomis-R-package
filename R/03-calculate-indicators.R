@@ -136,7 +136,7 @@ calculate_indicators <- function(
         warning("Unable to calculate livestock TLU, no 'TLU' conversions provided")
     }else {
         #indicator_search_livestock_tlu
-        data <- clean_tlu_column_names(rhomis_data, units_and_conversions$livestock_name_to_std,units_and_conversions$livestock_count_to_tlu)
+        rhomis_data <- clean_tlu_column_names(rhomis_data, units_and_conversions$livestock_name_to_std,units_and_conversions$livestock_count_to_tlu)
         indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units_and_conversions$livestock_name_to_std, units_and_conversions$livestock_count_to_tlu)
     }
 

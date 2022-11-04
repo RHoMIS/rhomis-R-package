@@ -11,6 +11,7 @@ calculate_MAE(data)
 }
 \description{
 A function to calculate the male adult equivalent of household size
- 
+}
+\details{
 Rpackage file: HouseholdSize.R
 }

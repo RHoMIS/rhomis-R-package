@@ -2,9 +2,7 @@
 % Please edit documentation in R/HouseholdSize.R
 \name{household_roster_to_categories}
 \alias{household_roster_to_categories}
-\title{Household roster to catgeries
- 
-Rpackage file: HouseholdSize.R}
+\title{Household roster to catgeries}
 \usage{
 household_roster_to_categories(data)
 }
@@ -15,7 +13,5 @@ household_roster_to_categories(data)
 A data-frame with the correct household
 }
 \description{
-Household roster to catgeries
- 
 Rpackage file: HouseholdSize.R
 }

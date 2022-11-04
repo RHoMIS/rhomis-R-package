@@ -12,6 +12,7 @@ calculate_household_size_members(data)
 \description{
 Calculate Household Size based on roster
 questions
- 
+}
+\details{
 Rpackage file: HouseholdSize.R
 }
