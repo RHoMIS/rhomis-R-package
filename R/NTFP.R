@@ -845,11 +845,11 @@ ntfp_totals <- function(tree_aid_df,
         total_ntfp_calories <- rowSums(total_ntfp_calories, na.rm = T)
         total_ntfp_calories[na_rows] <- NA
 
-        indicator_data$ntfp_income <- total_ntfp_income
-        indicator_data$value_ntfp_consumed <- total_ntfp_value
-        indicator_data$ntfp_consumed_calories_kcal_per_hh_per_year <- total_ntfp_calories
+        indicator_df$ntfp_income <- total_ntfp_income
+        indicator_df$value_ntfp_consumed <- total_ntfp_value
+        indicator_df$ntfp_consumed_calories_kcal_per_hh_per_year <- total_ntfp_calories
 
-        return(indicator_data)
+        return(indicator_df)
     }
 
 }
@@ -956,8 +956,8 @@ ntfp_total_individual <- function(tree_aid_df,
 
     if (length(columns_to_return)>0){
 
-        totals <- rowSums(tree_aid_df[income_columns],na.rm=T)
-        na_rows <- rowSums(is.na(tree_aid_df[income_columns]))==length(income_columns)
+        totals <- rowSums(tree_aid_df[columns_to_return],na.rm=T)
+        na_rows <- rowSums(is.na(tree_aid_df[columns_to_return]))==length(columns_to_return)
         totals[na_rows] <- NA
     }else {
         totals <- rep(NA, nrow(tree_aid_df))

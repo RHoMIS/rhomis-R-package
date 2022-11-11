@@ -193,8 +193,8 @@ set_calories_list <- function() {
     fp_calories <- c()
     for (fp_product in rhomis::fp_products){
 
-        fp_calories <- c(fp_calories,paste0(fp_product$base_name,"_price_lcu_per_kg"))
-        fp_calories <- c(fp_calories,paste0(fp_product$base_name,"_process_price_lcu_per_kg"))
+        fp_calories <- c(fp_calories,paste0(fp_product$base_name,"_calories_kcal_per_kg"))
+        fp_calories <- c(fp_calories,paste0(fp_product$base_name,"_process_calories_kcal_per_kg"))
 
 
     }

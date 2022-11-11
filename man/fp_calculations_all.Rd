@@ -7,11 +7,12 @@
 fp_calculations_all(
   tree_aid_df,
   units_and_conversions,
-  prices_and_conversions_only = T
+  prices_conversions,
+  calorie_conversions
 )
 }
 \arguments{
-\item{prices_and_conversions_only}{}
+\item{units_and_conversions}{}
 }
 \description{
 FP Calculations All
