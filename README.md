@@ -6,6 +6,8 @@
 [![R-CMD-check](https://github.com/l-gorman/rhomis-R-package/workflows/R-CMD-check/badge.svg)](https://github.com/l-gorman/rhomis-R-package/actions)
 <!-- badges: end -->
 
+[![DOI](https://zenodo.org/badge/355574703.svg)](https://zenodo.org/badge/latestdoi/355574703)
+
 ## Summary
 
 This R-package is designed to help users process RHoMIS datasets.
