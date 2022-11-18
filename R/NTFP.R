@@ -427,7 +427,7 @@ fp_income_calculations <- function(data,
 
 
     fp_sold_units_data <- data[fp_sold_unit_columns]
-    fp_sold_units_numeric <- switch_units(data_to_convert = fp_sold_units_data,id_vector = tree_aid_df$id_rhomis_dataset,unit_tibble = unit_conv_tibble)
+    fp_sold_units_numeric <- switch_units(data_to_convert = fp_sold_units_data,id_vector = data$id_rhomis_dataset,unit_tibble = unit_conv_tibble)
 
 
 
