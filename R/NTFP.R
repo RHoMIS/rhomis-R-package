@@ -32,7 +32,11 @@ convert_ntfp_units <- function(
         converted_data <- dplyr::left_join(household_data_tibble,
                                            units_conversions,
                                            by = c(
-                                               "survey_value" = "survey_value"
+
+                                                   "id_rhomis_dataset" =
+                                                       "id_rhomis_dataset",
+                                                   "survey_value" = "survey_value"
+
                                            )
         )
 
@@ -92,9 +96,8 @@ calculate_fp_harvest <- function(
     fp_harvest_units_data <- tree_aid_df[fp_harvested_unit_columns]
 
     # Converting the units for those columns
-    fp_harvest_units_converted <- convert_ntfp_units(unit_data = fp_harvest_units_data,
-                                                     units_conversions=fp_harvest_conversions
-    )
+    fp_harvest_units_converted <- switch_units(data_to_convert = fp_harvest_units_data,id_vector = tree_aid_df$id_rhomis_dataset,unit_tibble = fp_harvest_conversions)
+
 
     # Multiplying the units and the amounts
     fp_harvest_kg <- fp_harvest_data*fp_harvest_units_converted
@@ -424,9 +427,9 @@ fp_income_calculations <- function(data,
 
 
     fp_sold_units_data <- data[fp_sold_unit_columns]
-    fp_sold_units_numeric <- convert_ntfp_units(unit_data = fp_sold_units_data,
-                                                units_conversions=unit_conv_tibble
-    )
+    fp_sold_units_numeric <- switch_units(data_to_convert = fp_sold_units_data,id_vector = tree_aid_df$id_rhomis_dataset,unit_tibble = unit_conv_tibble)
+
+
 
     fp_sold_amount <- data[fp_sold_columns]
     fp_sold_income <- data[fp_sold_income_columns]
@@ -549,9 +552,7 @@ value_or_calorie_calculations_item_consumed <- function(data,
 #' @examples
 fp_calculations_all <- function(
         tree_aid_df,
-        units_and_conversions,
-        prices_conversions,
-        calorie_conversions
+        units_and_conversions
 
 ){
 
@@ -598,7 +599,7 @@ fp_calculations_all <- function(
             tree_aid_df=tree_aid_df,
             use="process",
             use_column=fp_product$use_column,
-            prop_column=fp_product$processed_column,
+            prop_column=fp_product$processed_eaten_column,
             new_column_name=paste0(fp_product$base_name,"_process_eaten_prop_numeric")
         )
 
@@ -685,7 +686,7 @@ ntfp_calories_and_values <- function(tree_aid_df,
     for (fp_product in fp_products){
         # Calories consumed
 
-        converion_table_name <- paste0(fp_product$base_name,"_price_lcu_per_kg")
+        converion_table_name <- paste0(fp_product$base_name,"_calories_kcal_per_kg")
         if (converion_table_name %in% names(calorie_conversions)){
             if (!is.null(calorie_conversions[[converion_table_name]])){
 
@@ -705,7 +706,7 @@ ntfp_calories_and_values <- function(tree_aid_df,
 
 
         # Processed Calories consumed
-        converion_table_name <- paste0(fp_product$base_name,"_process_price_lcu_per_kg")
+        converion_table_name <- paste0(fp_product$base_name,"_calories_kcal_per_kg")
 
         if (converion_table_name %in% names(calorie_conversions)){
             if (!is.null(calorie_conversions[[converion_table_name]])){
@@ -913,13 +914,13 @@ ntfp_total_individual <- function(tree_aid_df,
     if (income){
         suffix <- "_sold_income_per_year"
     }else if (value){
-        suffix <- "_value_consumed_lcu_per_year"
+        suffix <- "_amount_value_consumed_lcu_per_year"
     }else if (calories){
         suffix <- "_calories_consumed_kcal_per_year"
     }else if (processed_income){
         suffix <- "_process_sold_income_per_year"
     }else if (processed_value){
-        suffix <- "_process_value_consumed_lcu_per_year"
+        suffix <- "_amount_process_value_consumed_lcu_per_year"
     }else if (processed_calories){
         suffix <- "_process_calories_consumed_kcal_per_year"
     } else{
