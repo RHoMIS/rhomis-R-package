@@ -706,7 +706,7 @@ ntfp_calories_and_values <- function(tree_aid_df,
 
 
         # Processed Calories consumed
-        converion_table_name <- paste0(fp_product$base_name,"_calories_kcal_per_kg")
+        converion_table_name <- paste0(fp_product$base_name,"_process_calories_kcal_per_kg")
 
         if (converion_table_name %in% names(calorie_conversions)){
             if (!is.null(calorie_conversions[[converion_table_name]])){
@@ -803,7 +803,7 @@ ntfp_totals <- function(tree_aid_df,
             ntfp_income=ntfp_income,
             ntfp_processed_income=ntfp_processed_income
         ))
-        na_rows <- rowSums(is.na(total_ntfp_income)==nrow(total_ntfp_income))
+        na_rows <- rowSums(is.na(total_ntfp_income))==ncol(total_ntfp_income)
         total_ntfp_income <- rowSums(total_ntfp_income, na.rm = T)
         total_ntfp_income[na_rows] <- NA
 
@@ -823,7 +823,7 @@ ntfp_totals <- function(tree_aid_df,
             ntfp_value=ntfp_value,
             ntfp_processed_value=ntfp_processed_value
         ))
-        na_rows <- rowSums(is.na(total_ntfp_value)==nrow(total_ntfp_value))
+        na_rows <- rowSums(is.na(total_ntfp_value))==ncol(total_ntfp_value)
         total_ntfp_value <- rowSums(total_ntfp_value, na.rm = T)
         total_ntfp_value[na_rows] <- NA
 
@@ -842,7 +842,7 @@ ntfp_totals <- function(tree_aid_df,
             ntfp_calories=ntfp_calories,
             ntfp_processed_calories=ntfp_processed_calories
         ))
-        na_rows <- rowSums(is.na(total_ntfp_calories)==nrow(total_ntfp_calories))
+        na_rows <- rowSums(is.na(total_ntfp_calories))==ncol(total_ntfp_calories)
         total_ntfp_calories <- rowSums(total_ntfp_calories, na.rm = T)
         total_ntfp_calories[na_rows] <- NA
 
@@ -916,13 +916,13 @@ ntfp_total_individual <- function(tree_aid_df,
     }else if (value){
         suffix <- "_amount_value_consumed_lcu_per_year"
     }else if (calories){
-        suffix <- "_calories_consumed_kcal_per_year"
+        suffix <- "amount_calories_consumed_kcal_per_year"
     }else if (processed_income){
         suffix <- "_process_sold_income_per_year"
     }else if (processed_value){
         suffix <- "_amount_process_value_consumed_lcu_per_year"
     }else if (processed_calories){
-        suffix <- "_process_calories_consumed_kcal_per_year"
+        suffix <- "_amount_process_calories_consumed_kcal_per_year"
     } else{
         return(rep(NA, nrow(tree_aid_df)))
     }
@@ -1044,7 +1044,7 @@ extract_fp_price_and_calorie_conv <- function(tree_aid_df){
             processed_calorie_conversion$conversion_type <- processed_calories_column
             processed_calorie_conversion <- make_per_project_conversion_tibble(tree_aid_df$id_rhomis_dataset,processed_calorie_conversion)
             processed_calorie_conversion <- processed_calorie_conversion[,c("id_rhomis_dataset","conversion_type","survey_value", "conversion")]
-            processed_calorie_conversion[[processed_calories_column]] <- processed_calorie_conversion
+            calorie_conversions[[processed_calories_column]] <- processed_calorie_conversion
 
 
 
