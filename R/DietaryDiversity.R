@@ -474,7 +474,10 @@ hdds_calc <- function(data) {
     length(names(outputs_14)) > 0){
         if (all(names(outputs_10) %in% names(outputs_14))){
             results <- sapply(names(outputs_10), function(x){
-                pmax(outputs_10[[x]], outputs_14[[x]])
+                results <- pmax(outputs_10[[x]], outputs_14[[x]], na.rm=T)
+                na_rows <- is.na(outputs_10[[x]])&is.na(outputs_14[[x]])
+                results[na_rows] <- NA
+                results
             }, simplify=F)
 
 
