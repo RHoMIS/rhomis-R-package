@@ -35,6 +35,120 @@ set_gender_categories <- function() {
 
 
 set_conversion_file_names <- function(){
+
+    loop_values_to_extract <- c(
+        # Core columns
+        "crop_name",
+        "livestock_name",
+        "crop_yield_units",
+        "crop_yield_units_other",
+        "crop_sold_price_quantityunits",
+        "crop_price_quantityunits_other",
+        "milk_units",
+        "milk_amount_units_other",
+        "milk_sold_price_timeunits",
+        "milk_amount_time_units_other",
+        "bees_honey_production_units",
+        "bees_honey_production_units_other",
+        "eggs_units",
+        "eggs_amount_units_other",
+        "eggs_sold_price_timeunits",
+        "eggs_sold_price_timeunits_other",
+
+        # NTFP Columns
+        "fruit_amount_units",
+        "fruit_amount_units_other",
+        "nut_amount_units",
+        "nut_amount_units_other_kg",
+        "leaves_amount_units",
+        "bark_amount_units",
+        "roots_amount_units",
+        "gum_amount_units",
+        "fruit_sold_frequency",
+        "fruit_sold_amount_units_other",
+        "fruit_process_sold_frequency",
+        "fruit_process_sold_amount_units_other",
+        "nut_sold_frequency",
+        "nut_sold_amount_units_other",
+        "leaves_sold_frequency",
+        "bark_sold_frequency",
+        "roots_sold_frequency",
+        "gum_sold_frequency"
+    )
+
+
+
+
+
+
+    assign("loop_values_to_extract",
+           loop_values_to_extract,
+           envir = pkg.env
+    )
+
+
+
+    individual_columns_to_extract <- c(
+        # Core Columns
+        "country",
+        "crops_other1",
+        "crops_other2",
+        "crops_other3",
+        "livestock_other1",
+        "livestock_other2",
+        "livestock_other3",
+        "unitland",
+        "areaunits_other",
+        "areaunits_other_own",
+        "areaunits_other_rent",
+        "unitland_owned",
+        "unitland_rentin",
+        "unitland_rentout",
+        "fertiliser_units",
+        "fertiliser_units_other"
+    )
+
+
+
+
+    assign("individual_columns_to_extract",
+           individual_columns_to_extract,
+           envir = pkg.env
+    )
+
+
+
+    categories_to_merge <- list(
+        country = c("country"),
+        crop_name = c("crop_name", "crops_other1", "crops_other2", "crops_other3"),
+        livestock_name = c("livestock_name", "livestock_other1", "livestock_other2", "livestock_other3", "livestock_heads"),
+        crop_yield_units = c("crop_yield_units_other"),
+        crop_sold_price_quantityunits = c("crop_price_quantityunits_other"),
+        unitland = c("unitland", "unitland_owned", "unitland_rentin", "unitland_rentout", "areaunits_other_own", "areaunits_other_rent", "areaunits_other"),
+        milk_units = c("milk_amount_units_other"),
+        milk_sold_price_timeunits = c("milk_amount_time_units_other"),
+        bees_honey_production_units = c("bees_honey_production_units_other"),
+        eggs_units = c("eggs_amount_units_other"),
+        eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
+        fertiliser_units = c("fertiliser_units_other"),
+
+        fp_amount_units = c("fruit_amount_units","nut_amount_units","leaves_amount_units","bark_amount_units","roots_amount_units", "gum_amount_units"),
+        fp_income_units = c("fruit_sold_frequency","nut_sold_frequency","leaves_sold_frequency","bark_sold_frequency","roots_sold_frequency", "gum_sold_frequency")
+
+    )
+
+    assign("categories_to_merge",
+           categories_to_merge,
+           envir = pkg.env
+    )
+
+    assign("optional_units",
+           c(
+               "fp_amount_units",
+               "fp_income_units"
+           ),
+           envir = pkg.env)
+
     assign("unit_file_names",
            list(
                "country" = "country_to_iso2",

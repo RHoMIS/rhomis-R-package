@@ -286,11 +286,20 @@
 "fp_amount_to_kg"
 
 
-#' FP Income pe Year
+#' FP Income per Year
 #'
 #' Conversions of FP incomes
 #' to lcu per year
 #'
 #' @source NA
 "fp_income_per_freq_to_lcu_per_year"
+
+#' FP Products
+#'
+#' The NTFP products which
+#' are contained within the
+#' NTFP module
+#'
+#' @source NA
+"fp_products"
 

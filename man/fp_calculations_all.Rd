@@ -4,16 +4,13 @@
 \alias{fp_calculations_all}
 \title{FP Calculations All}
 \usage{
-fp_calculations_all(
-  tree_aid_df,
-  units_and_conversions,
-  prices_conversions,
-  calorie_conversions
-)
+fp_calculations_all(tree_aid_df, units_and_conversions)
 }
 \arguments{
-\item{units_and_conversions}{}
+\item{tree_aid_df}{Tree aid dataset}
+
+\item{units_and_conversions}{An object containing a list of conversion tables}
 }
 \description{
-FP Calculations All
+Main NTFP calculations
 }

@@ -385,13 +385,13 @@ ntfp_sold_and_consumed_calculation <- function(
 #' Calculate the Income from NTFPs
 #' in LCU per year
 #'
-#' @param data
-#' @param unit_conv_tibble
-#' @param fp_sold_kg_per_year_column
-#' @param fp_sold_units_column
-#' @param fp_sold_income_column
-#' @param new_price_column
-#' @param new_fp_sold_income
+#' @param data The main Data set
+#' @param unit_conv_tibble Conversion table
+#' @param fp_sold_kg_per_year_column Column for the forest product sold per year
+#' @param fp_sold_units_column Column with the forest product sold units
+#' @param fp_sold_income_column Column with the amount of FP sold income
+#' @param new_price_column The name of the new price column to be produced
+#' @param new_fp_sold_income The name of the new FP income column to be produced
 #'
 #' @return
 #' @export
@@ -541,10 +541,10 @@ value_or_calorie_calculations_item_consumed <- function(data,
 
 #' FP Calculations All
 #'
-#' @param tree_aid_df
-#' @param prices_conversions
-#' @param calorie_conversions
-#' @param units_and_conversions
+#' Main NTFP calculations
+#'
+#' @param tree_aid_df Tree aid dataset
+#' @param units_and_conversions An object containing a list of conversion tables
 #'
 #' @return
 #' @export
@@ -672,9 +672,11 @@ fp_calculations_all <- function(
 
 #' NTFP Calories and Values
 #'
-#' @param tree_aid_df
-#' @param price_conversions
-#' @param calorie_conversions
+#' Function for calculating calories and values for forest products consumed/sold
+#'
+#' @param tree_aid_df The main NTFP dataframe
+#' @param price_conversions List of price conversions
+#' @param calorie_conversions List of calorie conversions
 #'
 #' @return
 #' @export
@@ -771,9 +773,9 @@ ntfp_calories_and_values <- function(tree_aid_df,
 #' of processed ntfp consumed, processed
 #' calories consumed
 #'
-#' @param tree_aid_df
-#' @param indicator_df
-#' @param fp_products
+#' @param tree_aid_df Tree aid data frame
+#' @param indicator_df Data frame containing table of indicators
+#' @param fp_products List of all of the forest products
 #'
 #' @return
 #' @export

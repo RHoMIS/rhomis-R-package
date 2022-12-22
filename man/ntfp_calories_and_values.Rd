@@ -7,8 +7,12 @@
 ntfp_calories_and_values(tree_aid_df, price_conversions, calorie_conversions)
 }
 \arguments{
-\item{calorie_conversions}{}
+\item{tree_aid_df}{The main NTFP dataframe}
+
+\item{price_conversions}{List of price conversions}
+
+\item{calorie_conversions}{List of calorie conversions}
 }
 \description{
-NTFP Calories and Values
+Function for calculating calories and values for forest products consumed/sold
 }

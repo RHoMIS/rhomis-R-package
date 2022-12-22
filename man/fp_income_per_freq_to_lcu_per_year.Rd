@@ -3,7 +3,7 @@
 \docType{data}
 \name{fp_income_per_freq_to_lcu_per_year}
 \alias{fp_income_per_freq_to_lcu_per_year}
-\title{FP Income pe Year}
+\title{FP Income per Year}
 \format{
 An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 2 columns.
 }

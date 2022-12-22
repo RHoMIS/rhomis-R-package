@@ -303,73 +303,15 @@ find_loop_number_and_extract_values <- function(data, column_pattern) {
 #'   )
 #' ))
 extract_new_core_units <- function(data) {
-    loop_values_to_extract <- c(
-        "crop_name",
-        "livestock_name",
-        "crop_yield_units",
-        "crop_yield_units_other",
-        "crop_sold_price_quantityunits",
-        "crop_price_quantityunits_other",
-        "milk_units",
-        "milk_amount_units_other",
-        "milk_sold_price_timeunits",
-        "milk_amount_time_units_other",
-        "bees_honey_production_units",
-        "bees_honey_production_units_other",
-        "eggs_units",
-        "eggs_amount_units_other",
-        "eggs_sold_price_timeunits",
-        "eggs_sold_price_timeunits_other",
-
-        # ntfp_amount_unit_columns
-
-        "fruit_amount_units",
-        "fruit_amount_units_other",
-        "nut_amount_units",
-        "nut_amount_units_other_kg",
-        "leaves_amount_units",
-        "bark_amount_units",
-        "roots_amount_units",
-        "gum_amount_units",
-
-        "fruit_sold_frequency",
-        "fruit_sold_amount_units_other",
-        "fruit_process_sold_frequency",
-        "fruit_process_sold_amount_units_other",
-        "nut_sold_frequency",
-        "nut_sold_amount_units_other",
-
-        "leaves_sold_frequency",
-        "bark_sold_frequency",
-        "roots_sold_frequency",
-        "gum_sold_frequency"
 
 
-    )
 
 
     # Return a named list when applying the function
-    loop_results <- sapply(loop_values_to_extract, function(x) find_loop_number_and_extract_values(data, x), simplify = FALSE)
+    loop_results <- sapply(pkg.env$loop_values_to_extract, function(x) find_loop_number_and_extract_values(data, x), simplify = FALSE)
 
-    individual_columns_to_extract <- c(
-        "country",
-        "crops_other1",
-        "crops_other2",
-        "crops_other3",
-        "livestock_other1",
-        "livestock_other2",
-        "livestock_other3",
-        "unitland",
-        "areaunits_other",
-        "areaunits_other_own",
-        "areaunits_other_rent",
-        "unitland_owned",
-        "unitland_rentin",
-        "unitland_rentout",
-        "fertiliser_units",
-        "fertiliser_units_other"
-    )
-    column_results <- sapply(individual_columns_to_extract, function(x) extract_new_values(data, loop_or_individual_column = "column", column_name = x), simplify = FALSE)
+
+    column_results <- sapply(pkg.env$individual_columns_to_extract, function(x) extract_new_values(data, loop_or_individual_column = "column", column_name = x), simplify = FALSE)
 
     # Extracting livestock_heads values
     livestock_heads_new_values <- grep("livestock_heads_", colnames(data), value = T)
@@ -379,37 +321,31 @@ extract_new_core_units <- function(data) {
         column_results$livestock_heads <- livestock_heads_new_values
     }
 
-    categories_to_merge <- list(
-        country = c("country"),
-        crop_name = c("crop_name", "crops_other1", "crops_other2", "crops_other3"),
-        livestock_name = c("livestock_name", "livestock_other1", "livestock_other2", "livestock_other3", "livestock_heads"),
-        crop_yield_units = c("crop_yield_units_other"),
-        crop_sold_price_quantityunits = c("crop_price_quantityunits_other"),
-        unitland = c("unitland", "unitland_owned", "unitland_rentin", "unitland_rentout", "areaunits_other_own", "areaunits_other_rent", "areaunits_other"),
-        milk_units = c("milk_amount_units_other"),
-        milk_sold_price_timeunits = c("milk_amount_time_units_other"),
-        bees_honey_production_units = c("bees_honey_production_units_other"),
-        eggs_units = c("eggs_amount_units_other"),
-        eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
-        fertiliser_units = c("fertiliser_units_other"),
 
-        fp_amount_units = c("fruit_amount_units","nut_amount_units","leaves_amount_units","bark_amount_units","roots_amount_units", "gum_amount_units"),
-        fp_income_units = c("fruit_sold_frequency","nut_sold_frequency","leaves_sold_frequency","bark_sold_frequency","roots_sold_frequency", "gum_sold_frequency")
-
-    )
 
 
     final_result <- c(loop_results, column_results)
 
 
 
-    final_result <- sapply(names(categories_to_merge), function(x) merge_and_simplify_core_values(final_result, main_item = x, categories_to_merge), simplify = FALSE)
+    final_result <- sapply(names(pkg.env$categories_to_merge), function(x) merge_and_simplify_core_values(final_result, main_item = x, pkg.env$categories_to_merge), simplify = FALSE)
+
+    results_to_remove <- is.na(final_result) & names(final_result) %in% pkg.env$optional_units
+    final_result <- final_result[!results_to_remove]
 
     name_conversions <- pkg.env$unit_file_names
 
-    names(final_result) <- lapply(names(final_result), function(unit_name){
+    lapply(names(final_result), function(unit_name){
         if (unit_name %in% names(name_conversions)){
             return(as.character(name_conversions[names(name_conversions)==unit_name]))
+
+        }
+    }) %>% unlist()
+
+    names(final_result) <- lapply(names(final_result), function(unit_name){
+        if (unit_name %in% names(name_conversions)){
+                return(as.character(name_conversions[names(name_conversions)==unit_name]))
+
         }
     }) %>% unlist()
 

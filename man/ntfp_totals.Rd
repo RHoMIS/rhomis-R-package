@@ -7,7 +7,11 @@
 ntfp_totals(tree_aid_df, indicator_df, fp_products = fp_products)
 }
 \arguments{
-\item{fp_products}{}
+\item{tree_aid_df}{Tree aid data frame}
+
+\item{indicator_df}{Data frame containing table of indicators}
+
+\item{fp_products}{List of all of the forest products}
 }
 \description{
 Calculate total ntfp income, value consumed,
