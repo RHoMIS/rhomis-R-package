@@ -918,7 +918,7 @@ ntfp_total_individual <- function(tree_aid_df,
     }else if (value){
         suffix <- "_amount_value_consumed_lcu_per_year"
     }else if (calories){
-        suffix <- "amount_calories_consumed_kcal_per_year"
+        suffix <- "_amount_calories_consumed_kcal_per_year"
     }else if (processed_income){
         suffix <- "_process_sold_income_per_year"
     }else if (processed_value){
