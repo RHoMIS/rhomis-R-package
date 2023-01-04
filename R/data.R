@@ -303,3 +303,18 @@
 #' @source NA
 "fp_products"
 
+
+#' Currency Conversions
+#'
+#' World Bank currency conversions
+#'
+#' @source World Bank
+"currency_conversion"
+
+#' ISO Country Codes
+#'
+#' Conversions for official names
+#' country/region codes
+#'
+#' @source iso
+"country_codes"

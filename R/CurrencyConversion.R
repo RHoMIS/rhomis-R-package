@@ -77,32 +77,79 @@ currency_conversion_factor <- function(year, country_code) {
         ))
     }
 
+    # Deciding whether or not to query
+    # World bank stats
+
+    max_year <- max(currency_conversion$year)
+
+    if (year>max_year){
+        use_query <- T
+    }else{
+        use_query <- F
+    }
 
 
-    while (is.na(conversion_factor) & initial_year - year < 10) {
-        Sys.sleep(0.5)
-        print("Fetching Conversion factor")
-        print(year)
-        print(country_code)
+    #Fetch using inbuilt conversion factors
+    if(use_query==F){
 
-        wb_result <-querywb_stats(year, country_code)
+        three_letter_code <- tolower(country_codes[["alpha-3"]])[tolower(country_codes[["alpha-2"]])==tolower(country_code)]
+        three_letter_code <- three_letter_code[!is.na(three_letter_code)]
+
+        if (length(three_letter_code)!=1)
+        return(list(
+            "conversion_year" = NA,
+            "conversion_factor" = NA
+        ))
+
+        while (is.na(conversion_factor) & initial_year - year < 10) {
+
+            row_subset <- tolower(currency_conversion[["Country Code"]])==three_letter_code &
+                as.numeric(currency_conversion[["year"]])==as.numeric(year)
 
 
+            conversion_factor <- as.numeric(currency_conversion[row_subset,"value"])
+            conversion_year <- as.numeric(year)
 
+            if (length(conversion_factor)!=1){
+                conversion_factor <- NA
+                conversion_year <- NA
+            }
 
-        conversion_factor <- as.numeric(wb_result$PA.NUS.PRVT.PP)
-        conversion_year <- as.numeric(wb_result$date)
+            if (is.na(conversion_factor)) {
+                conversion_year <- NA
+            }
 
-        if (nrow(wb_result) == 0) {
-            conversion_factor <- NA
-            conversion_year <- NA
         }
 
 
-        year <- year - 1
 
-        if (is.na(conversion_factor)) {
-            conversion_year <- NA
+    }
+
+
+
+    # Fetch by querying WB database
+    if(use_query==T){
+
+        while (is.na(conversion_factor) & initial_year - year < 10) {
+            Sys.sleep(0.5)
+
+            wb_result <-querywb_stats(year, country_code)
+
+
+            conversion_factor <- as.numeric(wb_result$PA.NUS.PRVT.PP)
+            conversion_year <- as.numeric(wb_result$date)
+
+            if (nrow(wb_result) == 0) {
+                conversion_factor <- NA
+                conversion_year <- NA
+            }
+
+
+            year <- year - 1
+
+            if (is.na(conversion_factor)) {
+                conversion_year <- NA
+            }
         }
     }
 
