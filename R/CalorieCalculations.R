@@ -213,7 +213,7 @@ calorie_calculations <- function(processed_data,
     })
 
     result$processed_data <- processed_data
-    result$consumption_kcal_calues <- extra_outputs
+    result$consumption_kcal_values <- extra_outputs
     result$indicator_data <- indicator_data
 
 

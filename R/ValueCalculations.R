@@ -425,7 +425,7 @@ value_calculations <- function(processed_data,
     })
 
     result$processed_data <- processed_data
-    result$consumption_lcu_calues <- extra_outputs
+    result$consumption_lcu_values <- extra_outputs
     result$indicator_data <- indicator_data
 
     return(result)

@@ -396,7 +396,7 @@ value_gender_fa_calculations <- function(processed_data,
 
   processed_data <- value_calc_results$processed_data
   indicator_data <- value_calc_results$indicator_data
-  extra_outputs$consumption_lcu_values <- value_calc_results$consumption_lcu_calues
+  extra_outputs$consumption_lcu_values <- value_calc_results$consumption_lcu_values
 
 
 
@@ -409,7 +409,7 @@ value_gender_fa_calculations <- function(processed_data,
 
   processed_data <- energy_calc_results$processed_data
   indicator_data <- energy_calc_results$indicator_data
-  extra_outputs$consumption_calorie_values <- energy_calc_results$consumption_kcal_calues
+  extra_outputs$consumption_calorie_values <- energy_calc_results$consumption_kcal_values
 
   if ("mean_crop_price_lcu_per_kg" %in% names(prices) & "staple_crop" %in% names(calorie_conversions) & "crop_calories" %in% names(calorie_conversions)) {
     indicator_data <- indicator_data %>% dplyr::left_join(calorie_conversions[["staple_crop"]], by = "id_rhomis_dataset")

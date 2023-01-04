@@ -138,6 +138,10 @@ calculate_indicators <- function(
         warning("Unable to calculate livestock TLU, no 'TLU' conversions provided")
     }else {
         #indicator_search_livestock_tlu
+
+        if (is.null(units_and_conversions$livestock_count_to_tlu)){
+            units_and_conversions$livestock_count_to_tlu <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset,livestock_count_to_tlu)
+        }
         rhomis_data <- clean_tlu_column_names(rhomis_data, units_and_conversions$livestock_name_to_std,units_and_conversions$livestock_count_to_tlu)
         indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units_and_conversions$livestock_name_to_std, units_and_conversions$livestock_count_to_tlu)
     }
@@ -400,11 +404,13 @@ calculate_indicators_local <- function(
 
     units_and_conversions <- load_local_units(paste0( base_path,"conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
+
+
     secondary_units <- sapply(names(pkg.env$secondary_units), function(unit_name){
         file_name <- paste0(base_path,"conversions_stage_2/",unit_name,".csv")
 
         if (file.exists(file_name)){
-            return(readr::read_csv(file_name))
+            return(readr::read_csv(file_name,  col_types = readr::cols()))
         }
     }, simplify = F)
 
@@ -414,7 +420,7 @@ calculate_indicators_local <- function(
         file_name <- paste0(base_path,"conversions_stage_2/",unit_name,".csv")
 
         if (file.exists(file_name)){
-            return(readr::read_csv(file_name))
+            return(readr::read_csv(file_name,col_types = readr::cols()))
         }
     }, simplify = F)
 
@@ -422,7 +428,7 @@ calculate_indicators_local <- function(
         file_name <- paste0(base_path,"conversions_stage_2/",unit_name,".csv")
 
         if (file.exists(file_name)){
-            return(readr::read_csv(file_name))
+            return(readr::read_csv(file_name, col_types = readr::cols()))
         }
     }, simplify = F)
 
