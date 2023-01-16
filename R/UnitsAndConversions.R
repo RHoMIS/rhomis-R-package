@@ -527,6 +527,9 @@ write_units_to_folder <- function(list_of_df,
                                                        locale = readr::locale(encoding = "latin1")
                 )
 
+                data_to_write <- data_to_write %>% dplyr::mutate_all(as.character)
+                old_conversion_file<- old_conversion_file %>% dplyr::mutate_all(as.character)
+
                 data_to_write <- dplyr::left_join(data_to_write,
                                                   old_conversion_file,
                                                   by = c("survey_value" = "survey_value",

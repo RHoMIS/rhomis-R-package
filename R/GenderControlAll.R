@@ -217,7 +217,11 @@ gender_control_summary <- function(processed_data,
 
   total_gender_value_controls <- sapply(gender_categories, function(gender) {
     sapply(total_gender_incomes, function(gender_income_df) {
+        if (nrow(gender_income_df)==nrow(processed_data)){
       gender_income_df[[gender]]
+        }else{
+            rep(NA, nrow(processed_data))
+        }
     }, simplify = F) %>%
       dplyr::bind_cols() %>%
       rowSums(na.rm = T)

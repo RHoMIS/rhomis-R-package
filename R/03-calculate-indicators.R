@@ -142,6 +142,7 @@ calculate_indicators <- function(
         if (is.null(units_and_conversions$livestock_count_to_tlu)){
             units_and_conversions$livestock_count_to_tlu <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset,livestock_count_to_tlu)
         }
+        units_and_conversions$livestock_count_to_tlu <- units_and_conversions$livestock_count_to_tlu[duplicated(units_and_conversions$livestock_count_to_tlu)==F,]
         rhomis_data <- clean_tlu_column_names(rhomis_data, units_and_conversions$livestock_name_to_std,units_and_conversions$livestock_count_to_tlu)
         indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units_and_conversions$livestock_name_to_std, units_and_conversions$livestock_count_to_tlu)
     }

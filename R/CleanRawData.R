@@ -67,6 +67,14 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector) {
                 )
             )
 
+            household_data_tibble$survey_value <- as.character(household_data_tibble$survey_value)
+
+            unit_tibble$survey_value <- as.character(unit_tibble$survey_value)
+
+
+
+
+
 
             converted_data <- dplyr::left_join(household_data_tibble,
                                                unit_tibble,
