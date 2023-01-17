@@ -115,7 +115,7 @@ value_calculations <- function(processed_data,
     )
     if ("mean_crop_price_lcu_per_kg" %in% names(prices) & length(missing_columns) == 0) {
 
-        if (!is.null(prices[["mean_crop_price_lcu_per_kg"]])){
+        if (!is.null(prices[["mean_crop_price_lcu_per_kg"]]) & nrow(prices[["mean_crop_price_lcu_per_kg"]])>0){
 
 
             # processed_data <- remove_existing_loop_if_exists(processed_data, "value_crop_consumed_lcu")
@@ -173,7 +173,7 @@ value_calculations <- function(processed_data,
 
     # indicator_search_value_meat_consumed_lcu
     if ("mean_meat_price_per_kg" %in% names(prices) & length(missing_columns)==0) {
-        if (!is.null(prices[["mean_meat_price_per_kg"]])){
+        if (!is.null(prices[["mean_meat_price_per_kg"]])&nrow(prices[["mean_meat_price_per_kg"]])>0){
 
             processed_data <- value_or_calorie_calculations_item_consumed(
                 data = processed_data,
@@ -228,7 +228,7 @@ value_calculations <- function(processed_data,
                                               warning_message = "Could not calculate value eggs consumed"
     )
     if ("mean_eggs_price_per_kg" %in% names(prices) & length(missing_columns)==0) {
-        if (!is.null(prices[["mean_eggs_price_per_kg"]])){
+        if (!is.null(prices[["mean_eggs_price_per_kg"]]) & nrow(prices[["mean_eggs_price_per_kg"]])>0){
 
             processed_data <- value_or_calorie_calculations_item_consumed(
                 data = processed_data,
@@ -283,7 +283,7 @@ value_calculations <- function(processed_data,
                                               warning_message = "Could not calculate value eggs consumed"
     )
     if ("mean_milk_price_per_litre" %in% names(prices) & length(missing_columns)==0) {
-        if (!is.null(prices[["mean_milk_price_per_litre"]])){
+        if (!is.null(prices[["mean_milk_price_per_litre"]])& nrow(prices[["mean_milk_price_per_litre"]])>0){
 
             processed_data <- value_or_calorie_calculations_item_consumed(
                 data = processed_data,
@@ -342,7 +342,7 @@ value_calculations <- function(processed_data,
                                               warning_message = "Could not calculate value eggs consumed"
     )
     if ("mean_bees_honey_price_per_kg" %in% names(prices) & length(missing_columns)==0) {
-        if (!is.null(prices[["mean_bees_honey_price_per_kg"]])){
+        if (!is.null(prices[["mean_bees_honey_price_per_kg"]])& nrow(prices[["mean_bees_honey_price_per_kg"]])>0){
 
             processed_data <- value_or_calorie_calculations_item_consumed(
                 data = processed_data,

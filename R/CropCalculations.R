@@ -371,6 +371,7 @@ crop_income_calculations <- function(data, unit_conv_tibble = NULL) {
   crop_sold_amount <- data[crop_sold_columns]
   crop_sold_units <- data[crop_sold_unit_columns]
   crop_sold_income <- data[crop_sold_income_columns]
+  crop_sold_income <- crop_sold_income %>% dplyr::mutate_all(as.numeric)
 
   crop_sold_units_numeric <- crop_sold_units
   crop_sold_units_numeric[crop_sold_units == "total_income_per_year"] <- NA

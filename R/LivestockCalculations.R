@@ -1479,6 +1479,7 @@ gender_split_livestock <- function(data,
         )
     }
 
+
     # indicator_search_female_youth_eggs_income_per_year
     # indicator_search_female_adult_eggs_income_per_year
     # indicator_search_male_youth_eggs_income_per_year

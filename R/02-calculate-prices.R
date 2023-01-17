@@ -186,7 +186,7 @@ crop_and_livestock_calcs_all <- function(
                     survey_value=NA,
                     conversion=NA
                 ))
-                livestock_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, crop_price)
+                livestock_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, livestock_price)
 
                 prices[[paste0("mean_", price_data_set)]] <- livestock_price
 
