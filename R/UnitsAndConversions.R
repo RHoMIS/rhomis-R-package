@@ -33,6 +33,8 @@ extract_secondary_units <- function(units_and_conversions){
             name_conversions=name_conversions,
             unit_type=unit_type
         )
+
+        result <- result[duplicated(result)==F,]
         return(result)
 
     })

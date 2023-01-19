@@ -425,7 +425,20 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
                             dplyr::rename("conversion" = "conversion.y") %>%
                             dplyr::rename("unit_type" = "unit_type.x")
                     }
+
+                    if (all(c("staple_crop", "id_rhomis_dataset") %in% colnames(data_to_write))){
+                        old_conversion_file <- readr::read_csv(file_path,
+                                                               col_types = readr::cols(),
+                                                               na = c("n/a", "-999", "NA"),
+                                                               locale = readr::locale(encoding = "latin1")
+                        )
+
+
+                        data_to_write <- old_conversion_file
+                    }
                 }
+
+
             }
 
 
