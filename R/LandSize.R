@@ -43,6 +43,9 @@ land_size_calculation <- function(data,
     if (length(missing_unit_land_cultivated) == 0) {
 
         if ("areaunits_other" %in% colnames(data)){
+            data[["unitland"]] <- as.character(data[["unitland"]])
+            data[["areaunits_other"]] <- as.character(data[["areaunits_other"]])
+
             other_index <- data[["unitland"]]=="other" & !is.na(data[["unitland"]])
             data[other_index,"unitland"] <- data[other_index,"areaunits_other"]
         }
@@ -56,6 +59,8 @@ land_size_calculation <- function(data,
     missing_unit_land_owned <- check_columns_in_data(data, individual_columns = "unitland_owned")
     if (length(missing_unit_land_owned) == 0) {
         if ("areaunits_other_own" %in% colnames(data)){
+            data[["unitland_owned"]] <- as.character(data[["unitland_owned"]])
+            data[["areaunits_other_own"]] <- as.character(data[["areaunits_other_own"]])
             other_index <- data[["unitland_owned"]]=="other" & !is.na(data[["unitland_owned"]])
             data[other_index,"unitland_owned"] <- data[other_index,"areaunits_other_own"]
         }
