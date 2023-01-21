@@ -22,6 +22,7 @@ land_size_calculation <- function(data,
 
     # indicator_search_land_cultivated_ha
     # indicator_search_land_owned_ha
+
     if ("id_rhomis_dataset" %in% colnames(data) == F) {
         stop("Missing the id_rhomis_dataset column in RHoMIS data")
     }
@@ -40,6 +41,12 @@ land_size_calculation <- function(data,
 
     missing_unit_land_cultivated <- check_columns_in_data(data, individual_columns = "unitland")
     if (length(missing_unit_land_cultivated) == 0) {
+
+        if ("areaunits_other" %in% colnames(data)){
+            other_index <- data[["unitland"]]=="other" & !is.na(data[["unitland"]])
+            data[other_index,"unitland"] <- data[other_index,"areaunits_other"]
+        }
+
         converted_cultivated_units <- switch_units(data["unitland"],
                                                    unit_tibble = unit_conv_tibble,
                                                    id_vector = data[["id_rhomis_dataset"]]
@@ -48,6 +55,11 @@ land_size_calculation <- function(data,
 
     missing_unit_land_owned <- check_columns_in_data(data, individual_columns = "unitland_owned")
     if (length(missing_unit_land_owned) == 0) {
+        if ("areaunits_other_own" %in% colnames(data)){
+            other_index <- data[["unitland_owned"]]=="other" & !is.na(data[["unitland_owned"]])
+            data[other_index,"unitland_owned"] <- data[other_index,"areaunits_other_own"]
+        }
+
         converted_owned_units <- switch_units(data["unitland_owned"],
                                               unit_tibble = unit_conv_tibble,
                                               id_vector = data[["id_rhomis_dataset"]]
@@ -56,6 +68,10 @@ land_size_calculation <- function(data,
     if(length(missing_unit_land_owned)==1 & length(missing_unit_land_cultivated)==0){
         converted_owned_units <- converted_cultivated_units
     }
+
+
+
+
 
     missing_land_cultivated <- check_columns_in_data(data, individual_columns = c("landcultivated","unitland"))
     if (length(missing_land_cultivated) == 0) {
