@@ -50,7 +50,7 @@ land_size_calculation <- function(data,
         converted_cultivated_units <- switch_units(data["unitland"],
                                                    unit_tibble = unit_conv_tibble,
                                                    id_vector = data[["id_rhomis_dataset"]]
-        )
+        )%>% dplyr::mutate_all(as.numeric)
     }
 
     missing_unit_land_owned <- check_columns_in_data(data, individual_columns = "unitland_owned")
@@ -63,7 +63,7 @@ land_size_calculation <- function(data,
         converted_owned_units <- switch_units(data["unitland_owned"],
                                               unit_tibble = unit_conv_tibble,
                                               id_vector = data[["id_rhomis_dataset"]]
-        )
+        ) %>% dplyr::mutate_all(as.numeric)
     }
     if(length(missing_unit_land_owned)==1 & length(missing_unit_land_cultivated)==0){
         converted_owned_units <- converted_cultivated_units
