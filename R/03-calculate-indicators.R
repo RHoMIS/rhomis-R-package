@@ -41,6 +41,8 @@ calculate_indicators <- function(
             unit_tibble = units_and_conversions$country_to_iso2,
             id_vector = rhomis_data[["id_rhomis_dataset"]]
         ))
+
+        rhomis_data$iso_country_code <-  indicator_data$iso_country_code
         # Provide this warning if the user has not converted their country names
         if (all(is.na(units_and_conversions$country_to_iso2)) | all(is.na(indicator_data$iso_country_code))) {
             warning(paste0(
@@ -304,7 +306,25 @@ calculate_indicators <- function(
         rhomis_data <- gendered_off_farm_income_split(rhomis_data, gender_categories = gender_categories)
     }
 
+    if ("iso_country_code" %in% colnames(rhomis_data)){
+
+
+        ppi_result <- ppi_score(rhomis_data,country_code_column = rhomis_data$iso_country_code)
+
+        if (!is.null(ppi_result)){
+            if(nrow(ppi_result)==nrow(indicator_data)){
+                indicator_data <- indicator_data %>% dplyr::bind_cols(ppi_result)
+            }
+
+        }
+
+    }
+
+
     # Off farm incomes
+
+
+
 
     off_farm_columns <- c("offfarm_income_name", "offfarm_year_round", "offfarm_month", "offfarm_who_control_revenue")
 
@@ -339,8 +359,8 @@ calculate_indicators <- function(
 
 
     rhomis_data <- ntfp_calories_and_values(tree_aid_df = rhomis_data,
-                             price_conversions = prices,
-                             calorie_conversions =calorie_conversions)
+                                            price_conversions = prices,
+                                            calorie_conversions =calorie_conversions)
 
 
     indicator_data <- ntfp_totals(rhomis_data,
@@ -402,6 +422,7 @@ calculate_indicators_local <- function(
         form_id = form_id,
         unique_id_col = unique_id_col
     )
+
 
     units_and_conversions <- load_local_units(paste0( base_path,"conversions_stage_1/"), id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]])
 
@@ -561,11 +582,11 @@ calculate_indicators_server <- function(
 
     secondary_units <- sapply(names(pkg.env$secondary_units), function(unit_name){
         secondary_unit <- extract_units_from_db(database,
-                              url = "mongodb://localhost",
-                              projectID = project_name,
-                              formID = form_name,
-                              conversion_type = unit_name,
-                              collection = "units_and_conversions"
+                                                url = "mongodb://localhost",
+                                                projectID = project_name,
+                                                formID = form_name,
+                                                conversion_type = unit_name,
+                                                collection = "units_and_conversions"
         )
         if (!is.null(secondary_unit)){
             if ("conversion" %in% colnames(secondary_unit)){
@@ -581,11 +602,11 @@ calculate_indicators_server <- function(
 
     prices <- sapply(pkg.env$price_conversion_list, function(unit_name){
         price <- extract_units_from_db(database,
-                              url = "mongodb://localhost",
-                              projectID = project_name,
-                              formID = form_name,
-                              conversion_type = unit_name,
-                              collection = "units_and_conversions"
+                                       url = "mongodb://localhost",
+                                       projectID = project_name,
+                                       formID = form_name,
+                                       conversion_type = unit_name,
+                                       collection = "units_and_conversions"
         )
         if (!is.null(price)){
             if ("conversion" %in% colnames(price)){
@@ -601,11 +622,11 @@ calculate_indicators_server <- function(
 
     calorie_conversions <- sapply(pkg.env$calorie_conversion_list, function(unit_name){
         calorie_converison <- extract_units_from_db(database,
-                              url = "mongodb://localhost",
-                              projectID = project_name,
-                              formID = form_name,
-                              conversion_type = unit_name,
-                              collection = "units_and_conversions"
+                                                    url = "mongodb://localhost",
+                                                    projectID = project_name,
+                                                    formID = form_name,
+                                                    conversion_type = unit_name,
+                                                    collection = "units_and_conversions"
         )
 
         if (!is.null(calorie_converison)){
@@ -696,34 +717,34 @@ calculate_indicators_server <- function(
 
     if (central_test_case==F){
 
-    projects <- get_projects(
-        central_url,
-        central_email,
-        central_password
-    )
-    projectID <- projects$id[projects$name == project_name]
+        projects <- get_projects(
+            central_url,
+            central_email,
+            central_password
+        )
+        projectID <- projects$id[projects$name == project_name]
 
 
-    # Get central formID
-    forms <- get_forms(
-        central_url,
-        central_email,
-        central_password,
-        projectID
-    )
-    formID <- forms$xmlFormId[forms$name == form_name]
+        # Get central formID
+        forms <- get_forms(
+            central_url,
+            central_email,
+            central_password,
+            projectID
+        )
+        formID <- forms$xmlFormId[forms$name == form_name]
 
-    get_xls_form(central_url = central_url,
-                 central_email = central_email,
-                 central_password = central_password,
-                 projectID =projectID ,
-                 formID = formID,
-                 isDraft = isDraft,
-                 file_destination =  paste0(base_folder,
-                                            clean_project_name,
-                                            "/",
-                                            clean_form_name,
-                                            "/",clean_form_name,"_survey.xls"))
+        get_xls_form(central_url = central_url,
+                     central_email = central_email,
+                     central_password = central_password,
+                     projectID =projectID ,
+                     formID = formID,
+                     isDraft = isDraft,
+                     file_destination =  paste0(base_folder,
+                                                clean_project_name,
+                                                "/",
+                                                clean_form_name,
+                                                "/",clean_form_name,"_survey.xls"))
     }
 
 
