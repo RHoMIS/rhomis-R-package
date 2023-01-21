@@ -52,6 +52,7 @@ ppi_score <- function(data, country_code_column) {
             ppi_limit = ppi_limit_column
         ))
 
+
         ppi_info$ppi_likelihood[na_rows] <- NA
 
         return(ppi_info)
