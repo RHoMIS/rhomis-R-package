@@ -16,6 +16,8 @@ get_household_size_conversion <- function() {
         children_4to10 = 0.75,
         males11to24 = 0.85,
         females11to24 = 0.75,
+        males11to50=0.925,
+        females11to50=0.805,
         males25to50 = 1,
         females25to50 = 0.86,
         female_25_to_50 = 0.86,
