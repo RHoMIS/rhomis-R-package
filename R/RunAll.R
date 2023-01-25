@@ -36,12 +36,6 @@ make_id_columns <- function(data,
         data[[country_column]] <- NA
     }
 
-    # Issues with unique id column
-    if (unique_id_col %in% colnames(data)==F){
-        warning(paste("Expected column '", unique_id_col, "' does not exist in the input dataset. This will mean we use row numbers as individual ids"))
-        data[[unique_id_col]] <- NA
-
-    }
 
     # Issues with hhid column
     if (!is.null(hh_id_col)){
@@ -82,9 +76,18 @@ make_id_columns <- function(data,
 
 
     # make sure that the unique_id_col does indeed contain unique values
-    if (any(duplicated(data[unique_id_col]))) {
-        warning("The unique_id_col you provided `",unique_id_col,"` exists in the data, but contains duplicate entries. Will use row index instead")
+    # Issues with unique id column
+    if (unique_id_col %in% colnames(data)==F){
+        warning(paste("Expected column '", unique_id_col, "' does not exist in the input dataset. We will use a combination of form id and row number"))
+        if("id_form" %in% colnames(data)){
+            data[[unique_id_col]] <- paste0(data$id_form, row.names(data))
+
+        }else{
+            data[[unique_id_col]] <- NA
+        }
+
     }
+
 
 
 
@@ -165,7 +168,20 @@ load_rhomis_csv <- function(file_path,
         rhomis_data <- rhomis_data[-duplicated_indices]
     }
 
+
+
+
     rhomis_data <- convert_all_columns_to_lower_case(rhomis_data)
+
+    if (is.null(hh_id_col)){
+        if ("hhid" %in% colnames(rhomis_data)){
+            hh_id_col <- "hhid"
+        }
+        if ("householdid" %in% colnames(rhomis_data)){
+            hh_id_col <- "householdid"
+        }
+
+    }
 
     # temp manual intervention to account for non-standard/missing column fields
     rhomis_data <- make_id_columns(
