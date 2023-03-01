@@ -396,7 +396,8 @@ calculate_indicators <- function(
 #' @param form_id The form id string or column name
 #' @param gender_categories The gender categories to examine
 #' @param unique_id_col  The column containing unique household ids
-
+#' @param hh_id_col The column containing household ids to use, could be the same as unique_id_col. Household IDs can be linked to older longitudinal surveys when merging datasets.
+#' @param overwrite Whether or not to overwrite household ids
 #'
 #' @return
 #' @export
@@ -409,7 +410,9 @@ calculate_indicators_local <- function(
         proj_id,
         form_id,
         gender_categories = pkg.env$gender_categories,
-        unique_id_col = "_uuid"
+        unique_id_col = "_uuid",
+        hh_id_col = NULL,
+        overwrite=F
 
 ){
 
@@ -420,7 +423,9 @@ calculate_indicators_local <- function(
         id_type = id_type,
         proj_id = proj_id,
         form_id = form_id,
-        unique_id_col = unique_id_col
+        unique_id_col = unique_id_col,
+        hh_id_col = hh_id_col,
+        overwrite=overwrite
     )
 
 

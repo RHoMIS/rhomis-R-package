@@ -42,7 +42,9 @@ extract_units_and_conversions <- function(
 #' @param id_type RHoMIS surveys have form and project IDs. Sometimes the form and project IDs are included as a column in the dataset (id_type="column"), or the IDs are specified by the user at the point of processing (id_type="string")
 #' @param proj_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing project IDs
 #' @param form_id If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs
-#' @param unique_id_col The column containing unique household ids
+#' @param unique_id_col The column containing unique household ids. These are designed to be "unique" across merged datasets
+#' @param hh_id_col The column containing household ids to use, could be the same as unique_id_col. Household IDs can be linked to older longitudinal surveys when merging datasets.
+#' @param overwrite Whether or not to overwrite household ids
 #'
 #' @return
 #' @export
@@ -54,7 +56,9 @@ extract_units_and_conversions_csv <- function(
         id_type=c("string", "column"),
         proj_id,
         form_id,
-        unique_id_col = "_uuid"
+        unique_id_col = "_uuid",
+        hh_id_col = NULL,
+        overwrite=F
 
 
 ){
@@ -63,7 +67,10 @@ extract_units_and_conversions_csv <- function(
         id_type = id_type,
         proj_id = proj_id,
         form_id = form_id,
-        unique_id_col = unique_id_col
+        unique_id_col = unique_id_col,
+        hh_id_col = hh_id_col,
+        overwrite=overwrite
+
     )
     units_and_conversions <- extract_units_and_conversions(rhomis_data)
 
