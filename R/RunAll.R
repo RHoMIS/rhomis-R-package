@@ -11,6 +11,7 @@
 #' @param form_id Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)
 #' @param unique_id_col The name of the column containing unique id record. This is produced by the server accepting ODK records
 #' @param hh_id_col The household ID column
+#' @param overwrite Boolean indicating whether or not to overwrite existing household id columns.
 #'
 #' @return
 #' @export
@@ -22,7 +23,8 @@ make_id_columns <- function(data,
                             hh_id_col = NULL,
                             id_type = c("string", "column"), # list of allowed values for argument, default is first element in vector
                             proj_id,
-                            form_id) {
+                            form_id,
+                            overwrite=F) {
 
     # Check validity of argument and print error if unknown type is supplied
     id_type <- match.arg(id_type)
@@ -99,11 +101,24 @@ make_id_columns <- function(data,
     data$id_rhomis_dataset <- proj_form_id_col
 
     # create unique household id
+    if (overwrite==T | is.null(hh_id_col)){
     if (is.null(hh_id_col)) {
         household_id <- paste0(data[["id_proj"]], data[["id_form"]], c(1:nrow(data)))
         household_id <- unname(sapply(household_id, function(x) digest::digest(x)))
     } else {
         household_id <- unname(sapply(data[[hh_id_col]], function(x) digest::digest(x)))
+    }
+    }
+
+    if (overwrite==F){
+        if (!is.null(hh_id_col) )
+        {
+            if (hh_id_col %in% colnames(data)){
+                household_id <- data[[hh_id_col]]
+            }
+
+        }
+
     }
 
     # add household and unique id columns to dataset
@@ -191,7 +206,8 @@ load_rhomis_csv <- function(file_path,
         hh_id_col = hh_id_col,
         id_type = id_type,
         proj_id = proj_id,
-        form_id = form_id
+        form_id = form_id,
+        overwrite = overwrite
     )
 
     return(rhomis_data)

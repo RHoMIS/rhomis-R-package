@@ -15,7 +15,8 @@ test_that("can create ID columns", {
                               hh_id_col = "hh_id_col_test",
                               id_type = "string",
                               proj_id = "proj_test",
-                              form_id = "form_test"
+                              form_id = "form_test",
+                              overwrite = T
     )
 
     expected_result <- tibble::as_tibble(list(
@@ -41,7 +42,8 @@ test_that("can create ID columns", {
                               hh_id_col = "hh_id_col_test",
                               id_type = "column",
                               proj_id = "proj_id_column_test",
-                              form_id = "form_id_column_test"
+                              form_id = "form_id_column_test",
+                              overwrite = T
     )
 
     expected_result <- tibble::as_tibble(list(
