@@ -286,7 +286,7 @@ crop_and_livestock_calcs_all <- function(
         prices <- c(prices,ntfp_prices_and_calories$prices)
     }
 
-    if (all_null_calories){
+    if (all_null_calories==F){
         calorie_conversions_dfs <- c(calorie_conversions_dfs,ntfp_prices_and_calories$calorie_conversions)
     }
 
