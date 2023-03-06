@@ -181,14 +181,14 @@ crop_and_livestock_calcs_all <- function(
 
         if (price_data_set %in% missing_livestock_columns==T){
 
-                livestock_price <- tibble::as_tibble(list(
-                    unit_type= paste0("mean_", price_data_set),
-                    survey_value=NA,
-                    conversion=NA
-                ))
-                livestock_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, livestock_price)
+            livestock_price <- tibble::as_tibble(list(
+                unit_type= paste0("mean_", price_data_set),
+                survey_value=NA,
+                conversion=NA
+            ))
+            livestock_price <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset, livestock_price)
 
-                prices[[paste0("mean_", price_data_set)]] <- livestock_price
+            prices[[paste0("mean_", price_data_set)]] <- livestock_price
 
             next()
         }
@@ -274,9 +274,21 @@ crop_and_livestock_calcs_all <- function(
 
     )
     ntfp_prices_and_calories <- extract_fp_price_and_calorie_conv(tree_aid_df = rhomis_data)
-    prices <- c(prices,ntfp_prices_and_calories$prices)
-    calorie_conversions_dfs <- c(calorie_conversions_dfs,ntfp_prices_and_calories$calorie_conversions)
 
+    all_null_prices<- length(ntfp_prices_and_calories$prices)==0
+
+    all_null_calories <- lapply(ntfp_prices_and_calories$calorie_conversions, function(x)
+        all(is.na(x$survey_value))
+    )
+    all_null_calories <- all(all_null_calories==T)
+
+    if (all_null_prices==F){
+        prices <- c(prices,ntfp_prices_and_calories$prices)
+    }
+
+    if (all_null_calories){
+        calorie_conversions_dfs <- c(calorie_conversions_dfs,ntfp_prices_and_calories$calorie_conversions)
+    }
 
 
     # Assemble all outputs ready to write to file
