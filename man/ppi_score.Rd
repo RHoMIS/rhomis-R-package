@@ -4,12 +4,12 @@
 \alias{ppi_score}
 \title{PPI score}
 \usage{
-ppi_score(data, country_code_column)
+ppi_score(df, country_code_column)
 }
 \arguments{
-\item{data}{The data set containing the PPI columns}
-
 \item{country_code_column}{The country codes for the data-sets concerned}
+
+\item{data}{The data set containing the PPI columns}
 }
 \description{
 This function calculates the ppi score based off of a typical RHoMIS
@@ -37,7 +37,7 @@ df <- tibble::as_tibble(list(
 
 country_code_column <- c("VN", "VN", "KE", "KE",NA,"AZ")
 ppi_score(df, country_code_column)
-ppi_score(data, country_code_column)
+ppi_score(df, country_code_column)
      country_code_column <- toupper(country_code_column)
 
 

@@ -8,7 +8,7 @@
 #'
 #' Rpackage file: ProgressOutOfPoverty.R
 #'
-#' @param data The data set containing the PPI columns
+#' @param df The data set containing the PPI columns
 #' @param country_code_column The country codes for the data-sets concerned
 #'
 #' @return
@@ -32,19 +32,19 @@
 #'
 #' country_code_column <- c("VN", "VN", "KE", "KE",NA,"AZ")
 #' ppi_score(df, country_code_column)
-ppi_score <- function(data, country_code_column) {
-    colnames(data) <- tolower(colnames(data))
+ppi_score <- function(df, country_code_column) {
+    colnames(df) <- tolower(colnames(df))
     ppi_columns <- paste0("ppi_", 1:10)
 
-    if (all(ppi_columns %in% colnames(data))) {
-        ppi_data <- data[ppi_columns]
+    if (all(ppi_columns %in% colnames(df))) {
+        ppi_data <- df[ppi_columns]
         ppi_data <- ppi_data %>% dplyr::mutate_all(as.numeric)
 
         na_rows  <- rowSums(is.na(ppi_data))==ncol(ppi_data)
         ppi_score <- rowSums(ppi_data, na.rm=T)
         #
         # country_code_column <- c("VN", "VN", "KE", "KE",NA,"AZ")
-        #' ppi_score(data, country_code_column)
+        #' ppi_score(df, country_code_column)
         #'      country_code_column <- toupper(country_code_column)
         #'
         #'
