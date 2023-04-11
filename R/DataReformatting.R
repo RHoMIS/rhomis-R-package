@@ -142,10 +142,11 @@ add_column_after_specific_column <- function(data, new_data, new_column_name = N
         }
 
         for (loop in 1:number_of_loops_old) {
-            new_column_to_add <- new_data[paste0(new_column_name, "_", loop)]
+            new_column_name_to_add <- paste0(new_column_name, "_", loop)
+            new_column_to_add <- new_data[new_column_name_to_add]
 
-            if (new_column_to_add %in% colnames(data)){
-                data[new_column_to_add] <- NULL
+            if (new_column_name_to_add %in% colnames(data)){
+                data[new_column_name_to_add] <- NULL
             }
             data <- tibble::add_column(.data = data, new_column_to_add, .after = paste0(old_column_name, "_", loop))
         }

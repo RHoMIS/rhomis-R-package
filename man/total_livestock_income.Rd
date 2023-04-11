@@ -13,6 +13,7 @@ the "livestock_calculations_all" function}
 \description{
 Calculate total livestock income from
 processed RHoMIS data
- 
+}
+\details{
 Rpackage file: TotalIncomes.R
 }

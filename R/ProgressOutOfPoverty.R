@@ -15,23 +15,23 @@
 #' @export
 #'
 #' @examples
-# data <- tibble::as_tibble(list(
-#     "PPI_1" = c(5, 1, 3, 4,1,3),
-#     "PPI_2" = c(3, 12, 7, 18,4,5),
-#     "PPI_3" = c(17, 1, 2, 3,5,3),
-#     "PPI_4" = c(NA, 2, 1, 6,8,7),
-#     "PPI_5" = c(1, NA, 3, 1,1,2),
-#     "PPI_6" = c(3, 7, 4, 1,4,5),
-#     "PPI_7" = c(8, 3, NA, 2,7,6),
-#     "PPI_8" = c(3, 8, 1, 3,0,2),
-#     "PPI_9" = c(9, 2, 8, 5,NA,1),
-#     "PPI_10" = c(12, 4, 7, 1,1,1),
-#     "random_other_column" = c(NA, NA, NA, NA,NA,NA)
-# ))
-#
-# country_code_column <- c("VN", "VN", "KE", "KE",NA,"AZ")
-#' ppi_score(data, country_code_column)
 #'
+#' df <- tibble::as_tibble(list(
+#'     "PPI_1" = c(5, 1, 3, 4,1,3),
+#'     "PPI_2" = c(3, 12, 7, 18,4,5),
+#'     "PPI_3" = c(17, 1, 2, 3,5,3),
+#'     "PPI_4" = c(NA, 2, 1, 6,8,7),
+#'     "PPI_5" = c(1, NA, 3, 1,1,2),
+#'     "PPI_6" = c(3, 7, 4, 1,4,5),
+#'     "PPI_7" = c(8, 3, NA, 2,7,6),
+#'     "PPI_8" = c(3, 8, 1, 3,0,2),
+#'     "PPI_9" = c(9, 2, 8, 5,NA,1),
+#'     "PPI_10" = c(12, 4, 7, 1,1,1),
+#'     "random_other_column" = c(NA, NA, NA, NA,NA,NA)
+#' ))
+#'
+#' country_code_column <- c("VN", "VN", "KE", "KE",NA,"AZ")
+#' ppi_score(df, country_code_column)
 ppi_score <- function(data, country_code_column) {
     colnames(data) <- tolower(colnames(data))
     ppi_columns <- paste0("ppi_", 1:10)
@@ -39,11 +39,15 @@ ppi_score <- function(data, country_code_column) {
     if (all(ppi_columns %in% colnames(data))) {
         ppi_data <- data[ppi_columns]
         ppi_data <- ppi_data %>% dplyr::mutate_all(as.numeric)
-        ppi_score <- rowSums(ppi_data, na.rm = T)
 
-        na_rows <- rowSums(is.na(ppi_data))==ncol(ppi_data)
-
-        country_code_column <- toupper(country_code_column)
+        na_rows  <- rowSums(is.na(ppi_data))==ncol(ppi_data)
+        ppi_score <- rowSums(ppi_data, na.rm=T)
+        #
+        # country_code_column <- c("VN", "VN", "KE", "KE",NA,"AZ")
+        #' ppi_score(data, country_code_column)
+        #'      country_code_column <- toupper(country_code_column)
+        #'
+        #'
         ppi_limit_column <- unname(sapply(country_code_column, function(x) identify_ppi_limit(x)))
         ppi_likelihood <- unname(unlist(sapply(c(1:length(ppi_score)), function(x) identify_ppi_conversion(ppi_score[x], country_code_column[x]))))
 
@@ -54,6 +58,7 @@ ppi_score <- function(data, country_code_column) {
 
 
         ppi_info$ppi_likelihood[na_rows] <- NA
+        ppi_info$ppi_limit[na_rows] <- NA
 
         return(ppi_info)
     }

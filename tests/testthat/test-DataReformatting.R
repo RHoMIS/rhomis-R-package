@@ -128,6 +128,48 @@ testthat::test_that("Can add new loop columns in the correct place", {
 
 
     expect_equal(actual_result, expected_result)
+
+
+    data <- tibble::as_tibble(list(
+        "old_column_1" = c("kg", "sacks_100kg", "qwerty"),
+        "new_column_1" = c("kg", "sacks_100kg", "qwerty"),
+
+
+        "old_column_2" = c("kg", "sacks_100kg", "xys"),
+        "new_column_2" = c("kg", "sacks_100kg", "xys"),
+
+        "old_column_3" = c("kg", NA, "tonnes"),
+        "new_column_3" = c("kg", NA, "tonnes")
+
+    ))
+    new_data <- tibble::as_tibble(list(
+        "new_column_1" = c("kg", "sacks_100kg", "qwerty"),
+        "new_column_2" = c("kg", "sacks_100kg", "xys"),
+        "new_column_3" = c("kg", NA, "tonnes")
+    ))
+    old_column_name <- "old_column"
+    new_column_name <- "new_column"
+
+    actual_result <- add_column_after_specific_column(
+        data = data,
+        new_data = new_data,
+        new_column_name = new_column_name,
+        old_column_name = old_column_name,
+        loop_structure = T
+    )
+
+    expected_result <- tibble::as_tibble(list(
+        "old_column_1" = c("kg", "sacks_100kg", "qwerty"),
+        "new_column_1" = c("kg", "sacks_100kg", "qwerty"),
+        "old_column_2" = c("kg", "sacks_100kg", "xys"),
+        "new_column_2" = c("kg", "sacks_100kg", "xys"),
+        "old_column_3" = c("kg", NA, "tonnes"),
+        "new_column_3" = c("kg", NA, "tonnes")
+    ))
+
+
+    expect_equal(actual_result, expected_result)
+
 })
 
 

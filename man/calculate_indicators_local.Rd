@@ -11,7 +11,9 @@ calculate_indicators_local(
   proj_id,
   form_id,
   gender_categories = pkg.env$gender_categories,
-  unique_id_col = "_uuid"
+  unique_id_col = "_uuid",
+  hh_id_col = NULL,
+  overwrite = F
 )
 }
 \arguments{
@@ -28,6 +30,10 @@ calculate_indicators_local(
 \item{gender_categories}{The gender categories to examine}
 
 \item{unique_id_col}{The column containing unique household ids}
+
+\item{hh_id_col}{The column containing household ids to use, could be the same as unique_id_col. Household IDs can be linked to older longitudinal surveys when merging datasets.}
+
+\item{overwrite}{Whether or not to overwrite household ids}
 }
 \description{
 Calculate all of the Local Indicators

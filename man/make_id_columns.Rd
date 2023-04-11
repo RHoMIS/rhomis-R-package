@@ -11,7 +11,8 @@ make_id_columns(
   hh_id_col = NULL,
   id_type = c("string", "column"),
   proj_id,
-  form_id
+  form_id,
+  overwrite = F
 )
 }
 \arguments{
@@ -28,6 +29,8 @@ make_id_columns(
 \item{proj_id}{Either a single string to be used as the project ID for all households, or the name of the column containing the project IDs (depending on id_type)}
 
 \item{form_id}{Either a single string to be used as the form ID for all households, or the name of the column containing the form IDs (depending on id_type)}
+
+\item{overwrite}{Boolean indicating whether or not to overwrite existing household id columns.}
 }
 \description{
 Make ID columns for form, project, and household

@@ -10,7 +10,9 @@ calculate_prices_csv(
   id_type = c("string", "column"),
   proj_id,
   form_id,
-  unique_id_col = "_uuid"
+  unique_id_col = "_uuid",
+  hh_id_col = NULL,
+  overwrite = F
 )
 }
 \arguments{
@@ -24,10 +26,12 @@ calculate_prices_csv(
 
 \item{form_id}{If ID type was string, this should be a string, if ID type was column, this should be a column name containing form IDs}
 
-\item{unique_id_col}{The column containing unique household ids
+\item{unique_id_col}{The column containing unique household ids}
 
-Rpackage file: 02-calculate-prices.R}
+\item{hh_id_col}{The column containing household ids to use, could be the same as unique_id_col. Household IDs can be linked to older longitudinal surveys when merging datasets.}
+
+\item{overwrite}{Whether or not to overwrite household ids}
 }
 \description{
-Calculate Prices CSV
+Rpackage file: 02-calculate-prices.R
 }
