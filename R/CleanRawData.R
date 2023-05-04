@@ -71,20 +71,24 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector) {
 
             unit_tibble$survey_value <- as.character(unit_tibble$survey_value)
 
+            household_data_tibble$zzz_rhomis_index_temp <- c(1:nrow(household_data_tibble))
 
 
 
 
+            # converted_data <- dplyr::left_join(household_data_tibble,
+            #                                    unit_tibble,
+            #                                    by = c(
+            #                                        "id_rhomis_dataset" =
+            #                                            "id_rhomis_dataset",
+            #                                        "survey_value" = "survey_value"
+            #                                    )
+            # )
 
-            converted_data <- dplyr::left_join(household_data_tibble,
-                                               unit_tibble,
-                                               by = c(
-                                                   "id_rhomis_dataset" =
-                                                       "id_rhomis_dataset",
-                                                   "survey_value" = "survey_value"
-                                               )
-            )
-            converted_data
+            converted_data <- household_data_tibble %>% merge(unit_tibble,by=c("id_rhomis_dataset","survey_value"),all.x = T,all.y = F)
+            converted_data <- converted_data[order(converted_data$zzz_rhomis_index_temp),]
+
+            # converted_data
             return(converted_data[["conversion"]])
         }) %>% dplyr::bind_cols()
 
@@ -103,14 +107,20 @@ switch_units <- function(data_to_convert, unit_tibble, id_vector) {
                 id_rhomis_dataset = id_vector
             )
         )
+        household_data_tibble$survey_value <- as.character(household_data_tibble$survey_value)
+        household_data_tibble$zzz_rhomis_index_temp <- c(1:nrow(household_data_tibble))
 
-        converted_data <- dplyr::left_join(household_data_tibble,
-                                           unit_tibble,
-                                           by = c(
-                                               "id_rhomis_dataset" = "id_rhomis_dataset",
-                                               "survey_value" = "survey_value"
-                                           )
-        )
+
+        converted_data <- household_data_tibble %>% merge(unit_tibble,by=c("id_rhomis_dataset","survey_value"),all.x = T,all.y = F)
+        converted_data <- converted_data[order(converted_data$zzz_rhomis_index_temp),]
+
+        # converted_data <- dplyr::left_join(household_data_tibble,
+        #                                    unit_tibble,
+        #                                    by = c(
+        #                                        "id_rhomis_dataset" = "id_rhomis_dataset",
+        #                                        "survey_value" = "survey_value"
+        #                                    )
+        # )
 
         return(converted_data[["conversion"]])
     }

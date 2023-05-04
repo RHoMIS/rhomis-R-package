@@ -7,9 +7,9 @@
 ppi_score(df, country_code_column)
 }
 \arguments{
-\item{country_code_column}{The country codes for the data-sets concerned}
+\item{df}{The data set containing the PPI columns}
 
-\item{data}{The data set containing the PPI columns}
+\item{country_code_column}{The country codes for the data-sets concerned}
 }
 \description{
 This function calculates the ppi score based off of a typical RHoMIS
