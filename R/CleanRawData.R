@@ -57,7 +57,13 @@ make_per_project_conversion_tibble <- function(proj_id_vector,
 switch_units <- function(data_to_convert, unit_tibble, id_vector) {
 
     # Converting the two lists into a tibble which can be searched
-    unit_tibble <- unit_tibble[!duplicated(unit_tibble), ]
+    if (any(duplicated(unit_tibble[c( "id_rhomis_dataset","survey_value")]))){
+
+    warning("Some units values were duplicated in the unit conversion values provided, duplicates were removed")
+    unit_tibble <- unit_tibble[!duplicated(unit_tibble[c( "id_rhomis_dataset","survey_value")]),]
+    }
+
+
     if ("tbl" %in% class(data_to_convert) | "tbl_df" %in% class(data_to_convert) | "data.frame" %in% class(data_to_convert)) {
         converted_data <- lapply(data_to_convert, function(x) {
             household_data_tibble <- tibble::as_tibble(
