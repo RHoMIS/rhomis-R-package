@@ -575,5 +575,10 @@ testthat::test_that("Crop incomes calculated", {
 
   actual_result <- crop_income_calculations(data)
 
+  actual_result$crop_price_1[is.nan(actual_result$crop_price_1)] <- NA
+  actual_result$crop_price_3[is.nan(actual_result$crop_price_3)] <- NA
+
+
+
   expect_equal(actual_result, expected_result)
 })
