@@ -296,17 +296,18 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
 
     units_and_conversions <- list()
     # loop over the possible list of unit conversion file names
+
+
+
     for (unit_name in pkg.env$unit_file_names) {
 
-        if (unit_name %in% unit_list) {
+        if (as.character(unit_name) %in% unit_list) {
             conversions <- extract_units_from_db(database,
                                                  url = "mongodb://localhost",
                                                  projectID = projectID,
                                                  formID = formID,
-                                                 conversion_type = unit_name,
+                                                 conversion_type = as.character(unit_name),
                                                  collection = "units_and_conversions"
-
-
             )
 
             conversions[conversions$conversion=="NA" & !is.na(conversions$conversion),"conversion"] <- NA
@@ -314,7 +315,7 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
         } else {
             warning(paste("Tried to find ", unit_name, " conversions, but could not find records in projectData collection"))
 
-            if (unit_name %in% c("crop_name", "livestock_name")) {
+            if (unit_name %in% c("crop_name_to_std", "livestock_name_to_std")) {
                 # evaluate the string denoting the variable name to be used
                 var <- eval(parse(text = unit_name))
 
@@ -333,12 +334,16 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
             }
         }
 
+        if (all(c("id_rhomis_dataset","survey_value") %in% colnames(conversions))){
+        conversions <- conversions[!duplicated(conversions[c( "id_rhomis_dataset","survey_value")]),]
+        }
         units_and_conversions[[unit_name]] <- conversions
         # assign(, conversions, envir = pkg.env)
     }
 
 
     return(units_and_conversions)
+
 }
 
 #' Extract Units from database
@@ -615,6 +620,10 @@ load_local_units <- function(units_folder, id_rhomis_dataset, unit_type="primary
             }
         }
 
+        if (all(c("id_rhomis_dataset","survey_value") %in% colnames(conversions))){
+            conversions <- conversions[!duplicated(conversions[c( "id_rhomis_dataset","survey_value")]),]
+        }
+
         # assign conversion to package env
         units_and_conversions[[unit_file]] <- conversions
 
@@ -707,6 +716,8 @@ find_db_units <- function(projectID,
                           url,
                           collection,
                           database) {
+
+
     connection <- mongolite::mongo(
         collection = "projectData",
         db = database,

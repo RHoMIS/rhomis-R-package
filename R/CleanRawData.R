@@ -57,10 +57,12 @@ make_per_project_conversion_tibble <- function(proj_id_vector,
 switch_units <- function(data_to_convert, unit_tibble, id_vector) {
 
     # Converting the two lists into a tibble which can be searched
-    if (any(duplicated(unit_tibble[c( "id_rhomis_dataset","survey_value")]))){
+    if (all(c("id_rhomis_dataset","survey_value") %in% colnames(unit_tibble))){
+        if (any(duplicated(unit_tibble[c( "id_rhomis_dataset","survey_value")]))){
 
-    warning("Some units values were duplicated in the unit conversion values provided, duplicates were removed")
-    unit_tibble <- unit_tibble[!duplicated(unit_tibble[c( "id_rhomis_dataset","survey_value")]),]
+            warning("Some units values were duplicated in the unit conversion values provided, duplicates were removed")
+            unit_tibble <- unit_tibble[!duplicated(unit_tibble[c( "id_rhomis_dataset","survey_value")]),]
+        }
     }
 
 
@@ -477,8 +479,8 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
         if (class(data_to_write) == "list") {
             new_folder <- paste0(folder_name, "/", x)
             if(length(data_to_write)>0){
-            names(data_to_write) <- paste0(x, "_", names(data_to_write))
-            write_list_of_df_to_folder(data_to_write, new_folder)
+                names(data_to_write) <- paste0(x, "_", names(data_to_write))
+                write_list_of_df_to_folder(data_to_write, new_folder)
             }
             return()
         }

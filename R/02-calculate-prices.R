@@ -483,6 +483,11 @@ calculate_prices_server <- function(
         collection = "projectData",
         database = database
     )
+
+    unit_list <- unit_list[unit_list %in% pkg.env$price_conversion_list==F &
+        unit_list %in% pkg.env$calorie_conversion_list==F &
+        unit_list %in% names(pkg.env$secondary_units)==F]
+
     units <- load_all_db_units(unit_list,
                                projectID = project_name,
                                formID = form_name,
@@ -490,10 +495,13 @@ calculate_prices_server <- function(
                                id_rhomis_dataset = rhomis_data[["id_rhomis_dataset"]]
     )
 
+
+
     secondary_units <- get_secondary_conversions(
         rhomis_data=rhomis_data,
         units_and_conversions=units,
         gender_categories = pkg.env$gender_categories)
+
 
     save_multiple_conversions(
         database = database,

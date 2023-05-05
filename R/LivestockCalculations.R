@@ -1968,6 +1968,9 @@ clean_tlu_column_names <- function(data,
     livestock_heads_data <- data[grepl("livestock_heads_", colnames(data)) | colnames(data) == "id_rhomis_dataset"]
     colnames(livestock_heads_data) <- gsub("livestock_heads_", "", colnames(livestock_heads_data))
 
+    columns_to_make_numeric <- colnames(livestock_heads_data)[colnames(livestock_heads_data)!="id_rhomis_dataset"]
+
+    livestock_heads_data[columns_to_make_numeric] <- suppressWarnings(livestock_heads_data[columns_to_make_numeric] %>% dplyr::mutate_all(as.numeric))
     livestock_heads_data_merged <- switch_column_names_and_merge_categories(livestock_heads_data,
                                                                             conversion_tibble = livestock_name_conversion_tibble,
                                                                             by_project = T

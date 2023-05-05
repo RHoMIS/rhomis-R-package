@@ -215,6 +215,7 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
         }
 
         subset_to_add <- project_data[columns_to_merge]
+        subset_to_add <-subset_to_add %>%  dplyr::mutate_all(as.numeric)
         result <- rowSums(subset_to_add, na.rm = T)
 
         result[rowSums(is.na(subset_to_add)) == ncol(subset_to_add)] <- NA
@@ -255,6 +256,8 @@ switch_column_names_and_add_categories_for_specific_project <- function(data,
 switch_column_names_and_merge_categories <- function(data,
                                                      conversion_tibble,
                                                      by_project = T) {
+
+
     if ("id_rhomis_dataset" %in% colnames(data) == F & by_project==T) {
         stop("Cannot merge categories, missing column 'id_rhomis_dataset'")
     }
@@ -294,6 +297,7 @@ switch_column_names_and_merge_categories <- function(data,
         dplyr::bind_rows() %>%
         dplyr::arrange(merging_index) %>%
         dplyr::select(-merging_index)
+
 
 
 

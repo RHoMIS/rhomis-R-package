@@ -143,8 +143,15 @@ calculate_indicators <- function(
 
         if (is.null(units_and_conversions$livestock_count_to_tlu)){
             units_and_conversions$livestock_count_to_tlu <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset,livestock_count_to_tlu)
+            if (nrow(units_and_conversions$livestock_count_to_tlu)==0){
+                units_and_conversions$livestock_count_to_tlu <- make_per_project_conversion_tibble(rhomis_data$id_rhomis_dataset,livestock_count_to_tlu)
+            }
         }
-        units_and_conversions$livestock_count_to_tlu <- units_and_conversions$livestock_count_to_tlu[duplicated(units_and_conversions$livestock_count_to_tlu)==F,]
+
+
+        if (any(duplicated(units_and_conversions$livestock_count_to_tlu))){
+            units_and_conversions$livestock_count_to_tlu <- units_and_conversions$livestock_count_to_tlu[duplicated(units_and_conversions$livestock_count_to_tlu)==F,]
+        }
         rhomis_data <- clean_tlu_column_names(rhomis_data, units_and_conversions$livestock_name_to_std,units_and_conversions$livestock_count_to_tlu)
         indicator_data$livestock_tlu <- livestock_tlu_calculations(rhomis_data, units_and_conversions$livestock_name_to_std, units_and_conversions$livestock_count_to_tlu)
     }
@@ -601,6 +608,7 @@ calculate_indicators_server <- function(
 
         }
         return(secondary_unit)
+
     }, simplify = F)
 
     units_and_conversions <- c(units_and_conversions, secondary_units)

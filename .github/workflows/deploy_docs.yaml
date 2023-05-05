@@ -86,4 +86,4 @@ jobs:
           force: true
           # Change to the build directory before pushing
           directory: ./book/_book
-          repository: "l-gorman/rhomis-R-package"
+          repository: "rhomis/rhomis-R-package"
