@@ -1068,6 +1068,7 @@ milk_price_time_units_conversion <- function(id_rhomis_dataset, units_column, so
 
     converion_values[which(converion_values == "day")] <- 365
     converion_values[which(converion_values == "week")] <- 365 / 7
+    converion_values[which(converion_values == "biweekly")] <- 365 / 14
     converion_values[which(converion_values == "month")] <- 365 / 28
     converion_values[which(converion_values == "year")] <- 1
 
