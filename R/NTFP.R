@@ -141,6 +141,9 @@ fp_proportions_all <-  function(
         prop_column,
         new_column_name
 ){
+    if (is.null(use_column) | is.null(prop_column)){
+        return(tree_aid_df)
+    }
     #Checking whether the columns are in the dataset
     missing_columns <- check_columns_in_data(tree_aid_df,
                                              loop_columns = c(use_column, prop_column),
