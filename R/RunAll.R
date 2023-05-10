@@ -174,19 +174,29 @@ load_rhomis_csv <- function(file_path,
                                    locale = readr::locale(encoding = "UTF8"))
 
     # simplify column names to more readable format
-    colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data))
+    newcolnames <-  tolower(clean_column_names(colnames(rhomis_data)))
+    # check and replace duplicated
+    isduplicated <- duplicated(newcolnames)
+    while (any(isduplicated)){
+      namesduplicated <- colnames(rhomis_data)[isduplicated]
+      pos_slash <- regexpr("/[^/]*$", namesduplicated)
+      new_duplicated <- paste(substr(namesduplicated, 1, pos_slash-1), 
+                              substr(namesduplicated, pos_slash+1, nchar(namesduplicated)), sep="_")
+      colnames(rhomis_data)[isduplicated] <- new_duplicated
+      newcolnames[isduplicated] <- clean_column_names(new_duplicated)
+      isduplicated <- duplicated(newcolnames)
+    }
+    
+    colnames(rhomis_data) <- newcolnames
 
     # ensure all data entries are lower case for consistency / easier data analysis
-    duplicated_column_names <- colnames(rhomis_data)[duplicated(tolower(colnames(rhomis_data)))]
-    duplicated_indices <- which(duplicated(tolower(colnames(rhomis_data))))
+    # duplicated_column_names <- colnames(rhomis_data)[duplicated(tolower(colnames(rhomis_data)))]
+    # duplicated_indices <- which(duplicated(tolower(colnames(rhomis_data))))
 
-    if (length(duplicated_column_names)>0){
-        warning(paste0('Column "',duplicated_column_names, '" is duplicated. Column had to be removed for calculations to proceed\n '))
-        rhomis_data <- rhomis_data[-duplicated_indices]
-    }
-
-
-
+    # if (length(duplicated_column_names)>0){
+    #    warning(paste0('Column "',duplicated_column_names, '" is duplicated. Column had to be removed for calculations to proceed\n '))
+    #    rhomis_data <- rhomis_data[-duplicated_indices]
+    # }
 
     rhomis_data <- convert_all_columns_to_lower_case(rhomis_data)
 
