@@ -54,7 +54,7 @@ load_survey_csv <- function(file_path,
     rhomis_data <- readr::read_csv(file_path,
         col_types = readr::cols(),
         na = c("n/a", "-999", "NA", "-99", "na", ""),
-        locale = readr::locale(encoding = "latin1")
+        locale = readr::locale(encoding = "UTF8")
         )
 
     # simplify column names to more readable format

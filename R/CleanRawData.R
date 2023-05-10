@@ -432,7 +432,7 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
                         old_conversion_file <- readr::read_csv(file_path,
                                                                col_types = readr::cols(),
                                                                na = c("n/a", "-999", "NA"),
-                                                               locale = readr::locale(encoding = "latin1")
+                                                               locale = readr::locale(encoding = "UTF8")
                         )
 
                         data_to_write <- dplyr::left_join(data_to_write,
@@ -464,7 +464,7 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
 
 
             tryCatch({
-                readr::write_csv(data_to_write, file_path)
+                readr::write_excel_csv(data_to_write, file_path)
             },
             error=function(error){
                 warning(paste0("Unable to write some files \n"))

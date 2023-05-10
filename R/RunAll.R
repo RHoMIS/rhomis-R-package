@@ -169,7 +169,9 @@ load_rhomis_csv <- function(file_path,
 
 
     # read in the input csv file
-    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), na = c("na","n/a", "-999", "-99", "NA"), locale = readr::locale(encoding = "latin1"))
+    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), 
+                                   na = c("na","n/a", "-999", "-99", "NA"), 
+                                   locale = readr::locale(encoding = "UTF8"))
 
     # simplify column names to more readable format
     colnames(rhomis_data) <- clean_column_names(colnames(rhomis_data))

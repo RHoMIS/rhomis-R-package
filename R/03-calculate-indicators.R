@@ -528,7 +528,7 @@ calculate_indicators_local <- function(
 
 
 
-    return(results)
+    invisible(results)
 
 
 }

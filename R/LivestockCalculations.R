@@ -2015,7 +2015,7 @@ clean_tlu_column_names <- function(data,
 #'
 #' @example
 swap_livestock_heads_other <- function(data) {
-    number_of_livestock_other <- length(grep("livestock_other[[:digit:]]", colnames(data)))
+    number_of_livestock_other <- length(grep("^livestock_other[[:digit:]]", colnames(data)))
 
     other_columns <- colnames(data)[grepl("livestock_heads_other_lstk", colnames(data)) |
                                         grepl("livestock_heads_other[[:digit:]]_lstk", colnames(data))]

@@ -123,7 +123,7 @@ check_all_columns <-function(file_path){
     dataset <- readr::read_csv(file_path,
                                col_types = readr::cols(),
                                na = c("n/a", "-999", "-99", "NA"),
-                               locale = readr::locale(encoding = "latin1"))
+                               locale = readr::locale(encoding = "UTF8"))
 
 
     columns_to_check <- colnames(dataset)
