@@ -161,7 +161,7 @@ meat_uses <- function(data) {
                                              warning_message = "Could not calculate amounts of meat sold or consumed"
     )
     if (length(missing_columns) == 0) {
-        meat_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "meat_use", prop_column = "meat_consumed_amount", loop_number = x))
+        meat_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "meat_use", prop_column = "meat_consumed_amount", loop_number = x))
         colnames(meat_consumed_props_numeric) <- paste0("meat_consumed_props_numeric", "_", c(1:number_of_loops))
         meat_consumed_props_numeric <- tibble::as_tibble(meat_consumed_props_numeric)
         data <- add_column_after_specific_column(
