@@ -171,22 +171,11 @@ load_rhomis_csv <- function(file_path,
     # read in the input csv file
     rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), 
                                    na = c("na","n/a", "-999", "-99", "NA"), 
-                                   locale = readr::locale(encoding = "UTF8"))
+                                   locale = readr::locale(encoding = "UTF8"),
+                                   show_col_types=F)
 
     # simplify column names to more readable format
-    newcolnames <-  tolower(clean_column_names(colnames(rhomis_data)))
-    # check and replace duplicated
-    isduplicated <- duplicated(newcolnames)
-    while (any(isduplicated)){
-      namesduplicated <- colnames(rhomis_data)[isduplicated]
-      pos_slash <- regexpr("/[^/]*$", namesduplicated)
-      new_duplicated <- paste(substr(namesduplicated, 1, pos_slash-1), 
-                              substr(namesduplicated, pos_slash+1, nchar(namesduplicated)), sep="_")
-      colnames(rhomis_data)[isduplicated] <- new_duplicated
-      newcolnames[isduplicated] <- clean_column_names(new_duplicated)
-      isduplicated <- duplicated(newcolnames)
-    }
-    
+    newcolnames <-  tolower(clean_column_names(colnames(rhomis_data)))    
     colnames(rhomis_data) <- newcolnames
 
     # ensure all data entries are lower case for consistency / easier data analysis
