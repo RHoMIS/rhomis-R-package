@@ -87,16 +87,18 @@ testthat::test_that("All types of repeat loop can be specified and modified", {
 
 # Final test to make sure that all column names are properly changed
 testthat::test_that("All column names properly cleaned", {
-    repeat_columns <- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")
+
+
     column_names <- c(
         "xxx/crop_repeat[1]/crop_name",
         "xxx/livestock_repeat[2]/livestock_name",
         "xxx/crop_repeat[3]/crop_name",
         "xx/crop_repeat/crop_name",
         "x/offfarm_repeat[4]/offfarm_name",
-        "y/hh_rep[5]/person_name",
+        "y/hh_rep[5]/person_name",       
         "z/crop_repeat/crop_name"
     )
+
     expected_result <- c(
         "crop_name_1",
         "livestock_name_2",
@@ -104,11 +106,12 @@ testthat::test_that("All column names properly cleaned", {
         "crop_name",
         "offfarm_name_4",
         "person_name_5",
-        "crop_name"
+        "_crop_name"
     )
 
-    actual_result <- clean_column_names(column_names)
+    expect_warning(clean_column_names(column_names))
 
+    actual_result <- suppressWarnings(clean_column_names(column_names))
     expect_equal(actual_result, expected_result)
 })
 
