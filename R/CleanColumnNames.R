@@ -31,8 +31,8 @@ shorten_individual_column_name <- function(column_name, seperator) {
     return(split_name[length(split_name)])
 }
 #--------------------------------------------------------------
-" Shorten Multiple Column Names
-#"
+#' Shorten Multiple Column Names
+#'
 #' Used to abbreviate multiple column
 #' names based on their last values.
 #' Typical RHoMIS column names come
@@ -62,8 +62,8 @@ shorten_multiple_column_names <- function(long_names, seperator) {
     split_list <- unlist(lapply(long_names, function(name) shorten_individual_column_name(name, seperator)))
 }
 #--------------------------------------------------------------
-" Modify Loop Name
-#"
+#' Modify Loop Name
+#'
 #' Many of the variables in RHoMIS are
 #' collected through a looping structure
 #'
@@ -182,8 +182,8 @@ modify_loop_column_names <- function(column_names, loop_type) {
     return(column_names)
 }
 #--------------------------------------------------------------
-" Modify all types of loop in RHoMIS
-#"
+#' Modify all types of loop in RHoMIS
+#'
 #' The RHoMIS survey is structured using
 #' a series of important loops. These are
 #' often labelled "crop_repeat[x]". It is
@@ -302,28 +302,84 @@ clean_column_names <- function(column_names) {
     new_column_names <- tolower(new_column_names)
 
     # check and replace duplicated
-    isduplicated <- duplicated(new_column_names)
+    isduplicated <- duplicated(new_column_names,fromLast = T) | duplicated(new_column_names,fromLast = F)
 
     if (any(isduplicated)){
         warning(paste0(
-        "\nCleaning of column names has resulted in duplicates.\n",
-        "Each duplicate will have an underscore as a prefix.\n",
-        "Duplicated columns can be found below:\n",
-        paste0(new_column_names[isduplicated],collapse="\n"),
-        collapse=""))
+            "\nCleaning of column names has resulted in duplicates.\n",
+            "Each duplicate will have an underscore as a prefix.\n",
+            "Duplicated columns can be found below:\n",
+            paste0(new_column_names[isduplicated],collapse="\n"),
+            collapse=""))
     }
 
+
+    i <- 0
     while (any(isduplicated)){
-      namesduplicated <- new_column_names[isduplicated]
-      pos_slash <- regexpr("/[^/]*$", namesduplicated)
-      new_duplicated <- paste(substr(namesduplicated, 1, pos_slash-1), 
-                              substr(namesduplicated, pos_slash+1, nchar(namesduplicated)), sep="_")
-      new_column_names[isduplicated] <- new_duplicated
-      new_column_names[isduplicated] <- clean_column_names(new_duplicated)
-      isduplicated <- duplicated(new_column_names)
+
+        if (i < 5){
+
+
+            namesduplicated <- column_names[isduplicated]
+            pos_slash <- regexpr("/[^/]*$", namesduplicated)
+
+            new_duplicated <- paste(substr(namesduplicated, 1, pos_slash-1),
+                                    substr(namesduplicated, pos_slash+1, nchar(namesduplicated)), sep="_")
+
+
+            new_duplicated <- modify_all_loop_column_names(new_duplicated, repeat_columns)
+            new_duplicated <- shorten_multiple_column_names(new_duplicated, separator)
+
+            new_column_names[isduplicated] <- new_duplicated
+            isduplicated <- duplicated(new_column_names,fromLast = T) | duplicated(new_column_names,fromLast = F)
+
+            new_names_duplicated <- column_names[isduplicated]
+            # new_column_names[isduplicated]
+
+            pos_slash <- regexpr("/[^/]*$", new_names_duplicated)
+            first_removed <- substr(new_names_duplicated, 1, pos_slash-1)
+            pos_slash <- regexpr("/[^/]*$", first_removed)
+            second_removed <- substr(new_names_duplicated, 1, pos_slash-1)
+
+
+
+            namesduplicated <- paste(second_removed,
+                                     new_column_names[isduplicated], sep="/")
+
+            column_names[isduplicated] <- namesduplicated
+            new_column_names <- tolower(new_column_names)
+
+            isduplicated <- duplicated(new_column_names,fromLast = T) | duplicated(new_column_names,fromLast = F)
+
+
+            i <- i +1
+
+        }
+
+        # If have to go through more than 5 sets of slashes, then
+        # simply add underscores at the beginning of repeats incrementally
+        if (i>=5){
+            isduplicated <- duplicated(new_column_names)
+
+            namesduplicated <- new_column_names[isduplicated]
+            pos_slash <- regexpr("/[^/]*$", namesduplicated)
+            new_duplicated <- paste(substr(namesduplicated, 1, pos_slash-1),
+                                    substr(namesduplicated, pos_slash+1, nchar(namesduplicated)), sep="_")
+            new_duplicated <- modify_all_loop_column_names(new_duplicated, repeat_columns)
+            new_duplicated <- shorten_multiple_column_names(new_duplicated, separator)
+            isduplicated <- duplicated(new_column_names)
+
+            new_column_names[isduplicated] <- new_duplicated
+
+
+            i <- i + 1
+        }
+
+
+
+
+
     }
-    
-    # colnames(rhomis_data) <- newcolnames
 
 
 
