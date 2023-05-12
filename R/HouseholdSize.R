@@ -48,7 +48,7 @@ get_household_size_conversion <- function() {
 #' @examples
 identify_person_category <- function(age, gender) {
     vector <- rep(NA, length(gender))
-    gender <- tolower(gender)
+    gender <- substr(tolower(gender),0,1)
 
     vector[age < 4] <- "children_under_4"
     vector[age >= 4 & age < 1] <- "children_4to10"

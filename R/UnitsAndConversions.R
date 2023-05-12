@@ -531,7 +531,8 @@ write_units_to_folder <- function(list_of_df,
                 old_conversion_file <- readr::read_csv(file_path,
                                                        col_types = readr::cols(),
                                                        na = c("n/a", "-999", "NA"),
-                                                       locale = readr::locale(encoding = "latin1")
+                                                       locale = readr::locale(encoding = "UTF8"),
+                                                       show_col_types=F
                 )
 
                 data_to_write <- data_to_write %>% dplyr::mutate_all(as.character)
@@ -547,7 +548,7 @@ write_units_to_folder <- function(list_of_df,
 
             }
         }
-        readr::write_csv(data_to_write, file_path)
+        readr::write_excel_csv(data_to_write, file_path)
     })
 }
 
@@ -575,13 +576,14 @@ load_local_units <- function(units_folder, id_rhomis_dataset, unit_type="primary
     file_names <- list.files(units_folder)
 
     # loop over the possible list of unit conversion csv file names
-    if (unit_type=="primary"){
-        unit_list <- as.character(pkg.env$unit_file_names)
-    }
-
-    if (unit_type=="secondary"){
-        unit_list <- names(pkg.env$secondary_units)
-    }
+    # not needed anymore (all included in pkg.env$unit_file_names)
+    # if (unit_type=="primary"){
+    #     unit_list <- as.character(pkg.env$unit_file_names)
+    # }
+    # 
+    # if (unit_type=="secondary"){
+    #     unit_list <- names(pkg.env$secondary_units)
+    # }
 
     for (unit_file in pkg.env$unit_file_names) {
 
@@ -590,7 +592,8 @@ load_local_units <- function(units_folder, id_rhomis_dataset, unit_type="primary
             conversions <- readr::read_csv(paste0(units_folder, unit_file, ".csv"),
                                            col_types = readr::cols(),
                                            na = c("n/a", "-999", "NA"),
-                                           locale = readr::locale(encoding = "latin1")
+                                           locale = readr::locale(encoding = "UTF8"),
+                                           show_col_types=F
             )
         } else {
 
@@ -668,7 +671,8 @@ load_calorie_conversions <- function(base_folder, id_rhomis_dataset) {
             calorie_conversion <- readr::read_csv(paste0(base_folder, csv_filename),
                                                   col_types = readr::cols(),
                                                   na = c("n/a", "-999", "NA"),
-                                                  locale = readr::locale(encoding = "latin1")
+                                                  locale = readr::locale(encoding = "UTF8"),
+                                                  show_col_types=F
             )
         } else {
 

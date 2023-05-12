@@ -80,14 +80,13 @@ calculate_indicators <- function(
     }
 
     # Land Area
-    missing_columns <- check_columns_in_data(rhomis_data,
-                                             individual_columns = c("landcultivated"),
-                                             warning_message = "Could not calculate land cultivated"
-    )
-    if (length(missing_columns) == 0) {
+    # missing_columns <- check_columns_in_data(rhomis_data,
+    #                                          individual_columns = c("landcultivated"),
+    #                                          warning_message = "Could not calculate land cultivated"
+    # )
         indicator_data <- dplyr::bind_cols(indicator_data, land_size_calculation(rhomis_data, unit_conv_tibble = units_and_conversions$land_area_to_ha))
 
-    }
+
     # Crops and Livestock ----------------------------------------------------------------
 
     rhomis_data <- crop_and_livestock_calcs_all(
@@ -528,7 +527,7 @@ calculate_indicators_local <- function(
 
 
 
-    return(results)
+    invisible(results)
 
 
 }

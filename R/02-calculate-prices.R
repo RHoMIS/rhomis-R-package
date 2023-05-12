@@ -419,7 +419,7 @@ calculate_prices_csv <- function(
                                folder = paste0(base_path, "conversions_stage_2"),
                                converted_values = T)
 
-    return(secondary_units)
+    invisible(secondary_units)
 
 
 }
