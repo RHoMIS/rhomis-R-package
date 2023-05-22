@@ -129,25 +129,25 @@ testthat::test_that("All column names properly cleaned", {
     expect_equal(actual_result, expected_result)
 })
 
-# Additional test 
+# Additional test
 testthat::test_that("All column names are simplified without duplicates", {
-  
+
   column_names <- c(
     "xx/yy/livestock/other1",
     "xx/yy/livestock_intro/livestock/other1",
     "xx/zz/livestock_intro/livestock_other1",
     "xx/zz/livestock_intro/livestock_other2"
   )
-  
+
   expected_result <- c(
     "yy-livestock-other1",
     "livestock_intro-livestock-other1",
     "livestock_other1",
-    "livestock_other2"  
+    "livestock_other2"
   )
-  
+
   expect_warning(clean_column_names(column_names))
-  
+
   actual_result <- suppressWarnings(clean_column_names(column_names))
   expect_equal(actual_result, expected_result)
 })
