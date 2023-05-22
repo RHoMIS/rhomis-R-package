@@ -101,7 +101,6 @@ testthat::test_that("All column names properly cleaned", {
         "xx/yy/dryseason_animal_graze_shortage/feb",
         "xx/yy/wetseason_animal_graze_shortage/jan",
         "xx/yy/wetseason_animal_graze_shortage/feb",
-
         "zz/foodshortagetime_months_which/jan",
         "ww/Wild_Foods_details/collect_when/jan",
         "ww/Fruits_details/collect_when/jan"
@@ -120,8 +119,8 @@ testthat::test_that("All column names properly cleaned", {
         "wetseason_animal_graze_shortage-jan",
         "wetseason_animal_graze_shortage-feb",
         "foodshortagetime_months_which-jan",
-        "wild_foods_details_collect_when-jan",
-        "fruits_details_collect_when-jan"
+        "wild_foods_details-collect_when-jan",
+        "fruits_details-collect_when-jan"
     )
 
     expect_warning(clean_column_names(column_names))
