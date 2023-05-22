@@ -2,11 +2,7 @@
 % Please edit documentation in R/CleanColumnNames.R
 \name{modify_all_loop_column_names}
 \alias{modify_all_loop_column_names}
-\title{The RHoMIS survey is structured using
-a series of important loops. These are
-often labelled "crop_repeat[x]". It is
-important to be modify all of these loops
-to have a simpler column name format for later analysis}
+\title{Modify all types of loop in RHoMIS}
 \usage{
 modify_all_loop_column_names(column_names, repeat_columns)
 }
@@ -17,6 +13,13 @@ modify_all_loop_column_names(column_names, repeat_columns)
 of repeat column which need to be changed}
 }
 \description{
+The RHoMIS survey is structured using
+a series of important loops. These are
+often labelled "crop_repeat[x]". It is
+important to be modify all of these loops
+to have a simpler column name format for later analysis
+}
+\details{
 Rpackage file: CleanColumnNames.R
 }
 \examples{
