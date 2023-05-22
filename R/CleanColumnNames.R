@@ -316,7 +316,7 @@ clean_column_names <- function(column_names) {
                                                    repeat_columns)
     new_duplicated <- shorten_multiple_column_names(new_duplicated, 
                                                     separator)
-    new_column_names[isduplicated] <- new_duplicated
+    new_column_names[isduplicated] <- tolower(new_duplicated)
     isduplicated <- duplicated(new_column_names, fromLast = T) | 
       duplicated(new_column_names, fromLast = F)
     i <- i + 1
