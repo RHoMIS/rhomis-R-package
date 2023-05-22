@@ -317,14 +317,14 @@ load_all_db_units <- function(unit_list, database = "rhomis", projectID = "core_
 
             if (unit_name %in% c("crop_name_to_std", "livestock_name_to_std")) {
                 # evaluate the string denoting the variable name to be used
-                var <- eval(parse(text = unit_name))
+                var <- eval(parse(text = paste0("rhomis::",unit_name)))
 
                 # make dummy tibble
                 conversions <- tibble::as_tibble(list("survey_value" = var, "conversion" = var))
             } else {
                 conversions <- make_per_project_conversion_tibble(
                     proj_id_vector = id_rhomis_dataset,
-                    unit_conv_tibble = eval(parse(text = unit_name))
+                    unit_conv_tibble = eval(parse(text = paste0("rhomis::",unit_name)))
                 )
                 conversions$unit_type <- unit_name
 
@@ -437,8 +437,8 @@ check_existing_conversions <- function(list_of_df) {
     new_list <- sapply(names(list_of_df), function(x) {
         if (x %in% c("crop_name_to_std", "livestock_name_to_std")) {
             conversion <- tibble::as_tibble(list(
-                "survey_value" = eval(parse(text = x)),
-                "conversion" = eval(parse(text = x))
+                "survey_value" = eval(parse(text = paste0("rhomis::",x))),
+                "conversion" = eval(parse(text = paste0("rhomis::",x)))
             ))
 
             df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
@@ -449,7 +449,7 @@ check_existing_conversions <- function(list_of_df) {
                 dplyr::rename("conversion" = "conversion.y")
         } else {
             df_with_existing_conversions <- dplyr::left_join(list_of_df[[x]],
-                                                             eval(parse(text = x)),
+                                                             eval(parse(text = paste0("rhomis::",x))),
                                                              by = ("survey_value" = "survey_value")
             ) %>%
                 dplyr::select("unit_type", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
@@ -482,7 +482,7 @@ check_existing_calorie_conversions <- function(data) {
 
     new_list <- sapply(names(list_of_dfs), function(x) {
         df_with_existing_conversions <- dplyr::left_join(list_of_dfs[[x]],
-                                                         eval(parse(text = x)),
+                                                         eval(parse(text = paste0("rhomis::",x))),
                                                          by = ("survey_value" <- "survey_value")
         ) %>%
             dplyr::select("unit_type", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
@@ -580,7 +580,7 @@ load_local_units <- function(units_folder, id_rhomis_dataset, unit_type="primary
     # if (unit_type=="primary"){
     #     unit_list <- as.character(pkg.env$unit_file_names)
     # }
-    # 
+    #
     # if (unit_type=="secondary"){
     #     unit_list <- names(pkg.env$secondary_units)
     # }
@@ -604,7 +604,7 @@ load_local_units <- function(units_folder, id_rhomis_dataset, unit_type="primary
             if (unit_file %in% c("crop_name_to_std", "livestock_name_to_std")) {
 
                 # evaluate the string denoting the variable name to be used
-                var <- eval(parse(text = unit_file))
+                var <- eval(parse(text = paste0("rhomis::",unit_file)))
 
                 # make dummy tibble
                 conversions <- tibble::as_tibble(list("survey_value" = var, "conversion" = var))
@@ -613,7 +613,7 @@ load_local_units <- function(units_folder, id_rhomis_dataset, unit_type="primary
                     unit_conv_tibble = conversions
                 )
             } else {
-                var <- eval(parse( text = unit_file))
+                var <- eval(parse( text = paste0("rhomis::",unit_file)))
 
                 # make dummy tibble
                 conversions <- make_per_project_conversion_tibble(
@@ -682,7 +682,7 @@ load_calorie_conversions <- function(base_folder, id_rhomis_dataset) {
             # create conversion tibble
             calorie_conversion <- make_per_project_conversion_tibble(
                 proj_id_vector = id_rhomis_dataset,
-                unit_conv_tibble = eval(parse(text = paste0(produce, "_calories")))
+                unit_conv_tibble = eval(parse(text = paste0("rhomis::",produce, "_calories")))
             )
         }
 
