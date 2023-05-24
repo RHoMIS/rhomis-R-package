@@ -115,8 +115,8 @@ value_calculations <- function(processed_data,
     )
     if ("mean_crop_price_lcu_per_kg" %in% names(prices) & length(missing_columns) == 0) {
 
-        if (!is.null(prices[["mean_crop_price_lcu_per_kg"]]) & nrow(prices[["mean_crop_price_lcu_per_kg"]])>0){
-
+        if (!is.null(prices[["mean_crop_price_lcu_per_kg"]]) ){
+            if(nrow(prices[["mean_crop_price_lcu_per_kg"]])>0){
 
             # processed_data <- remove_existing_loop_if_exists(processed_data, "value_crop_consumed_lcu")
             processed_data <- value_or_calorie_calculations_item_consumed(
@@ -131,6 +131,7 @@ value_calculations <- function(processed_data,
                 data = processed_data, name_column = "crop_name", column_prefixes = "value_crop_consumed_lcu",
                 types = "num"
             )[[1]]
+            }
         }
 
 
