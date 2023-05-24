@@ -33,7 +33,9 @@ jobs:
 
       - if: runner.os == 'linux'
         run: |
-          sudo apt-get install libcurl4-openssl-dev -y
+          sudo apt-get install libcurl4-openssl-dev libssl-dev libsasl2-dev libharfbuzz-dev libfribidi-dev -y
+
+
 
       - name: Query dependencies
         run: |
