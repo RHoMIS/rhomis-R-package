@@ -87,7 +87,8 @@ testthat::test_that("All types of repeat loop can be specified and modified", {
 
 # Final test to make sure that all column names are properly changed
 testthat::test_that("All column names properly cleaned", {
-    repeat_columns <- c("crop_repeat", "livestock_repeat", "offfarm_repeat", "hh_rep")
+
+
     column_names <- c(
         "xxx/crop_repeat[1]/crop_name",
         "xxx/livestock_repeat[2]/livestock_name",
@@ -95,22 +96,62 @@ testthat::test_that("All column names properly cleaned", {
         "xx/crop_repeat/crop_name",
         "x/offfarm_repeat[4]/offfarm_name",
         "y/hh_rep[5]/person_name",
-        "z/crop_repeat/crop_name"
+        "z/crop_repeat/crop_name",
+        "xx/yy/dryseason_animal_graze_shortage/jan",
+        "xx/yy/dryseason_animal_graze_shortage/feb",
+        "xx/yy/wetseason_animal_graze_shortage/jan",
+        "xx/yy/wetseason_animal_graze_shortage/feb",
+        "zz/foodshortagetime_months_which/jan",
+        "ww/Wild_Foods_details/collect_when/jan",
+        "ww/Fruits_details/collect_when/jan"
     )
+
     expected_result <- c(
         "crop_name_1",
         "livestock_name_2",
         "crop_name_3",
-        "crop_name",
+        "xx-crop_repeat-crop_name",
         "offfarm_name_4",
         "person_name_5",
-        "crop_name"
+        "z-crop_repeat-crop_name",
+        "dryseason_animal_graze_shortage-jan",
+        "dryseason_animal_graze_shortage-feb",
+        "wetseason_animal_graze_shortage-jan",
+        "wetseason_animal_graze_shortage-feb",
+        "foodshortagetime_months_which-jan",
+        "wild_foods_details-collect_when-jan",
+        "fruits_details-collect_when-jan"
     )
 
-    actual_result <- clean_column_names(column_names)
+    expect_warning(clean_column_names(column_names))
 
+    actual_result <- suppressWarnings(clean_column_names(column_names))
     expect_equal(actual_result, expected_result)
 })
+
+# Additional test
+testthat::test_that("All column names are simplified without duplicates", {
+
+  column_names <- c(
+    "xx/yy/livestock/other1",
+    "xx/yy/livestock_intro/livestock/other1",
+    "xx/zz/livestock_intro/livestock_other1",
+    "xx/zz/livestock_intro/livestock_other2"
+  )
+
+  expected_result <- c(
+    "yy-livestock-other1",
+    "livestock_intro-livestock-other1",
+    "livestock_other1",
+    "livestock_other2"
+  )
+
+  expect_warning(clean_column_names(column_names))
+
+  actual_result <- suppressWarnings(clean_column_names(column_names))
+  expect_equal(actual_result, expected_result)
+})
+
 
 testthat::test_that("Can identify general repeat column names", {
 
@@ -122,6 +163,7 @@ testthat::test_that("Can identify general repeat column names", {
         "x/offfarm_repeat[4]/offfarm_name",
         "y/hh_rep[5]/person_name",
         "z/crop_repeat/crop_name"
+
     )
     expected_result <- c(
         "crop_repeat",

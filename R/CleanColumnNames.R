@@ -31,8 +31,8 @@ shorten_individual_column_name <- function(column_name, seperator) {
     return(split_name[length(split_name)])
 }
 #--------------------------------------------------------------
-" Shorten Multiple Column Names
-#"
+#' Shorten Multiple Column Names
+#'
 #' Used to abbreviate multiple column
 #' names based on their last values.
 #' Typical RHoMIS column names come
@@ -62,8 +62,8 @@ shorten_multiple_column_names <- function(long_names, seperator) {
     split_list <- unlist(lapply(long_names, function(name) shorten_individual_column_name(name, seperator)))
 }
 #--------------------------------------------------------------
-" Modify Loop Name
-#"
+#' Modify Loop Name
+#'
 #' Many of the variables in RHoMIS are
 #' collected through a looping structure
 #'
@@ -182,8 +182,8 @@ modify_loop_column_names <- function(column_names, loop_type) {
     return(column_names)
 }
 #--------------------------------------------------------------
-" Modify all types of loop in RHoMIS
-#"
+#' Modify all types of loop in RHoMIS
+#'
 #' The RHoMIS survey is structured using
 #' a series of important loops. These are
 #' often labelled "crop_repeat[x]". It is
@@ -271,33 +271,61 @@ modify_all_loop_column_names <- function(column_names, repeat_columns) {
 #' # "crop_name")
 clean_column_names <- function(column_names) {
 
-    # list of possible separators for columns in the raw rhomis survey data
-    separator_list <- c("\\.", "/", "-")
-
-    repeat_columns <- identify_repeat_columns(column_names)
-
-    # loop over the list of separators to identify
-    # the one that applies in this case
-    for (sep in separator_list) {
-
-        # check whether the current sep exists in a majority of column name fields
-        if (length(grep(sep, column_names)) > length(column_names) / 2) {
-            # remove the leading "\\" (needed for "." special char when using grep)
-            separator <- gsub("\\\\", "", sep)
-
-            # loop over the columns and modify them
-            column_names <- modify_all_loop_column_names(column_names, repeat_columns)
-            column_names <- shorten_multiple_column_names(column_names, separator)
-
-            # no need to continue loop if relevant sep has been identified
-            break
-        }
+  # list of possible separators for columns in the raw rhomis survey data
+  separator_list <- c("\\.", "/", "-")
+  repeat_columns <- identify_repeat_columns(column_names)
+  new_column_names <- column_names
+  # loop over the list of separators to identify
+  # the one that applies in this case
+  for (sep in separator_list) {
+    # check whether the current sep exists in a majority of column name fields
+    if (length(grep(sep, new_column_names)) > length(new_column_names)/2) {
+      # remove the leading "\\" (needed for "." special char when using grep)
+      separator <- gsub("\\\\", "", sep)
+      # loop over the columns and modify them
+      new_column_names <- modify_all_loop_column_names(new_column_names, 
+                                                       repeat_columns)
+      new_column_names <- shorten_multiple_column_names(new_column_names, 
+                                                        separator)
+      # no need to continue loop if relevant sep has been identified
+      break
     }
-
-    # make sure column names are all lower case
-    column_names <- tolower(column_names)
-
-    return(column_names)
+  }
+  # make sure column names are all lower case
+  new_column_names <- tolower(new_column_names)
+  
+  # check and replace duplicated
+  isduplicated <- duplicated(new_column_names, fromLast = T) | 
+    duplicated(new_column_names, fromLast = F)
+  if (any(isduplicated)) {
+    warning(paste0("\nCleaning of column names has resulted in duplicates.\n", 
+                   "Each duplicate will have an underscore as a prefix.\n", 
+                   "Duplicated columns can be found below:\n", paste0(new_column_names[isduplicated], 
+                                                                      collapse = "\n"), collapse = ""))
+  }
+  i <- 0
+  column_names_slah <- column_names
+  while (any(isduplicated) & i < 5) {
+    namesduplicated <- column_names_slah[isduplicated]
+    pos_slash <- regexpr("/[^/]*$", namesduplicated)
+    new_duplicated <- paste(substr(namesduplicated, 
+                                   1, pos_slash - 1), substr(namesduplicated, pos_slash + 
+                                                               1, nchar(namesduplicated)), sep = "-")
+    column_names_slah[isduplicated] <- new_duplicated
+    new_duplicated <- modify_all_loop_column_names(new_duplicated, 
+                                                   repeat_columns)
+    new_duplicated <- shorten_multiple_column_names(new_duplicated, 
+                                                    separator)
+    new_column_names[isduplicated] <- tolower(new_duplicated)
+    isduplicated <- duplicated(new_column_names, fromLast = T) | 
+      duplicated(new_column_names, fromLast = F)
+    i <- i + 1
+  }
+  #if duplicates remains, add a number
+  if (any(isduplicated)){
+    new_column_names[isduplicated] <- paste(new_column_names[isduplicated], 1:sum(isduplicated), sep="-")
+  }
+  return(new_column_names)
 }
 
 

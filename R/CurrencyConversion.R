@@ -184,7 +184,9 @@ convert_all_currencies <- function(data, country_column = "country", year_column
     #     "year"=c("2016","2016","2021", "2014", "2016", NA, "2020")
     # )))
     subset_data <- data %>% dplyr::select(c(country_column, year_column))
-    combinations <- tibble::as_tibble(table(subset_data)) %>%
+
+
+    combinations <- tibble::as_tibble(table(subset_data,useNA="always")) %>%
         dplyr::filter(n > 0) %>%
         dplyr::select(-c("n"))
 
@@ -193,8 +195,8 @@ convert_all_currencies <- function(data, country_column = "country", year_column
 
     for (i in 1:nrow(combinations)) {
         conversion_data <- currency_conversion_factor(year=combinations[i, year_column], country_code=combinations[i, country_column])
-        conversion_factors <- c(conversion_factors, conversion_data["conversion_factor"])
-        conversion_years <- c(conversion_years, conversion_data["conversion_year"])
+        conversion_factors <- c(conversion_factors, conversion_data[["conversion_factor"]])
+        conversion_years <- c(conversion_years, conversion_data[["conversion_year"]])
     }
 
     combinations$conversion_factor <- unlist(conversion_factors)
@@ -206,7 +208,9 @@ convert_all_currencies <- function(data, country_column = "country", year_column
     data[[year_column]] <- as.numeric(data[[year_column]])
     combinations$year <- as.numeric(combinations$year)
 
-    data_with_conversions <- dplyr::left_join(data, combinations, by = matching_list)
+    combinations <- combinations[!duplicated(combinations),]
+
+    data_with_conversions <- dplyr::left_join(data, combinations, by = matching_list,)
 
     data <- add_column_after_specific_column(
         data = data,

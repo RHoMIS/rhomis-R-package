@@ -161,7 +161,7 @@ meat_uses <- function(data) {
                                              warning_message = "Could not calculate amounts of meat sold or consumed"
     )
     if (length(missing_columns) == 0) {
-        meat_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "eat", use_column = "meat_use", prop_column = "meat_consumed_amount", loop_number = x))
+        meat_consumed_props_numeric <- sapply(c(1:number_of_loops), function(x) proportions_calculation(data, use = "use", use_column = "meat_use", prop_column = "meat_consumed_amount", loop_number = x))
         colnames(meat_consumed_props_numeric) <- paste0("meat_consumed_props_numeric", "_", c(1:number_of_loops))
         meat_consumed_props_numeric <- tibble::as_tibble(meat_consumed_props_numeric)
         data <- add_column_after_specific_column(
@@ -1068,6 +1068,7 @@ milk_price_time_units_conversion <- function(id_rhomis_dataset, units_column, so
 
     converion_values[which(converion_values == "day")] <- 365
     converion_values[which(converion_values == "week")] <- 365 / 7
+    converion_values[which(converion_values == "biweekly")] <- 365 / 14
     converion_values[which(converion_values == "month")] <- 365 / 28
     converion_values[which(converion_values == "year")] <- 1
 
@@ -2014,7 +2015,7 @@ clean_tlu_column_names <- function(data,
 #'
 #' @example
 swap_livestock_heads_other <- function(data) {
-    number_of_livestock_other <- length(grep("livestock_other[[:digit:]]", colnames(data)))
+    number_of_livestock_other <- length(grep("^livestock_other[[:digit:]]", colnames(data)))
 
     other_columns <- colnames(data)[grepl("livestock_heads_other_lstk", colnames(data)) |
                                         grepl("livestock_heads_other[[:digit:]]_lstk", colnames(data))]
