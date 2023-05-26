@@ -9,14 +9,13 @@
 #' that allows for the calculation of honey based-indicators.
 #'
 #' @param tree_aid_df A dataset containing (or not) questions from NTFP modules
-#' @param fp_products A list of. Default is the list contained within the R-package
 #'
 #' @return
 #' @export
 #'
 #' @examples
-ntfp_preprocessing <-function(tree_aid_df,
-                                fp_products=fp_products){
+ntfp_preprocessing <-function(tree_aid_df
+                                ){
 
 
     missing_columns <-  suppressWarnings(check_columns_in_data(tree_aid_df,
@@ -24,7 +23,7 @@ ntfp_preprocessing <-function(tree_aid_df,
                                               individual_columns = "id_rhomis_dataset",
                                               warning="Won't conduct NTFP preprocessing, NTFP module not present"))
 
-    if(length(missing_columns)){
+    if(length(missing_columns)>0){
 
         return(tree_aid_df)
 
@@ -80,6 +79,10 @@ ntfp_preprocessing <-function(tree_aid_df,
         }
 
     },simplify=F) %>% dplyr::bind_cols()
+
+    extra_fp_col <- paste0("fp_name_",extra_loop)
+    tree_aid_df[[extra_fp_col]][!is.na(real_honey_columns$honey_amount)] <- "bees"
+
     colnames(real_honey_columns) <- paste0(colnames(real_honey_columns),"_",extra_loop)
 
     real_honey_columns <- real_honey_columns[colnames(real_honey_columns) %in% colnames(tree_aid_df)==F]
