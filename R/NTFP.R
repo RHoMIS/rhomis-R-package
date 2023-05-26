@@ -1,4 +1,98 @@
 
+#' NTFP Preprocessing
+#'
+#' For forest product surveys, honey
+#' does not fit into the conventional NTFP loops.
+#' This means we cannot make use of existing NTFP calculations.
+#'
+#' This script adds an "extra loop" to a NTFP dataset, one
+#' that allows for the calculation of honey based-indicators.
+#'
+#' @param tree_aid_df A dataset containing (or not) questions from NTFP modules
+#' @param fp_products A list of. Default is the list contained within the R-package
+#'
+#' @return
+#' @export
+#'
+#' @examples
+ntfp_preprocessing <-function(tree_aid_df,
+                                fp_products=fp_products){
+
+
+    missing_columns <-  suppressWarnings(check_columns_in_data(tree_aid_df,
+                                              loop_columns = "fp_name",
+                                              individual_columns = "id_rhomis_dataset",
+                                              warning="Won't conduct NTFP preprocessing, NTFP module not present"))
+
+    if(length(missing_columns)){
+
+        return(tree_aid_df)
+
+    }
+
+    fp_column_numbers <- find_number_of_loops(tree_aid_df, "fp_name")
+    extra_loop <- fp_column_numbers + 1
+
+    non_honey_columns <- fp_products[names(fp_products)!="honey"]
+
+    non_honey_columns <- lapply(non_honey_columns, function(x){
+        x <- x[names(x) %in% "base_name"==F]
+    })
+    non_honey_columns <- as.character(unlist(non_honey_columns))
+    non_honey_columns <- unique(non_honey_columns)
+
+    missing_ntfp_cols <- suppressWarnings(check_columns_in_data(tree_aid_df,loop_columns = non_honey_columns))
+    non_honey_columns <- non_honey_columns[non_honey_columns %in% missing_ntfp_cols==F]
+
+    new_non_honey_columns <- paste0(non_honey_columns,"_",extra_loop)
+
+
+    dummy_honey_columns <- fp_products[names(fp_products)=="honey"]
+    dummy_honey_columns <- as.character(unlist(dummy_honey_columns))
+    dummy_honey_columns <- dummy_honey_columns[!is.na(dummy_honey_columns)]
+    new_dummy_honey_columns <- lapply(c(1:fp_column_numbers),function(i){
+        paste0(dummy_honey_columns,"_",i)
+    }) %>% unlist()
+    new_dummy_honey_columns <- new_dummy_honey_columns[new_dummy_honey_columns %in% new_non_honey_columns==F]
+
+    new_columns <- c(new_dummy_honey_columns,new_non_honey_columns)
+    new_dummy_columns <- new_columns[duplicated(new_columns)==F]
+
+    new_dummy_columns <- sapply(new_dummy_columns,function(x){
+        rep(NA,nrow(tree_aid_df))
+    },simplify=F) %>% dplyr::bind_cols()
+
+    new_dummy_columns <- new_dummy_columns[colnames(new_dummy_columns) %in% colnames(tree_aid_df)==F]
+
+    tree_aid_df <- dplyr::bind_cols(tree_aid_df,new_dummy_columns)
+
+
+
+    real_honey_columns <- fp_products[names(fp_products)=="honey"]
+    real_honey_columns <- as.character(unlist(real_honey_columns))
+    real_honey_columns <- real_honey_columns[!is.na(real_honey_columns)]
+
+    real_honey_columns <- sapply(real_honey_columns,function(x){
+        if (x %in% colnames(tree_aid_df)){
+            return(tree_aid_df[[x]])
+        }else{
+            return(rep(NA,nrow(tree_aid_df)))
+        }
+
+    },simplify=F) %>% dplyr::bind_cols()
+    colnames(real_honey_columns) <- paste0(colnames(real_honey_columns),"_",extra_loop)
+
+    real_honey_columns <- real_honey_columns[colnames(real_honey_columns) %in% colnames(tree_aid_df)==F]
+
+
+    tree_aid_df <- dplyr::bind_cols(tree_aid_df,real_honey_columns)
+
+
+
+    return(tree_aid_df)
+
+}
+
 
 #' Convert NTFP Units
 #'

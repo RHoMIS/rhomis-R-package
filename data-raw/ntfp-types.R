@@ -1,6 +1,38 @@
 
 fp_products <- list(
 
+    honey=list(
+        fp_name = "fp_name",
+        base_name="honey",
+
+        #Info needed for shea_butter calculations
+        amount = "honey_amount",
+        amount_units = "honey_amount_units",
+        amount_units_other = "honey_amount_units_other",
+
+        # Info needed for proportions calculations
+        use_column = "honey_use",
+        sold_prop_column = "honey_sold_prop",
+        consumed_column = "honey_consumed_prop",
+        processed_column = NULL,
+
+        income_column = "honey_sold_income",
+        income_frequency = "honey_sold_price_quantityunits",
+        sold_frequency_other_column = "honey_sale_freq_units_other",
+
+        consume_gender=NULL,
+        sell_gender="honey_who_sell",
+        sell_income_gender="honey_sold_income_who",
+
+        processed_sold_column = NULL,
+        processed_eaten_column = NULL,
+
+        process_sold_income_column = NULL,
+        process_sold_frequency_column = NULL,
+        process_sold_frequency_other_column = NULL
+    ),
+
+
     fruit=list(
         base_name="fruit",
         fp_name = "fp_name",
