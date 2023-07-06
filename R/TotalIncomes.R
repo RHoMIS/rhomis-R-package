@@ -278,7 +278,6 @@ gendered_off_farm_income_split <- function(data, gender_categories) {
     if (number_of_loops>0){
         offfarm_name_columns <- paste0("offfarm_income_name", "_", c(1:number_of_loops))
         gender_control_columns <- paste0("offfarm_who_control_revenue", "_", c(1:number_of_loops))
-        data[gender_control_columns] <- data[gender_control_columns] %>% dplyr::mutate_all(as.character)
 
         # Finding out how many off-farm activities they engage in
         missing_columns <- check_columns_in_data(data,
@@ -286,6 +285,7 @@ gendered_off_farm_income_split <- function(data, gender_categories) {
                                                  warning_message = "Could not calculate off-farm income income"
         )
         if (length(missing_columns) == 0) {
+            data[gender_control_columns] <- data[gender_control_columns] %>% dplyr::mutate_all(as.character)
             off_farm_income_data <- tibble::as_tibble(!is.na(data[offfarm_name_columns])) %>% dplyr::mutate_all(as.numeric)
             off_farm_income_data[off_farm_income_data == 0] <- NA
             off_farm_income_data_columns <- paste0("off_farm_source_prop", "_", c(1:number_of_loops))
