@@ -4,12 +4,10 @@
 \alias{ntfp_preprocessing}
 \title{NTFP Preprocessing}
 \usage{
-ntfp_preprocessing(tree_aid_df, fp_products = fp_products)
+ntfp_preprocessing(tree_aid_df)
 }
 \arguments{
 \item{tree_aid_df}{A dataset containing (or not) questions from NTFP modules}
-
-\item{fp_products}{A list of. Default is the list contained within the R-package}
 }
 \description{
 For forest product surveys, honey
