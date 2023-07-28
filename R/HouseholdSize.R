@@ -12,19 +12,26 @@
 #' @examples
 get_household_size_conversion <- function() {
     MAE_coeff <- tibble::as_tibble(list(
-        children_under_4 = 0.5,
-        children_4to10 = 0.75,
-        males11to24 = 0.85,
-        females11to24 = 0.75,
-        males11to50=0.925,
-        females11to50=0.805,
-        males25to50 = 1,
-        females25to50 = 0.86,
-        female_25_to_50 = 0.86,
-        male_50_plus = 0.73,
-        malesover50 = 0.73,
-        female_50_plus = 0.6,
-        femalesover50 = 0.6
+      children_under4 = 0.5, #current
+      children_under_4 = 0.5,
+      children_4to10 = 0.75, #current
+      males11to24 = 0.85,
+      males_11to24 = 0.85, #current
+      females11to24 = 0.75,
+      females_11to24 = 0.75, #current
+      males11to50=0.925,
+      females11to50=0.805,
+      males25to50 = 1,
+      males_25to50 = 1, #current
+      females25to50 = 0.86,
+      female_25_to_50 = 0.86,
+      females_25to50 = 0.86, #current
+      male_50_plus = 0.73,
+      malesover50 = 0.73,
+      males_50plus = 0.73, #current
+      female_50_plus = 0.6,
+      femalesover50 = 0.6,
+      females_50plus=0.6 #current
     ))
     return(MAE_coeff)
 }
@@ -50,19 +57,19 @@ identify_person_category <- function(age, gender) {
     vector <- rep(NA, length(gender))
     gender <- substr(tolower(gender),0,1)
 
-    vector[age < 4] <- "children_under_4"
-    vector[age >= 4 & age < 1] <- "children_4to10"
-    vector[age > 11 & age <= 24 & gender == "m"] <- "males11to24"
-    vector[age > 11 & age <= 24 & gender == "f"] <- "females11to24"
-    vector[age > 24 & age <= 50 & gender == "m"] <- "males25to50"
-    vector[age > 24 & age <= 50 & gender == "f"] <- "female_25_to_50"
-    vector[age > 50 & gender == "m"] <- "male_50_plus"
-    vector[age > 50 & gender == "f"] <- "female_50_plus"
+    vector[age < 4] <- "children_under4"
+    vector[age >= 4 & age < 11] <- "children_4to10"
+    vector[age >= 11 & age <= 24 & gender == "m"] <- "males_11to24"
+    vector[age >= 11 & age <= 24 & gender == "f"] <- "females_11to24"
+    vector[age > 24 & age <= 50 & gender == "m"] <- "males_25to50"
+    vector[age > 24 & age <= 50 & gender == "f"] <- "females_25to50"
+    vector[age > 50 & gender == "m"] <- "males_50plus"
+    vector[age > 50 & gender == "f"] <- "females_50plus"
 
     return(vector)
 }
 
-#' Household roster to catgeries
+#' Household roster to categories
 #'
 #' Rpackage file: HouseholdSize.R
 #'
@@ -103,8 +110,8 @@ household_roster_to_categories <- function(data) {
 #' @examples
 household_roster_to_wide <- function(data) {
     categorical_format <- household_roster_to_categories(data)
-    categories <- colnames(get_household_size_conversion())
-
+    # getting the categories used in identify_person_category()
+    categories <- unique(identify_person_category(rep(1:100,2), rep(c("F", "M"), each=100)))
     categorical_format <- sapply(categories, function(x) rowSums(categorical_format == x, na.rm = T))
     categorical_format <- tibble::as_tibble(categorical_format)
     return(categorical_format)
