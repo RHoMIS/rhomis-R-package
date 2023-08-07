@@ -66,7 +66,7 @@ testthat::test_that("Can map household roster into traditional category format",
                                       males_11to24 = c(0, 1, 0, 0),
                                       males_25to50 = c(2, 0, 1, 0),
                                       males_50plus = c(0, 0, 0, 1)
-                                      
+
     ),
                                  row.names = c(NA, -4L), class = c("tbl_df", "tbl", "data.frame"))
 
@@ -89,7 +89,8 @@ testthat::test_that("Can calculate MAE score",{
                            female_50_plus=c(0,3,2,1)))
     expected_result <- c(8.71, 11.59, 11.09, 12.05)
 
-    actual_result <- calculate_MAE(data)
+    expect_warning(calculate_MAE(data))
+    actual_result <-  suppressWarnings(calculate_MAE(data))
 
     expect_equal(actual_result, expected_result)
 
@@ -133,7 +134,8 @@ testthat::test_that("Can calculate household size in terms of members",{
                            females_50plus=c(0,3,2,1)))
     expected_result <- c(11, 15, 14, 15)
 
-    actual_result <- calculate_household_size_members(data)
+    expect_warning(calculate_household_size_members(data))
+    actual_result <-  suppressWarnings(calculate_household_size_members(data))
 
     expect_equal(actual_result, expected_result)
 

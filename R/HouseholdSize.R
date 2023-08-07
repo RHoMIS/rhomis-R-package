@@ -27,11 +27,11 @@ get_household_size_conversion <- function() {
       female_25_to_50 = 0.86,
       females_25to50 = 0.86, #current
       male_50_plus = 0.73,
-      malesover50 = 0.73,
-      males_50plus = 0.73, #current
+      malesover50 = 0.73,#current
+      males_50plus = 0.73,
       female_50_plus = 0.6,
-      femalesover50 = 0.6,
-      females_50plus=0.6 #current
+      femalesover50 = 0.6,#current
+      females_50plus=0.6
     ))
     return(MAE_coeff)
 }
@@ -152,6 +152,48 @@ calculate_MAE <- function(data) {
 
 
     if (any(colnames(data) %in% names(conversion_factors))){
+
+        columns_to_harmonise <- c("children_under4",
+
+                                  "males_11to24",
+                                  "females_11to24",
+
+                                  "males11to50",
+                                  "females11to50",
+
+
+                                  "males_25to50",
+
+                                  "females_25to50",
+                                  "female_25_to_50",
+
+                                  "male_50_plus",
+                                  "males_50plus",
+
+                                  "female_50_plus",
+                                  "female_50plus")
+
+        standard_cols <- c("children_under_4",
+                             "children_4to10",
+                             "males11to24",
+                             "females11to24",
+                             "males25to50",
+                             "females25to50",
+                             "malesover50",
+                             "femalesover50")
+
+        if (any(columns_to_harmonise %in% colnames(data))){
+            columns_warn <- columns_to_harmonise[columns_to_harmonise %in% colnames(data)]
+
+            temp_message <- paste0("The following columns were detected in your dataset:\n",
+                   paste0(columns_warn,collapse="\n"),
+                   "\nRHoMIS standard groups are named as follows:\n",
+                   paste0(standard_cols,collapse="\n"),
+                   "\nPlease consider renaming these columns if this data is to be combined with other RHoMIS datasets")
+            warning(temp_message)
+        }
+
+
         MAE_frame_group <- sapply(names(conversion_factors), function(x) {
             if (x %in% colnames(data)) {
                 return(as.numeric(conversion_factors[1, x]) * data[x])
@@ -208,6 +250,48 @@ calculate_household_size_members <- function(data) {
 
     }
     if (any(colnames(data) %in% names(conversion_factors))) {
+
+        columns_to_harmonise <- c("children_under4",
+
+                                  "males_11to24",
+                                  "females_11to24",
+
+                                  "males11to50",
+                                  "females11to50",
+
+
+                                  "males_25to50",
+
+                                  "females_25to50",
+                                  "female_25_to_50",
+
+                                  "male_50_plus",
+                                  "males_50plus",
+
+                                  "female_50_plus",
+                                  "female_50plus")
+
+        standard_cols <- c("children_under_4",
+                           "children_4to10",
+                           "males11to24",
+                           "females11to24",
+                           "males25to50",
+                           "females25to50",
+                           "malesover50",
+                           "femalesover50")
+
+        if (any(columns_to_harmonise %in% colnames(data))){
+            columns_warn <- columns_to_harmonise[columns_to_harmonise %in% colnames(data)]
+
+            temp_message <- paste0("The following columns were detected in your dataset:\n",
+                                   paste0(columns_warn,collapse="\n"),
+                                   "\nRHoMIS standard groups are named as follows:\n",
+                                   paste0(standard_cols,collapse="\n"),
+                                   "\nPlease consider renaming these columns if this data is to be combined with other RHoMIS datasets")
+            warning(temp_message)
+        }
+
+
         household_size_data_groups <- data[colnames(data) %in% names(conversion_factors)]
         household_size_groups <- rowSums(household_size_data_groups, na.rm = T)
 
