@@ -27,9 +27,9 @@ testthat::test_that("Checking can convert household roster to categories", {
 
 
 
-    expected_result <- tibble::as_tibble(list(household_person_category_1=c("males_25to50","females_25to50","males_25to50",NA),
-                                      household_person_category_2=c("females_25to50","females_11to24","children_under4","males_50plus"),
-                                      household_person_category_3=c("males_11to24","males_11to24",NA,NA)))
+    expected_result <- tibble::as_tibble(list(household_person_category_1=c("males25to50","females25to50","males25to50",NA),
+                                      household_person_category_2=c("females25to50","females11to24","children_under_4","malesover50"),
+                                      household_person_category_3=c("males11to24","males11to24",NA,NA)))
 
     actual_result <- household_roster_to_categories(data)
 
@@ -58,14 +58,14 @@ testthat::test_that("Can map household roster into traditional category format",
                            person_work_away_3=c("stay","stay",NA,NA)
     ))
 
-    expected_result <- structure(list(children_under4 = c(0, 0, 1, 0),
+    expected_result <- structure(list(children_under_4 = c(0, 0, 1, 0),
                                       children_4to10 = c(0, 0, 0, 0),
-                                      females_11to24 = c(0, 1, 0, 0),
-                                      females_25to50 = c(1, 1, 0, 0),
-                                      females_50plus = c(0, 0, 0, 0),
-                                      males_11to24 = c(0, 1, 0, 0),
-                                      males_25to50 = c(2, 0, 1, 0),
-                                      males_50plus = c(0, 0, 0, 1)
+                                      males11to24 = c(0, 1, 0, 0),
+                                      females11to24 = c(0, 1, 0, 0),
+                                      males25to50 = c(2, 0, 1, 0),
+                                      females25to50 = c(1, 1, 0, 0),
+                                      malesover50 = c(0, 0, 0, 1),
+                                      femalesover50 = c(0, 0, 0, 0)
 
     ),
                                  row.names = c(NA, -4L), class = c("tbl_df", "tbl", "data.frame"))

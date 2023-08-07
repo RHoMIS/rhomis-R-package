@@ -111,7 +111,15 @@ household_roster_to_categories <- function(data) {
 household_roster_to_wide <- function(data) {
     categorical_format <- household_roster_to_categories(data)
     # getting the categories used in identify_person_category()
-    categories <- unique(identify_person_category(rep(1:100,2), rep(c("F", "M"), each=100)))
+    categories <- c("children_under_4",
+                       "children_4to10",
+                       "males11to24",
+                       "females11to24",
+                       "males25to50",
+                       "females25to50",
+                       "malesover50",
+                       "femalesover50")
+    # categories <- unique(identify_person_category(rep(1:100,2), rep(c("F", "M"), each=100)))
     categorical_format <- sapply(categories, function(x) rowSums(categorical_format == x, na.rm = T))
     categorical_format <- tibble::as_tibble(categorical_format)
     return(categorical_format)
