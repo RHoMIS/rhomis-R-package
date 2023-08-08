@@ -210,7 +210,7 @@ replace_crop_and_livestock_other <- function(data) {
         other_3 <- data[["crops_other3"]]
     }
     data[crop_name_columns] <- data %>%
-        dplyr::select(crop_name_columns) %>%
+        dplyr::select(all_of(crop_name_columns)) %>%
         dplyr::mutate_all(replace_name_column_with_other, other_1, other_2, other_3)
 
 
@@ -236,7 +236,7 @@ replace_crop_and_livestock_other <- function(data) {
         other_3 <- data[["livestock_other3"]]
     }
     data[livestock_name_columns] <- data %>%
-        dplyr::select(livestock_name_columns) %>%
+        dplyr::select(all_of(livestock_name_columns)) %>%
         dplyr::mutate_all(replace_name_column_with_other, other_1, other_2, other_3)
 
 
@@ -439,7 +439,7 @@ write_list_of_df_to_folder <- function(list_of_df, folder, converted_values=F) {
                                                           old_conversion_file,
                                                           by = c("survey_value" = "survey_value",
                                                                  "id_rhomis_dataset"="id_rhomis_dataset")) %>%
-                            dplyr::select("unit_type.x", "id_rhomis_dataset", "survey_value", "conversion.y") %>%
+                            dplyr::select(all_of(c("unit_type.x", "id_rhomis_dataset", "survey_value", "conversion.y"))) %>%
                             dplyr::rename("conversion" = "conversion.y") %>%
                             dplyr::rename("unit_type" = "unit_type.x")
                     }

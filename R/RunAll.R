@@ -127,7 +127,7 @@ make_id_columns <- function(data,
 
     # shift column ordering so that id columns are the left-most columns
     for (i in c("id_proj", "id_form", "id_rhomis_dataset", "id_hh", "id_unique")) {
-        data <- data %>% dplyr::relocate(i)
+        data <- data %>% dplyr::relocate(all_of(i))
     }
     return(data)
 }
@@ -169,13 +169,13 @@ load_rhomis_csv <- function(file_path,
 
 
     # read in the input csv file
-    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(), 
-                                   na = c("na","n/a", "-999", "-99", "NA"), 
+    rhomis_data <- readr::read_csv(file_path, col_types = readr::cols(),
+                                   na = c("na","n/a", "-999", "-99", "NA"),
                                    locale = readr::locale(encoding = "UTF8"),
                                    show_col_types=F)
 
     # simplify column names to more readable format
-    newcolnames <-  tolower(clean_column_names(colnames(rhomis_data)))    
+    newcolnames <-  tolower(clean_column_names(colnames(rhomis_data)))
     colnames(rhomis_data) <- newcolnames
 
     # ensure all data entries are lower case for consistency / easier data analysis
