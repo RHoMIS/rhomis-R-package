@@ -127,7 +127,7 @@ make_id_columns <- function(data,
 
     # shift column ordering so that id columns are the left-most columns
     for (i in c("id_proj", "id_form", "id_rhomis_dataset", "id_hh", "id_unique")) {
-        data <- data %>% dplyr::relocate(i)
+        data <- data %>% dplyr::relocate(all_of(i))
     }
     return(data)
 }

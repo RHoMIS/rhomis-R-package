@@ -2,7 +2,7 @@
 % Please edit documentation in R/HouseholdSize.R
 \name{household_roster_to_categories}
 \alias{household_roster_to_categories}
-\title{Household roster to catgeries}
+\title{Household roster to categories}
 \usage{
 household_roster_to_categories(data)
 }

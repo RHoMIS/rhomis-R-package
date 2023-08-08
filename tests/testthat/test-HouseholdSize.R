@@ -27,8 +27,8 @@ testthat::test_that("Checking can convert household roster to categories", {
 
 
 
-    expected_result <- tibble::as_tibble(list(household_person_category_1=c("males25to50","female_25_to_50","males25to50",NA),
-                                      household_person_category_2=c("female_25_to_50","females11to24","children_under_4","male_50_plus"),
+    expected_result <- tibble::as_tibble(list(household_person_category_1=c("males25to50","females25to50","males25to50",NA),
+                                      household_person_category_2=c("females25to50","females11to24","children_under_4","malesover50"),
                                       household_person_category_3=c("males11to24","males11to24",NA,NA)))
 
     actual_result <- household_roster_to_categories(data)
@@ -62,16 +62,11 @@ testthat::test_that("Can map household roster into traditional category format",
                                       children_4to10 = c(0, 0, 0, 0),
                                       males11to24 = c(0, 1, 0, 0),
                                       females11to24 = c(0, 1, 0, 0),
-                                      males11to50=c(0, 0, 0, 0),
-                                      females11to50=c(0, 0, 0, 0),
                                       males25to50 = c(2, 0, 1, 0),
-                                      females25to50 = c(0, 0, 0, 0),
-                                      female_25_to_50 = c(1, 1, 0, 0),
-                                      male_50_plus = c(0, 0, 0, 1),
-                                      malesover50 = c(0, 0, 0, 0),
-
-                                      female_50_plus = c(0, 0, 0, 0),
+                                      females25to50 = c(1, 1, 0, 0),
+                                      malesover50 = c(0, 0, 0, 1),
                                       femalesover50 = c(0, 0, 0, 0)
+
     ),
                                  row.names = c(NA, -4L), class = c("tbl_df", "tbl", "data.frame"))
 
@@ -94,7 +89,8 @@ testthat::test_that("Can calculate MAE score",{
                            female_50_plus=c(0,3,2,1)))
     expected_result <- c(8.71, 11.59, 11.09, 12.05)
 
-    actual_result <- calculate_MAE(data)
+    expect_warning(calculate_MAE(data))
+    actual_result <-  suppressWarnings(calculate_MAE(data))
 
     expect_equal(actual_result, expected_result)
 
@@ -128,17 +124,18 @@ testthat::test_that("Can calculate MAE score",{
 })
 
 testthat::test_that("Can calculate household size in terms of members",{
-    data <- tibble::as_tibble(list(children_under_4=c(1,0,0,0),
+    data <- tibble::as_tibble(list(children_under4=c(1,0,0,0),
                            children_4to10=c(2,3,3,3),
-                           males11to24=c(1,2,3,4),
-                           females11to24=c(4,3,2,1),
-                           males25to50=c(2,2,2,2),
-                           female_25_to_50=c(1,1,1,1),
-                           male_50_plus=c(0,1,1,3),
-                           female_50_plus=c(0,3,2,1)))
+                           males_11to24=c(1,2,3,4),
+                           females_11to24=c(4,3,2,1),
+                           males_25to50=c(2,2,2,2),
+                           females_25to50=c(1,1,1,1),
+                           males_50plus=c(0,1,1,3),
+                           females_50plus=c(0,3,2,1)))
     expected_result <- c(11, 15, 14, 15)
 
-    actual_result <- calculate_household_size_members(data)
+    expect_warning(calculate_household_size_members(data))
+    actual_result <-  suppressWarnings(calculate_household_size_members(data))
 
     expect_equal(actual_result, expected_result)
 
