@@ -33,7 +33,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - if: runner.os == 'macos'
         run: |
@@ -41,7 +41,9 @@ jobs:
           brew services start mongodb-community@5.0
 
       - if: runner.os == 'linux'
-        run: sudo systemctl restart mongod
+        run: |
+          sudo systemctl restart mongod
+          sudo apt-get install libcurl4-openssl-dev libssl-dev libsasl2-dev libharfbuzz-dev libfribidi-dev -y
 
       - uses: r-lib/actions/setup-r@v2
         with:

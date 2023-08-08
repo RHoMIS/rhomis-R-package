@@ -73,7 +73,9 @@ set_conversion_file_names <- function(){
         "leaves_sold_frequency",
         "bark_sold_frequency",
         "roots_sold_frequency",
-        "gum_sold_frequency"
+        "gum_sold_frequency",
+        "shea_butter_sold_frequency",
+        "shea_butter_sold_amount_units_other"
     )
 
 
@@ -132,8 +134,8 @@ set_conversion_file_names <- function(){
         eggs_sold_price_timeunits = c("eggs_sold_price_timeunits_other"),
         fertiliser_units = c("fertiliser_units_other"),
 
-        fp_amount_units = c("fruit_amount_units","nut_amount_units","leaves_amount_units","bark_amount_units","roots_amount_units", "gum_amount_units"),
-        fp_income_units = c("fruit_sold_frequency","nut_sold_frequency","leaves_sold_frequency","bark_sold_frequency","roots_sold_frequency", "gum_sold_frequency")
+        fp_amount_units = c("fruit_amount_units","nut_amount_units","leaves_amount_units","bark_amount_units","roots_amount_units", "gum_amount_units", "shea_butter_sold_frequency"),
+        fp_income_units = c("fruit_sold_frequency","nut_sold_frequency","leaves_sold_frequency","bark_sold_frequency","roots_sold_frequency", "gum_sold_frequency","shea_butter_sold_amount_units_other")
 
     )
 

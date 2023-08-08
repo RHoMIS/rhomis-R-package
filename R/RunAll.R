@@ -211,6 +211,10 @@ load_rhomis_csv <- function(file_path,
         overwrite = overwrite
     )
 
+    # Checks whether NTFP columns exist, and does some preprocessing to
+    # Reformat data
+    rhomis_data <- ntfp_preprocessing(rhomis_data)
+
     return(rhomis_data)
 }
 
