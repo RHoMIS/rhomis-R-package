@@ -58,9 +58,9 @@ identify_person_category <- function(age, gender) {
     gender <- substr(tolower(gender),0,1)
 
     vector[age < 4] <- "children_under_4"
-    vector[age >= 4 & age < 1] <- "children_4to10"
-    vector[age > 11 & age <= 24 & gender == "m"] <- "males11to24"
-    vector[age > 11 & age <= 24 & gender == "f"] <- "females11to24"
+    vector[age >= 4 & age < 10] <- "children_4to10"
+    vector[age >= 11 & age <= 24 & gender == "m"] <- "males11to24"
+    vector[age >= 11 & age <= 24 & gender == "f"] <- "females11to24"
     vector[age > 24 & age <= 50 & gender == "m"] <- "males25to50"
     vector[age > 24 & age <= 50 & gender == "f"] <- "females25to50"
     vector[age > 50 & gender == "m"] <- "malesover50"
