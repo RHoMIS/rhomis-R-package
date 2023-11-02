@@ -12,6 +12,9 @@ RHoMIS data processing takes place in three stages.
 3. Indicator Calculation: Finally, with all conversions and units identified, we calculate all of the indicators possible for the survey. 
 
 
+**A full reproducible example that you can work through, along with a sample dataset can be found [here](https://github.com/RHoMIS/rhomis-R-package/raw/main/inst/sample_local_project.zip)
+
+
 ## Installation
 
 Currently RHoMIS is not available on CRAN, but 
@@ -33,6 +36,12 @@ devtools::install_github("https://github.com/RHoMIS/rhomis-R-package", force = T
 ```
 
 
+Then make sure to load the RHoMIS library: 
+
+```{r eval=FALSE, echo=T}
+library(rhomis)
+```
+
 ## Initial Setup 
 
 You should then ensure you have a folder containing the data
@@ -48,9 +57,6 @@ Your directory structure should look something like this:
   ┗📜 raw-data.csv
 ```
 
-In this case, your working directory should be the `project` folder.
-If you do not have your own RHoMIS dataset, you can access one [here](https://raw.githubusercontent.com/RHoMIS/rhomis-R-package/4012fc3992ab9a1f8811d3e98a349d51aa66d581/inst/sample_local_project/raw-data/raw-data.csv) (you can save the file using `ctrl + s` or `cmd + s`)
-
 ## Stage 1: Unit Extraction
 
 ### Extracting Units
@@ -60,10 +66,8 @@ code below. Set the `dataFilePath` to the path of your RHoMIS
 raw-data file.
 
 ```{r eval=FALSE, echo=T}
-library(rhomis)
-
 extract_units_and_conversions_csv(
-    file_path="raw-data/sample_project.csv",
+    file_path="raw-data/raw-data.csv",
     id_type = "string",
     proj_id = "test_prj",
     form_id = "test_frm")
@@ -146,10 +150,8 @@ As with unit extraction, ensure you are in the project directory.
 Then enter the commands below:
 
 ```{r eval=FALSE, echo=T}
-library(rhomis)
-
 calculate_prices_csv(
-    file_path="raw-data/sample_project.csv",
+    file_path="raw-data/raw-data.csv",
     id_type = "string",
     proj_id = "my_project_id",
     form_id = "my_form_id"
@@ -188,8 +190,6 @@ You will now see that the directory structure again looks quite different:
   ┣📜 mean_eggs_price_per_kg
   ┗📜 ...
 
-
-
 ```
 
 ### Converting Calories, Prices, and Other Units
@@ -224,15 +224,11 @@ file.
 
 
 ```{r eval=FALSE, echo=T}
-library(rhomis)
 calculate_indicators_local(
-            file_path,
-            id_type="string",
-            proj_id,
-            form_id,
-            repeat_columns = pkg.env$repeat_columns,
-            gender_categories = pkg.env$gender_categories)
-
+    file_path="raw-data/raw-data.csv",
+    id_type = "string",
+    proj_id = "test_prj",
+    form_id = "test_frm")
 ```
 
 You will now see the directory includes some
@@ -292,23 +288,23 @@ for more explanation, please see [an explanation of indicators and outputs][Indi
 ┗📂 processed_data
 ┃  ┗📜 processed_data.csv
 ┃
-┣📂 consumption_calorie_values
-┃ ┣📜 crop_calories_consumed_kcal.csv
-┃ ┣📜 milk_calories_consumed_kcal.csv
-┃ ┗📜 ...
-┃
-┣📂 consumption_lcu_values
-┃ ┣📜 value_crop_consumed_lcu.csv
-┃ ┣📜 value_eggs_consumed_lcu.csv
-┃ ┗📜 ...  
-┃
-┗📂 gender_control
-┃
-┣📂 gender_control_amounts_consumed
-┃
-┣📂 gender_control_income
-┃
-┗📂 ... 
+┗📂 extra_outputs
+    ┃
+    ┣📂 consumption_calorie_values
+    ┃ ┣📜 crop_calories_consumed_kcal.csv
+    ┃ ┣📜 milk_calories_consumed_kcal.csv
+    ┃ ┗📜 ...
+    ┣📂 consumption_lcu_values
+    ┃ ┣📜 value_crop_consumed_lcu.csv
+    ┃ ┣📜 value_eggs_consumed_lcu.csv
+    ┃ ┗📜 ... 
+    ┗📂 gender_control
+        ┃
+        ┣📂 gender_control_amounts_consumed
+        ┃
+        ┣📂 gender_control_income
+        ┃
+        ┗📂 ... 
 ```
 
 
