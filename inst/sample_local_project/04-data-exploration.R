@@ -28,7 +28,6 @@ library(rhomis)
 library(dplyr) # Library for
 library(readr) # Library for reading and writing csv files
 library(readxl) # Library for reading sheets from codebook
-library(ggplot2) # Library for plotting
 
 # Read in data ------------------------------------------------------------
 
@@ -134,4 +133,26 @@ intercropping <- map_to_wide_format(data=full_data,
                                     column_prefixes = "crop_land_area_ha",types = "num")[[1]]
 
 legume_use_count <- table(full_data$use_legumes_fertility)
+
+
+
+
+
+
+# Collapsing Values -------------------------------------------------------
+
+
+conversion_tibble <-
+    tibble::as_tibble(
+    list(
+        "survey_value" = c("maize", "cassava", "irish_potato", "tomato"),
+        "conversion" = c("starchy_veg", "starchy_veg", "starchy_veg", "tomato")
+    )
+)
+
+conversion_tibble <- make_per_project_conversion_tibble(full_data$id_rhomis_dataset,conversion_tibble)
+crop_lands_ha$id_rhomis_dataset <- full_data$id_rhomis_dataset
+
+
+merged_examples <- switch_column_names_and_merge_categories(crop_lands_ha,conversion_tibble)
 
