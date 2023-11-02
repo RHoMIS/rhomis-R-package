@@ -32,6 +32,8 @@ branch: main
 The Rural Household Multi-Indicator Survey (RHoMIS) is designed to collect data on smallholder farmers.
 The survey is rich in information, covering a range of topics from dietary diversity to livelihoods.
 With so much information available, it can often be difficult to extract, 
+
+
 This is a book documenting how to use the RHoMIS R-package. We cover
 3 main topics: 
 

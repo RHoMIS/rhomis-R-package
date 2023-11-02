@@ -1,27 +1,14 @@
-
-#raw-data/
-
-processed_data/
-indicator_data/
-
+.original_stage_1_conversions/
+.original_stage_2_conversions/
+conversions_stage_1/
+conversions_stage_2/
 crop_data/
+extra_outputs/
+indicator_data/
 livestock_data/
+processed_data/
 off_farm_data/
 
-converted_units/
-original_units/
 
-converted_prices/
-original_prices/
-
-completed_calorie_conversions/
-original_calorie_conversions/
-
-consumption_calorie_values/
-consumption_lcu_values/
-
-gender_control/
-
-raw-data/raw-data-other-new-unit.csv
 
 

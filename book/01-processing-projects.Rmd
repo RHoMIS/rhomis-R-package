@@ -6,7 +6,9 @@
 RHoMIS data processing takes place in three stages.
 
 1. Unit Extraction: We search through a survey for all of the units, crops, and livestock which were encountered. The user can examine these units and provide conversion factors so that everything is standardised. For crops and livestock, the user can check all of the entries and standardise (e.g. ensure that there are no duplicates with mispelling, such as "maize" and "maze").
+
 2. Secondary Cleaning: Now that crop and livestock names are standardised (in step 1), we identify all of the calorie conversions and prices we need for a specific survey (e.g. based on crops identified in step one we need calorie and prices for "maize"). We use the units converted in step 1 to calculate crop and livestock prices (see [ Indicators Explained].
+
 3. Indicator Calculation: Finally, with all conversions and units identified, we calculate all of the indicators possible for the survey. 
 
 
@@ -27,7 +29,7 @@ the following command
 
 ```{r eval=FALSE, echo=T}
 library(devtools)
-devtools::install_github("https://github.com/l-gorman/rhomis-R-package", force = TRUE)
+devtools::install_github("https://github.com/RHoMIS/rhomis-R-package", force = TRUE)
 ```
 
 
@@ -43,11 +45,11 @@ Your directory structure should look something like this:
 ┃
 ┗📂 raw-data
   ┃
-  ┗📜 sample_project.csv
+  ┗📜 raw-data.csv
 ```
 
 In this case, your working directory should be the `project` folder.
-If you do not have your own RHoMIS dataset, you can access one [here](https://raw.githubusercontent.com/l-gorman/rhomis-R-package/4012fc3992ab9a1f8811d3e98a349d51aa66d581/inst/sample_local_project/raw-data/raw-data.csv) (you can save the file using `ctrl + s` or `cmd + s`)
+If you do not have your own RHoMIS dataset, you can access one [here](https://raw.githubusercontent.com/RHoMIS/rhomis-R-package/4012fc3992ab9a1f8811d3e98a349d51aa66d581/inst/sample_local_project/raw-data/raw-data.csv) (you can save the file using `ctrl + s` or `cmd + s`)
 
 ## Stage 1: Unit Extraction
 
