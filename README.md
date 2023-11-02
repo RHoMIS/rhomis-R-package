@@ -3,7 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/RHoMIS/rhomis-R-package/workflows/R-CMD-check/badge.svg)](https://github.com/RHoMIS/rhomis-R-package/actions)
+[![R-CMD-check](https://github.com/RHoMIS/rhomis-R-package/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RHoMIS/rhomis-R-package/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 [![DOI](https://zenodo.org/badge/355574703.svg)](https://zenodo.org/badge/latestdoi/355574703)
