@@ -4,15 +4,14 @@ install.packages(c("devtools",
                    "dplyr",
                    "tidyr",
                    "ggplot2",
-                   "renv"
-                   ))
+                   "renv",
+                   "readxl",
+                   "readr",
+                   "magrittr"))
 
-
-renv::init()
-
-
+library(renv)
 library(devtools)
 devtools::install_github("https://github.com/RHoMIS/rhomis-R-package", force = TRUE)
 
-
+renv::init()
 renv::snapshot()

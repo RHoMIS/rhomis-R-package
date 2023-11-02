@@ -75,7 +75,7 @@ jobs:
           cd book/_book
           git init
           git add -A
-          git config --local user.email "lgorman@turing.ac.uk"
+          git config --local user.email ${{ secrets.GITHUBEMAIL }}
           git config --local user.name "l-gorman"
           git commit -m 'deploy'
 
