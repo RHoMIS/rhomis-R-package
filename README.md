@@ -3,7 +3,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/l-gorman/rhomis-R-package/workflows/R-CMD-check/badge.svg)](https://github.com/l-gorman/rhomis-R-package/actions)
+[![R-CMD-check](https://github.com/RHoMIS/rhomis-R-package/workflows/R-CMD-check/badge.svg)](https://github.com/RHoMIS/rhomis-R-package/actions)
 <!-- badges: end -->
 
 [![DOI](https://zenodo.org/badge/355574703.svg)](https://zenodo.org/badge/latestdoi/355574703)
@@ -21,7 +21,7 @@ Initial package for RHoMIS 2.0. The package can:
 
 ## ToDos
 
-See the [issues](https://github.com/l-gorman/rhomis-R-package/issues) page for notes on what still needs to be done. Please feel free to add an issue for any new functionality you would like to see!
+See the [issues](https://github.com/RHoMIS/rhomis-R-package/issues) page for notes on what still needs to be done. Please feel free to add an issue for any new functionality you would like to see!
 
 ## Installation
 
