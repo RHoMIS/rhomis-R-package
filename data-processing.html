@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Data Processing | RHoMIS Book</title>
+  <meta name="description" content="<p>This book is designed to support
+people using and developing the
+RHoMIS R-package</p>" />
+  <meta name="generator" content="bookdown 0.27 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Data Processing | RHoMIS Book" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This book is designed to support
+people using and developing the
+RHoMIS R-package</p>" />
+  <meta name="github-repo" content="l-gorman/rhomis-R-package" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Data Processing | RHoMIS Book" />
+  
+  <meta name="twitter:description" content="<p>This book is designed to support
+people using and developing the
+RHoMIS R-package</p>" />
+  
+
+<meta name="author" content="Léo Gorman" />
+
+
+<meta name="date" content="2023-11-04" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="outputs-and-data.html"/>
+<script src="assets/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="assets/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="assets/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<script src="assets/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="assets/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="assets/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="assets/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="assets/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="assets/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="assets/datatables-binding-0.25/datatables.js"></script>
+<link href="assets/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="assets/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="assets/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="assets/jszip-1.11.3/jszip.min.js"></script>
+<link href="assets/dt-ext-buttons-1.11.3/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="assets/dt-ext-buttons-1.11.3/js/dataTables.buttons.min.js"></script>
+<script src="assets/dt-ext-buttons-1.11.3/js/buttons.html5.min.js"></script>
+<script src="assets/dt-ext-buttons-1.11.3/js/buttons.colVis.min.js"></script>
+<script src="assets/dt-ext-buttons-1.11.3/js/buttons.print.min.js"></script>
+<link href="assets/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="assets/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">RHoMIS R-Package</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a></li>
+<li class="chapter" data-level="2" data-path="data-processing.html"><a href="data-processing.html"><i class="fa fa-check"></i><b>2</b> Data Processing</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-processing.html"><a href="data-processing.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="data-processing.html"><a href="data-processing.html#initial-setup"><i class="fa fa-check"></i><b>2.2</b> Initial Setup</a></li>
+<li class="chapter" data-level="2.3" data-path="data-processing.html"><a href="data-processing.html#stage-1-unit-extraction"><i class="fa fa-check"></i><b>2.3</b> Stage 1: Unit Extraction</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="data-processing.html"><a href="data-processing.html#extracting-units"><i class="fa fa-check"></i><b>2.3.1</b> Extracting Units</a></li>
+<li class="chapter" data-level="2.3.2" data-path="data-processing.html"><a href="data-processing.html#converting-units"><i class="fa fa-check"></i><b>2.3.2</b> Converting Units</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="data-processing.html"><a href="data-processing.html#stage-2-calculating-prices-preparing-calorie-conversions-and-extracting-secondary-units"><i class="fa fa-check"></i><b>2.4</b> Stage 2: Calculating Prices, Preparing Calorie Conversions, and Extracting Secondary Units</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="data-processing.html"><a href="data-processing.html#converting-calories-prices-and-other-units"><i class="fa fa-check"></i><b>2.4.1</b> Converting Calories, Prices, and Other Units</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="data-processing.html"><a href="data-processing.html#stage-3-calculating-indicators"><i class="fa fa-check"></i><b>2.5</b> Stage 3: Calculating Indicators</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="outputs-and-data.html"><a href="outputs-and-data.html"><i class="fa fa-check"></i><b>3</b> Outputs and Data</a><ul>
+<li class="chapter" data-level="3.1" data-path="outputs-and-data.html"><a href="outputs-and-data.html#outputs"><i class="fa fa-check"></i><b>3.1</b> Outputs</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="outputs-and-data.html"><a href="outputs-and-data.html#indicators"><i class="fa fa-check"></i><b>3.1.1</b> Indicators</a></li>
+<li class="chapter" data-level="3.1.2" data-path="outputs-and-data.html"><a href="outputs-and-data.html#crop-data"><i class="fa fa-check"></i><b>3.1.2</b> Crop Data</a></li>
+<li class="chapter" data-level="3.1.3" data-path="outputs-and-data.html"><a href="outputs-and-data.html#livestock-data"><i class="fa fa-check"></i><b>3.1.3</b> Livestock Data</a></li>
+<li class="chapter" data-level="3.1.4" data-path="outputs-and-data.html"><a href="outputs-and-data.html#off-farm-data"><i class="fa fa-check"></i><b>3.1.4</b> Off-farm Data</a></li>
+<li class="chapter" data-level="3.1.5" data-path="outputs-and-data.html"><a href="outputs-and-data.html#consumption-calories"><i class="fa fa-check"></i><b>3.1.5</b> Consumption Calories</a></li>
+<li class="chapter" data-level="3.1.6" data-path="outputs-and-data.html"><a href="outputs-and-data.html#consumption-value"><i class="fa fa-check"></i><b>3.1.6</b> Consumption value</a></li>
+<li class="chapter" data-level="3.1.7" data-path="outputs-and-data.html"><a href="outputs-and-data.html#gender-control"><i class="fa fa-check"></i><b>3.1.7</b> Gender Control</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="indicators-explained.html"><a href="indicators-explained.html"><i class="fa fa-check"></i><b>4</b> Indicators Explained</a><ul>
+<li class="chapter" data-level="4.1" data-path="indicators-explained.html"><a href="indicators-explained.html#main-principle-in-calculations"><i class="fa fa-check"></i><b>4.1</b> Main Principle in Calculations</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="indicators-explained.html"><a href="indicators-explained.html#worked-example"><i class="fa fa-check"></i><b>4.1.1</b> Worked Example</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="indicators-explained.html"><a href="indicators-explained.html#indicators-1"><i class="fa fa-check"></i><b>4.2</b> Indicators</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="reporting-issues.html"><a href="reporting-issues.html"><i class="fa fa-check"></i><b>5</b> Reporting Issues</a><ul>
+<li class="chapter" data-level="5.1" data-path="reporting-issues.html"><a href="reporting-issues.html#reporting-issues-1"><i class="fa fa-check"></i><b>5.1</b> Reporting Issues</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">RHoMIS Book</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-processing" class="section level1 hasAnchor">
+<h1><span class="header-section-number">2</span> Data Processing<a href="data-processing.html#data-processing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>RHoMIS data processing takes place in three stages.</p>
+<ol style="list-style-type: decimal">
+<li><p>Unit Extraction: We search through a survey for all of the units, crops, and livestock which were encountered. The user can examine these units and provide conversion factors so that everything is standardised. For crops and livestock, the user can check all of the entries and standardise (e.g. ensure that there are no duplicates with mispelling, such as “maize” and “maze”).</p></li>
+<li><p>Secondary Cleaning: Now that crop and livestock names are standardised (in step 1), we identify all of the calorie conversions and prices we need for a specific survey (e.g. based on crops identified in step one we need calorie and prices for “maize”). We use the units converted in step 1 to calculate crop and livestock prices (see <a href="indicators-explained.html#indicators-explained">Indicators Explained</a>).</p></li>
+<li><p>Indicator Calculation: Finally, with all conversions and units identified, we calculate all of the indicators possible for the survey.</p></li>
+</ol>
+<p><strong>A full reproducible example that you can work through, along with a sample dataset can be found <a href="https://github.com/RHoMIS/rhomis-R-package/raw/main/inst/sample_local_project.zip">here</a></strong></p>
+<div id="installation" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.1</span> Installation<a href="data-processing.html#installation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Currently RHoMIS is not available on CRAN, but
+we hope one day it will be. In the meantime, to
+install the RHoMIS R-package, you will need to install <code>devtools</code>,
+you can that by entering the following into the R console:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-processing.html#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span></code></pre></div>
+<p>Then to install the most recent version of the R-package you can enter
+the following command</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-processing.html#cb2-1"></a><span class="kw">library</span>(devtools)</span>
+<span id="cb2-2"><a href="data-processing.html#cb2-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;https://github.com/RHoMIS/rhomis-R-package&quot;</span>, <span class="dt">force =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p>Then make sure to load the RHoMIS library:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-processing.html#cb3-1"></a><span class="kw">library</span>(rhomis)</span></code></pre></div>
+</div>
+<div id="initial-setup" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.2</span> Initial Setup<a href="data-processing.html#initial-setup" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>You should then ensure you have a folder containing the data
+you would like to process. If using Rstudio interactively, set
+your working directory to this folder using the <code>setwd()</code> command.
+Your directory structure should look something like this:</p>
+<pre><code>📂 project
+┃
+┗📂 raw-data
+  ┃
+  ┗📜 raw-data.csv</code></pre>
+</div>
+<div id="stage-1-unit-extraction" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.3</span> Stage 1: Unit Extraction<a href="data-processing.html#stage-1-unit-extraction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="extracting-units" class="section level3 hasAnchor">
+<h3><span class="header-section-number">2.3.1</span> Extracting Units<a href="data-processing.html#extracting-units" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To extract new units from the data you are working with, run the
+code below. Set the <code>dataFilePath</code> to the path of your RHoMIS
+raw-data file.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data-processing.html#cb5-1"></a><span class="kw">extract_units_and_conversions_csv</span>(</span>
+<span id="cb5-2"><a href="data-processing.html#cb5-2"></a>    <span class="dt">file_path=</span><span class="st">&quot;raw-data/raw-data.csv&quot;</span>,</span>
+<span id="cb5-3"><a href="data-processing.html#cb5-3"></a>    <span class="dt">id_type =</span> <span class="st">&quot;string&quot;</span>,</span>
+<span id="cb5-4"><a href="data-processing.html#cb5-4"></a>    <span class="dt">proj_id =</span> <span class="st">&quot;test_prj&quot;</span>,</span>
+<span id="cb5-5"><a href="data-processing.html#cb5-5"></a>    <span class="dt">form_id =</span> <span class="st">&quot;test_frm&quot;</span>)</span></code></pre></div>
+<p>If you now go back to your <code>project</code> directory, you should be able
+to see that more files have been added:</p>
+<pre><code>📂 project
+┃
+┣📂 raw-data
+┃ ┗📜 sample_project.csv
+┃
+┣📂 conversions_stage_1
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_1_conversions
+  ┣📜 crop_yield_units.csv
+  ┣📜 country.csv
+  ┗📜 ...
+</code></pre>
+<p>The <code>conversions_stage_1</code> folder should will include the units which you will
+verify and change.
+The <code>.original_stage_1_conversions</code> folder includes an original copy of the units
+pulled straight from the data. This folder will likely be hidden unless you
+change the settings on your file browser.</p>
+</div>
+<div id="converting-units" class="section level3 hasAnchor">
+<h3><span class="header-section-number">2.3.2</span> Converting Units<a href="data-processing.html#converting-units" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><strong>Please note, while you do not <em>have</em> to convert units for the next step in
+the calculations to run, uncoverted units will be ignored and will lead to
+unnecessary missing values</strong></p>
+<p>In the <code>project/conversions_stage_1</code> directory, you will find a series of csv files
+with conversion factors that need to be filled in. Each file will look
+like the table below. The <code>survey_value</code> column indicates a value which was
+found in the survey. The <code>conversion</code> column shows the conversion factor
+which ought to be used. Where the conversion factor is unknown, the column
+will display <code>NA</code>. Where the conversion factor is known it will be provided.
+Known conversion factors are already embedded in the R-package.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">unit_type</th>
+<th align="left">id_rhomis_dataset</th>
+<th align="left">survey_value</th>
+<th align="left">conversion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">crop_unit</td>
+<td align="left">x</td>
+<td align="left">foo</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">crop_unit</td>
+<td align="left">x</td>
+<td align="left">bar</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<p>There are a range of conversions to enter and it is important to be aware
+which units are needed. Each file is described in more detail below:</p>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="28%" />
+<col width="28%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">File</th>
+<th align="left">Description</th>
+<th align="left">Example Survey Value</th>
+<th align="left">Example Conversion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">honey_amount_to_l.csv</td>
+<td align="left">The conversion factor should be used to convert to kilograms/litres.</td>
+<td align="left">buckets_12_litre</td>
+<td align="left">12</td>
+</tr>
+<tr class="even">
+<td align="left">country_to_iso2.csv</td>
+<td align="left">The conversion factor should be used to convert country names to <a href="https://www.iban.com/country-codes">two-letter ISO country codes</a>. This is important as it is used to find currency conversion factors</td>
+<td align="left">uganda</td>
+<td align="left">UG</td>
+</tr>
+<tr class="odd">
+<td align="left">crop_name_to_std.csv</td>
+<td align="left">The name of crops entered in the survey. Often enumerators may specify “other” crops in a free-text-entry field. Sometimes these crops can be mispelled, or in a language other than English. Here we correct misspellings and translations into standard forms (<strong>all lower case</strong>)</td>
+<td align="left">maze</td>
+<td align="left">maize</td>
+</tr>
+<tr class="even">
+<td align="left">crop_price_to_lcu_per_kg.csv</td>
+<td align="left">The price units for crops which were sold. Please note that only one unit will be converted into a string, “total_income_per_year” will be converted to “total_income_per_year” as this is treated as a special case in the analysis scripts.</td>
+<td align="left">price_per_50kg_sack</td>
+<td align="left">0.02</td>
+</tr>
+<tr class="odd">
+<td align="left">crop_amount_to_kg.csv</td>
+<td align="left">The unit of crops which have been collected. This needs to be converted to kilograms</td>
+<td align="left">cart_250kg</td>
+<td align="left">250</td>
+</tr>
+<tr class="even">
+<td align="left">eggs_price_to_lcu_per_year.csv</td>
+<td align="left">The amount of money made per unit time for selling eggs. This needs to be converted into an income per year</td>
+<td align="left">income for 3 months</td>
+<td align="left">4</td>
+</tr>
+<tr class="odd">
+<td align="left">eggs_amount_to_pieces_per_year.csv</td>
+<td align="left">The number of eggs collected per year</td>
+<td align="left">pieces/day</td>
+<td align="left">365</td>
+</tr>
+<tr class="even">
+<td align="left">fertiliser_amount_to_kg.csv</td>
+<td align="left">The amount of fertiliser in kg</td>
+<td align="left">sacks_25kg</td>
+<td align="left">25</td>
+</tr>
+<tr class="odd">
+<td align="left">livestock_name_to_std.csv</td>
+<td align="left">The names of livestock entered in the survey. As with crop names, enumerators can also enter extra livestock names which are in a different language or mispelt. This conversion is used to standardise livestock names entered in the survey</td>
+<td align="left">catel</td>
+<td align="left">cattle</td>
+</tr>
+<tr class="even">
+<td align="left">milk_price_to_lcu_per_l.csv</td>
+<td align="left">The amount of money made per unit volume or per unit time. For unit time, the options are “day”, “week”, “month”, “year”. These time units must be entered as strings. For the unit volume, numeric conversions must be entered</td>
+<td align="left">month</td>
+<td align="left">month</td>
+</tr>
+<tr class="odd">
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">0.3litre</td>
+<td align="left">0.3</td>
+</tr>
+<tr class="even">
+<td align="left">milk_amount_to_l.csv</td>
+<td align="left">The amount of milk collected in litres per year. There are a number of exceptions which must be kept as text strings, and are dealt with in the analysis scripts (e.g. “per animal per day” and “l/animal/day”</td>
+<td align="left">l/day</td>
+<td align="left">365</td>
+</tr>
+<tr class="odd">
+<td align="left">land_area_to_ha.csv</td>
+<td align="left">The amount of land in hectares</td>
+<td align="left">acres</td>
+<td align="left">0.4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="stage-2-calculating-prices-preparing-calorie-conversions-and-extracting-secondary-units" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.4</span> Stage 2: Calculating Prices, Preparing Calorie Conversions, and Extracting Secondary Units<a href="data-processing.html#stage-2-calculating-prices-preparing-calorie-conversions-and-extracting-secondary-units" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As with unit extraction, ensure you are in the project directory.
+Then enter the commands below:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-processing.html#cb7-1"></a><span class="kw">calculate_prices_csv</span>(</span>
+<span id="cb7-2"><a href="data-processing.html#cb7-2"></a>    <span class="dt">file_path=</span><span class="st">&quot;raw-data/raw-data.csv&quot;</span>,</span>
+<span id="cb7-3"><a href="data-processing.html#cb7-3"></a>    <span class="dt">id_type =</span> <span class="st">&quot;string&quot;</span>,</span>
+<span id="cb7-4"><a href="data-processing.html#cb7-4"></a>    <span class="dt">proj_id =</span> <span class="st">&quot;my_project_id&quot;</span>,</span>
+<span id="cb7-5"><a href="data-processing.html#cb7-5"></a>    <span class="dt">form_id =</span> <span class="st">&quot;my_form_id&quot;</span></span>
+<span id="cb7-6"><a href="data-processing.html#cb7-6"></a>)</span></code></pre></div>
+<p>You will now see that the directory structure again looks quite different:</p>
+<pre><code>📂 project
+┃
+┣📂 raw-data
+┃
+┃ ┗📜 sample_project.csv
+┣📂 conversions_stage_1
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_1_conversions
+┃ ┣📜 crop_yield_units.csv
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┣📂 conversions_stage_2
+┃ ┣📜 crop_calories.csv
+┃ ┣📜 mean_crop_pice_lcu_per_kg
+┃ ┣📜 eggs_calories.csv
+┃ ┣📜 mean_eggs_price_per_kg
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_2_conversions
+  ┣📜 crop_calories.csv
+  ┣📜 mean_crop_pice_lcu_per_kg
+  ┣📜 eggs_calories.csv
+  ┣📜 mean_eggs_price_per_kg
+  ┗📜 ...
+</code></pre>
+<div id="converting-calories-prices-and-other-units" class="section level3 hasAnchor">
+<h3><span class="header-section-number">2.4.1</span> Converting Calories, Prices, and Other Units<a href="data-processing.html#converting-calories-prices-and-other-units" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="calories-and-prices" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.4.1.1</span> Calories and Prices<a href="data-processing.html#calories-and-prices" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As with the units which were extracted, you will also need to verify
+prices and calorie values (in the <code>conversions_stage_2</code> folder). Prices will be in
+lcu/kg for crops, meat, and eggs (where lcu is local currency units).
+Prices will be in lcu/l for milk and honey. And prices will be in
+lcu/animal for whole livestock sales. For calorie values, conversions will be in kcal/kg or kcal/l.</p>
+</div>
+<div id="secondary-units" class="section level4 hasAnchor">
+<h4><span class="header-section-number">2.4.1.2</span> Secondary Units<a href="data-processing.html#secondary-units" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Aside from prices and calories, there are other conversion tables to be verified, these units
+depend on conversions from stage 1. For example <code>livestock_count_tlu</code> requires us to know
+the standard livestock names (identified in stage 1). The secondary units currently
+processed in the R-package are:</p>
+<table style="width:100%;">
+<colgroup>
+<col width="14%" />
+<col width="28%" />
+<col width="28%" />
+<col width="28%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">File</th>
+<th align="left">Description</th>
+<th align="left">Example Survey Value</th>
+<th align="left">Example Conversion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">livestock_weight_kg.csv</td>
+<td align="left">The conversion factor used to estimate the amount of meat collected from a whole animal.</td>
+<td align="left">sheep</td>
+<td align="left">25</td>
+</tr>
+<tr class="even">
+<td align="left">livestock_count_tlu.csv</td>
+<td align="left">“Tropical Livestock Units” (TLU) for individual animals.</td>
+<td align="left">cattle</td>
+<td align="left">0.7</td>
+</tr>
+</tbody>
+</table>
+<p><em>Please note any folder with a dot before it will not be visible by default in most file explorers</em></p>
+</div>
+</div>
+</div>
+<div id="stage-3-calculating-indicators" class="section level2 hasAnchor">
+<h2><span class="header-section-number">2.5</span> Stage 3: Calculating Indicators<a href="data-processing.html#stage-3-calculating-indicators" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Using the calories and prices you have converted, you will then be able to produce
+the final indicators. Either run the code below, or run the <code>03-calculate-final-indicators.R</code>
+file.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-processing.html#cb9-1"></a><span class="kw">calculate_indicators_local</span>(</span>
+<span id="cb9-2"><a href="data-processing.html#cb9-2"></a>    <span class="dt">file_path=</span><span class="st">&quot;raw-data/raw-data.csv&quot;</span>,</span>
+<span id="cb9-3"><a href="data-processing.html#cb9-3"></a>    <span class="dt">id_type =</span> <span class="st">&quot;string&quot;</span>,</span>
+<span id="cb9-4"><a href="data-processing.html#cb9-4"></a>    <span class="dt">proj_id =</span> <span class="st">&quot;test_prj&quot;</span>,</span>
+<span id="cb9-5"><a href="data-processing.html#cb9-5"></a>    <span class="dt">form_id =</span> <span class="st">&quot;test_frm&quot;</span>)</span></code></pre></div>
+<p>You will now see the directory includes some
+extra folders:</p>
+<p>You will now see that the directory structure again looks quite different.
+Extra folders and files have been created. There is a lot of information here,
+for more explanation, please see <a href="indicators-explained.html#indicators-explained">an explanation of indicators and outputs</a></p>
+<pre><code>📂 project
+┃
+┣📂 raw-data
+┃ ┗📜 sample_project.csv
+┃
+┣📂 conversions_stage_1
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┗📂 .original_stage_1_conversions
+┃ ┣📜 crop_yield_units.csv
+┃ ┣📜 country.csv
+┃ ┗📜 ...
+┃
+┣📂 conversions_stage_2
+┃ ┣📜 crop_calories.csv
+┃ ┣📜 mean_crop_pice_lcu_per_kg
+┃ ┣📜 eggs_calories.csv
+┃ ┣📜 mean_eggs_price_per_kg
+┃ ┗📜 ...
+┃
+┣📂 .original_stage_2_conversions
+┃ ┣📜 crop_calories.csv
+┃ ┣📜 mean_crop_pice_lcu_per_kg
+┃ ┣📜 eggs_calories.csv
+┃ ┣📜 mean_eggs_price_per_kg
+┃ ┗📜 ...
+┃
+┣📂 crop_data
+┃ ┣📜 crop_consumed_kg_per_year.csv
+┃ ┣📜 crop_harvest_kg_per_year.csv
+┃ ┗📜 ...
+┃
+┣📂 indicator_data
+┃ ┗📜 indicators.csv
+┃
+┣📂 livestock_data
+┃ ┣📜 crop_consumed_kg_per_year.csv
+┃ ┣📜 crop_consumed_kg_per_year.csv
+┃ ┗📜 ...
+┃
+┣📂 off_farm_data
+┃ ┣📜 offfarm_income_name.csv
+┃ ┣📜 offfarm_who_control_revenue.csv
+┃ ┗📜 ...
+┃
+┗📂 processed_data
+┃  ┗📜 processed_data.csv
+┃
+┗📂 extra_outputs
+    ┃
+    ┣📂 consumption_calorie_values
+    ┃ ┣📜 crop_calories_consumed_kcal.csv
+    ┃ ┣📜 milk_calories_consumed_kcal.csv
+    ┃ ┗📜 ...
+    ┣📂 consumption_lcu_values
+    ┃ ┣📜 value_crop_consumed_lcu.csv
+    ┃ ┣📜 value_eggs_consumed_lcu.csv
+    ┃ ┗📜 ... 
+    ┗📂 gender_control
+        ┃
+        ┣📂 gender_control_amounts_consumed
+        ┃
+        ┣📂 gender_control_income
+        ┃
+        ┗📂 ... </code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="outputs-and-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="assets/gitbook-2.6.7/js/app.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="assets/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="assets/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"],
+"share": false
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/l-gorman/rhomis-R-package/edit/main/book/01-processing-projects.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
